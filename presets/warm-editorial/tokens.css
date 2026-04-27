@@ -21,7 +21,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 16 38% 12%;
 
-    --primary: 338 55% 23%;
+    /* Primary teal petroleum #00585c (substituiu borgonha) */
+    --primary: 184 100% 18%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 30 33% 93%;
@@ -38,18 +39,18 @@
 
     --border: 30 20% 87%;
     --input: 30 33% 96%;
-    --ring: 338 55% 23%;
+    --ring: 184 100% 18%;
 
     --radius: 0.5rem;
 
-    /* Sidebar — primary borgonha como surface */
-    --sidebar-background: 338 55% 23%;
+    /* Sidebar — primary teal como surface (drama com creme) */
+    --sidebar-background: 184 100% 18%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 338 50% 30%;
+    --sidebar-primary: 184 80% 25%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 338 50% 30%;
+    --sidebar-accent: 184 80% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 338 50% 27%;
+    --sidebar-border: 184 80% 22%;
     --sidebar-ring: 33 47% 53%;
     --sidebar-indicator: 33 47% 53%;
 
