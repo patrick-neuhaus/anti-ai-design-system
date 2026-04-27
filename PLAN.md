@@ -65,7 +65,7 @@ Validação final: aplicar no `dwg-insight-ext` e provar visualmente que perde a
   └── templates/new-project/[esqueleto vazio]
 - Cada .md em docs/ e lovable-memory/ passa por prompt-engineer --validate antes do Write (IL-1)
 
-### Wave 4 — Validar contra dwg-insight-ext
+### Wave 4 — Validar contra dwg-insight-ext  ✅ DONE
 - Branch experiment/anti-ai-ds no dwg
 - Aplicar Camada 1 + preset minimalist-tech
 - Skill: trident --design
@@ -76,6 +76,13 @@ Validação final: aplicar no `dwg-insight-ext` e provar visualmente que perde a
   - Foreground com temperatura
   - Tabelas grid-based, não <table>
 - Documentar em examples/dwg-before-after/README.md com screenshots
+
+### Wave 5 — Coherence checklist (trident comparison)  ✅ DONE
+- Trident --design em chocotracking (baseline) + dwg-experiment (subject)
+- Resultado: trident pegou **7/7** problemas estruturais que olho humano não viu
+- Output: `docs/05-coherence-checklist.md` com 10 padrões de coerência codificados
+- Update: `docs/02-structural-rules.md` agora aponta pro 05 + define workflow pós-refator
+- Aprendizado: rodar trident SEMPRE antes de validar visual. Inverter custou Wave 4 em retrabalho.
 
 ---
 

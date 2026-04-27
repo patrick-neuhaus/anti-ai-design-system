@@ -85,3 +85,15 @@ Antes de aceitar um PR/output do Lovable, verifica:
 - [ ] Radius scale visível (3+ valores diferentes ou zero em tudo)
 - [ ] Padding consistente (escala curta sendo respeitada)
 - [ ] Ícones com propósito informacional (não decoração)
+
+## Coerência estrutural (verificação obrigatória)
+
+As regras acima cobrem a Camada 1 mecânica (sem Card, sem table, etc.). Mas não pegam **coerência estrutural** — coisas como "sidebar header e main header têm mesma altura", "hover tem contraste mínimo", "headers de coluna alinham com cells". Esses padrões precisam de verificação separada.
+
+**Workflow obrigatório pós-refator de IA:**
+
+1. Rode `anthropic-skills:trident --mode dir --target <path> --design`
+2. Trident captura objetivamente os 10 padrões de coerência estrutural documentados em [`05-coherence-checklist.md`](./05-coherence-checklist.md)
+3. Apenas depois disso, abra preview pra validação visual humana
+
+Inverter essa ordem (validar visual primeiro, trident depois) custa retrabalho. Validado em Wave 5 (2026-04-27): trident pegou 7/7 dos problemas estruturais que olho humano não-treinado perdeu.
