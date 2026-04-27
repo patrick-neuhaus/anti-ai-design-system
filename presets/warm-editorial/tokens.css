@@ -1,0 +1,79 @@
+/* ===================================================================
+   anti-ai-design-system / preset: warm-editorial
+   Caloroso, distintivo, marcas com personalidade
+   Referência: chocotracking (Barry Callebaut). Estrutura literal copiada.
+   =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 33% 96%;
+    --foreground: 16 38% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 16 38% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 16 38% 12%;
+
+    --primary: 338 55% 23%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 33% 93%;
+    --secondary-foreground: 16 38% 12%;
+
+    --muted: 30 20% 90%;
+    --muted-foreground: 20 29% 33%;
+
+    --accent: 33 47% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 20% 87%;
+    --input: 30 33% 96%;
+    --ring: 338 55% 23%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar — primary borgonha como surface */
+    --sidebar-background: 338 55% 23%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 338 50% 30%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 338 50% 30%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 338 50% 27%;
+    --sidebar-ring: 33 47% 53%;
+    --sidebar-indicator: 33 47% 53%;
+
+    /* Status com hue alinhado */
+    --success: 152 85% 30%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 16 38% 12%;
+    --info: 217 91% 45%;
+    --info-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .font-display {
+    font-family: 'Lora', serif;
+  }
+}
