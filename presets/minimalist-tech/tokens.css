@@ -49,12 +49,15 @@
     --input: 222 10% 88%;
     --ring: 222 15% 20%;
 
-    /* --- Sidebar (levemente mais clara que bg pra hierarquia visual) --- */
-    --sidebar-background: 222 15% 97%;
-    --sidebar-foreground: 222 20% 11%;
-    --sidebar-border: 222 10% 88%;
-    --sidebar-accent: 222 12% 93%;
-    --sidebar-accent-foreground: 222 20% 11%;
+    /* --- Sidebar (DRAMA contra main: dark surface separada) --- */
+    /* Gesto #1 do 06-identity-gestures.md: surface differentiation */
+    /* Delta L=86% vs bg L=99 — sidebar é ZONA, não tint */
+    --sidebar-background: 222 25% 13%;
+    --sidebar-foreground: 222 15% 95%;       /* texto claro com hue */
+    --sidebar-border: 222 20% 22%;            /* sutil, dark */
+    --sidebar-accent: 222 20% 22%;            /* hover bg, delta 9% sobre sidebar bg */
+    --sidebar-accent-foreground: 222 15% 95%;
+    --sidebar-indicator: 217 91% 65%;         /* azul claro pra active state pop */
 
     /* --- Radius (ZERO em tudo — decisão brutalista) --- */
     --radius: 0px;
