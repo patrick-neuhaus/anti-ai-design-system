@@ -91,3 +91,23 @@ Se algum item falhou, mande pro Lovable:
 **Dark mode quebrou**
 - Cada preset assume light-only por default
 - Se precisa de dark, copie variáveis `[data-theme=dark]` do preset (se existir) ou peça pro Lovable gerar
+
+---
+
+## Lovable memory: preset vs projeto
+
+`.lovable/memory/` aceita estrutura hierárquica. O preset escreve apenas em `design/`:
+
+- `.lovable/memory/design/page-layout.md` — regras de layout (do preset, **não mexer**)
+- `.lovable/memory/design/tokens.md` — documentação dos tokens (do preset, **não mexer**)
+
+O **projeto** adiciona o seu próprio `index.md` na raiz com:
+- Glossário de termos do domínio
+- Regras de negócio específicas
+- Convenções do projeto que não saem do design system
+
+Não misturar: preset = regras universais; `index.md` = contexto do projeto.
+
+Exemplo:
+- `chocotracking/.lovable/memory/index.md` — existe (custom do projeto)
+- `chocotracking/.lovable/memory/design/page-layout.md` — existe (do preset)

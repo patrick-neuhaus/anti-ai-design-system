@@ -1,0 +1,43 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+  html,body{margin:0;padding:0;height:280px;background:hsl(30 33% 96%);font-family:'Poppins',sans-serif;color:hsl(16 38% 12%);padding:16px 20px;box-sizing:border-box}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .col h4{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px;font-family:'Geist Mono',monospace}
+  .bad h4{color:hsl(0 80% 40%)} .good h4{color:hsl(152 85% 25%)}
+  .item{font-size:12px;color:hsl(20 29% 33%);margin-bottom:6px;padding-left:14px;position:relative;line-height:1.45}
+  .item::before{content:'';position:absolute;left:0;top:6px;width:6px;height:2px;background:currentColor}
+  .bad .item::before{background:hsl(0 80% 40%)}
+  .good .item::before{background:hsl(152 85% 30%)}
+  code{font-family:'Geist Mono',monospace;font-size:11px;background:hsl(30 20% 90%);padding:1px 4px;border-radius:3px}
+</style></head><body>
+<div class="grid">
+  <div class="col bad">
+    <h4>× CARA DE IA</h4>
+    <div class="item"><code>&lt;Card&gt;&lt;CardHeader&gt;&lt;CardContent&gt;</code> in every block</div>
+    <div class="item"><code>&lt;table&gt;</code> in UI (not content)</div>
+    <div class="item"><code>&lt;h1&gt;</code> at top of every app page</div>
+    <div class="item">Foreground <code>0 0% X%</code> — pure grey, no hue</div>
+    <div class="item">No <code>font-family</code> declared (system stack)</div>
+    <div class="item"><code>container mx-auto</code> everywhere</div>
+    <div class="item">Random padding mix: 2/3/4/6/8</div>
+    <div class="item">Lucide icon in every button & label</div>
+    <div class="item"><code>--radius: 0.5rem</code> applied uniformly</div>
+    <div class="item">Background with no temperature</div>
+  </div>
+  <div class="col good">
+    <h4>✓ ANTI-AI</h4>
+    <div class="item">Raw divs with explicit padding/radius/border</div>
+    <div class="item">Grid CSS for data lists</div>
+    <div class="item"><code>&lt;h2&gt; text-xl font-semibold</code> for page titles</div>
+    <div class="item">Foreground with hue (e.g. <code>16 38% 12%</code>)</div>
+    <div class="item">Body font imported, declared, fallback'd</div>
+    <div class="item"><code>max-w-7xl</code> with intentional gap</div>
+    <div class="item">Spacing locked to <code>1 / 1.5 / 2 / 4 / 5 / 6 / 8</code></div>
+    <div class="item">Icons only in status, primary actions, types</div>
+    <div class="item">Variable radius scale OR zero deliberately</div>
+    <div class="item">Whole palette in one hue family</div>
+  </div>
+</div>
+</body></html>

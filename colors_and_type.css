@@ -1,0 +1,189 @@
+/* ============================================================
+   Anti-AI Design System — Foundations
+   ------------------------------------------------------------
+   Two presets ship with this system. Both adhere to the same
+   structural rules; they differ in palette + typography + radius.
+
+     [warm]   warm-editorial     — Poppins + Lora, terracotta + teal, soft radii
+     [tech]   minimalist-tech    — Inter + Geist Mono, dark sidebar, ZERO radius
+
+   The CORE RULE: foreground is never `0 0% L%` — every neutral
+   carries hue. That's the whole game.
+   ============================================================ */
+
+/* ---- Webfonts (subset; fallback to local) ---- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+
+/* ============================================================
+   SHARED PRIMITIVES
+   ============================================================ */
+:root {
+  /* Spacing scale — short and religious. Don't add 3, 7, 9. */
+  --space-1:    4px;
+  --space-1-5:  6px;
+  --space-2:    8px;
+  --space-4:   16px;
+  --space-5:   20px;  /* container vertical */
+  --space-6:   24px;  /* shell padding */
+  --space-8:   32px;
+
+  /* Type scale */
+  --text-xs:     12px;
+  --text-sm:     14px;
+  --text-base:   16px;
+  --text-lg:     18px;
+  --text-xl:     20px;  /* page title (h2) */
+  --text-2xl:    24px;
+  --text-3xl:    30px;  /* landing only */
+
+  /* Weights — never 700 */
+  --weight-normal:    400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+
+  /* Line heights */
+  --leading-tight:    1.25;
+  --leading-normal:   1.5;
+  --leading-relaxed:  1.625;
+
+  /* Tracking */
+  --track-tight:  -0.025em;
+  --track-normal: 0;
+
+  /* Animations — 150–300ms only */
+  --dur-150: 150ms;
+  --dur-200: 200ms;
+  --dur-300: 300ms;
+  --ease:    cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   PRESET: warm-editorial
+   Reference: chocotracking. Hue family: warm cream + teal + terracotta.
+   ============================================================ */
+[data-preset="warm"], .preset-warm {
+  /* Surface — every neutral carries hue */
+  --background:        30 33% 96%;   /* warm cream     */
+  --foreground:        16 38% 12%;   /* dark cocoa     */
+  --card:               0  0% 100%;
+  --card-foreground:   16 38% 12%;
+  --popover:            0  0% 100%;
+  --popover-foreground:16 38% 12%;
+
+  --muted:             30 20% 90%;
+  --muted-foreground:  20 29% 33%;
+
+  --border:            30 20% 87%;
+  --input:             30 33% 96%;
+  --ring:             184 100% 18%;
+
+  /* Brand */
+  --primary:          184 100% 18%;  /* teal petroleum #00585c */
+  --primary-foreground: 0 0% 100%;
+  --secondary:         30 33% 93%;
+  --secondary-foreground:16 38% 12%;
+  --accent:            12 65% 55%;   /* terracotta             */
+  --accent-foreground:  0 0% 100%;
+
+  /* Status — same warm temperature */
+  --destructive:        0 100% 50%;
+  --success:          152 85% 30%;
+  --warning:           38 92% 50%;
+  --info:             217 91% 45%;
+
+  /* Sidebar — drama via hue, not luminosity */
+  --sidebar-background:184 100% 18%;
+  --sidebar-foreground:  0 0% 100%;
+  --sidebar-accent:    184 80% 25%;
+  --sidebar-border:    184 80% 22%;
+  --sidebar-indicator:  12 65% 55%;
+
+  /* Radius — variable scale */
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:  12px;   /* buttons */
+  --radius-xl:  16px;   /* rows    */
+  --radius-2xl: 20px;   /* cards   */
+
+  /* Type families */
+  --font-body:    'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Lora', Georgia, serif;
+  --font-mono:    'Geist Mono', ui-monospace, monospace;
+}
+
+/* ============================================================
+   PRESET: minimalist-tech
+   Reference: openstatus.dev. Hue family: cool blue-greys.
+   Brutalist: zero radius, zero shadows, dark sidebar.
+   ============================================================ */
+[data-preset="tech"], .preset-tech {
+  --background:        222 15% 99%;
+  --foreground:        222 20% 11%;
+  --card:                0  0% 100%;
+  --card-foreground:   222 20% 11%;
+  --popover:             0  0% 100%;
+  --popover-foreground:222 20% 11%;
+
+  --muted:             222 12% 93%;
+  --muted-foreground:  222 12% 38%;
+
+  --border:            222 10% 88%;
+  --input:             222 10% 88%;
+  --ring:              222 15% 20%;
+
+  --primary:           222 15% 20%;
+  --primary-foreground:  0 0% 100%;
+  --secondary:         222 12% 95%;
+  --secondary-foreground:222 20% 11%;
+  --accent:            222 12% 88%;   /* L=88 → 11% delta over bg L=99 */
+  --accent-foreground: 222 20% 11%;
+
+  --destructive:         0 70% 45%;
+  --success:           152 85% 30%;
+  --warning:            38 92% 35%;
+  --info:              217 91% 35%;
+
+  --sidebar-background:222 25% 13%;   /* dark zone, not a tint */
+  --sidebar-foreground:222 15% 95%;
+  --sidebar-accent:    222 20% 22%;
+  --sidebar-border:    222 20% 22%;
+  --sidebar-indicator: 217 91% 65%;
+
+  /* Radius — ZERO. Brutalist decision. */
+  --radius-sm:   0;
+  --radius-md:   0;
+  --radius-lg:   0;
+  --radius-xl:   0;
+  --radius-2xl:  0;
+
+  --font-body:    'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    'Geist Mono', ui-monospace, monospace;
+}
+
+/* ============================================================
+   SEMANTIC TYPOGRAPHY
+   Apply directly with class or as part of a base reset.
+   ============================================================ */
+.t-h1 { font-size: var(--text-3xl); font-weight: var(--weight-semibold); line-height: var(--leading-tight); letter-spacing: var(--track-tight); }
+.t-h2 { font-size: var(--text-xl);  font-weight: var(--weight-semibold); line-height: var(--leading-tight); letter-spacing: var(--track-tight); }
+.t-h3 { font-size: var(--text-sm);  font-weight: var(--weight-medium);   line-height: var(--leading-tight); }
+.t-body         { font-size: var(--text-sm);     line-height: var(--leading-normal); }
+.t-body-lg      { font-size: var(--text-base);   line-height: var(--leading-normal); }
+.t-label        { font-size: var(--text-xs);     color: hsl(var(--muted-foreground)); font-weight: var(--weight-medium); }
+.t-meta         { font-size: 10px;               color: hsl(var(--muted-foreground) / 0.7); }
+.t-mono         { font-family: var(--font-mono); font-feature-settings: 'tnum'; }
+.t-display      { font-family: var(--font-display); }
+
+/* ============================================================
+   BASE RESET (opt-in)
+   ============================================================ */
+.preset-base {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

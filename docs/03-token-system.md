@@ -212,3 +212,44 @@ xl:  1280px
 | Status colors com temperatura | ✅ regra | escolhe os HSL |
 | Spacing escala curta | ✅ regra | — |
 | Animations 150-300ms | ✅ regra | — |
+| Pares passam WCAG AA (4.5:1) | ✅ regra dura | escolhe HSLs que passam |
+
+---
+
+## Contraste WCAG AA (Camada 1, regra dura)
+
+**Regra:** todo par bg+fg ou fg+surface usado em **texto, ícone-como-info ou border-funcional** tem que passar **WCAG AA (4.5:1 pra texto pequeno, 3:1 pra texto large/bold ≥18px ou ≥14px bold)**. Se o par escolhido pelo preset não atinge, o token é **decorative-only** — não pode ser usado como cor de texto/ícone.
+
+**Por quê:** "ficou bonito" não é critério. Combinações warm bonitas (ex: terracotta sobre teal escuro = ~3.1) reprovam AA. Aplicar acento como cor de texto vira accessibility regression. Decorative-only mantém o gesto de identidade (1px indicator strip, dot 6×6px, fundo de pill com texto escuro contrastante) sem violar contraste.
+
+**Pares obrigatórios pra validar (cada preset, cada Camada 2):**
+
+| Par | Onde aparece | Mínimo |
+|---|---|---|
+| `--foreground` sobre `--background` | corpo de texto | 4.5:1 |
+| `--card-foreground` sobre `--card` | cards, modais | 4.5:1 |
+| `--primary-foreground` sobre `--primary` | botão primário, accent surfaces | 4.5:1 |
+| `--secondary-foreground` sobre `--secondary` | botões secundários | 4.5:1 |
+| `--muted-foreground` sobre `--background` | texto secundário | 4.5:1 (ou 3:1 se ≥18px) |
+| `--accent-foreground` sobre `--accent` | botão accent, surface accent | 4.5:1 |
+| `--sidebar-foreground` sobre `--sidebar-background` | nav text | 4.5:1 |
+| `--sidebar-accent-foreground` sobre `--sidebar-accent` | active state nav | 4.5:1 |
+| `--status-{name}-fg` sobre `--status-{name}-bg` (com blend) | StatusBadge | 4.5:1 |
+| `--destructive-foreground` sobre `--destructive` | botões de delete | 4.5:1 |
+
+**Rule decorative-only:**
+
+`--accent`, `--sidebar-indicator`, `--signal` **podem** falhar AA se usados **apenas como**:
+- Faixa indicadora (1-2px de largura ou altura)
+- Dot pequeno (≤8×8px)
+- Background de pill **com texto explicitamente escuro** (não usar `text-accent-foreground` se accent-fg tb falhar contra accent)
+- Border de elemento decorativo
+
+**Não pode** ser usado como `color` de:
+- Body text, ícone-info (12-14px), label de form, status text small
+
+**Como detectar drift:**
+- Grep `text-accent\|text-sidebar-indicator\|text-signal` em pages/ — cada match é candidato a falhar AA, validar.
+- Inspect computed style em texto small: ratio < 4.5 = bug.
+
+**Exemplo do erro real:** gascat warm v1 — brand mark "G" usava `text-sidebar-indicator` (terracotta) sobre `bg-sidebar-accent` (teal-25%) = ratio ~2.1, falha. Fix: trocar pra `bg-sidebar-foreground` (white) + `text-sidebar` (dark teal) = ratio ~14:1.

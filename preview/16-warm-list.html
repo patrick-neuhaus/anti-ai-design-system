@@ -1,0 +1,28 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+  html,body{margin:0;padding:0;height:240px;background:hsl(30 33% 96%);font-family:'Poppins',sans-serif;color:hsl(16 38% 12%);padding:16px 20px;box-sizing:border-box}
+  .lbl{font-family:'Geist Mono',monospace;font-size:10px;color:hsl(20 29% 33% / .7);margin-bottom:10px}
+  .table{background:#fff;border:1px solid hsl(30 20% 87%);border-radius:20px;overflow:hidden}
+  .head{display:grid;grid-template-columns:1fr 140px 100px 80px;gap:8px;padding:10px 18px;font-size:11px;font-weight:500;color:hsl(20 29% 33%);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid hsl(30 20% 87%)}
+  .rows{padding:6px 8px}
+  .row{display:grid;grid-template-columns:1fr 140px 100px 80px;gap:8px;align-items:center;padding:8px 10px;border-radius:16px;font-size:13px;cursor:pointer}
+  .row:hover{background:hsl(30 20% 90% / .6)}
+  .num{font-family:'Geist Mono',monospace;color:hsl(20 29% 33%)}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:2px 8px;border-radius:999px;background:hsl(152 85% 30% / .12);color:hsl(152 85% 22%);font-weight:500;width:fit-content}
+  .badge.warn{background:hsl(38 92% 50% / .14);color:hsl(35 80% 30%)}
+  .dot{width:5px;height:5px;border-radius:999px;background:currentColor}
+  .actions{display:flex;gap:4px;justify-content:flex-end;font-size:11px;color:hsl(20 29% 33%)}
+  .group{font-family:'Geist Mono',monospace;font-size:10px;font-weight:600;color:hsl(16 38% 12%);text-transform:uppercase;letter-spacing:.04em;padding:8px 18px 4px;border-top:1px solid hsl(30 20% 87% / .6)}
+</style></head><body>
+<div class="lbl">// data list — grid CSS, never &lt;table&gt;. row = 16px radius, hover bg-muted/60</div>
+<div class="table">
+  <div class="head"><span>Project</span><span>Status</span><span style="text-align:right">Volume</span><span></span></div>
+  <div class="group">BARRY CALLEBAUT</div>
+  <div class="rows">
+    <div class="row"><span>Selo Sustentável · Bahia</span><span><span class="badge"><span class="dot"></span>delivered</span></span><span class="num" style="text-align:right">15.0 t</span><span class="actions">[view]</span></div>
+    <div class="row"><span>Cacao Horizons · Ghana</span><span><span class="badge warn"><span class="dot"></span>review</span></span><span class="num" style="text-align:right">8.1 t</span><span class="actions">[view]</span></div>
+  </div>
+</div>
+</body></html>

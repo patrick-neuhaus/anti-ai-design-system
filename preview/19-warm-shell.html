@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:wght@500;600&family=Geist+Mono:wght@400;500&display=swap');
+  html,body{margin:0;padding:0;height:200px;background:hsl(30 33% 96%);font-family:'Poppins',sans-serif;color:hsl(16 38% 12%);box-sizing:border-box;overflow:hidden}
+  .shell{display:grid;grid-template-columns:172px 1fr;height:100%}
+  .side{background:hsl(184 100% 18%);color:#fff;padding:14px 12px;display:flex;flex-direction:column;gap:4px}
+  .brand{font-family:'Lora',serif;font-size:14px;font-weight:600;padding:6px 8px;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .mark{width:22px;height:22px;background:hsl(12 65% 55%);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;color:#fff}
+  .label{font-family:'Geist Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#ffffffaa;padding:8px 8px 4px}
+  .nav{font-size:13px;padding:6px 8px;border-radius:8px;display:flex;align-items:center;gap:8px;color:#ffffffcc;position:relative}
+  .nav.active{background:hsl(184 80% 25%);color:#fff;font-weight:500}
+  .nav.active::before{content:'';position:absolute;left:-12px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:hsl(12 65% 55%);border-radius:0 3px 3px 0}
+  .main{padding:16px 18px}
+  .h2{font-size:18px;font-weight:600;letter-spacing:-.02em;margin:0}
+  .sub{font-size:12px;color:hsl(20 29% 33%);margin:2px 0 12px}
+  .card{background:#fff;border:1px solid hsl(30 20% 87%);border-radius:16px;padding:10px 14px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+  .num{font-family:'Geist Mono',monospace;font-weight:600;font-size:14px}
+</style></head><body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand"><span class="mark">BC</span>Choco</div>
+    <div class="label">Operação</div>
+    <div class="nav active">Romaneios</div>
+    <div class="nav">Lotes</div>
+    <div class="nav">Origens</div>
+    <div class="label">Cadastros</div>
+    <div class="nav">Produtores</div>
+  </aside>
+  <main class="main">
+    <h2 class="h2">Romaneios</h2>
+    <p class="sub">12 abertos · semana 18</p>
+    <div class="card"><span>Volume da semana</span><span class="num">142.4 t</span></div>
+  </main>
+</div>
+</body></html>

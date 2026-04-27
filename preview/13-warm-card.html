@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:wght@500;600&family=Geist+Mono:wght@400;500&display=swap');
+  html,body{margin:0;padding:0;height:240px;background:hsl(30 33% 96%);font-family:'Poppins',sans-serif;color:hsl(16 38% 12%);padding:16px 20px;box-sizing:border-box}
+  .card{background:#fff;border:1px solid hsl(30 20% 87%);border-radius:20px;box-shadow:0 1px 2px hsl(16 38% 12% / .04);overflow:hidden;max-width:520px}
+  .head{padding:12px 20px;border-bottom:1px solid hsl(30 20% 87%);display:flex;justify-content:space-between;align-items:center}
+  .title{font-size:14px;font-weight:500;margin:0}
+  .meta{font-size:12px;color:hsl(20 29% 33%)}
+  .body{padding:16px 20px;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;font-size:13px}
+  .row{display:contents}
+  .row > div{padding:6px 0;border-bottom:1px solid hsl(30 20% 87% / .5)}
+  .row:last-child > div{border-bottom:none}
+  .num{font-family:'Geist Mono',monospace}
+  .badge{font-size:11px;padding:2px 8px;border-radius:999px;background:hsl(152 85% 30% / .12);color:hsl(152 85% 22%);justify-self:end}
+  .lbl{font-family:'Geist Mono',monospace;font-size:10px;color:hsl(20 29% 33% / .7);margin-bottom:8px}
+</style></head><body>
+<div class="lbl">// canonical card — raw divs, never &lt;Card&gt;&lt;CardHeader&gt;&lt;CardContent&gt;</div>
+<div class="card">
+  <div class="head">
+    <h3 class="title">Recent shipments</h3>
+    <span class="meta">last 7 days</span>
+  </div>
+  <div class="body">
+    <div class="row"><div>Lote 0421 · São Paulo → Lyon</div><div class="num">12.4 t</div><div><span class="badge">delivered</span></div></div>
+    <div class="row"><div>Lote 0422 · Rotterdam → Genève</div><div class="num">8.1 t</div><div><span class="badge">delivered</span></div></div>
+    <div class="row"><div>Lote 0423 · Salvador → Bordeaux</div><div class="num">15.0 t</div><div><span class="badge" style="background:hsl(38 92% 50% / .14);color:hsl(35 80% 30%)">pending</span></div></div>
+  </div>
+</div>
+</body></html>

@@ -61,6 +61,18 @@
 
     /* --- Radius (ZERO em tudo — decisão brutalista) --- */
     --radius: 0px;
+
+    /* Status tokens (par bg+fg) — usado por StatusBadge shared */
+    --status-pending-bg: 222 12% 88%;
+    --status-pending-fg: 222 20% 25%;
+    --status-success-bg: 152 85% 30% / 0.1;
+    --status-success-fg: 152 85% 30%;
+    --status-warning-bg: 38 92% 35% / 0.1;
+    --status-warning-fg: 38 92% 35%;
+    --status-error-bg: 0 70% 45% / 0.1;
+    --status-error-fg: 0 70% 45%;
+    --status-info-bg: 217 91% 35% / 0.1;
+    --status-info-fg: 217 91% 35%;
   }
 }
 

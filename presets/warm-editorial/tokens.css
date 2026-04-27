@@ -62,6 +62,18 @@
     --warning-foreground: 16 38% 12%;
     --info: 217 91% 45%;
     --info-foreground: 0 0% 100%;
+
+    /* Status tokens (par bg+fg) — usado por StatusBadge shared */
+    --status-pending-bg: 30 20% 87%;
+    --status-pending-fg: 16 38% 20%;
+    --status-success-bg: 152 85% 30% / 0.1;
+    --status-success-fg: 152 85% 30%;
+    --status-warning-bg: 38 92% 50% / 0.1;
+    --status-warning-fg: 38 92% 50%;
+    --status-error-bg: 0 100% 50% / 0.1;
+    --status-error-fg: 0 100% 50%;
+    --status-info-bg: 217 91% 45% / 0.1;
+    --status-info-fg: 217 91% 45%;
   }
 }
 
