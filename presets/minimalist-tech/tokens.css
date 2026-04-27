@@ -33,7 +33,8 @@
     --muted-foreground: 222 12% 38%;
 
     /* --- Accent (zero custom — usar semantic colors only) --- */
-    --accent: 222 12% 95%;
+    /* L=88 dá ~11% delta sobre bg L=99, hover visível (Wave 5 fix) */
+    --accent: 222 12% 88%;
     --accent-foreground: 222 20% 11%;
 
     /* --- Status (semantic, com hue) --- */
