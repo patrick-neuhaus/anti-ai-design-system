@@ -31,7 +31,8 @@
     --muted: 30 20% 90%;
     --muted-foreground: 20 29% 33%;
 
-    --accent: 33 47% 53%;
+    /* Accent terracotta — complemento warm clássico do teal #00585c */
+    --accent: 12 65% 55%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 100% 50%;
@@ -51,8 +52,8 @@
     --sidebar-accent: 184 80% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 184 80% 22%;
-    --sidebar-ring: 33 47% 53%;
-    --sidebar-indicator: 33 47% 53%;
+    --sidebar-ring: 12 65% 55%;
+    --sidebar-indicator: 12 65% 55%;
 
     /* Status com hue alinhado */
     --success: 152 85% 30%;
