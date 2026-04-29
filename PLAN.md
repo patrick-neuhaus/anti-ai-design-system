@@ -1,5 +1,7 @@
 # Anti-AI Design System — Implementation Plan
 
+> **Note (Apr 2026):** Wave 8 reorganization consolidated to single preset `default` (warm-editorial flavor). `minimalist-tech` removed entirely. See `README.md` for current state.
+
 ## Context
 
 Apps gerados por IA (Lovable, v0, Cursor) compartilham uma cara visual genérica:

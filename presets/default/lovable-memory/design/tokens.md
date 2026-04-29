@@ -1,10 +1,10 @@
 ---
-name: Design tokens — warm-editorial preset
-description: Tokens semânticos do preset warm-editorial (caloroso, editorial, com personalidade)
+name: Design tokens — default preset
+description: Tokens semânticos do preset default (warm-editorial flavor — caloroso, editorial, com personalidade)
 type: design
 ---
 
-# Tokens — warm-editorial
+# Tokens — default preset (warm-editorial flavor)
 
 Source of truth: `src/index.css`. Estrutura literal do chocotracking (Barry Callebaut), brand-agnostic.
 

@@ -84,7 +84,6 @@
 3. Extrair geraria abstração prematura (config explosa, props demais)
 
 **Componentes já extraídos no preset (`presets/_shared/`):**
-- `table.tsx` — shadcn restaurado simétrico (`px-4` simétrico, `text-left` default)
 - `AppTable.tsx` — wrapper minimal com columns config + `<ActionCell>` helper
 - `StatusBadge.tsx` — pill com dot opcional, recebe variant via prop
 
@@ -171,7 +170,7 @@
 
 **Por quê:** "Configurações" geralmente é admin-only mas tem cara de "preferência pessoal". Botar em adminItems duplica caminho semântico (admin já é uma zona; configurações são meta-config do app, não conteúdo). User panel é onde mora "controles do usuário/sessão" — Configurações encaixa lá com `isAdmin && <button>`.
 
-**Estrutura canônica (warm-flavor):**
+**Estrutura canônica:**
 
 ```tsx
 <div className="user-panel">

@@ -1,10 +1,10 @@
 ---
-name: Page layout patterns — warm-editorial preset
+name: Page layout patterns — default preset
 description: Padrões de layout copiados do chocotracking (Barry Callebaut), brand-agnostic
 type: design
 ---
 
-# Page layout — warm-editorial
+# Page layout — default preset (warm-editorial flavor)
 
 Padrões obrigatórios. Lovable: siga ESTES exatamente. Estrutura copiada do chocotracking que prova funcionar visualmente.
 

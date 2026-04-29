@@ -6,23 +6,22 @@ Esse design system é consumido por projetos Lovable via 3 conjuntos de arquivos
 
 ## Setup (uma vez por projeto novo)
 
-### Passo 1: Escolher preset
+### Passo 1: Confirmar o preset
 
-Olha em `presets/`. Pega o mais próximo da vibe que quer:
+Esse DS ships com um único preset: **`default`** (warm-editorial flavor).
+Vibe: editorial com personalidade (food, fashion, lifestyle, conteúdo, ops com calor humano). Referência canônica: chocotracking (Barry Callebaut). Poppins + Lora, terracota + teal, raios variáveis.
 
-- **`warm-editorial`** — apps editoriais, marcas com personalidade (food, fashion, lifestyle, conteúdo). Referência: chocotracking (Barry Callebaut)
-- **`minimalist-tech`** — apps técnicos, dashboards pra dev/ops, ferramentas técnicas. Referência: openstatus.dev
-- **`data-dense`** — apps com muita info numérica, BI, fintech, logística. Referência: Stripe Dashboard, Linear
+Se a vibe do projeto não combina com `default` (ex: dashboard mono brutalista, fintech high-density), use este DS como base e ajuste tokens — não tem segundo preset pronto.
 
 ### Passo 2: Copiar 3 arquivos pro projeto Lovable
 
-Do preset escolhido pro projeto:
+Do preset `default` pro projeto:
 
 | De (no anti-ai-design-system) | Para (no projeto Lovable) |
 |---|---|
-| `presets/<seu-preset>/tokens.css` | `src/index.css` (substituir) |
-| `presets/<seu-preset>/tailwind.config.ts` | `tailwind.config.ts` (mergear) |
-| `presets/<seu-preset>/lovable-memory/design/*.md` | `.lovable/memory/design/` (criar pasta + colar) |
+| `presets/default/tokens.css` | `src/index.css` (substituir) |
+| `presets/default/tailwind.config.ts` | `tailwind.config.ts` (mergear) |
+| `presets/default/lovable-memory/design/*.md` | `.lovable/memory/design/` (criar pasta + colar) |
 
 ### Passo 3: Garantir que Lovable lê
 

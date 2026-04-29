@@ -11,13 +11,12 @@ Esse design system não substitui a identidade da sua marca. Ele te dá **infrae
 - Sistema de tokens sem cor (typography, spacing, radius, shadows)
 - Independente de marca, cliente ou domínio
 
-### Camada 2 — Preset de vibe (este repo provê 3 starting points)
+### Camada 2 — Preset de vibe (este repo provê 1 starting point)
 - Decisões consistentes de palette + fonte + radius scale
-- `warm-editorial` (referência: chocotracking, tom Barry Callebaut)
-- `minimalist-tech` (referência: openstatus.dev, brutal/mono)
-- `data-dense` (referência: Stripe/Linear, alta densidade informacional)
+- `default` — warm-editorial flavor (referência: chocotracking, tom Barry Callebaut)
+- Poppins + Lora, terracota + teal, raios variáveis, neutros com matiz
 
-Cada projeto Lovable consome: Camada 1 (sempre) + UM preset da Camada 2 (com customizações de cor/marca em cima).
+Cada projeto Lovable consome: Camada 1 (sempre) + o preset `default` (com customizações de cor/marca em cima).
 
 ## O que NÃO está aqui
 

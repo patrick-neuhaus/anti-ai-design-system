@@ -75,7 +75,7 @@ text-3xl   30px  — landing apenas
 
 ### Decisão obrigatória: ESCALA OU ZERO
 
-**Opção A: escala variável** (warm-editorial, data-dense)
+**Opção A: escala variável** (default — warm-editorial flavor)
 ```
 --radius-sm:   0.375rem  /* 6px  — input, badge */
 --radius-md:   0.5rem    /* 8px  — input grande, select */
@@ -84,7 +84,7 @@ text-3xl   30px  — landing apenas
 --radius-2xl:  1.25rem   /* 20px — card */
 ```
 
-**Opção B: zero radius** (minimalist-tech)
+**Opção B: zero radius** (alternativa não default; este DS ships A)
 ```css
 --radius: 0;
 * { border-radius: 0 !important; }
@@ -108,7 +108,7 @@ shadow-lg:  modals, popovers, dropdowns
 - `shadow` (default) — vago, prefira o tier explícito
 
 ### Alternativa: borders no lugar de shadows
-Preset `minimalist-tech` usa `border border-border` em vez de shadows. Decisão por preset.
+Para presets sem shadows, use `border border-border` em vez de shadow tokens. Decisão por preset (este DS ships com shadows do `default`).
 
 ---
 
