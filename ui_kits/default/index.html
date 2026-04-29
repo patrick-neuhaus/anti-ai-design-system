@@ -29,23 +29,19 @@
   .uname{font-size:12.5px;font-weight:500}
   .umail{font-size:10px;color:hsl(var(--sidebar-foreground)/.65);font-family:var(--font-mono)}
 
-  /* ===== Main ===== */
-  .main{display:flex;flex-direction:column}
-  .topbar{height:60px;border-bottom:1px solid hsl(var(--border));display:flex;align-items:center;padding:0 24px;gap:14px;background:hsl(var(--card));position:sticky;top:0;z-index:5}
-  .crumbs{font-size:12px;color:hsl(var(--muted-foreground));display:flex;align-items:center;gap:6px}
-  .crumbs strong{color:hsl(var(--foreground));font-weight:500}
-  .search{margin-left:auto;display:flex;align-items:center;gap:8px;background:hsl(var(--muted));border-radius:10px;padding:7px 12px;width:280px}
-  .search input{background:transparent;border:none;outline:none;flex:1;font-size:13px;color:hsl(var(--foreground))}
-  .search input::placeholder{color:hsl(var(--muted-foreground))}
-  .kbd{font-family:var(--font-mono);font-size:10px;background:hsl(var(--card));border:1px solid hsl(var(--border));padding:1px 5px;border-radius:4px;color:hsl(var(--muted-foreground))}
+  /* ===== Main (no topbar) ===== */
+  .main{display:flex;flex-direction:column;min-width:0}
+  .page{padding:28px 32px 40px;display:flex;flex-direction:column;gap:18px;width:100%}
 
-  .page{padding:24px;display:flex;flex-direction:column;gap:20px;max-width:1280px}
-  .page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
-  h2.page-title{font-family:var(--font-display);font-size:28px;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.15}
-  .page-sub{font-size:13.5px;color:hsl(var(--muted-foreground));margin:4px 0 0;max-width:560px}
+  /* Header pattern: eyebrow mono + h2 Lora big + sub */
+  .eyebrow-bar{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:6px}
+  .eyebrow-stack{display:flex;flex-direction:column;gap:4px;min-width:0}
+  .crumb-mono{font-family:var(--font-mono);font-size:11px;color:hsl(var(--muted-foreground));text-transform:lowercase;letter-spacing:.06em;line-height:1}
+  h2.page-title{font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.15;text-transform:none}
+  .page-sub{font-size:12.5px;color:hsl(var(--muted-foreground));margin:6px 0 0;max-width:620px;line-height:1.5}
 
   /* Buttons */
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;font-size:13px;font-weight:500;transition:all 150ms}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;font-size:13px;font-weight:500;transition:all 150ms;white-space:nowrap}
   .btn-primary{background:hsl(var(--primary));color:hsl(var(--primary-foreground))}
   .btn-primary:hover{background:hsl(var(--primary)/.92)}
   .btn-accent{background:hsl(var(--accent));color:hsl(var(--accent-foreground))}
@@ -63,28 +59,40 @@
   .kpi-delta{font-family:var(--font-mono);font-size:11px;display:inline-flex;align-items:center;gap:4px}
   .kpi-delta.up{color:hsl(var(--success))}
   .kpi-delta.dn{color:hsl(var(--destructive))}
+  .kpi-delta.flat{color:hsl(var(--muted-foreground))}
 
-  /* Filter row */
-  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  /* Filter row + contextual search */
+  .filter-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
   .chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:12px;background:hsl(var(--card));border:1px solid hsl(var(--border));color:hsl(var(--muted-foreground));cursor:pointer}
   .chip.active{background:hsl(var(--primary));color:hsl(var(--primary-foreground));border-color:hsl(var(--primary))}
   .chip:hover:not(.active){background:hsl(var(--muted))}
+  .ctx-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:10px;padding:6px 12px;width:280px}
+  .ctx-search input{background:transparent;border:none;outline:none;flex:1;font-size:12.5px;color:hsl(var(--foreground))}
+  .ctx-search input::placeholder{color:hsl(var(--muted-foreground))}
+  .ctx-search:focus-within{border-color:hsl(var(--primary)/.5);box-shadow:0 0 0 3px hsl(var(--primary)/.08)}
+  .kbd{font-family:var(--font-mono);font-size:10px;background:hsl(var(--muted));border:1px solid hsl(var(--border));padding:1px 5px;border-radius:4px;color:hsl(var(--muted-foreground))}
 
   /* Table card */
   .table-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;overflow:hidden;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
-  .table-head{display:grid;grid-template-columns:1.6fr 200px 140px 110px 80px;gap:12px;padding:12px 22px;font-size:11px;font-weight:600;color:hsl(var(--muted-foreground));text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid hsl(var(--border));white-space:nowrap}
+  .table-head{display:grid;gap:12px;padding:12px 22px;font-size:11px;font-weight:600;color:hsl(var(--muted-foreground));text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid hsl(var(--border));white-space:nowrap}
   .table-rows{padding:8px 12px}
   .group-head{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.06em;color:hsl(var(--foreground));text-transform:uppercase;padding:14px 10px 6px;display:flex;align-items:center;gap:10px}
   .group-head::after{content:"";flex:1;height:1px;background:hsl(var(--border))}
-  .row{display:grid;grid-template-columns:1.6fr 200px 140px 110px 80px;gap:12px;align-items:center;padding:10px 10px;border-radius:14px;cursor:pointer;font-size:13.5px;transition:background 150ms}
+  .row{display:grid;gap:12px;align-items:center;padding:10px 10px;border-radius:14px;cursor:pointer;font-size:13.5px;transition:background 150ms}
   .row:hover{background:hsl(var(--muted)/.55)}
-  .row .name{display:flex;flex-direction:column;gap:2px}
-  .row .name strong{font-weight:500}
+  .row .name{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .row .name strong{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .row .name .meta{font-size:11px;color:hsl(var(--muted-foreground));font-family:var(--font-mono)}
-  .num{font-family:var(--font-mono);font-feature-settings:'tnum';color:hsl(var(--muted-foreground))}
+  .num{font-family:var(--font-mono);font-feature-settings:'tnum';color:hsl(var(--muted-foreground));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .row .actions{display:flex;gap:2px;justify-content:flex-end}
   .icon-btn{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--muted-foreground))}
   .icon-btn:hover{background:hsl(var(--muted));color:hsl(var(--foreground))}
+
+  /* Per-view grid templates */
+  .gt-romaneios .table-head, .gt-romaneios .row{grid-template-columns:1.6fr 200px 140px 110px 80px}
+  .gt-lotes     .table-head, .gt-lotes     .row{grid-template-columns:1.5fr 1.1fr 100px 100px 110px 70px}
+  .gt-rotas     .table-head, .gt-rotas     .row{grid-template-columns:1.4fr 90px 110px 110px 110px 70px}
+  .gt-prod      .table-head, .gt-prod      .row{grid-template-columns:1.5fr 1.1fr 100px 110px 90px 70px}
 
   /* Status pill */
   .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:500;width:fit-content}
@@ -93,23 +101,28 @@
   .pill.warn{background:hsl(var(--warning)/.18);color:hsl(35 85% 30%)}
   .pill.err{background:hsl(var(--destructive)/.1);color:hsl(0 70% 40%)}
   .pill.info{background:hsl(var(--info)/.13);color:hsl(var(--info))}
+  .pill.neutral{background:hsl(var(--muted));color:hsl(var(--muted-foreground))}
 
-  /* Side panel */
-  .layout-2col{display:grid;grid-template-columns:1fr 360px;gap:20px}
-
+  /* Side panel layout */
+  .layout-2col{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px}
   .info-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:18px 20px;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
   .info-card h3{font-size:13.5px;font-weight:500;margin:0 0 14px}
-  .field{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid hsl(var(--border)/.6)}
+  .field{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid hsl(var(--border)/.6);gap:12px}
   .field:last-child{border-bottom:none}
-  .field .k{color:hsl(var(--muted-foreground))}
-  .field .v{font-family:var(--font-mono)}
+  .field .k{color:hsl(var(--muted-foreground));flex-shrink:0}
+  .field .v{font-family:var(--font-mono);text-align:right}
 
   .timeline{display:flex;flex-direction:column;gap:14px;padding-left:6px;border-left:1px dashed hsl(var(--border));margin-left:8px}
   .ev{position:relative;padding-left:18px;font-size:12.5px}
   .ev::before{content:"";position:absolute;left:-5px;top:6px;width:8px;height:8px;border-radius:999px;background:hsl(var(--primary))}
   .ev .when{font-family:var(--font-mono);font-size:10.5px;color:hsl(var(--muted-foreground));margin-bottom:2px}
 
-  /* toasts/snackbars */
+  /* Tabs */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid hsl(var(--border));padding:0 4px}
+  .tab{padding:10px 14px;font-size:13px;color:hsl(var(--muted-foreground));border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer}
+  .tab.active{color:hsl(var(--foreground));border-bottom-color:hsl(var(--accent));font-weight:500}
+
+  /* Toast */
   .toast{position:fixed;bottom:20px;right:20px;background:hsl(var(--foreground));color:hsl(var(--background));padding:12px 16px;border-radius:14px;font-size:13px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px -8px hsl(var(--foreground)/.3);z-index:50;animation:rise 300ms ease}
   @keyframes rise{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
   .toast .ok-mark{width:20px;height:20px;border-radius:999px;background:hsl(var(--success));display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
@@ -126,10 +139,93 @@
   .form-row input:focus,.form-row select:focus{border-color:hsl(var(--primary));box-shadow:0 0 0 3px hsl(var(--primary)/.12)}
   .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
 
-  /* tabs */
-  .tabs{display:flex;gap:4px;border-bottom:1px solid hsl(var(--border));padding:0 4px}
-  .tab{padding:10px 14px;font-size:13px;color:hsl(var(--muted-foreground));border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer}
-  .tab.active{color:hsl(var(--foreground));border-bottom-color:hsl(var(--accent));font-weight:500}
+  /* Origem cards (grid) */
+  .origin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .origin-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px hsl(var(--foreground)/.04);cursor:pointer;transition:all 150ms}
+  .origin-card:hover{transform:translateY(-1px);box-shadow:0 4px 12px hsl(var(--foreground)/.08);border-color:hsl(var(--primary)/.3)}
+  .origin-flag{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:hsl(var(--accent))}
+  .origin-name{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .origin-region{font-size:12.5px;color:hsl(var(--muted-foreground));margin-top:-4px}
+  .origin-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 12px;margin-top:6px;padding-top:10px;border-top:1px solid hsl(var(--border)/.6)}
+  .origin-stat{display:flex;flex-direction:column;gap:2px}
+  .origin-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:hsl(var(--muted-foreground));font-weight:500}
+  .origin-stat .v{font-family:var(--font-mono);font-size:13.5px;color:hsl(var(--foreground))}
+  .origin-certs{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+
+  /* Config view */
+  .config-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .config-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:20px;box-shadow:0 1px 2px hsl(var(--foreground)/.04);display:flex;flex-direction:column;gap:12px}
+  .config-card h3{font-size:14px;font-weight:600;margin:0}
+  .config-card .desc{font-size:12.5px;color:hsl(var(--muted-foreground));margin:0}
+  .toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid hsl(var(--border)/.6);font-size:13px}
+  .toggle-row:last-child{border-bottom:none}
+  .toggle-row .toggle{width:32px;height:18px;background:hsl(var(--muted));border-radius:999px;position:relative;cursor:pointer;transition:background 150ms;flex-shrink:0}
+  .toggle-row .toggle.on{background:hsl(var(--primary))}
+  .toggle-row .toggle::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:999px;transition:transform 150ms}
+  .toggle-row .toggle.on::after{transform:translateX(14px)}
+
+  /* Design system view */
+  .ds-section-label{font-family:var(--font-mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--accent));padding:14px 6px 4px;display:flex;align-items:center;gap:12px}
+  .ds-section-label::after{content:"";flex:1;height:1px;background:hsl(var(--border))}
+  .ds-section{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:24px 28px;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
+  .ds-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ds-demo-frame{background:hsl(var(--background));border:1px dashed hsl(var(--border));border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .ds-callout-bad{font-family:var(--font-mono);font-size:11px;color:hsl(var(--destructive));padding:6px 10px;background:hsl(var(--destructive)/.08);border-radius:6px;width:fit-content}
+  .ds-callout-good{font-family:var(--font-mono);font-size:11px;color:hsl(var(--success));padding:6px 10px;background:hsl(var(--success)/.1);border-radius:6px;width:fit-content}
+  .ds-icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:10px}
+  .ds-icon-cell{aspect-ratio:1;border:1px solid hsl(var(--border));border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;color:hsl(var(--foreground))}
+  .ds-icon-cell .ds-icon-name{font-family:var(--font-mono);font-size:9.5px;color:hsl(var(--muted-foreground))}
+  .ds-icon-cell svg{width:20px;height:20px}
+  .ds-input-demo{display:flex;flex-direction:column;gap:6px;width:240px}
+  .ds-input-demo label{font-size:12px;color:hsl(var(--muted-foreground));font-weight:500}
+  .ds-input-demo input{padding:9px 12px;border-radius:8px;border:1px solid hsl(var(--border));background:hsl(var(--card));outline:none;color:hsl(var(--foreground));font-size:13px}
+  .ds-input-demo input:focus{border-color:hsl(var(--primary));box-shadow:0 0 0 3px hsl(var(--primary)/.12)}
+  .ds-anim-box{width:80px;height:48px;background:hsl(var(--primary)/.15);border:1px solid hsl(var(--primary)/.4);border-radius:8px;cursor:pointer;transition:all 200ms cubic-bezier(0.4,0,0.2,1)}
+  .ds-anim-box:hover{background:hsl(var(--primary));transform:translateY(-2px)}
+  .ds-mini-toast{background:hsl(var(--foreground));color:hsl(var(--background));padding:10px 14px;border-radius:14px;font-size:12.5px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 8px 20px -6px hsl(var(--foreground)/.3)}
+  .ds-mini-toast .ok-mark{width:18px;height:18px;border-radius:999px;background:hsl(var(--success));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+  .ds-mini-modal{background:hsl(var(--card));border-radius:16px;padding:18px;width:280px;border:1px solid hsl(var(--border));box-shadow:0 20px 50px -16px hsl(var(--foreground)/.3)}
+  .ds-mini-modal h4{font-family:var(--font-display);font-size:16px;margin:0 0 4px;font-weight:600}
+  .ds-mini-modal p{font-size:11.5px;color:hsl(var(--muted-foreground));margin:0 0 12px}
+  .ds-side-demo{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));padding:10px;border-radius:14px;display:flex;flex-direction:column;gap:2px;width:240px}
+  .ds-side-demo .nav-demo{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.85);position:relative}
+  .ds-side-demo .nav-demo.active{background:hsl(var(--sidebar-accent));color:#fff;font-weight:500}
+  .ds-side-demo .nav-demo.active::before{content:"";position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
+  .ds-side-demo .nav-demo svg{width:14px;height:14px;opacity:.85}
+  .ds-container-vis{display:flex;flex-direction:column;gap:8px;width:100%}
+  .ds-container-bar{height:24px;background:hsl(var(--accent)/.2);border:1px solid hsl(var(--accent)/.5);border-radius:6px;display:flex;align-items:center;padding:0 10px;font-family:var(--font-mono);font-size:10.5px;color:hsl(var(--foreground))}
+  .ds-divider-demo{width:200px;height:1px;background:hsl(var(--border))}
+  .ds-divider-dashed{width:200px;height:1px;background:repeating-linear-gradient(to right,hsl(var(--border)) 0,hsl(var(--border)) 4px,transparent 4px,transparent 8px)}
+  .ds-section h3{font-family:var(--font-display);font-size:20px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+  .ds-section .ds-sub{font-size:12.5px;color:hsl(var(--muted-foreground));margin:0 0 18px}
+  .ds-type-row{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:14px 0;border-bottom:1px solid hsl(var(--border)/.6)}
+  .ds-type-row:last-child{border-bottom:none}
+  .ds-type-meta{font-family:var(--font-mono);font-size:11px;color:hsl(var(--muted-foreground));line-height:1.5}
+  .ds-type-meta strong{color:hsl(var(--foreground));font-weight:500;display:block;margin-bottom:2px}
+  .ds-swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+  .ds-swatch{border:1px solid hsl(var(--border));border-radius:14px;overflow:hidden;background:hsl(var(--card))}
+  .ds-swatch-color{height:64px;display:flex;align-items:flex-end;padding:10px;color:#fff;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+  .ds-swatch-color.dark-fg{color:hsl(16 38% 12%)}
+  .ds-swatch-meta{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+  .ds-swatch-meta .name{font-size:12.5px;font-weight:500}
+  .ds-swatch-meta .hsl{font-family:var(--font-mono);font-size:10.5px;color:hsl(var(--muted-foreground))}
+  .ds-token-list{display:flex;flex-direction:column}
+  .ds-token-row{display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;padding:10px 0;border-bottom:1px solid hsl(var(--border)/.6)}
+  .ds-token-row:last-child{border-bottom:none}
+  .ds-token-name{font-family:var(--font-mono);font-size:11.5px;color:hsl(var(--foreground))}
+  .ds-token-vis{display:flex;align-items:center;gap:8px}
+  .ds-spacing-bar{height:8px;background:hsl(var(--accent)/.5);border-radius:2px}
+  .ds-radius-box{width:48px;height:48px;background:hsl(var(--primary)/.12);border:2px solid hsl(var(--primary));display:flex;align-items:center;justify-content:center;color:hsl(var(--primary));font-family:var(--font-mono);font-size:10px}
+  .ds-shadow-box{width:80px;height:48px;background:hsl(var(--card));border-radius:8px;border:1px solid hsl(var(--border)/.4)}
+  .ds-token-px{font-family:var(--font-mono);font-size:11px;color:hsl(var(--muted-foreground));text-align:right}
+  .ds-component-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .ds-rules ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px}
+  .ds-rules li{font-size:13px;line-height:1.5}
+  .ds-rules code{font-family:var(--font-mono);font-size:11.5px;background:hsl(var(--muted));padding:1px 5px;border-radius:4px}
+
+  /* Empty stub (kept for future) */
+  .empty-stub{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:48px 32px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
+  .empty-stub .stub-mark{width:44px;height:44px;border-radius:14px;background:hsl(var(--muted));color:hsl(var(--muted-foreground));display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
@@ -142,7 +238,9 @@
 <script type="text/babel" data-presets="react">
 const { useState } = React;
 
-// === Inline icon set (lucide-style, stroke 1.5) ===
+// ============================================================
+// Icon set (lucide-style, stroke 1.5)
+// ============================================================
 const Ic = {
   pkg:    () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
   truck:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M5 18H3V6h13v12h-2"/><path d="M14 9h4l3 3v6h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>,
@@ -154,20 +252,29 @@ const Ic = {
   plus:   () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M5 12h14"/><path d="M12 5v14"/></svg>,
   more:   () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>,
   arrow:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg>,
+  spark:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="m5.6 5.6 2.1 2.1"/><path d="m16.3 16.3 2.1 2.1"/><path d="m5.6 18.4 2.1-2.1"/><path d="m16.3 7.7 2.1-2.1"/></svg>,
 };
 
-// === Sidebar ===
-function Sidebar({ active, onNav }) {
-  const items = [
-    { k: "romaneios", lbl: "Romaneios", I: Ic.list, count: 12 },
-    { k: "lotes",     lbl: "Lotes",      I: Ic.pkg },
+// ============================================================
+// Sidebar
+// ============================================================
+const NAV_GROUPS = [
+  { label: "Operação", items: [
+    { k: "romaneios", lbl: "Romaneios", I: Ic.list, count: 28 },
+    { k: "lotes",     lbl: "Lotes",      I: Ic.pkg,  count: 84 },
     { k: "rotas",     lbl: "Rotas",      I: Ic.truck },
     { k: "origens",   lbl: "Origens",    I: Ic.globe },
-  ];
-  const items2 = [
-    { k: "produtores", lbl: "Produtores", I: Ic.users },
+  ]},
+  { label: "Cadastros", items: [
+    { k: "produtores", lbl: "Produtores", I: Ic.users, count: 312 },
     { k: "config",     lbl: "Configurações", I: Ic.cog },
-  ];
+  ]},
+  { label: "Sistema", items: [
+    { k: "design", lbl: "Design System", I: Ic.spark },
+  ]},
+];
+
+function Sidebar({ active, onNav }) {
   return (
     <aside className="side">
       <div className="brand">
@@ -177,19 +284,17 @@ function Sidebar({ active, onNav }) {
           <div className="brand-sub">barry callebaut</div>
         </div>
       </div>
-      <div className="section-label">Operação</div>
-      {items.map(({ k, lbl, I, count }) => (
-        <div key={k} className={"nav " + (active === k ? "active" : "")} onClick={() => onNav(k)}>
-          <I />
-          <span>{lbl}</span>
-          {count != null && <span className="count">{count}</span>}
-        </div>
-      ))}
-      <div className="section-label">Cadastros</div>
-      {items2.map(({ k, lbl, I }) => (
-        <div key={k} className={"nav " + (active === k ? "active" : "")} onClick={() => onNav(k)}>
-          <I /><span>{lbl}</span>
-        </div>
+      {NAV_GROUPS.map(g => (
+        <React.Fragment key={g.label}>
+          <div className="section-label">{g.label}</div>
+          {g.items.map(({ k, lbl, I, count }) => (
+            <div key={k} className={"nav " + (active === k ? "active" : "")} onClick={() => onNav(k)}>
+              <I />
+              <span>{lbl}</span>
+              {count != null && <span className="count">{count}</span>}
+            </div>
+          ))}
+        </React.Fragment>
       ))}
       <div className="user">
         <div className="avatar">PN</div>
@@ -202,169 +307,1015 @@ function Sidebar({ active, onNav }) {
   );
 }
 
-// === Topbar ===
-function Topbar({ crumbs }) {
+// ============================================================
+// Page head — eyebrow mono small + h2 Lora big
+// ============================================================
+function PageHead({ section, page, sub, actions }) {
   return (
-    <div className="topbar">
-      <div className="crumbs">
-        {crumbs.map((c, i) => (
-          <React.Fragment key={i}>
-            <span style={i === crumbs.length - 1 ? {color:"hsl(var(--foreground))",fontWeight:500} : {}}>{c}</span>
-            {i < crumbs.length - 1 && <span style={{opacity:.5}}>/</span>}
-          </React.Fragment>
-        ))}
+    <div className="eyebrow-bar">
+      <div className="eyebrow-stack">
+        <div className="crumb-mono">{section}/</div>
+        <h2 className="page-title">{page}</h2>
+        {sub && <p className="page-sub">{sub}</p>}
       </div>
-      <div className="search">
-        <Ic.search />
-        <input placeholder="Buscar romaneios, lotes, produtores..." />
-        <span className="kbd">⌘K</span>
-      </div>
+      {actions && <div style={{display:"flex",gap:10,flexShrink:0}}>{actions}</div>}
     </div>
   );
 }
 
-// === KPI ===
+// ============================================================
+// Atoms
+// ============================================================
 function Kpi({ label, value, delta, dir }) {
   return (
     <div className="kpi">
       <div className="kpi-label">{label}</div>
       <div className="kpi-value">{value}</div>
       <div className={"kpi-delta " + dir}>
-        {dir === "up" ? "▲" : "▼"} {delta}
+        {dir === "up" ? "▲" : dir === "dn" ? "▼" : "•"} {delta}
+      </div>
+    </div>
+  );
+}
+function Pill({ kind, children }) {
+  return <span className={"pill " + kind}><span className="dot"></span>{children}</span>;
+}
+function CtxSearch({ placeholder }) {
+  return (
+    <div className="ctx-search">
+      <Ic.search />
+      <input placeholder={placeholder} />
+      <span className="kbd">⌘K</span>
+    </div>
+  );
+}
+
+// ============================================================
+// DATA — Romaneios
+// ============================================================
+const ROMANEIOS_DATA = [
+  { group: "BARRY CALLEBAUT · BR", rows: [
+    { id: "RM-0421", name: "Selo Sustentável · Bahia",     origin: "Salvador → Lyon",        vol: "15.0 t", status: ["ok","Entregue"],         date: "2026-04-22" },
+    { id: "RM-0422", name: "Cacao Horizons · Itabuna",     origin: "Itabuna → Rotterdam",    vol: "12.4 t", status: ["info","Em trânsito"],   date: "2026-04-25" },
+    { id: "RM-0423", name: "Direto do Produtor · Linhares",origin: "Vitória → Bordeaux",     vol: "8.1 t",  status: ["warn","Em revisão"],    date: "2026-04-26" },
+    { id: "RM-0424", name: "Origem ES · Cooperativa Sul",  origin: "Vitória → Hamburg",      vol: "9.8 t",  status: ["info","Em trânsito"],   date: "2026-04-27" },
+    { id: "RM-0425", name: "Lote Cabruca",                 origin: "Ilhéus → Antwerp",       vol: "11.2 t", status: ["ok","Entregue"],         date: "2026-04-19" },
+  ]},
+  { group: "FEMSA · MX", rows: [
+    { id: "RM-0501", name: "Lote Nayarit",            origin: "Manzanillo → Long Beach", vol: "22.8 t", status: ["ok","Entregue"],          date: "2026-04-21" },
+    { id: "RM-0502", name: "Trazabilidad MX-09",      origin: "Veracruz → Hamburg",      vol: "9.6 t",  status: ["err","Pendente docs"],    date: "2026-04-26" },
+    { id: "RM-0503", name: "Tabasco Cooperativo",     origin: "Villahermosa → Le Havre", vol: "18.3 t", status: ["info","Em trânsito"],    date: "2026-04-28" },
+  ]},
+  { group: "NESTLÉ · CIV", rows: [
+    { id: "RM-0612", name: "Cooperative ECAPEX · Daloa", origin: "Abidjan → Antwerp",   vol: "31.4 t", status: ["info","Em trânsito"], date: "2026-04-24" },
+    { id: "RM-0613", name: "San Pedro · safra alta",     origin: "San Pedro → Genoa",   vol: "26.7 t", status: ["ok","Entregue"],       date: "2026-04-20" },
+    { id: "RM-0614", name: "ECAPEX · revalida cert.",    origin: "Abidjan → Hamburg",   vol: "14.9 t", status: ["warn","Em revisão"],   date: "2026-04-26" },
+  ]},
+];
+
+// ============================================================
+// DATA — Lotes
+// ============================================================
+const LOTES_DATA = [
+  { group: "RAINFOREST ALLIANCE · 2026", rows: [
+    { id: "LT-2026-0114", name: "Cabruca Sul · safra abr",     prod: "Coop. Cabruca · BA",       cert: "RA-2027",  vol: "12.0 t", status: ["ok","Ativo"]   },
+    { id: "LT-2026-0115", name: "Cooperativa Itabuna",         prod: "Coop. Itabuna · BA",       cert: "RA-2026",  vol: "9.4 t",  status: ["warn","Renovar"] },
+    { id: "LT-2026-0117", name: "Linhares Direct",             prod: "Linhares Direct · ES",     cert: "RA-2027",  vol: "6.8 t",  status: ["ok","Ativo"]   },
+    { id: "LT-2026-0119", name: "Vale do Caparaó",             prod: "Coop. Caparaó · ES",       cert: "RA-2027",  vol: "8.1 t",  status: ["ok","Ativo"]   },
+  ]},
+  { group: "COCOA HORIZONS · 2026", rows: [
+    { id: "LT-2026-0210", name: "Programa Horizons · Itabuna", prod: "Coop. Itabuna · BA",       cert: "CH-2027",  vol: "15.2 t", status: ["ok","Ativo"]   },
+    { id: "LT-2026-0212", name: "ECAPEX Daloa fase 1",         prod: "ECAPEX · Daloa · CIV",     cert: "CH-2027",  vol: "31.4 t", status: ["info","Em trânsito"] },
+    { id: "LT-2026-0214", name: "Asociación Norte · EC",       prod: "Cacao Norte · Manabí",     cert: "CH-2027",  vol: "11.6 t", status: ["ok","Ativo"]   },
+    { id: "LT-2026-0218", name: "Tabasco Coop · safra MX",     prod: "Coop. Tabasco · MX",       cert: "CH-2026",  vol: "18.3 t", status: ["warn","Renovar"] },
+  ]},
+  { group: "DIRECT TRADE", rows: [
+    { id: "LT-2026-0301", name: "Linhares · Premium ES",       prod: "Linhares Direct · ES",     cert: "DT-2027",  vol: "4.2 t",  status: ["ok","Ativo"]   },
+    { id: "LT-2026-0303", name: "Madagascar · Sambirano",      prod: "Sambirano Coop · MG",      cert: "DT-2026",  vol: "2.9 t",  status: ["ok","Ativo"]   },
+    { id: "LT-2026-0305", name: "Peru · Tumbes finos",         prod: "APP Tumbes · PE",          cert: "DT-2027",  vol: "3.8 t",  status: ["info","Em trânsito"] },
+  ]},
+  { group: "CONVENCIONAL", rows: [
+    { id: "LT-2026-0401", name: "Lote Nayarit aberto",         prod: "FEMSA Nayarit · MX",       cert: "—",       vol: "22.8 t", status: ["ok","Ativo"]   },
+    { id: "LT-2026-0407", name: "San Pedro · safra alta",      prod: "Coop. San Pedro · CIV",    cert: "—",       vol: "26.7 t", status: ["ok","Ativo"]   },
+    { id: "LT-2026-0410", name: "Indonesia · Sulawesi",        prod: "Coop. Sulawesi · ID",      cert: "—",       vol: "19.1 t", status: ["err","Pendente docs"] },
+  ]},
+];
+
+// ============================================================
+// DATA — Rotas
+// ============================================================
+const ROTAS_DATA = [
+  { group: "MARÍTIMO · LONG-HAUL", rows: [
+    { id: "RT-MAR-001", name: "Salvador → Rotterdam",   modal: "MAR", sla: "21d",  cost: "€312/t", lastTrip: "2026-04-12", status: ["ok","Ativa"] },
+    { id: "RT-MAR-002", name: "Itabuna → Antwerp",      modal: "MAR", sla: "23d",  cost: "€298/t", lastTrip: "2026-04-19", status: ["ok","Ativa"] },
+    { id: "RT-MAR-003", name: "Vitória → Hamburg",      modal: "MAR", sla: "25d",  cost: "€324/t", lastTrip: "2026-04-21", status: ["ok","Ativa"] },
+    { id: "RT-MAR-004", name: "Manzanillo → Long Beach",modal: "MAR", sla: "8d",   cost: "$184/t", lastTrip: "2026-04-21", status: ["ok","Ativa"] },
+    { id: "RT-MAR-005", name: "Veracruz → Hamburg",     modal: "MAR", sla: "22d",  cost: "€289/t", lastTrip: "2026-04-26", status: ["warn","Atraso 3d"] },
+    { id: "RT-MAR-006", name: "Abidjan → Antwerp",      modal: "MAR", sla: "17d",  cost: "€241/t", lastTrip: "2026-04-24", status: ["ok","Ativa"] },
+    { id: "RT-MAR-007", name: "San Pedro → Genoa",      modal: "MAR", sla: "19d",  cost: "€267/t", lastTrip: "2026-04-20", status: ["ok","Ativa"] },
+    { id: "RT-MAR-008", name: "Sulawesi → Hamburg",     modal: "MAR", sla: "28d",  cost: "€352/t", lastTrip: "2026-04-09", status: ["warn","Sob revisão"] },
+  ]},
+  { group: "RODOVIÁRIO + TRANSBORDO", rows: [
+    { id: "RT-ROD-101", name: "Itabuna → Salvador (porto)", modal: "ROD", sla: "1d", cost: "R$ 240/t",  lastTrip: "2026-04-25", status: ["ok","Ativa"] },
+    { id: "RT-ROD-102", name: "Vitória → Suape",            modal: "ROD", sla: "3d", cost: "R$ 410/t",  lastTrip: "2026-04-22", status: ["ok","Ativa"] },
+    { id: "RT-ROD-103", name: "Daloa → Abidjan (porto)",    modal: "ROD", sla: "1d", cost: "$96/t",     lastTrip: "2026-04-23", status: ["ok","Ativa"] },
+    { id: "RT-ROD-104", name: "Tumbes → Callao",            modal: "ROD", sla: "2d", cost: "$118/t",    lastTrip: "—",          status: ["neutral","Sem viagem"] },
+  ]},
+];
+
+// ============================================================
+// DATA — Origens
+// ============================================================
+const ORIGENS_DATA = [
+  { code: "BR-BA", country: "Brasil", region: "Bahia · Sul cacaueiro",  vol: "186 t/mês", prod: 78,  certs: ["Cocoa Horizons","Rainforest","Direct Trade"] },
+  { code: "BR-ES", country: "Brasil", region: "Espírito Santo · Norte", vol: "94 t/mês",  prod: 41,  certs: ["Rainforest","Direct Trade"] },
+  { code: "BR-PA", country: "Brasil", region: "Pará · Transamazônica",  vol: "62 t/mês",  prod: 28,  certs: ["Cocoa Horizons"] },
+  { code: "EC-MA", country: "Equador",region: "Manabí · costa",         vol: "112 t/mês", prod: 36,  certs: ["Cocoa Horizons","Rainforest"] },
+  { code: "EC-ES", country: "Equador",region: "Esmeraldas",             vol: "58 t/mês",  prod: 22,  certs: ["Rainforest"] },
+  { code: "CIV-DAL",country:"Costa do Marfim", region: "Daloa · centro",vol: "284 t/mês", prod: 64,  certs: ["Cocoa Horizons"] },
+  { code: "CIV-SP", country:"Costa do Marfim", region: "San Pedro · sul",vol: "318 t/mês",prod: 71,  certs: ["Cocoa Horizons","Rainforest"] },
+  { code: "GH-AS",  country: "Gana", region: "Ashanti",                 vol: "142 t/mês", prod: 38,  certs: ["Rainforest"] },
+  { code: "MX-TB",  country: "México", region: "Tabasco",               vol: "76 t/mês",  prod: 18,  certs: ["Cocoa Horizons"] },
+  { code: "MX-NA",  country: "México", region: "Nayarit",               vol: "54 t/mês",  prod: 12,  certs: [] },
+  { code: "ID-SU",  country: "Indonésia", region: "Sulawesi",           vol: "98 t/mês",  prod: 26,  certs: ["Cocoa Horizons"] },
+  { code: "MG-SA",  country: "Madagascar",region: "Sambirano · norte",  vol: "21 t/mês",  prod: 9,   certs: ["Direct Trade"] },
+  { code: "PE-TU",  country: "Peru",   region: "Tumbes · costa norte",  vol: "34 t/mês",  prod: 14,  certs: ["Direct Trade","Rainforest"] },
+  { code: "DO-DU",  country: "Rep. Dominicana", region: "Duarte",       vol: "47 t/mês",  prod: 16,  certs: ["Rainforest"] },
+];
+
+// ============================================================
+// DATA — Produtores
+// ============================================================
+const PRODUTORES_DATA = [
+  { group: "BRASIL · BAHIA + ES", rows: [
+    { id: "PR-BR-0014", name: "Cooperativa Cabruca",          coop: "Coop. Cabruca · BA",    safras: 12, certs: 3, status: ["ok","Ativo"] },
+    { id: "PR-BR-0027", name: "Coop. Itabuna",                coop: "Coop. Itabuna · BA",    safras: 9,  certs: 2, status: ["ok","Ativo"] },
+    { id: "PR-BR-0034", name: "Linhares Direct",              coop: "Linhares Direct · ES",  safras: 5,  certs: 2, status: ["ok","Ativo"] },
+    { id: "PR-BR-0041", name: "Coop. Caparaó",                coop: "Coop. Caparaó · ES",    safras: 7,  certs: 1, status: ["ok","Ativo"] },
+    { id: "PR-BR-0058", name: "Cabruca Sul · membros",        coop: "Coop. Cabruca · BA",    safras: 4,  certs: 1, status: ["warn","Renovar doc"] },
+    { id: "PR-BR-0072", name: "Vale do Cacau · ES",           coop: "Vale do Cacau · ES",    safras: 6,  certs: 1, status: ["ok","Ativo"] },
+  ]},
+  { group: "COSTA DO MARFIM", rows: [
+    { id: "PR-CIV-0102", name: "ECAPEX Daloa",                coop: "ECAPEX · Daloa",        safras: 14, certs: 2, status: ["ok","Ativo"] },
+    { id: "PR-CIV-0118", name: "Coop. San Pedro",             coop: "Coop. San Pedro",       safras: 11, certs: 2, status: ["ok","Ativo"] },
+    { id: "PR-CIV-0124", name: "Cooperative Yamoussoukro",    coop: "Yamoussoukro Coop.",    safras: 8,  certs: 1, status: ["warn","Renovar doc"] },
+    { id: "PR-CIV-0131", name: "GRACE-CI · centro-leste",     coop: "GRACE-CI",              safras: 6,  certs: 1, status: ["ok","Ativo"] },
+  ]},
+  { group: "EQUADOR", rows: [
+    { id: "PR-EC-0201", name: "Asociación Cacao Norte",       coop: "Cacao Norte · Manabí",  safras: 9,  certs: 2, status: ["ok","Ativo"] },
+    { id: "PR-EC-0207", name: "APP Esmeraldas",               coop: "APP Esmeraldas",        safras: 5,  certs: 1, status: ["ok","Ativo"] },
+    { id: "PR-EC-0214", name: "Cooperativa Manabí Sur",       coop: "Manabí Sur Coop.",      safras: 4,  certs: 1, status: ["info","Em onboarding"] },
+  ]},
+  { group: "MÉXICO", rows: [
+    { id: "PR-MX-0301", name: "FEMSA Nayarit · raiz",         coop: "FEMSA Nayarit",         safras: 7,  certs: 0, status: ["ok","Ativo"] },
+    { id: "PR-MX-0306", name: "Coop. Tabasco · sul",          coop: "Coop. Tabasco",         safras: 5,  certs: 1, status: ["ok","Ativo"] },
+    { id: "PR-MX-0312", name: "Soconusco · Chiapas",          coop: "Soconusco Cacao",       safras: 3,  certs: 1, status: ["info","Em onboarding"] },
+  ]},
+  { group: "OUTROS · ID + GH + MG + PE + DO", rows: [
+    { id: "PR-ID-0401", name: "Coop. Sulawesi",               coop: "Sulawesi Coop.",        safras: 6,  certs: 1, status: ["err","Pendente docs"] },
+    { id: "PR-GH-0411", name: "Ashanti Coop.",                coop: "Ashanti · Kumasi",      safras: 8,  certs: 1, status: ["ok","Ativo"] },
+    { id: "PR-MG-0418", name: "Sambirano Coop. · norte MG",   coop: "Sambirano Coop.",       safras: 4,  certs: 1, status: ["ok","Ativo"] },
+    { id: "PR-PE-0422", name: "APP Tumbes · norte PE",        coop: "APP Tumbes",            safras: 5,  certs: 2, status: ["ok","Ativo"] },
+    { id: "PR-DO-0427", name: "Coop. Duarte · DO",            coop: "Duarte Coop.",          safras: 6,  certs: 1, status: ["ok","Ativo"] },
+  ]},
+];
+
+// ============================================================
+// View: Romaneios
+// ============================================================
+function RomaneiosView({ onNew }) {
+  const [filter, setFilter] = useState("todos");
+  const [tab, setTab] = useState("ativos");
+  return (
+    <div className="page">
+      <PageHead
+        section="operação"
+        page="Romaneios"
+        sub="28 abertos · 6 em revisão · semana 18 de 2026. Última sincronização há 2 minutos."
+        actions={<>
+          <button className="btn btn-secondary">Exportar</button>
+          <button className="btn btn-primary" onClick={onNew}><Ic.plus /> Novo romaneio</button>
+        </>}
+      />
+
+      <div className="kpis">
+        <Kpi label="Volume (semana)" value="468.2 t" delta="6.8% vs anterior" dir="up" />
+        <Kpi label="Em trânsito"     value="38"      delta="2 atrasos"        dir="dn" />
+        <Kpi label="Entregues (mês)" value="124"     delta="98.4% no prazo"   dir="up" />
+        <Kpi label="Pendentes docs"  value="5"       delta="1 alerta novo"    dir="dn" />
+      </div>
+
+      <div className="tabs">
+        {["ativos","arquivados","modelos"].map(t => (
+          <div key={t} className={"tab " + (tab===t?"active":"")} onClick={()=>setTab(t)}>
+            {t === "ativos" ? "Ativos" : t === "arquivados" ? "Arquivados" : "Modelos"}
+          </div>
+        ))}
+      </div>
+
+      <div className="filter-row">
+        {["todos","entregues","em-transito","revisao","pendentes"].map(f => (
+          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
+            {f === "todos" ? "Todos" : f === "em-transito" ? "Em trânsito" : f === "revisao" ? "Em revisão" : f.charAt(0).toUpperCase()+f.slice(1)}
+          </div>
+        ))}
+        <CtxSearch placeholder="Buscar romaneio, lote, rota..." />
+      </div>
+
+      <div className="layout-2col">
+        <div className="table-card gt-romaneios">
+          <div className="table-head">
+            <span>Lote</span>
+            <span>Rota</span>
+            <span>Status</span>
+            <span style={{textAlign:"right"}}>Volume</span>
+            <span></span>
+          </div>
+          <div className="table-rows">
+            {ROMANEIOS_DATA.map(g => (
+              <React.Fragment key={g.group}>
+                <div className="group-head">{g.group}</div>
+                {g.rows.map(r => (
+                  <div key={r.id} className="row">
+                    <div className="name">
+                      <strong>{r.name}</strong>
+                      <span className="meta">{r.id} · {r.date}</span>
+                    </div>
+                    <span className="num">{r.origin}</span>
+                    <span><Pill kind={r.status[0]}>{r.status[1]}</Pill></span>
+                    <span className="num" style={{textAlign:"right"}}>{r.vol}</span>
+                    <span className="actions">
+                      <button className="icon-btn" aria-label="Open"><Ic.arrow /></button>
+                      <button className="icon-btn" aria-label="More"><Ic.more /></button>
+                    </span>
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          <div className="info-card">
+            <h3>RM-0422 · Cacao Horizons</h3>
+            <div className="field"><span className="k">Lote</span><span className="v">CH-2026-0422</span></div>
+            <div className="field"><span className="k">Origem</span><span className="v">Itabuna · BA</span></div>
+            <div className="field"><span className="k">Destino</span><span className="v">Rotterdam · NL</span></div>
+            <div className="field"><span className="k">Volume</span><span className="v">12.4 t</span></div>
+            <div className="field"><span className="k">ETA</span><span className="v">2026-05-08</span></div>
+            <div className="field"><span className="k">Status</span><span><Pill kind="info">Em trânsito</Pill></span></div>
+          </div>
+          <div className="info-card">
+            <h3>Histórico</h3>
+            <div className="timeline">
+              <div className="ev"><div className="when">26/04 · 09:14</div>Saiu de Salvador rumo a Itaqui.</div>
+              <div className="ev"><div className="when">25/04 · 17:02</div>Documentação aduaneira aprovada.</div>
+              <div className="ev"><div className="when">25/04 · 11:30</div>Lote conferido por Patrick N.</div>
+              <div className="ev"><div className="when">22/04 · 14:00</div>Romaneio criado.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// === Status pill ===
-function Pill({ kind, children }) {
-  return <span className={"pill " + kind}><span className="dot"></span>{children}</span>;
+// ============================================================
+// View: Lotes
+// ============================================================
+function LotesView() {
+  const [filter, setFilter] = useState("todos");
+  return (
+    <div className="page">
+      <PageHead
+        section="operação"
+        page="Lotes"
+        sub="84 lotes ativos · rastreabilidade do produtor ao destino. Quatro programas de certificação ativos."
+        actions={<>
+          <button className="btn btn-secondary">Exportar</button>
+          <button className="btn btn-primary"><Ic.plus /> Novo lote</button>
+        </>}
+      />
+
+      <div className="kpis">
+        <Kpi label="Lotes ativos"      value="84"   delta="12 novos esta semana"     dir="up" />
+        <Kpi label="Volume rastreado"  value="612 t" delta="3.2% vs mês passado"     dir="up" />
+        <Kpi label="Selos sustentáv."  value="58"   delta="69% do total"              dir="up" />
+        <Kpi label="Renovar até maio"  value="9"    delta="Cocoa Horizons + RA"       dir="dn" />
+      </div>
+
+      <div className="filter-row">
+        {["todos","cocoa-horizons","rainforest","direct","convencional"].map(f => (
+          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
+            {f === "todos" ? "Todos" : f === "cocoa-horizons" ? "Cocoa Horizons" : f === "rainforest" ? "Rainforest" : f === "direct" ? "Direct Trade" : "Convencional"}
+          </div>
+        ))}
+        <CtxSearch placeholder="Buscar lote, produtor, certificação..." />
+      </div>
+
+      <div className="table-card gt-lotes">
+        <div className="table-head">
+          <span>Lote</span>
+          <span>Produtor</span>
+          <span>Certif.</span>
+          <span>Status</span>
+          <span style={{textAlign:"right"}}>Volume</span>
+          <span></span>
+        </div>
+        <div className="table-rows">
+          {LOTES_DATA.map(g => (
+            <React.Fragment key={g.group}>
+              <div className="group-head">{g.group}</div>
+              {g.rows.map(r => (
+                <div key={r.id} className="row">
+                  <div className="name">
+                    <strong>{r.name}</strong>
+                    <span className="meta">{r.id}</span>
+                  </div>
+                  <span className="num">{r.prod}</span>
+                  <span className="num">{r.cert}</span>
+                  <span><Pill kind={r.status[0]}>{r.status[1]}</Pill></span>
+                  <span className="num" style={{textAlign:"right"}}>{r.vol}</span>
+                  <span className="actions">
+                    <button className="icon-btn" aria-label="Open"><Ic.arrow /></button>
+                    <button className="icon-btn" aria-label="More"><Ic.more /></button>
+                  </span>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-// === Data ===
-const DATA = [
-  { group: "BARRY CALLEBAUT · BR", rows: [
-    { id: "RM-0421", name: "Selo Sustentável · Bahia", origin: "Salvador → Lyon", vol: "15.0 t", status: ["ok","Entregue"], date: "2026-04-22" },
-    { id: "RM-0422", name: "Cacao Horizons", origin: "Itabuna → Rotterdam", vol: "12.4 t", status: ["info","Em trânsito"], date: "2026-04-25" },
-    { id: "RM-0423", name: "Direto do Produtor · Linhares", origin: "Vitória → Bordeaux", vol: "8.1 t", status: ["warn","Em revisão"], date: "2026-04-26" },
-  ]},
-  { group: "FEMSA · MX", rows: [
-    { id: "RM-0501", name: "Lote Nayarit", origin: "Manzanillo → Long Beach", vol: "22.8 t", status: ["ok","Entregue"], date: "2026-04-21" },
-    { id: "RM-0502", name: "Trazabilidad MX-09", origin: "Veracruz → Hamburg", vol: "9.6 t", status: ["err","Pendente docs"], date: "2026-04-26" },
-  ]},
-];
+// ============================================================
+// View: Rotas
+// ============================================================
+function RotasView() {
+  const [filter, setFilter] = useState("todos");
+  return (
+    <div className="page">
+      <PageHead
+        section="operação"
+        page="Rotas"
+        sub="22 rotas cadastradas · marítima long-haul + transbordos rodoviários. SLA médio 18d."
+        actions={<>
+          <button className="btn btn-secondary">Mapa</button>
+          <button className="btn btn-primary"><Ic.plus /> Nova rota</button>
+        </>}
+      />
 
-// === Page ===
+      <div className="kpis">
+        <Kpi label="Rotas ativas"     value="22"    delta="+1 esta semana"        dir="up" />
+        <Kpi label="Tempo médio"      value="18d"   delta="2d acima da meta"      dir="dn" />
+        <Kpi label="Modal preferido"  value="MAR"   delta="rodoviário em 2º"      dir="flat" />
+        <Kpi label="Custo médio/t"    value="€312"  delta="estável vs trimestre"  dir="flat" />
+      </div>
+
+      <div className="filter-row">
+        {["todos","maritimo","rodoviario","atrasadas"].map(f => (
+          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
+            {f === "todos" ? "Todos" : f === "maritimo" ? "Marítimo" : f === "rodoviario" ? "Rodoviário" : "Com atraso"}
+          </div>
+        ))}
+        <CtxSearch placeholder="Buscar rota, porto, modal..." />
+      </div>
+
+      <div className="table-card gt-rotas">
+        <div className="table-head">
+          <span>Rota</span>
+          <span>Modal</span>
+          <span>SLA</span>
+          <span>Custo</span>
+          <span>Última viagem</span>
+          <span></span>
+        </div>
+        <div className="table-rows">
+          {ROTAS_DATA.map(g => (
+            <React.Fragment key={g.group}>
+              <div className="group-head">{g.group}</div>
+              {g.rows.map(r => (
+                <div key={r.id} className="row">
+                  <div className="name">
+                    <strong>{r.name}</strong>
+                    <span className="meta">{r.id}</span>
+                  </div>
+                  <span className="num">{r.modal}</span>
+                  <span className="num">{r.sla}</span>
+                  <span className="num">{r.cost}</span>
+                  <span><Pill kind={r.status[0]}>{r.lastTrip} · {r.status[1]}</Pill></span>
+                  <span className="actions">
+                    <button className="icon-btn" aria-label="More"><Ic.more /></button>
+                  </span>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// View: Origens
+// ============================================================
+function OrigensView() {
+  return (
+    <div className="page">
+      <PageHead
+        section="operação"
+        page="Origens"
+        sub="14 origens ativas em 9 países · 1.587 t/mês de volume agregado · 412 produtores cadastrados."
+        actions={<>
+          <button className="btn btn-secondary">Mapa global</button>
+          <button className="btn btn-primary"><Ic.plus /> Nova origem</button>
+        </>}
+      />
+
+      <div className="kpis">
+        <Kpi label="Origens ativas"  value="14"      delta="9 países"               dir="flat" />
+        <Kpi label="Volume agregado" value="1.587 t/m" delta="4.1% vs mês anterior" dir="up" />
+        <Kpi label="Produtores"      value="412"     delta="14 novos no mês"        dir="up" />
+        <Kpi label="Certificações"   value="3"       delta="programas vigentes"     dir="flat" />
+      </div>
+
+      <div className="origin-grid">
+        {ORIGENS_DATA.map(o => (
+          <div key={o.code} className="origin-card">
+            <div className="origin-flag">{o.code}</div>
+            <div>
+              <div className="origin-name">{o.country}</div>
+              <div className="origin-region">{o.region}</div>
+            </div>
+            <div className="origin-stats">
+              <div className="origin-stat"><span className="k">Volume</span><span className="v">{o.vol}</span></div>
+              <div className="origin-stat"><span className="k">Produtores</span><span className="v">{o.prod}</span></div>
+            </div>
+            <div className="origin-certs">
+              {o.certs.length > 0 ? o.certs.map(c => <Pill key={c} kind="info">{c}</Pill>) : <Pill kind="neutral">Sem certificação</Pill>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// View: Produtores
+// ============================================================
+function ProdutoresView() {
+  const [filter, setFilter] = useState("todos");
+  return (
+    <div className="page">
+      <PageHead
+        section="cadastros"
+        page="Produtores"
+        sub="312 produtores cadastrados em 9 países · 18 cooperativas · 241 com certificação ativa."
+        actions={<>
+          <button className="btn btn-secondary">Exportar CSV</button>
+          <button className="btn btn-primary"><Ic.plus /> Novo produtor</button>
+        </>}
+      />
+
+      <div className="kpis">
+        <Kpi label="Produtores"     value="312" delta="14 novos no mês"          dir="up" />
+        <Kpi label="Cooperativas"   value="18"  delta="6 origens BR"             dir="flat" />
+        <Kpi label="Certificados"   value="241" delta="77% do total"             dir="up" />
+        <Kpi label="Renovar 2027"   value="42"  delta="precisam atualizar doc"   dir="dn" />
+      </div>
+
+      <div className="filter-row">
+        {["todos","brasil","civ","equador","mexico","outros"].map(f => (
+          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
+            {f === "todos" ? "Todos" : f === "civ" ? "Costa do Marfim" : f.charAt(0).toUpperCase()+f.slice(1)}
+          </div>
+        ))}
+        <CtxSearch placeholder="Buscar produtor, cooperativa, ID..." />
+      </div>
+
+      <div className="table-card gt-prod">
+        <div className="table-head">
+          <span>Produtor</span>
+          <span>Cooperativa</span>
+          <span>Safras</span>
+          <span>Certif.</span>
+          <span>Status</span>
+          <span></span>
+        </div>
+        <div className="table-rows">
+          {PRODUTORES_DATA.map(g => (
+            <React.Fragment key={g.group}>
+              <div className="group-head">{g.group}</div>
+              {g.rows.map(r => (
+                <div key={r.id} className="row">
+                  <div className="name">
+                    <strong>{r.name}</strong>
+                    <span className="meta">{r.id}</span>
+                  </div>
+                  <span className="num">{r.coop}</span>
+                  <span className="num">{r.safras}</span>
+                  <span className="num">{r.certs}</span>
+                  <span><Pill kind={r.status[0]}>{r.status[1]}</Pill></span>
+                  <span className="actions">
+                    <button className="icon-btn" aria-label="Open"><Ic.arrow /></button>
+                  </span>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// View: Configurações
+// ============================================================
+function ConfigView() {
+  const [notif, setNotif] = useState(true);
+  const [autosync, setAutosync] = useState(true);
+  const [twoFa, setTwoFa] = useState(false);
+  return (
+    <div className="page">
+      <PageHead
+        section="cadastros"
+        page="Configurações"
+        sub="Preferências da workspace e integrações ativas."
+      />
+      <div className="config-grid">
+        <div className="config-card">
+          <h3>Notificações</h3>
+          <p className="desc">Como o time é avisado de eventos importantes.</p>
+          <div>
+            <div className="toggle-row"><span>E-mail diário de resumo</span><div className={"toggle " + (notif?"on":"")} onClick={()=>setNotif(!notif)}></div></div>
+            <div className="toggle-row"><span>Alerta de pendência docs</span><div className="toggle on"></div></div>
+            <div className="toggle-row"><span>Push no app móvel</span><div className="toggle"></div></div>
+          </div>
+        </div>
+        <div className="config-card">
+          <h3>Sincronização</h3>
+          <p className="desc">Conexão com sistemas externos (ERP, planilha master).</p>
+          <div>
+            <div className="toggle-row"><span>Auto-sync a cada 15 min</span><div className={"toggle " + (autosync?"on":"")} onClick={()=>setAutosync(!autosync)}></div></div>
+            <div className="toggle-row"><span>Notificar em conflitos</span><div className="toggle on"></div></div>
+          </div>
+        </div>
+        <div className="config-card">
+          <h3>Segurança</h3>
+          <p className="desc">Acesso e autenticação do workspace.</p>
+          <div>
+            <div className="toggle-row"><span>Autenticação em duas etapas</span><div className={"toggle " + (twoFa?"on":"")} onClick={()=>setTwoFa(!twoFa)}></div></div>
+            <div className="toggle-row"><span>Sessão expira em 24h</span><div className="toggle on"></div></div>
+          </div>
+        </div>
+        <div className="config-card">
+          <h3>Workspace</h3>
+          <p className="desc">Identificação e branding do espaço de trabalho.</p>
+          <div className="field"><span className="k">Nome</span><span className="v">Choco</span></div>
+          <div className="field"><span className="k">Cliente raiz</span><span className="v">Barry Callebaut</span></div>
+          <div className="field"><span className="k">Plano</span><span className="v">Operations</span></div>
+          <div className="field"><span className="k">Membros</span><span className="v">14 ativos</span></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// View: Design System (showcase do DS aplicado)
+// ============================================================
+function SystemView() {
+  return (
+    <div className="page">
+      <PageHead
+        section="sistema"
+        page="Design System"
+        sub="Default preset · warm-editorial flavor. Tudo abaixo é renderizado direto dos tokens em colors_and_type.css. Foundations → Components → Layout → Rules."
+      />
+
+      {/* ============ FOUNDATIONS ============ */}
+      <div className="ds-section-label">Foundations</div>
+
+      <div className="ds-section">
+        <h3>Tipografia</h3>
+        <p className="ds-sub">Duas famílias de marca + uma mono. Nunca três display. Lora pra display, Poppins pra body, Geist Mono pra tabular numbers e eyebrows.</p>
+        <div>
+          <div className="ds-type-row">
+            <div className="ds-type-meta"><strong>t-h1 · landing only</strong>30 / 1.15 / 600<br/>Lora · tracking -0.025em</div>
+            <div style={{fontFamily:"var(--font-display)",fontSize:30,fontWeight:600,letterSpacing:"-0.025em",lineHeight:1.15}}>Anti-AI Design System</div>
+          </div>
+          <div className="ds-type-row">
+            <div className="ds-type-meta"><strong>t-h2 · page title</strong>20 / 1.25 / 600<br/>Lora · tracking -0.025em</div>
+            <div style={{fontFamily:"var(--font-display)",fontSize:20,fontWeight:600,letterSpacing:"-0.025em",lineHeight:1.25}}>Romaneios em trânsito</div>
+          </div>
+          <div className="ds-type-row">
+            <div className="ds-type-meta"><strong>t-h3 · section</strong>14 / 1.25 / 500<br/>Poppins</div>
+            <div style={{fontSize:14,fontWeight:500,lineHeight:1.25}}>Histórico do romaneio</div>
+          </div>
+          <div className="ds-type-row">
+            <div className="ds-type-meta"><strong>t-body</strong>14 / 1.5 / 400<br/>Poppins</div>
+            <div style={{fontSize:14,lineHeight:1.5}}>Texto corrido em densidade normal. O default é denso por padrões de IA — isso é o ponto, não acidente.</div>
+          </div>
+          <div className="ds-type-row">
+            <div className="ds-type-meta"><strong>t-label</strong>12 / 1.4 / 500<br/>Poppins · muted-fg</div>
+            <div style={{fontSize:12,fontWeight:500,color:"hsl(var(--muted-foreground))"}}>Volume estimado (toneladas)</div>
+          </div>
+          <div className="ds-type-row">
+            <div className="ds-type-meta"><strong>t-mono · eyebrow</strong>11 / 1.3 / 600<br/>Geist Mono · uppercase · letter-spacing 0.06em</div>
+            <div style={{fontFamily:"var(--font-mono)",fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.06em",color:"hsl(var(--muted-foreground))"}}>operação · cooperativa cabruca</div>
+          </div>
+          <div className="ds-type-row">
+            <div className="ds-type-meta"><strong>t-num · tabular</strong>13.5 / 1.5 / 400<br/>Geist Mono · font-feature-settings 'tnum'</div>
+            <div style={{fontFamily:"var(--font-mono)",fontSize:13.5,fontFeatureSettings:"'tnum'"}}>142.4 t · €312 · 18d · RM-0422</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Paleta · tokens semânticos</h3>
+        <p className="ds-sub">Todo neutro carrega matiz (S &gt; 0). Pure 0 0% L% é proibido — é o tell #1 de gerador de IA. Status alinhados ao temperature da marca.</p>
+        <div className="ds-swatch-grid">
+          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--background))"}}>BG</div><div className="ds-swatch-meta"><div className="name">--background</div><div className="hsl">30 33% 96%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--foreground))"}}>FG</div><div className="ds-swatch-meta"><div className="name">--foreground</div><div className="hsl">16 38% 12%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--primary))"}}>PRI</div><div className="ds-swatch-meta"><div className="name">--primary</div><div className="hsl">184 100% 18% · #00585c</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--accent))"}}>ACC</div><div className="ds-swatch-meta"><div className="name">--accent</div><div className="hsl">12 65% 55%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--secondary))"}}>SEC</div><div className="ds-swatch-meta"><div className="name">--secondary</div><div className="hsl">30 33% 93%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--muted))"}}>MUT</div><div className="ds-swatch-meta"><div className="name">--muted</div><div className="hsl">30 20% 90%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))"}}>CARD</div><div className="ds-swatch-meta"><div className="name">--card</div><div className="hsl">0 0% 100%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--border))"}}>BORD</div><div className="ds-swatch-meta"><div className="name">--border</div><div className="hsl">30 20% 87%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--success))"}}>OK</div><div className="ds-swatch-meta"><div className="name">--success</div><div className="hsl">152 85% 30%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--warning))"}}>WARN</div><div className="ds-swatch-meta"><div className="name">--warning</div><div className="hsl">38 92% 50%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--destructive))"}}>ERR</div><div className="ds-swatch-meta"><div className="name">--destructive</div><div className="hsl">0 100% 50%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--info))"}}>INFO</div><div className="ds-swatch-meta"><div className="name">--info</div><div className="hsl">217 91% 45%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--sidebar-background))"}}>SIDE</div><div className="ds-swatch-meta"><div className="name">--sidebar-bg</div><div className="hsl">184 100% 18%</div></div></div>
+          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--sidebar-accent))"}}>S-ACC</div><div className="ds-swatch-meta"><div className="name">--sidebar-accent</div><div className="hsl">184 80% 25%</div></div></div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Espaçamento</h3>
+        <p className="ds-sub">Escala curta e religiosa: 1, 1.5, 2, 4, 5, 6, 8. Sem 3, 7, 9. Improvisação é cara de IA.</p>
+        <div className="ds-token-list">
+          {[
+            ["--space-1","4px",4],["--space-1-5","6px",6],["--space-2","8px",8],
+            ["--space-4","16px",16],["--space-5","20px",20],["--space-6","24px",24],["--space-8","32px",32],
+          ].map(([n,px,w]) => (
+            <div key={n} className="ds-token-row">
+              <span className="ds-token-name">{n}</span>
+              <div className="ds-token-vis"><div className="ds-spacing-bar" style={{width:w}}></div></div>
+              <span className="ds-token-px">{px}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Radius</h3>
+        <p className="ds-sub">Escala variável por componente — input (sm), botão (lg), row (xl), card (2xl). Sem radius único pra tudo.</p>
+        <div className="ds-token-list">
+          {[
+            ["--radius-sm","6px · input/badge",6],["--radius-md","8px · input lg",8],["--radius-lg","12px · botões",12],
+            ["--radius-xl","16px · rows",16],["--radius-2xl","20px · cards",20],
+          ].map(([n,px,r]) => (
+            <div key={n} className="ds-token-row">
+              <span className="ds-token-name">{n}</span>
+              <div className="ds-token-vis"><div className="ds-radius-box" style={{borderRadius:r}}>{r}</div></div>
+              <span className="ds-token-px">{px}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Shadows</h3>
+        <p className="ds-sub">Apenas três tiers. shadow-xl/2xl são over-elevation — cara de IA garantida.</p>
+        <div className="ds-token-list">
+          {[
+            ["shadow-sm","cards estáticos","0 1px 2px hsl(var(--foreground)/.04)"],
+            ["shadow-md","hover / lift",     "0 4px 12px hsl(var(--foreground)/.08)"],
+            ["shadow-lg","modals / popovers","0 30px 80px -20px hsl(var(--foreground)/.4)"],
+          ].map(([n,desc,sh]) => (
+            <div key={n} className="ds-token-row">
+              <span className="ds-token-name">{n}</span>
+              <div className="ds-token-vis">
+                <div className="ds-shadow-box" style={{boxShadow:sh}}></div>
+                <span style={{fontSize:12,color:"hsl(var(--muted-foreground))"}}>{desc}</span>
+              </div>
+              <span className="ds-token-px"></span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Borders &amp; dividers</h3>
+        <p className="ds-sub">Um único <code>--border</code> token, com matiz. Dashed reservado para timelines (gestural). Solid pra estrutura.</p>
+        <div className="ds-grid-2">
+          <div className="ds-demo-frame">
+            <div className="ds-divider-demo"></div>
+            <span className="ds-callout-good">solid · 1px · hsl(var(--border))</span>
+            <span style={{fontSize:12,color:"hsl(var(--muted-foreground))"}}>Card outline, table head, field separator</span>
+          </div>
+          <div className="ds-demo-frame">
+            <div className="ds-divider-dashed"></div>
+            <span className="ds-callout-good">dashed · 1px</span>
+            <span style={{fontSize:12,color:"hsl(var(--muted-foreground))"}}>Timeline rail (eventos sequenciais), só</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Animations</h3>
+        <p className="ds-sub">150–300ms. Easing default Tailwind. Sem bounce, sem spring, sem duration-500+. <code>transition-colors</code> &gt; <code>transition-all</code>.</p>
+        <div className="ds-component-row">
+          <div className="ds-anim-box" title="hover me · 200ms"></div>
+          <span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>hover · 200ms · cubic-bezier(0.4, 0, 0.2, 1)</span>
+        </div>
+        <div className="ds-token-list" style={{marginTop:14}}>
+          <div className="ds-token-row"><span className="ds-token-name">--dur-150</span><div className="ds-token-vis"><span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>hover (color, opacity)</span></div><span className="ds-token-px">150ms</span></div>
+          <div className="ds-token-row"><span className="ds-token-name">--dur-200</span><div className="ds-token-vis"><span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>state change (toggle, focus)</span></div><span className="ds-token-px">200ms</span></div>
+          <div className="ds-token-row"><span className="ds-token-name">--dur-300</span><div className="ds-token-vis"><span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>layout shift, modal entrance</span></div><span className="ds-token-px">300ms</span></div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Iconografia</h3>
+        <p className="ds-sub">Lucide React · stroke 1.5 · rounded joins · 16px no body, 20px em demos. Default count = zero — cada ícone justifica presença.</p>
+        <div className="ds-icon-grid">
+          {Object.entries(Ic).map(([name, IconC]) => (
+            <div key={name} className="ds-icon-cell">
+              <IconC />
+              <div className="ds-icon-name">{name}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{marginTop:14,fontSize:12.5,color:"hsl(var(--muted-foreground))",lineHeight:1.6}}>
+          <strong style={{color:"hsl(var(--success))"}}>✓ usar em:</strong> status badges, primary action, file type, sidebar nav.<br/>
+          <strong style={{color:"hsl(var(--destructive))"}}>✗ NÃO usar em:</strong> form labels, secondary buttons, section titles, hero decoration.
+        </div>
+      </div>
+
+      {/* ============ COMPONENTS ============ */}
+      <div className="ds-section-label">Components</div>
+
+      <div className="ds-section">
+        <h3>Status pills</h3>
+        <p className="ds-sub">Capsule rounded-full com bg semi-transparente, dot de cor e label. Nunca solid bg saturado.</p>
+        <div className="ds-component-row">
+          <Pill kind="ok">Entregue</Pill>
+          <Pill kind="info">Em trânsito</Pill>
+          <Pill kind="warn">Em revisão</Pill>
+          <Pill kind="err">Pendente docs</Pill>
+          <Pill kind="neutral">Sem viagem</Pill>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Botões</h3>
+        <p className="ds-sub">Quatro variantes, mesma altura, mesmo radius (lg / 12px). Primary é teal petroleum, accent é terracota.</p>
+        <div className="ds-component-row">
+          <button className="btn btn-primary"><Ic.plus /> Primary action</button>
+          <button className="btn btn-accent">Accent action</button>
+          <button className="btn btn-secondary">Secondary</button>
+          <button className="btn btn-ghost">Ghost</button>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Cards · raw div pattern</h3>
+        <p className="ds-sub">Sempre raw div com classes explícitas. Nunca <code>&lt;Card&gt;&lt;CardHeader&gt;&lt;CardContent&gt;</code> do shadcn — anti-pattern #1.</p>
+        <div className="ds-grid-2">
+          <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:20,padding:"18px 20px",boxShadow:"0 1px 2px hsl(var(--foreground)/.04)"}}>
+            <h4 style={{margin:"0 0 8px",fontSize:14,fontWeight:500}}>Card simples</h4>
+            <p style={{margin:0,fontSize:13,color:"hsl(var(--muted-foreground))"}}>div + bg-card + border + radius-2xl + shadow-sm. Padding interno 18-20px.</p>
+            <div style={{marginTop:10}}><span className="ds-callout-good">{`<div className="info-card">...`}</span></div>
+          </div>
+          <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:20,overflow:"hidden",boxShadow:"0 1px 2px hsl(var(--foreground)/.04)"}}>
+            <div style={{padding:"12px 20px",borderBottom:"1px solid hsl(var(--border))",fontSize:13,fontWeight:500}}>Card com seção</div>
+            <div style={{padding:"14px 20px",fontSize:13,color:"hsl(var(--muted-foreground))"}}>Header divided com border-b. Spacing px-5 py-3 no header, px-5 py-4 no content.</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>KPI tile</h3>
+        <p className="ds-sub">Label uppercase + valor display Lora 26px + delta mono. Nunca centralizado, nunca com gradient.</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:14,maxWidth:520}}>
+          <Kpi label="Volume (semana)" value="468.2 t" delta="6.8% vs anterior" dir="up" />
+          <Kpi label="Pendentes docs"  value="5"       delta="1 alerta novo"    dir="dn" />
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Inputs · forms</h3>
+        <p className="ds-sub">Label small acima, input radius-md (8px), focus ring com primary 12% alpha. Sem placeholder fancy, sem floating labels.</p>
+        <div className="ds-component-row" style={{alignItems:"flex-start"}}>
+          <div className="ds-input-demo">
+            <label>Volume estimado (t)</label>
+            <input defaultValue="11.0" />
+          </div>
+          <div className="ds-input-demo">
+            <label>Cliente</label>
+            <input defaultValue="Barry Callebaut · BR" />
+          </div>
+          <div className="ds-input-demo">
+            <label>Origem</label>
+            <input placeholder="Salvador, BA" />
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Tabs · contextual</h3>
+        <p className="ds-sub">Border-bottom 2px com accent na ativa. Sem pill-style, sem bg-fill por aba. Eyebrow tight (10/14px padding).</p>
+        <div className="tabs" style={{maxWidth:380}}>
+          <div className="tab active">Ativos</div>
+          <div className="tab">Arquivados</div>
+          <div className="tab">Modelos</div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Filter chips</h3>
+        <p className="ds-sub">Rounded-full small, 5px 12px padding. Active = bg-primary, inactive = bg-card border. Nunca solid color forte sem ser ativo.</p>
+        <div className="ds-component-row">
+          <div className="chip active">Todos</div>
+          <div className="chip">Entregues</div>
+          <div className="chip">Em trânsito</div>
+          <div className="chip">Em revisão</div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Search · contextual</h3>
+        <p className="ds-sub">Live no <code>filter-row</code> acima da table — não em topbar global. Busca é específica da view, não app-wide.</p>
+        <div style={{maxWidth:280}}>
+          <CtxSearch placeholder="Buscar romaneio, lote, rota..." />
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Info card · k/v rows</h3>
+        <p className="ds-sub">Side panel pattern. Field key em muted-fg, value em mono right-aligned. Border-bottom 1px com alpha (.6) entre rows, exceto última.</p>
+        <div style={{maxWidth:340}}>
+          <div className="info-card">
+            <h3>RM-0422 · Cacao Horizons</h3>
+            <div className="field"><span className="k">Lote</span><span className="v">CH-2026-0422</span></div>
+            <div className="field"><span className="k">Origem</span><span className="v">Itabuna · BA</span></div>
+            <div className="field"><span className="k">Volume</span><span className="v">12.4 t</span></div>
+            <div className="field"><span className="k">Status</span><span><Pill kind="info">Em trânsito</Pill></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Timeline · dashed</h3>
+        <p className="ds-sub">Border-left dashed, dot primary 8px à esquerda, when em mono small. Ordem cronológica reversa (mais recente em cima).</p>
+        <div style={{maxWidth:340,padding:"4px 14px"}}>
+          <div className="timeline">
+            <div className="ev"><div className="when">26/04 · 09:14</div>Saiu de Salvador rumo a Itaqui.</div>
+            <div className="ev"><div className="when">25/04 · 17:02</div>Documentação aduaneira aprovada.</div>
+            <div className="ev"><div className="when">22/04 · 14:00</div>Romaneio criado.</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Sidebar nav item</h3>
+        <p className="ds-sub">Background sidebar-accent quando ativo + barra terracota 3×18px à esquerda (gesture, não bg). Hover = sidebar-accent /60.</p>
+        <div className="ds-side-demo">
+          <div className="nav-demo active"><Ic.list /><span>Romaneios</span><span style={{marginLeft:"auto",fontFamily:"var(--font-mono)",fontSize:11,color:"hsl(var(--sidebar-indicator))"}}>28</span></div>
+          <div className="nav-demo"><Ic.pkg /><span>Lotes</span></div>
+          <div className="nav-demo"><Ic.truck /><span>Rotas</span></div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Modal</h3>
+        <p className="ds-sub">Card 480px max-width, radius-2xl (20px), padding 24px. Scrim foreground/.35. Animation fade 200ms. Nunca center-absolute sem scrim.</p>
+        <div className="ds-demo-frame" style={{alignItems:"center",background:"hsl(var(--foreground)/.08)"}}>
+          <div className="ds-mini-modal">
+            <h4>Novo romaneio</h4>
+            <p>Crie um novo romaneio. O número será gerado automaticamente.</p>
+            <div className="modal-actions" style={{marginTop:12}}>
+              <button className="btn btn-ghost" style={{fontSize:11.5}}>Cancelar</button>
+              <button className="btn btn-primary" style={{fontSize:11.5,padding:"6px 12px"}}>Criar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Toast · snackbar</h3>
+        <p className="ds-sub">Inverse pill (foreground bg + bg fg), bottom-right fixed, dismiss em 2.4s. ✓ check em circle success. Sem progress bar.</p>
+        <div className="ds-component-row">
+          <div className="ds-mini-toast">
+            <div className="ok-mark">✓</div>
+            <span>Romaneio RM-0625 criado</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ============ LAYOUT ============ */}
+      <div className="ds-section-label">Layout</div>
+
+      <div className="ds-section">
+        <h3>Container widths</h3>
+        <p className="ds-sub">Largura intencional por contexto. <code>container mx-auto</code> sozinho é proibido — fluida sem identidade.</p>
+        <div className="ds-container-vis">
+          <div className="ds-container-bar" style={{width:"100%"}}>app shell · max-w-7xl (80rem) ou full · 32px padding lateral</div>
+          <div className="ds-container-bar" style={{width:"60%"}}>conteúdo editorial · max-w-5xl (64rem)</div>
+          <div className="ds-container-bar" style={{width:"40%"}}>form pages · max-w-xl (36rem)</div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>Page head pattern</h3>
+        <p className="ds-sub">Eyebrow mono lowercase + h2 Lora grande + sub muted. Actions à direita alinhadas ao top. Sem topbar global cruzando.</p>
+        <div className="ds-demo-frame">
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:24,width:"100%"}}>
+            <div style={{display:"flex",flexDirection:"column",gap:4}}>
+              <div style={{fontFamily:"var(--font-mono)",fontSize:11,color:"hsl(var(--muted-foreground))",textTransform:"lowercase",letterSpacing:"0.06em"}}>operação/</div>
+              <div style={{fontFamily:"var(--font-display)",fontSize:24,fontWeight:600,letterSpacing:"-0.02em",lineHeight:1.15}}>Romaneios</div>
+              <div style={{fontSize:12.5,color:"hsl(var(--muted-foreground))",marginTop:4}}>28 abertos · 6 em revisão · semana 18 de 2026.</div>
+            </div>
+            <div style={{display:"flex",gap:8}}>
+              <button className="btn btn-secondary" style={{fontSize:11.5,padding:"6px 12px"}}>Exportar</button>
+              <button className="btn btn-primary" style={{fontSize:11.5,padding:"6px 12px"}}>+ Novo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="ds-section">
+        <h3>2-col com side panel</h3>
+        <p className="ds-sub">Tabela principal <code>minmax(0,1fr)</code> + side panel fixo 360px. Gap 20px. Sem 3-col em dashboards — viola hierarquia de leitura.</p>
+        <div className="ds-demo-frame">
+          <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) 140px",gap:14,width:"100%"}}>
+            <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:14,padding:14,fontSize:12,color:"hsl(var(--muted-foreground))"}}>main · table-card · grid colunas nomeadas</div>
+            <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:14,padding:14,fontSize:11,color:"hsl(var(--muted-foreground))"}}>side · info-card · 360px</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ============ RULES ============ */}
+      <div className="ds-section-label">Rules</div>
+
+      <div className="ds-section ds-rules">
+        <h3>Anti-AI · 10 regras estruturais</h3>
+        <p className="ds-sub">Documentação completa em <code>docs/01-anti-patterns.md</code> + <code>docs/02-structural-rules.md</code>. Resumo executável aqui.</p>
+        <ul>
+          <li><strong>Card soup proibido.</strong> Nunca <code>&lt;Card&gt;&lt;CardHeader&gt;&lt;CardContent&gt;</code> do shadcn — raw divs com classes explícitas.</li>
+          <li><strong>Foreground sempre com hue.</strong> <code>S &gt; 0</code>. <code>0 0% L%</code> é proibido — tell #1 de IA.</li>
+          <li><strong>Spacing scale curta.</strong> 1 / 1.5 / 2 / 4 / 5 / 6 / 8. Nunca 3, 7, 9.</li>
+          <li><strong>Radius variável OU zero.</strong> Não <code>--radius: 0.5rem</code> único pra tudo. Decisão deliberada.</li>
+          <li><strong><code>&lt;table&gt;</code> em UI proibido.</strong> Use grid CSS com colunas nomeadas.</li>
+          <li><strong>Page title = h2.</strong> <code>&lt;h1&gt;</code> reservado pra landing/marketing.</li>
+          <li><strong>Sidebar = surface diferente</strong>, não tint. Delta &ge; 10% L OU hue oposto.</li>
+          <li><strong>font-bold (700) proibido.</strong> 600 é o teto. <code>tracking-wide</code> também não — vira "fancy".</li>
+          <li><strong>Ícone com propósito</strong>, não decoração. Status, primary action, file type. Não em todo label.</li>
+          <li><strong>Sem gradientes em UI.</strong> Banido em hero AI bluish-purple. Surface flat hue-washed é o canvas.</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// App shell
+// ============================================================
 function App() {
   const [active, setActive] = useState("romaneios");
-  const [filter, setFilter] = useState("todos");
-  const [tab, setTab] = useState("ativos");
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(null);
 
   const submit = () => {
     setModal(false);
-    setToast("Romaneio RM-0503 criado");
+    setToast("Romaneio RM-0625 criado");
     setTimeout(() => setToast(null), 2400);
   };
+
+  const VIEWS = {
+    romaneios:  () => <RomaneiosView onNew={() => setModal(true)} />,
+    lotes:      LotesView,
+    rotas:      RotasView,
+    origens:    OrigensView,
+    produtores: ProdutoresView,
+    config:     ConfigView,
+    design:     SystemView,
+  };
+  const View = VIEWS[active] || RomaneiosView;
 
   return (
     <div className="app">
       <Sidebar active={active} onNav={setActive} />
       <div className="main">
-        <Topbar crumbs={["Operação", "Romaneios"]} />
-        <div className="page">
-          <div className="page-head">
-            <div>
-              <h2 className="page-title">Romaneios</h2>
-              <p className="page-sub">12 abertos · 3 em revisão · semana 18 de 2026. Última sincronização há 2 minutos.</p>
-            </div>
-            <div style={{display:"flex",gap:10}}>
-              <button className="btn btn-secondary">Exportar</button>
-              <button className="btn btn-primary" onClick={() => setModal(true)}>
-                <Ic.plus /> Novo romaneio
-              </button>
-            </div>
-          </div>
-
-          <div className="kpis">
-            <Kpi label="Volume (semana)" value="142.4 t"   delta="6.8% vs anterior" dir="up" />
-            <Kpi label="Em trânsito"     value="38"        delta="2 atrasos"        dir="dn" />
-            <Kpi label="Entregues"       value="124"       delta="98.4% no prazo"   dir="up" />
-            <Kpi label="Pendentes docs"  value="5"         delta="1 alerta novo"    dir="dn" />
-          </div>
-
-          <div className="tabs">
-            {["ativos","arquivados","modelos"].map(t => (
-              <div key={t} className={"tab " + (tab===t?"active":"")} onClick={()=>setTab(t)}>
-                {t === "ativos" ? "Ativos" : t === "arquivados" ? "Arquivados" : "Modelos"}
-              </div>
-            ))}
-          </div>
-
-          <div className="filters">
-            {["todos","entregues","em-transito","revisao","pendentes"].map(f => (
-              <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
-                {f === "todos" ? "Todos" : f === "em-transito" ? "Em trânsito" : f === "revisao" ? "Em revisão" : f.charAt(0).toUpperCase()+f.slice(1)}
-              </div>
-            ))}
-          </div>
-
-          <div className="layout-2col">
-            <div className="table-card">
-              <div className="table-head">
-                <span>Lote</span>
-                <span>Rota</span>
-                <span>Status</span>
-                <span style={{textAlign:"right"}}>Volume</span>
-                <span></span>
-              </div>
-              <div className="table-rows">
-                {DATA.map(g => (
-                  <React.Fragment key={g.group}>
-                    <div className="group-head">{g.group}</div>
-                    {g.rows.map(r => (
-                      <div key={r.id} className="row">
-                        <div className="name">
-                          <strong>{r.name}</strong>
-                          <span className="meta">{r.id} · {r.date}</span>
-                        </div>
-                        <span className="num">{r.origin}</span>
-                        <span><Pill kind={r.status[0]}>{r.status[1]}</Pill></span>
-                        <span className="num" style={{textAlign:"right"}}>{r.vol}</span>
-                        <span className="actions">
-                          <button className="icon-btn" aria-label="Open"><Ic.arrow /></button>
-                          <button className="icon-btn" aria-label="More"><Ic.more /></button>
-                        </span>
-                      </div>
-                    ))}
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-
-            <div style={{display:"flex",flexDirection:"column",gap:14}}>
-              <div className="info-card">
-                <h3>RM-0422 · Cacao Horizons</h3>
-                <div className="field"><span className="k">Lote</span><span className="v">CH-2026-0422</span></div>
-                <div className="field"><span className="k">Origem</span><span className="v">Itabuna · BA</span></div>
-                <div className="field"><span className="k">Destino</span><span className="v">Rotterdam · NL</span></div>
-                <div className="field"><span className="k">Volume</span><span className="v">12.4 t</span></div>
-                <div className="field"><span className="k">ETA</span><span className="v">2026-05-08</span></div>
-                <div className="field"><span className="k">Status</span><span><Pill kind="info">Em trânsito</Pill></span></div>
-              </div>
-              <div className="info-card">
-                <h3>Histórico</h3>
-                <div className="timeline">
-                  <div className="ev"><div className="when">26/04 · 09:14</div>Saiu de Salvador rumo a Itaqui.</div>
-                  <div className="ev"><div className="when">25/04 · 17:02</div>Documentação aduaneira aprovada.</div>
-                  <div className="ev"><div className="when">25/04 · 11:30</div>Lote conferido por Patrick N.</div>
-                  <div className="ev"><div className="when">22/04 · 14:00</div>Romaneio criado.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <View />
       </div>
 
       {modal && (
@@ -372,7 +1323,7 @@ function App() {
           <div className="modal">
             <h3>Novo romaneio</h3>
             <p>Crie um novo romaneio. O número será gerado automaticamente.</p>
-            <div className="form-row"><label>Cliente</label><select><option>Barry Callebaut · BR</option><option>FEMSA · MX</option></select></div>
+            <div className="form-row"><label>Cliente</label><select><option>Barry Callebaut · BR</option><option>FEMSA · MX</option><option>Nestlé · CIV</option></select></div>
             <div className="form-row"><label>Origem</label><input defaultValue="Salvador, BA" /></div>
             <div className="form-row"><label>Destino</label><input defaultValue="Lyon, FR" /></div>
             <div className="form-row"><label>Volume estimado (t)</label><input defaultValue="11.0" /></div>
