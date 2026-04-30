@@ -37,6 +37,21 @@ const Icon = {
   ArrowUpDown: _i(<><polyline points="7 15 12 20 17 15"/><polyline points="7 9 12 4 17 9"/></>),
   Settings2: _i(<><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></>),
   Menu: _i(<><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>),
+
+  // — Round A FIXMEs —
+  ChevronDown: _i(<polyline points="6 9 12 15 18 9"/>),
+  Check:       _i(<polyline points="20 6 9 17 4 12"/>),
+  X:           _i(<><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>),
+
+  // — Round B P1 additions —
+  ChevronUp:   _i(<polyline points="18 15 12 9 6 15"/>),
+  ArrowUp:     _i(<><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></>),
+  ArrowDown:   _i(<><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></>),
+  ArrowRight:  _i(<><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></>),
+  TrendingUp:  _i(<><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></>),
+  TrendingDown:_i(<><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></>),
+  Inbox:       _i(<><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></>),
+  Home:        _i(<><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>),
 };
 
 window.Icon = Icon;

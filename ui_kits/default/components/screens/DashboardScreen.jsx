@@ -1,5 +1,9 @@
-// ui_kits/default/components/DashboardScreen.jsx
+// ui_kits/default/components/screens/DashboardScreen.jsx
 // DashboardScreen — 4 stat cards + recent table. Composition reference.
+// Depends on: StatCard, PageHeader, StatusBadge (display/StatusBadge.jsx).
+// DEMO CONTENT: this screen uses Romaneios/TransLog/Choco-flavored data as
+// illustrative example. For production, replace data + labels via props.
+// Brand-agnostic refactor (prop-driven data) is a Round E candidate.
 const DashboardScreen = ({ onOpenRomaneios }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
     <PageHeader title="Dashboard" subtitle="Visão geral da expedição logística" />
@@ -50,17 +54,4 @@ const RECENT_ROMANEIOS = [
   { id: "RM-2024-001843", transportadora: "Cargas Paulista",   placa: "MNO5H01", motorista: "José Ferreira",  status: "conferido" },
 ];
 
-const StatusBadge = ({ value }) => {
-  const map = {
-    conferido:      { cls: "badge-success", label: "Conferido" },
-    pendente:       { cls: "badge-pending", label: "Pendente" },
-    em_conferencia: { cls: "badge-outline", label: "Em conferência" },
-    divergente:     { cls: "badge-error",   label: "Divergente" },
-    finalizado:     { cls: "badge-success", label: "Finalizado" },
-  };
-  const m = map[value] || { cls: "badge-pending", label: value };
-  return <span className={`badge ${m.cls}`}>{m.label}</span>;
-};
-
 window.DashboardScreen = DashboardScreen;
-window.StatusBadge = StatusBadge;

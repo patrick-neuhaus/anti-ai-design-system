@@ -1,5 +1,6 @@
-// ui_kits/default/components/RomaneiosScreen.jsx
+// ui_kits/default/components/screens/RomaneiosScreen.jsx
 // RomaneiosScreen — full romaneio list, no dashboard chrome.
+// DEMO CONTENT: Romaneios/TransLog data illustrative. Brand-agnostic refactor Round E.
 const ROMANEIOS = [
   { id: "RM-2024-001847", date: "28/04/2026", transportadora: "TransLog Brasil",  placa: "ABC1D23", motorista: "Carlos Andrade", deliveries: 12, status: "conferido" },
   { id: "RM-2024-001846", date: "28/04/2026", transportadora: "Expresso Mineiro", placa: "DEF2E45", motorista: "Marcos Silva",   deliveries:  8, status: "pendente" },
