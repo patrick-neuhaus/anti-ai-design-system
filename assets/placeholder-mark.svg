@@ -1,0 +1,5 @@
+<!-- assets/placeholder-mark.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Mark placeholder">
+  <rect x="0.5" y="0.5" width="31" height="31" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-dasharray="3 2"/>
+  <text x="16" y="22" font-family="ui-sans-serif, system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="currentColor">M</text>
+</svg>
