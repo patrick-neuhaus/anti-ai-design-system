@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Base · Showcase</title>
+  <link rel="stylesheet" href="../../../colors_and_type.css" />
+  <style>
+    body { font-family: var(--font-body); background: hsl(var(--background)); color: hsl(var(--foreground)); margin: 0; }
+    .showcase-shell { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+    .showcase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
+    .showcase-nav a { font-size: 13px; padding: 6px 10px; border-radius: 6px; text-decoration: none; color: hsl(var(--muted-foreground)); }
+    .showcase-nav a.active { background: hsl(var(--accent-decorative) / .12); color: hsl(var(--accent)); font-weight: 500; }
+    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .showcase-section > h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); margin: 0; font-weight: 600; }
+    .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
+    .showcase-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .showcase-grid { display: grid; gap: 16px; }
+    h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
+    .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
+  </style>
+</head>
+<body class="preset-base">
+  <div id="root" class="showcase-shell"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="../components/Icon.jsx"></script>
+  <script type="text/babel" src="../components/base/Button.jsx"></script>
+  <script type="text/babel" src="../components/base/Input.jsx"></script>
+  <script type="text/babel" src="../components/base/Textarea.jsx"></script>
+  <script type="text/babel" src="../components/base/Select.jsx"></script>
+  <script type="text/babel" src="../components/base/Checkbox.jsx"></script>
+  <script type="text/babel" src="../components/base/Radio.jsx"></script>
+  <script type="text/babel" src="../components/base/Switch.jsx"></script>
+
+  <script type="text/babel">
+    const Nav = ({ current }) => (
+      <nav className="showcase-nav">
+        {[["index","Visão geral"],["base","Base"],["surfaces","Surfaces"],["display","Display"],["layout","Layout"],["forms","Forms"],["navigation","Navigation"],["data","Data"],["dashboard","Dashboard"],["auth","Auth"]].map(([k,l]) => <a key={k} href={`./${k}.html`} className={current === k ? "active" : ""}>{l}</a>)}
+      </nav>
+    );
+    const ShowcaseSection = ({ title, children, meta }) => (
+      <section className="showcase-section">
+        <h3>{title}</h3>
+        <div className="showcase-block">{children}</div>
+        {meta && <div className="showcase-meta">{meta}</div>}
+      </section>
+    );
+
+    const App = () => {
+      const [text, setText] = React.useState("");
+      const [chk, setChk] = React.useState(true);
+      const [rd, setRd] = React.useState("a");
+      const [sw, setSw] = React.useState(false);
+      const [sel, setSel] = React.useState("");
+      return (
+        <>
+          <Nav current="base" />
+          <h1>Base</h1>
+          <p className="lead">Primitivos de input e ação. Compõem todo o resto.</p>
+
+          <ShowcaseSection title="Button — variants × sizes">
+            <div className="showcase-row" style={{ marginBottom: 12 }}>
+              <Button>Primary</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="outline">Outline</Button>
+              <Button variant="ghost">Ghost</Button>
+              <Button variant="destructive">Destructive</Button>
+            </div>
+            <div className="showcase-row" style={{ marginBottom: 12 }}>
+              <Button size="sm">Small</Button>
+              <Button size="md">Medium</Button>
+              <Button size="lg">Large</Button>
+            </div>
+            <div className="showcase-row">
+              <Button iconLeft={Icon.Plus}>Add</Button>
+              <Button iconRight={Icon.ArrowRight}>Continue</Button>
+              <Button iconOnly aria-label="Search" iconLeft={Icon.Search} />
+              <Button disabled>Disabled</Button>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection title="Input + adornments">
+            <div className="showcase-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
+              <Input placeholder="Sem ícone" value={text} onChange={(e) => setText(e.target.value)} />
+              <Input placeholder="Buscar…" iconLeft={Icon.Search} />
+              <Input placeholder="Inválido" invalid />
+              <Input placeholder="Disabled" disabled />
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection title="Textarea, Select">
+            <div className="showcase-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <Textarea placeholder="Escreva algo…" />
+              <Select
+                value={sel}
+                onChange={(e) => setSel(e.target.value)}
+                placeholder="Escolha…"
+                options={[
+                  { value: "a", label: "Opção A" },
+                  { value: "b", label: "Opção B" },
+                  { value: "c", label: "Opção C" },
+                ]}
+              />
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection title="Checkbox, Radio, Switch">
+            <div className="showcase-row" style={{ gap: 24 }}>
+              <Checkbox checked={chk} onChange={(e) => setChk(e.target.checked)} label="Ativar opção" />
+              <RadioGroup direction="horizontal">
+                <Radio name="g" value="a" checked={rd === "a"} onChange={(e) => setRd(e.target.value)} label="A" />
+                <Radio name="g" value="b" checked={rd === "b"} onChange={(e) => setRd(e.target.value)} label="B" />
+                <Radio name="g" value="c" checked={rd === "c"} onChange={(e) => setRd(e.target.value)} label="C" />
+              </RadioGroup>
+              <Switch checked={sw} onChange={(e) => setSw(e.target.checked)} label="Modo escuro" />
+            </div>
+          </ShowcaseSection>
+        </>
+      );
+    };
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

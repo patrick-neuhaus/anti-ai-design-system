@@ -40,6 +40,7 @@ const App = () => {
 
   const Screen = SCREENS[route] || SCREENS.dashboard;
   return (
+    <>
     <div style={{ display: "flex", minHeight: "100vh", background: "hsl(var(--background))" }}>
       <Sidebar
         active={route}
@@ -58,6 +59,8 @@ const App = () => {
         <Screen goto={setRoute} />
       </main>
     </div>
+    {typeof ToastHost !== "undefined" && <ToastHost />}
+    </>
   );
 };
 
