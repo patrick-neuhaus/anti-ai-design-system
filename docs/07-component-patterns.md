@@ -202,9 +202,9 @@ ui_kits/default/components/
 ├── app.jsx           harness React do kit
 ├── base/             primitivos de input/ação (7)
 ├── surfaces/         Card, Surface (2)
-├── display/          Badge/Tag/Avatar/Alert/EmptyState/StatusBadge/Skeleton/Spinner/Toast (9)
+├── display/          Badge/Tag/Avatar/Alert/EmptyState/StatusBadge/Skeleton/Spinner/Toast/Dialog/Drawer/Tooltip/Popover/ProgressBar (14)
 ├── layout/           PageHeader/Section/PageShell/AppLayout (4)
-├── forms/            FormField + NumberField/DateField/FileUpload (4)
+├── forms/            FormField + NumberField/DateField/FileUpload/Combobox/Slider/Stepper (7)
 ├── navigation/       Tabs/Breadcrumb/Pagination/NavLink/Sidebar (5)
 ├── data/             Table/AppTable/ListItem (3)
 ├── dashboard/        StatCard/KpiGrid/MetricCard (3)
@@ -242,3 +242,18 @@ Caso genuinamente novo (cobrindo um caso que nenhum dos 33 cobre), seguir as reg
 ## Showcase
 
 `ui_kits/default/showcase/index.html` é a porta de entrada navegável. Cada categoria tem sua page (`base.html`, `display.html`, etc.) com exemplos vivos dos componentes daquela subpasta. Use o showcase pra validar visualmente após token swap ou novo componente.
+
+## Wave 6.5 totals
+
+- **base/**: 7 (Button, Input, Textarea, Select, Checkbox, Radio, Switch)
+- **surfaces/**: 2 (Card, Surface)
+- **display/**: 14 (Badge, Tag, Avatar, Alert, EmptyState, StatusBadge, Skeleton, Spinner, Toast, Dialog, Drawer, Tooltip, Popover, ProgressBar)
+- **layout/**: 4 (PageHeader, Section, PageShell, AppLayout)
+- **forms/**: 7 (FormField, NumberField, DateField, FileUpload, Combobox, Slider, Stepper)
+- **navigation/**: 5 (Tabs, Breadcrumb, Pagination, NavLink, Sidebar)
+- **data/**: 3 (Table, AppTable, ListItem)
+- **dashboard/**: 3 (StatCard, KpiGrid, MetricCard)
+- **auth/**: 4 (LoginScreen, RegisterScreen, ForgotPasswordScreen, ConfirmEmailScreen)
+- **screens/**: 5 (DashboardScreen, RomaneiosScreen, SettingsScreen, ProfileScreen, EmptyDashboardScreen)
+
+**Total: 54 components/screens** distribuídos em 10 subpastas.
