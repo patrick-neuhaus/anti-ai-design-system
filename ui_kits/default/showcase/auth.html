@@ -160,6 +160,17 @@
       flex: 1 1 0;
       min-width: 0;
       height: 100%;
+      /* Wave 8.5 — forçar grid 1fr 1fr estrito em TODAS variantes */
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+    }
+    /* Wave 8.5 — cada lado não pode vazar nem encolher */
+    .auth-variant > div > * {
+      min-width: 0;
+      overflow: hidden;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
     }
     .auth-variant.active {
       opacity: 1;
