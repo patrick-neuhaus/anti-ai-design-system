@@ -994,36 +994,14 @@
     .antipattern-card:hover::before { opacity: 1; }
     .antipattern-card > * { position: relative; z-index: 1; }
 
-    /* ==================================================
-       Tokens — spotlight hover (dim siblings)
-       ================================================== */
-    .token-swatches.spotlight-active .token-swatch-row {
-      opacity: .35;
-      transition: opacity 250ms;
-    }
-    .token-swatches.spotlight-active .token-swatch-row.spotlight-focus {
-      opacity: 1;
-    }
+    /* Wave 5.1 — token swatch: sutil hover border highlight sem label duplicado */
     .token-swatch-row {
-      transition: opacity 250ms, transform 200ms;
-      cursor: pointer;
+      transition: border-color 150ms, background 150ms;
+      cursor: default;
     }
-    .token-swatch-row.spotlight-focus {
-      transform: scale(1.03);
-    }
-    .spotlight-label {
-      position: fixed;
-      z-index: 999;
-      pointer-events: none;
-      font-family: var(--font-display);
-      font-size: clamp(28px, 4vw, 52px);
-      font-weight: 600;
-      color: hsl(var(--foreground) / .06);
-      letter-spacing: -.03em;
-      white-space: nowrap;
-      transform: translate(-50%, -50%);
-      transition: opacity 200ms;
-      user-select: none;
+    .token-swatch-row:hover {
+      border-color: hsl(var(--foreground) / .2);
+      background: hsl(var(--card));
     }
 
     /* ==================================================
@@ -1276,56 +1254,6 @@
       }, []);
     };
 
-    // Hook: spotlight nos token swatches
-    const useTokenSpotlight = (containerRef) => {
-      React.useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-        const swatchGroups = container.querySelectorAll(".token-swatches");
-        // Create floating label element
-        const label = document.createElement("div");
-        label.className = "spotlight-label";
-        label.style.opacity = "0";
-        document.body.appendChild(label);
-        const handlers = [];
-        swatchGroups.forEach((group) => {
-          const rows = group.querySelectorAll(".token-swatch-row");
-          rows.forEach((row) => {
-            const tokenLabel = row.querySelector(".token-swatch-label");
-            const tokenVar = row.querySelector(".token-swatch-var");
-            const onEnter = (e) => {
-              group.classList.add("spotlight-active");
-              row.classList.add("spotlight-focus");
-              if (tokenLabel) {
-                label.textContent = tokenLabel.textContent;
-                label.style.opacity = "1";
-              }
-            };
-            const onMove = (e) => {
-              label.style.left = e.clientX + "px";
-              label.style.top = e.clientY + "px";
-            };
-            const onLeave = () => {
-              group.classList.remove("spotlight-active");
-              row.classList.remove("spotlight-focus");
-              label.style.opacity = "0";
-            };
-            row.addEventListener("mouseenter", onEnter);
-            row.addEventListener("mousemove", onMove);
-            row.addEventListener("mouseleave", onLeave);
-            handlers.push([row, onEnter, onMove, onLeave]);
-          });
-        });
-        return () => {
-          handlers.forEach(([r, en, mv, lv]) => {
-            r.removeEventListener("mouseenter", en);
-            r.removeEventListener("mousemove", mv);
-            r.removeEventListener("mouseleave", lv);
-          });
-          label.remove();
-        };
-      }, []);
-    };
 
     // Hook: counter rolling animation (0 → N) quando entra viewport
     const useCounterRoll = (ref, target, duration = 600) => {
@@ -1621,8 +1549,6 @@
 
     const TokensVivosSection = () => {
       const [colors, setColors] = React.useState({});
-      const sectionRef = React.useRef(null);
-      useTokenSpotlight(sectionRef);
       React.useEffect(() => {
         const c = {};
         TOKEN_GROUPS.forEach(g => g.tokens.forEach(t => { c[t.name] = getCssVar(t.name); }));
@@ -1630,7 +1556,7 @@
       }, []);
 
       return (
-        <section id="tokens" ref={sectionRef}>
+        <section id="tokens">
           <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
             <p className="eyebrow">Fundação</p>
             <h2 className="section-title">Tokens em vivo</h2>
