@@ -211,8 +211,106 @@
       </section>
     );
 
+    // Presets visuais do Design System
+    const PRESETS = [
+      {
+        name: "Ops Default",
+        desc: "Industrial, alta densidade. Para sistemas operacionais.",
+        accent: "#2563eb",
+        bg: "#ffffff",
+        card: "#f8fafc",
+        muted: "#f1f5f9",
+        text: "#0f172a",
+      },
+      {
+        name: "CRM Dark",
+        desc: "Dark mode denso. Para CRMs e painéis analíticos.",
+        accent: "#6366f1",
+        bg: "#0f172a",
+        card: "#1e293b",
+        muted: "#334155",
+        text: "#f1f5f9",
+      },
+      {
+        name: "Wiki Sage",
+        desc: "Verde-neutro, leve. Para wikis e bases de conhecimento.",
+        accent: "#16a34a",
+        bg: "#f9fafb",
+        card: "#ffffff",
+        muted: "#f0fdf4",
+        text: "#111827",
+      },
+    ];
+
+    const PresetCard = ({ preset, active, onClick }) => (
+      <div
+        onClick={onClick}
+        style={{
+          cursor: "pointer",
+          border: `2px solid ${active ? preset.accent : "hsl(var(--border))"}`,
+          borderRadius: 12,
+          overflow: "hidden",
+          transition: "border-color 200ms, box-shadow 200ms",
+          boxShadow: active ? `0 0 0 3px ${preset.accent}33` : "none",
+        }}
+      >
+        {/* Mini preview */}
+        <div style={{ background: preset.bg, padding: 12, display: "flex", gap: 8 }}>
+          {/* Sidebar mini */}
+          <div style={{ width: 32, background: preset.card, borderRadius: 6, border: `1px solid ${preset.muted}`, display: "flex", flexDirection: "column", alignItems: "center", padding: "6px 4px", gap: 4 }}>
+            <div style={{ width: 16, height: 4, borderRadius: 2, background: preset.accent }} />
+            {[0,1,2].map(i => <div key={i} style={{ width: 16, height: 3, borderRadius: 2, background: preset.muted }} />)}
+          </div>
+          {/* Content mini */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ height: 10, borderRadius: 3, background: preset.text, opacity: 0.8, width: "60%" }} />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+              <div style={{ height: 28, borderRadius: 6, background: preset.card, border: `1px solid ${preset.muted}` }} />
+              <div style={{ height: 28, borderRadius: 6, background: preset.card, border: `1px solid ${preset.muted}` }} />
+            </div>
+            <div style={{ height: 6, borderRadius: 3, background: preset.accent, width: "40%" }} />
+          </div>
+        </div>
+        {/* Label */}
+        <div style={{ padding: "10px 12px", background: "hsl(var(--card))", borderTop: "1px solid hsl(var(--border))" }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: "hsl(var(--foreground))" }}>{preset.name}</div>
+          <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 2 }}>{preset.desc}</div>
+          <div style={{ display: "flex", gap: 4, marginTop: 8 }}>
+            {[preset.accent, preset.bg, preset.card, preset.muted].map((c, i) => (
+              <div key={i} style={{ width: 14, height: 14, borderRadius: "50%", background: c, border: "1px solid hsl(var(--border))" }} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const DesignSystemTab = () => {
+      const [activePreset, setActivePreset] = React.useState(0);
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>3 Presets visuais</div>
+            <div style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", marginBottom: 16 }}>
+              Selecione um preset pra ver o preview. O SettingsScreen (admin) permite editar tokens com live swap.
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+              {PRESETS.map((p, i) => (
+                <PresetCard key={p.name} preset={p} active={activePreset === i} onClick={() => setActivePreset(i)} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>Token Editor (SettingsScreen)</div>
+            <div style={{ border: "1px solid hsl(var(--border))", borderRadius: 8, overflow: "hidden", minHeight: 400 }}>
+              <SettingsScreen onSave={(o) => console.log("save", o)} />
+            </div>
+          </div>
+        </div>
+      );
+    };
+
     const App = () => {
-      const [picked, setPicked] = React.useState("settings");
+      const [picked, setPicked] = React.useState("design-system");
       return (
         <>
           <h1>Screens</h1>
@@ -222,7 +320,7 @@
             <Tabs
               value={picked} onChange={setPicked}
               items={[
-                {value:"settings",label:"Settings (admin tokens)"},
+                {value:"design-system",label:"Design System"},
                 {value:"profile",label:"Profile"},
                 {value:"dashboard",label:"Dashboard"},
                 {value:"romaneios",label:"Romaneios"},
@@ -233,7 +331,7 @@
 
           <ShowcaseSection title="Preview">
             <div className="preview-frame">
-              {picked === "settings"   && <SettingsScreen onSave={(o) => console.log("save", o)} />}
+              {picked === "design-system" && <DesignSystemTab />}
               {picked === "profile"    && <ProfileScreen
                 user={{ name: "Patrick Neuhaus", email: "patrick@studioartemis.com", role: "Admin", since: "Mar/2024" }}
                 onSave={(d) => console.log("save", d)}
@@ -249,7 +347,7 @@
 
           <ShowcaseSection title="Notas">
             <ul style={{ fontSize: 13, lineHeight: 1.7, paddingLeft: 18, margin: 0 }}>
-              <li><strong>SettingsScreen</strong> — admin pode editar tokens (cores) com live preview + localStorage. Match design Patrick image 1.</li>
+              <li><strong>Design System</strong> — 3 presets visuais (Ops Default, CRM Dark, Wiki Sage) + SettingsScreen com live token editor.</li>
               <li><strong>ProfileScreen</strong> — perfil próprio com edit inline + delete account + change password + upload avatar.</li>
               <li><strong>DashboardScreen / RomaneiosScreen</strong> — DEMO CONTENT (TransLog/Choco). Substitua data via props pra reuso.</li>
               <li><strong>EmptyDashboardScreen</strong> — fallback pra primeiro acesso (sem dados).</li>
