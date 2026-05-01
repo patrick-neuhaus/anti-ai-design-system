@@ -17,46 +17,92 @@
       z-index: 300; transition: width 80ms linear; pointer-events: none;
     }
 
-    /* ── Floating glass header ────────────────────────────── */
-    .float-header {
-      position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
-      z-index: 200;
-      display: flex; align-items: center; gap: 0;
-      max-width: 720px; width: calc(100% - 48px);
-      background: hsl(var(--card) / .75);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: 1px solid hsl(var(--border) / .5);
-      border-radius: 999px;
-      padding: 8px 8px 8px 20px;
-      box-shadow: 0 4px 24px hsl(var(--foreground) / .06);
+    /* ── Nav header (unified Wave 4) ────────────────────── */
+    @keyframes nav-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / .5); }
+      50%      { box-shadow: 0 0 0 6px hsl(var(--accent) / 0); }
     }
-    .float-header-logo {
-      font-family: var(--font-display); font-size: 14px; font-weight: 600;
-      color: hsl(var(--foreground)); letter-spacing: -.01em; white-space: nowrap;
+    .nav-header {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 6px 6px 18px;
+      background: hsl(var(--card) / .72);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid hsl(var(--border) / .6);
+      border-radius: 999px;
+      box-shadow: 0 8px 32px -8px hsl(var(--foreground) / .12);
+      max-width: calc(100vw - 24px);
+    }
+    .nav-brand {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: -.01em;
+      color: hsl(var(--foreground));
+      padding-right: 14px;
+      border-right: 1px solid hsl(var(--border) / .5);
+      margin-right: 6px;
+      flex-shrink: 0;
       text-decoration: none;
     }
-    .float-header-nav {
-      display: flex; align-items: center; gap: 2px;
-      margin-left: 16px; flex: 1;
+    .nav-brand-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: hsl(var(--accent));
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: nav-pulse 1.6s ease-in-out infinite;
     }
-    .float-header-nav a {
-      font-size: 12.5px; color: hsl(var(--muted-foreground));
-      text-decoration: none; padding: 5px 10px; border-radius: 999px;
-      white-space: nowrap; transition: color 150ms, background 150ms;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
     }
-    .float-header-nav a:hover { color: hsl(var(--foreground)); background: hsl(var(--muted) / .5); }
-    .float-header-cta {
-      margin-left: 8px; flex-shrink: 0;
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 7px 14px; border-radius: 999px;
-      background: hsl(var(--accent)); color: hsl(var(--accent-foreground));
-      font-size: 12px; font-weight: 600; text-decoration: none;
-      transition: background 150ms;
+    .nav-link {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: color 150ms, background 150ms;
+      white-space: nowrap;
     }
-    .float-header-cta:hover { background: hsl(var(--accent) / .85); }
-    @media (max-width: 640px) {
-      .float-header-nav { display: none; }
-      .float-header { padding: 8px 8px 8px 16px; }
+    .nav-link:hover {
+      color: hsl(var(--foreground));
+      background: hsl(var(--muted) / .6);
+    }
+    .nav-cta-mini {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 7px 14px;
+      background: hsl(var(--accent));
+      color: hsl(var(--accent-foreground));
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 8px;
+      transition: transform 150ms, box-shadow 150ms;
+    }
+    .nav-cta-mini:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px hsl(var(--accent) / .4);
+    }
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .nav-header { padding: 6px 6px 6px 14px; }
+      .nav-brand { padding-right: 8px; margin-right: 0; border-right: none; font-size: 13px; }
     }
 
     /* ── Scrollytelling — reveal on scroll ────────────────── */
@@ -91,7 +137,7 @@
     h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
     .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
 
-    /* ── Categories dropdown in float-header ─────────────────── */
+    /* ── Categories dropdown ──────────────────────────────────── */
     .fh-dropdown { position: relative; }
     .fh-dropdown-btn {
       font-size: 12.5px; color: hsl(var(--muted-foreground));
@@ -128,8 +174,8 @@
       pre, code { max-width: 100%; overflow-x: auto; word-wrap: break-word; }
       .showcase-section > * { min-width: 0; }
       .showcase-block > * { min-width: 0; }
-      .float-header { left: 8px; right: 8px; max-width: calc(100vw - 16px); }
-      .float-header-nav { gap: 8px; flex-wrap: wrap; }
+      .nav-header { left: 8px; right: 8px; max-width: calc(100vw - 16px); }
+      .nav-links { gap: 8px; flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -137,32 +183,32 @@
 
   <div class="progress-bar" id="progressBar"></div>
 
-  <header class="float-header">
-    <a class="float-header-logo" href="../index.html">Anti-AI</a>
-    <nav class="float-header-nav">
-      <a href="./index.html#filosofia">Filosofia</a>
-      <a href="./index.html#tokens">Tokens</a>
+  <nav class="nav-header" aria-label="Navegacao principal">
+    <a class="nav-brand" href="../index.html"><span class="nav-brand-dot"></span>Anti-AI</a>
+    <div class="nav-links">
+      <a class="nav-link" href="./index.html#filosofia">Filosofia</a>
+      <a class="nav-link" href="./index.html#tokens">Tokens</a>
       <div class="fh-dropdown">
-        <button class="fh-dropdown-btn">Categorias &#9660;</button>
+        <button class="fh-dropdown-btn">Categorias <span class="fh-arrow">&#9660;</span></button>
         <div class="fh-dropdown-menu">
-        <a href="./index.html">Visão geral</a>
-        <a href="./base.html">Base</a>
-        <a href="./surfaces.html">Surfaces</a>
-        <a href="./display.html" class="fh-active">Display</a>
-        <a href="./layout.html">Layout</a>
-        <a href="./forms.html">Forms</a>
-        <a href="./navigation.html">Navigation</a>
-        <a href="./data.html">Data</a>
-        <a href="./dashboard.html">Dashboard</a>
+        <a href="./index.html">Visao geral</a>
         <a href="./auth.html">Auth</a>
+        <a href="./base.html">Base</a>
+        <a href="./dashboard.html">Dashboard</a>
+        <a href="./data.html">Data</a>
+        <a href="./display.html" class="fh-active">Display</a>
+        <a href="./forms.html">Forms</a>
+        <a href="./layout.html">Layout</a>
+        <a href="./navigation.html">Navigation</a>
         <a href="./screens.html">Screens</a>
+        <a href="./surfaces.html">Surfaces</a>
         </div>
       </div>
-      <a href="./index.html#templates">Templates</a>
-      <a href="./index.html#como-usar">Como Usar</a>
-    </nav>
-    <a class="float-header-cta" href="../index.html">Ver exemplos →</a>
-  </header>
+      <a class="nav-link" href="./index.html#templates">Templates</a>
+      <a class="nav-link" href="./index.html#como-usar">Como Usar</a>
+    </div>
+    <a class="nav-cta-mini" href="../index.html">Ver exemplos &#8594;</a>
+  </nav>
 
   <div id="root" class="showcase-shell"></div>
 
@@ -203,9 +249,8 @@
           <h1>Display</h1>
           <p className="lead">Pílulas de status, avatares, alerts e estados de carregamento.</p>
 
-          <ShowcaseSection title="Badge — intents (dot auto em non-neutral)"
-            meta="Regra: intent !== neutral → dot=true por padrão. Opt-out com dot={false}.">
-            <div className="showcase-row" style={{ marginBottom: 12 }}>
+          <ShowcaseSection title="Badge — intents (dot auto em non-neutral)">
+            <div className="showcase-row" style={{ marginBottom: 16 }}>
               <Badge>Neutral</Badge>
               <Badge intent="primary">Primary</Badge>
               <Badge intent="success">Success</Badge>
@@ -213,12 +258,14 @@
               <Badge intent="info">Info</Badge>
               <Badge intent="destructive" strong>Destructive strong</Badge>
             </div>
-            <div className="showcase-row">
-              <span style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginRight: 8 }}>Opt-out dot=false:</span>
-              <Badge intent="primary" dot={false}>Primary</Badge>
-              <Badge intent="success" dot={false}>Success</Badge>
-              <Badge intent="warning" dot={false}>Warning</Badge>
-              <Badge intent="info" dot={false}>Info</Badge>
+            <div style={{ background: "hsl(var(--muted) / .5)", border: "1px solid hsl(var(--border) / .5)", borderRadius: 8, padding: "12px 16px" }}>
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono, monospace)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "hsl(var(--muted-foreground))", marginBottom: 10 }}>Sem dot (opt-out)</div>
+              <div className="showcase-row">
+                <Badge intent="primary" dot={false}>Primary</Badge>
+                <Badge intent="success" dot={false}>Success</Badge>
+                <Badge intent="warning" dot={false}>Warning</Badge>
+                <Badge intent="info" dot={false}>Info</Badge>
+              </div>
             </div>
           </ShowcaseSection>
 
@@ -272,7 +319,7 @@
           </ShowcaseSection>
 
           <ShowcaseSection title="Toast — imperative API"
-            meta="Mount <ToastHost /> once em qualquer page. Dispara via window.toast(...)">
+            meta="Notificações que aparecem no canto da tela. Stack automático, dismiss manual.">
             <div className="showcase-row">
               <Button onClick={() => window.toast("Salvo")}>Default</Button>
               <Button variant="outline" onClick={() => window.toast({ title: "Sucesso", body: "Tudo certo.", intent: "success" })}>Success</Button>
