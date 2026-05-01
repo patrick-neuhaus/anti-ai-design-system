@@ -88,6 +88,34 @@
     .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
     h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
     .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
+
+    /* ── Categories dropdown in float-header ─────────────────── */
+    .fh-dropdown { position: relative; }
+    .fh-dropdown-btn {
+      font-size: 12.5px; color: hsl(var(--muted-foreground));
+      text-decoration: none; padding: 5px 10px; border-radius: 999px;
+      white-space: nowrap; transition: color 150ms, background 150ms;
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .fh-dropdown-btn:hover { color: hsl(var(--foreground)); background: hsl(var(--muted) / .5); }
+    .fh-dropdown-menu {
+      display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: hsl(var(--card)); border: 1px solid hsl(var(--border) / .6);
+      border-radius: 12px; padding: 6px;
+      box-shadow: 0 8px 32px hsl(var(--foreground) / .10);
+      min-width: 200px; z-index: 300;
+      display: none; flex-direction: column; gap: 2px;
+    }
+    .fh-dropdown:hover .fh-dropdown-menu,
+    .fh-dropdown-menu:hover { display: flex; }
+    .fh-dropdown-menu a {
+      font-size: 12.5px; color: hsl(var(--muted-foreground));
+      text-decoration: none; padding: 6px 10px; border-radius: 8px;
+      white-space: nowrap; transition: color 150ms, background 150ms;
+    }
+    .fh-dropdown-menu a:hover { color: hsl(var(--foreground)); background: hsl(var(--muted) / .5); }
+    .fh-dropdown-menu a.fh-active { color: hsl(var(--accent)); background: hsl(var(--accent-decorative, var(--accent)) / .10); font-weight: 500; }
   </style>
 </head>
 <body class="preset-base">
@@ -99,7 +127,22 @@
     <nav class="float-header-nav">
       <a href="./index.html#filosofia">Filosofia</a>
       <a href="./index.html#tokens">Tokens</a>
-      <a href="./index.html#categorias">Categorias</a>
+      <div class="fh-dropdown">
+        <button class="fh-dropdown-btn">Categorias &#9660;</button>
+        <div class="fh-dropdown-menu">
+        <a href="./index.html">Visão geral</a>
+        <a href="./base.html">Base</a>
+        <a href="./surfaces.html">Surfaces</a>
+        <a href="./display.html">Display</a>
+        <a href="./layout.html">Layout</a>
+        <a href="./forms.html">Forms</a>
+        <a href="./navigation.html">Navigation</a>
+        <a href="./data.html" class="fh-active">Data</a>
+        <a href="./dashboard.html">Dashboard</a>
+        <a href="./auth.html">Auth</a>
+        <a href="./screens.html">Screens</a>
+        </div>
+      </div>
       <a href="./index.html#templates">Templates</a>
       <a href="./index.html#como-usar">Como Usar</a>
     </nav>
@@ -143,7 +186,6 @@
 
     const App = () => (
       <>
-        <Nav current="data" />
         <h1>Data</h1>
         <p className="lead">Tabelas e listas. Table = primitivo, AppTable = sortable, ListItem = vertical heterogêneo.</p>
 
