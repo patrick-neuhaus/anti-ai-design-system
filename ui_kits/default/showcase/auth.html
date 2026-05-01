@@ -93,10 +93,10 @@
     .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; }
     .btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
     .auth-frame {
-      min-height: 560px;
+      height: 560px;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: stretch;
+      justify-content: stretch;
       border: 1px solid hsl(var(--border));
       border-radius: 12px;
       overflow: hidden;
@@ -104,9 +104,16 @@
     }
     .auth-variant {
       position: absolute; inset: 0;
+      display: flex;
       opacity: 0;
       transition: opacity 150ms ease;
       pointer-events: none;
+    }
+    /* garante que o root div do screen preenche o inset absoluto */
+    .auth-variant > div {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 100%;
     }
     .auth-variant.active {
       opacity: 1;
