@@ -1098,6 +1098,36 @@
     /* Hide redundant old sticky-cta when new header present */
     .sticky-cta { display: none !important; }
 
+    /* Wave 8.4 — fh-dropdown Categorias (home) */
+    .fh-dropdown { position: relative; }
+    .fh-dropdown-btn {
+      font-size: 12.5px; color: hsl(var(--muted-foreground));
+      text-decoration: none; padding: 6px 12px; border-radius: 999px;
+      white-space: nowrap; transition: color 150ms, background 150ms;
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      font-weight: 500;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .fh-dropdown-btn:hover { color: hsl(var(--foreground)); background: hsl(var(--muted) / .6); }
+    .fh-dropdown-menu {
+      display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      background: hsl(var(--card)); border: 1px solid hsl(var(--border) / .6);
+      border-radius: 12px; padding: 6px;
+      box-shadow: 0 8px 32px hsl(var(--foreground) / .10);
+      min-width: 200px; z-index: 300;
+      flex-direction: column; gap: 2px;
+    }
+    .fh-dropdown[data-open="true"] .fh-dropdown-menu { display: flex; }
+    .fh-dropdown-btn .fh-arrow { display: inline-block; transition: transform 200ms ease; font-style: normal; }
+    .fh-dropdown[data-open="true"] .fh-dropdown-btn .fh-arrow { transform: rotate(180deg); }
+    .fh-dropdown-menu a {
+      font-size: 12.5px; color: hsl(var(--muted-foreground));
+      text-decoration: none; padding: 6px 10px; border-radius: 8px;
+      white-space: nowrap; transition: color 150ms, background 150ms;
+      display: block;
+    }
+    .fh-dropdown-menu a:hover { color: hsl(var(--foreground)); background: hsl(var(--muted) / .5); }
+
     /* Wave 4.3 — scroll-margin pra compensar nav-header fixed (68px + folga) */
     section[id] { scroll-margin-top: 80px; }
 
@@ -1517,7 +1547,22 @@
       <a class="nav-link" href="#templates">Templates</a>
       <a class="nav-link" href="#filosofia">Filosofia</a>
       <a class="nav-link" href="#tokens">Tokens</a>
-      <a class="nav-link" href="#categorias">Categorias</a>
+      <div class="fh-dropdown" id="homeCategoriasDD">
+        <button class="fh-dropdown-btn" aria-expanded="false" aria-haspopup="true">Categorias <span class="fh-arrow">&#9660;</span></button>
+        <div class="fh-dropdown-menu">
+          <a href="#categorias">Visão geral</a>
+          <a href="./auth.html">Auth</a>
+          <a href="./base.html">Base</a>
+          <a href="./dashboard.html">Dashboard</a>
+          <a href="./data.html">Data</a>
+          <a href="./display.html">Display</a>
+          <a href="./forms.html">Forms</a>
+          <a href="./layout.html">Layout</a>
+          <a href="./navigation.html">Navigation</a>
+          <a href="./screens.html">Screens</a>
+          <a href="./surfaces.html">Surfaces</a>
+        </div>
+      </div>
       <a class="nav-link" href="#como-usar">Como usar</a>
     </div>
     <a class="nav-cta-mini" href="../index.html">Ver exemplos →</a>
@@ -2917,6 +2962,32 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
     };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+
+  <script>
+    /* Wave 8.4 — Categorias dropdown (home) */
+    (function () {
+      var dd  = document.getElementById("homeCategoriasDD");
+      if (!dd) return;
+      var btn  = dd.querySelector(".fh-dropdown-btn");
+      var menu = dd.querySelector(".fh-dropdown-menu");
+      function openDD()  { dd.setAttribute("data-open","true");  btn.setAttribute("aria-expanded","true"); }
+      function closeDD() { dd.removeAttribute("data-open");       btn.setAttribute("aria-expanded","false"); }
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        dd.hasAttribute("data-open") ? closeDD() : openDD();
+      });
+      document.addEventListener("click", function (e) { if (!dd.contains(e.target)) closeDD(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeDD(); btn.focus(); } });
+      menu.addEventListener("keydown", function (e) {
+        var items = Array.from(menu.querySelectorAll("a"));
+        var idx   = items.indexOf(document.activeElement);
+        if (e.key === "ArrowDown") { e.preventDefault(); var n = items[(idx + 1) % items.length]; if (n) n.focus(); }
+        if (e.key === "ArrowUp")   { e.preventDefault(); var p = items[(idx - 1 + items.length) % items.length]; if (p) p.focus(); }
+        if (e.key === "Escape")    { closeDD(); btn.focus(); }
+        if (e.key === "Tab" && !e.shiftKey && idx === items.length - 1) closeDD();
+      });
+    })();
   </script>
 </body>
 </html>
