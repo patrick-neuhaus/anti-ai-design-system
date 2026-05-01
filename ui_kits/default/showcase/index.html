@@ -1535,6 +1535,19 @@
       .code-block-inner { transition: none !important; }
       .antipattern-card::before { display: none; }
     }
+  
+    /* Wave 9.4 — CTA responsive */
+    .nav-cta-mini .nav-cta-text { display: inline; }
+    .nav-cta-mini .nav-cta-icon { display: none; }
+    @media (max-width: 768px) {
+      .nav-cta-mini {
+        width: 36px; height: 36px; padding: 0;
+        border-radius: 50%; display: inline-flex;
+        align-items: center; justify-content: center;
+      }
+      .nav-cta-mini .nav-cta-text { display: none; }
+      .nav-cta-mini .nav-cta-icon { display: inline; font-size: 16px; }
+    }
   </style>
 </head>
 <body class="preset-base">
@@ -1565,7 +1578,7 @@
       </div>
       <a class="nav-link" href="#como-usar">Como usar</a>
     </div>
-    <a class="nav-cta-mini" href="../index.html">Ver exemplos →</a>
+    <a class="nav-cta-mini" href="../index.html"><span class="nav-cta-text">Ver exemplos</span><span class="nav-cta-icon">→</span></a>
   </nav>
 
   <a class="sticky-cta" href="../index.html">Ver exemplos →</a>
