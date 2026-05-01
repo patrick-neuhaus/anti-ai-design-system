@@ -35,7 +35,7 @@
   <script type="text/babel">
     const Nav = ({ current }) => (
       <nav className="showcase-nav">
-        {[["index","Visão geral"],["base","Base"],["surfaces","Surfaces"],["display","Display"],["layout","Layout"],["forms","Forms"],["navigation","Navigation"],["data","Data"],["dashboard","Dashboard"],["auth","Auth"]].map(([k,l]) => <a key={k} href={`./${k}.html`} className={current === k ? "active" : ""}>{l}</a>)}
+        {[["index","Visão geral"],["base","Base"],["surfaces","Surfaces"],["display","Display"],["layout","Layout"],["forms","Forms"],["navigation","Navigation"],["data","Data"],["dashboard","Dashboard"],["auth","Auth"],["screens","Screens"]].map(([k,l]) => <a key={k} href={`./${k}.html`} className={current === k ? "active" : ""}>{l}</a>)}
       </nav>
     );
     const ShowcaseSection = ({ title, children }) => (

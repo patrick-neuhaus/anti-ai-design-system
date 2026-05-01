@@ -40,12 +40,13 @@
   <script type="text/babel" src="../components/auth/LoginScreen.jsx"></script>
   <script type="text/babel" src="../components/auth/RegisterScreen.jsx"></script>
   <script type="text/babel" src="../components/auth/ForgotPasswordScreen.jsx"></script>
+  <script type="text/babel" src="../components/auth/ResetPasswordScreen.jsx"></script>
   <script type="text/babel" src="../components/auth/ConfirmEmailScreen.jsx"></script>
 
   <script type="text/babel">
     const Nav = ({ current }) => (
       <nav className="showcase-nav">
-        {[["index","Visão geral"],["base","Base"],["surfaces","Surfaces"],["display","Display"],["layout","Layout"],["forms","Forms"],["navigation","Navigation"],["data","Data"],["dashboard","Dashboard"],["auth","Auth"]].map(([k,l]) => <a key={k} href={`./${k}.html`} className={current === k ? "active" : ""}>{l}</a>)}
+        {[["index","Visão geral"],["base","Base"],["surfaces","Surfaces"],["display","Display"],["layout","Layout"],["forms","Forms"],["navigation","Navigation"],["data","Data"],["dashboard","Dashboard"],["auth","Auth"],["screens","Screens"]].map(([k,l]) => <a key={k} href={`./${k}.html`} className={current === k ? "active" : ""}>{l}</a>)}
       </nav>
     );
     const ShowcaseSection = ({ title, children }) => (
@@ -70,6 +71,7 @@
                 {value:"login",label:"Login"},
                 {value:"register",label:"Register"},
                 {value:"forgot",label:"Forgot password"},
+                {value:"reset",label:"Reset password"},
                 {value:"confirm",label:"Confirm email"},
               ]}
             />
@@ -77,9 +79,10 @@
 
           <ShowcaseSection title="Preview — full size">
             <div style={{ height: 560, border: "1px solid hsl(var(--border))", borderRadius: 12, overflow: "hidden" }}>
-              {picked === "login"    && <LoginScreen onLogin={() => {}} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />}
+              {picked === "login"    && <LoginScreen onLogin={() => {}} onForgot={() => setPicked("forgot")} onGoRegister={() => setPicked("register")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" showGoogle />}
               {picked === "register" && <RegisterScreen onRegister={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />}
               {picked === "forgot"   && <ForgotPasswordScreen onSubmit={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />}
+              {picked === "reset"    && <ResetPasswordScreen onSubmit={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />}
               {picked === "confirm"  && <ConfirmEmailScreen status="success" email="user@example.com" onContinue={() => {}} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} />}
             </div>
           </ShowcaseSection>
