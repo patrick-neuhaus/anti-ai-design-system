@@ -2029,13 +2029,11 @@
     ];
 
     const TocRow = ({ cat }) => {
-      const ref = React.useRef(null);
-      const count = useCounterRoll(ref, cat.count, 600);
       return (
-        <a ref={ref} className="toc-row" href={cat.href} style={{ textDecoration: "none", color: "inherit" }}>
+        <a className="toc-row" href={cat.href} style={{ textDecoration: "none", color: "inherit" }}>
           <div className="toc-left">
             <div className="toc-name">{cat.name}</div>
-            <div className="toc-count">({count} {cat.unit})</div>
+            <div className="toc-count">({cat.count} {cat.unit})</div>
           </div>
           <div className="toc-chips">
             {cat.chips.map((c) => (
