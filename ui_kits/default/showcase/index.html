@@ -1547,8 +1547,8 @@
       <a class="nav-link" href="#templates">Templates</a>
       <a class="nav-link" href="#filosofia">Filosofia</a>
       <a class="nav-link" href="#tokens">Tokens</a>
-      <div class="fh-dropdown" id="homeCategoriasDD">
-        <button class="fh-dropdown-btn" aria-expanded="false" aria-haspopup="true">Categorias <span class="fh-arrow">&#9660;</span></button>
+      <div class="fh-dropdown">
+        <button class="fh-dropdown-btn" aria-expanded="false" aria-haspopup="true">Categorias <span class="fh-arrow">&#9662;</span></button>
         <div class="fh-dropdown-menu">
           <a href="#categorias">Visão geral</a>
           <a href="./auth.html">Auth</a>
@@ -3031,9 +3031,9 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
   </script>
 
   <script>
-    /* Wave 8.4 — Categorias dropdown (home) */
+    /* Wave 9.3 — Categorias dropdown (unified) */
     (function () {
-      var dd  = document.getElementById("homeCategoriasDD");
+      var dd  = document.querySelector('.fh-dropdown');
       if (!dd) return;
       var btn  = dd.querySelector(".fh-dropdown-btn");
       var menu = dd.querySelector(".fh-dropdown-menu");

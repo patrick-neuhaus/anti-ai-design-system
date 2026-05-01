@@ -190,7 +190,7 @@
       <a class="nav-link" href="./index.html#filosofia">Filosofia</a>
       <a class="nav-link" href="./index.html#tokens">Tokens</a>
       <div class="fh-dropdown">
-        <button class="fh-dropdown-btn">Categorias <span class="fh-arrow">&#9660;</span></button>
+        <button class="fh-dropdown-btn">Categorias <span class="fh-arrow">&#9662;</span></button>
         <div class="fh-dropdown-menu">
         <a href="./index.html">Visao geral</a>
         <a href="./auth.html">Auth</a>
@@ -313,7 +313,6 @@
       var btn = document.querySelector('.fh-dropdown-btn');
       var menu = document.querySelector('.fh-dropdown-menu');
       if (!dd || !btn || !menu) return;
-      btn.innerHTML = btn.innerHTML.replace(/&#9660;|▾|▼/, '<span class="fh-arrow">▾</span>');
       btn.setAttribute('aria-expanded', 'false');
       btn.setAttribute('aria-haspopup', 'true');
       function openDD() { dd.setAttribute('data-open', 'true'); btn.setAttribute('aria-expanded', 'true'); }
