@@ -805,12 +805,156 @@
       100% { d: path("M0 30 Q 250 60 500 30 T 1000 30 V 60 H 0 Z"); }
     }
 
+    /* ==================================================
+       Float cards — 3D tilt individual on hover
+       ================================================== */
+    .float-card {
+      transition: transform 200ms cubic-bezier(.2,.8,.2,1), box-shadow 200ms;
+    }
+    .float-card.is-hovered {
+      z-index: 10;
+      box-shadow: 0 32px 64px -20px hsl(var(--foreground) / .28), 0 8px 20px -4px hsl(var(--foreground) / .14) !important;
+    }
+
+    /* ==================================================
+       Filosofia — glow cursor trail inside card
+       ================================================== */
+    .antipattern-card {
+      --glow-x: 50%;
+      --glow-y: 50%;
+    }
+    .antipattern-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(160px circle at var(--glow-x) var(--glow-y), hsl(var(--accent) / .18), transparent 70%);
+      opacity: 0;
+      transition: opacity 300ms;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .antipattern-card:hover::before { opacity: 1; }
+    .antipattern-card > * { position: relative; z-index: 1; }
+
+    /* ==================================================
+       Tokens — spotlight hover (dim siblings)
+       ================================================== */
+    .token-swatches.spotlight-active .token-swatch-row {
+      opacity: .35;
+      transition: opacity 250ms;
+    }
+    .token-swatches.spotlight-active .token-swatch-row.spotlight-focus {
+      opacity: 1;
+    }
+    .token-swatch-row {
+      transition: opacity 250ms, transform 200ms;
+      cursor: pointer;
+    }
+    .token-swatch-row.spotlight-focus {
+      transform: scale(1.03);
+    }
+    .spotlight-label {
+      position: fixed;
+      z-index: 999;
+      pointer-events: none;
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 600;
+      color: hsl(var(--foreground) / .06);
+      letter-spacing: -.03em;
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+      transition: opacity 200ms;
+      user-select: none;
+    }
+
+    /* ==================================================
+       Categorias — counter rolling
+       ================================================== */
+    .cat-count-num {
+      display: inline-block;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ==================================================
+       Templates — hover parallax depth
+       ================================================== */
+    .template-card {
+      transition: box-shadow 300ms, transform 300ms cubic-bezier(.2,.8,.2,1);
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+    .template-card:hover {
+      box-shadow: 0 24px 56px -12px hsl(var(--foreground) / .18), 0 8px 20px -4px hsl(var(--foreground) / .1) !important;
+      transform: translateY(-6px) scale(1.02) !important;
+    }
+
+    /* ==================================================
+       ComoUsar — cursor blink + tab morph
+       ================================================== */
+    .code-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: hsl(var(--accent));
+      vertical-align: text-bottom;
+      margin-left: 2px;
+      animation: cursor-blink 1s step-end infinite;
+    }
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .code-block-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .code-block-inner {
+      transition: opacity 200ms, transform 200ms cubic-bezier(.2,.8,.2,1);
+    }
+    .code-block-inner.exiting {
+      opacity: 0;
+      transform: scaleX(0.96) translateX(-8px);
+      transform-origin: left center;
+    }
+    .code-block-inner.entering {
+      opacity: 0;
+      transform: scaleX(0.96) translateX(8px);
+      transform-origin: left center;
+    }
+    .code-block-inner.visible {
+      opacity: 1;
+      transform: scaleX(1) translateX(0);
+    }
+
+    /* ==================================================
+       Footer — constellation
+       ================================================== */
+    .footer-constellation {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    @keyframes constellation-draw {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes constellation-pop {
+      from { opacity: 0; transform: scale(0); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
     /* Reduced motion: kill all animations */
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal-stagger > * { transition: none; opacity: 1; transform: none; }
       .float-card { animation: none !important; }
       .fc-pal-chip { animation: none !important; }
       .fc-badge-dot { animation: none !important; }
+      .code-cursor { animation: none !important; opacity: 1; }
+      .code-block-inner { transition: none !important; }
+      .antipattern-card::before { display: none; }
+      .template-card:hover { transform: translateY(-3px) !important; }
     }
   </style>
 </head>
@@ -891,6 +1035,7 @@
     };
 
     // Parallax mouse no hero canvas (subtle: max ±10px)
+    // Respeita _paralaxPaused quando card está em tilt individual
     const useMouseParallax = (ref, intensity = 12) => {
       React.useEffect(() => {
         const el = ref.current;
@@ -900,12 +1045,16 @@
           const x = ((e.clientX - r.left) / r.width  - 0.5) * 2;
           const y = ((e.clientY - r.top)  / r.height - 0.5) * 2;
           el.querySelectorAll("[data-parallax]").forEach((card) => {
+            if (card._paralaxPaused) return;
             const depth = parseFloat(card.dataset.parallax) || 1;
             card.style.transform = `translate3d(${x * intensity * depth}px, ${y * intensity * depth}px, 0)`;
           });
         };
         const onLeave = () => {
-          el.querySelectorAll("[data-parallax]").forEach((c) => { c.style.transform = ""; });
+          el.querySelectorAll("[data-parallax]").forEach((c) => {
+            if (c._paralaxPaused) return;
+            c.style.transform = "";
+          });
         };
         el.addEventListener("mousemove", onMove);
         el.addEventListener("mouseleave", onLeave);
@@ -914,6 +1063,150 @@
           el.removeEventListener("mouseleave", onLeave);
         };
       }, []);
+    };
+
+    // Hook: 3D tilt individual em cada float-card no hero
+    const useFloatCardTilt = (canvasRef) => {
+      React.useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReduced) return;
+        const cards = canvas.querySelectorAll(".float-card");
+        const handlers = [];
+        cards.forEach((card) => {
+          const onEnter = () => {
+            card.classList.add("is-hovered");
+            // pause parallax on this card while hovered
+            card._paralaxPaused = true;
+          };
+          const onMove = (e) => {
+            const r = card.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width;
+            const y = (e.clientY - r.top) / r.height;
+            const rx = (0.5 - y) * 12;
+            const ry = (x - 0.5) * 12;
+            card.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.04)`;
+          };
+          const onLeave = () => {
+            card.classList.remove("is-hovered");
+            card._paralaxPaused = false;
+            card.style.transform = "";
+          };
+          card.addEventListener("mouseenter", onEnter);
+          card.addEventListener("mousemove", onMove);
+          card.addEventListener("mouseleave", onLeave);
+          handlers.push([card, onEnter, onMove, onLeave]);
+        });
+        return () => handlers.forEach(([c, en, mv, lv]) => {
+          c.removeEventListener("mouseenter", en);
+          c.removeEventListener("mousemove", mv);
+          c.removeEventListener("mouseleave", lv);
+        });
+      }, []);
+    };
+
+    // Hook: glow trail em cada card (usa CSS var --glow-x/y)
+    const useGlowTrail = (ref) => {
+      React.useEffect(() => {
+        const root = ref.current;
+        if (!root) return;
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReduced) return;
+        const cards = root.querySelectorAll("[data-glow]");
+        const handlers = [];
+        cards.forEach((card) => {
+          const onMove = (e) => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty("--glow-x", `${e.clientX - r.left}px`);
+            card.style.setProperty("--glow-y", `${e.clientY - r.top}px`);
+          };
+          card.addEventListener("mousemove", onMove);
+          handlers.push([card, onMove]);
+        });
+        return () => handlers.forEach(([c, fn]) => c.removeEventListener("mousemove", fn));
+      }, []);
+    };
+
+    // Hook: spotlight nos token swatches
+    const useTokenSpotlight = (containerRef) => {
+      React.useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+        const swatchGroups = container.querySelectorAll(".token-swatches");
+        // Create floating label element
+        const label = document.createElement("div");
+        label.className = "spotlight-label";
+        label.style.opacity = "0";
+        document.body.appendChild(label);
+        const handlers = [];
+        swatchGroups.forEach((group) => {
+          const rows = group.querySelectorAll(".token-swatch-row");
+          rows.forEach((row) => {
+            const tokenLabel = row.querySelector(".token-swatch-label");
+            const tokenVar = row.querySelector(".token-swatch-var");
+            const onEnter = (e) => {
+              group.classList.add("spotlight-active");
+              row.classList.add("spotlight-focus");
+              if (tokenLabel) {
+                label.textContent = tokenLabel.textContent;
+                label.style.opacity = "1";
+              }
+            };
+            const onMove = (e) => {
+              label.style.left = e.clientX + "px";
+              label.style.top = e.clientY + "px";
+            };
+            const onLeave = () => {
+              group.classList.remove("spotlight-active");
+              row.classList.remove("spotlight-focus");
+              label.style.opacity = "0";
+            };
+            row.addEventListener("mouseenter", onEnter);
+            row.addEventListener("mousemove", onMove);
+            row.addEventListener("mouseleave", onLeave);
+            handlers.push([row, onEnter, onMove, onLeave]);
+          });
+        });
+        return () => {
+          handlers.forEach(([r, en, mv, lv]) => {
+            r.removeEventListener("mouseenter", en);
+            r.removeEventListener("mousemove", mv);
+            r.removeEventListener("mouseleave", lv);
+          });
+          label.remove();
+        };
+      }, []);
+    };
+
+    // Hook: counter rolling animation (0 → N) quando entra viewport
+    const useCounterRoll = (ref, target, duration = 600) => {
+      const [count, setCount] = React.useState(0);
+      const hasRun = React.useRef(false);
+      React.useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReduced) { setCount(target); return; }
+        const io = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting && !hasRun.current) {
+            hasRun.current = true;
+            const start = performance.now();
+            const tick = (now) => {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              setCount(Math.round(eased * target));
+              if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+            io.unobserve(el);
+          }
+        }, { threshold: 0.3 });
+        io.observe(el);
+        return () => io.disconnect();
+      }, [target, duration]);
+      return count;
     };
 
     // ── Hero Section ──────────────────────────────────────────
@@ -930,6 +1223,7 @@
       const [colors, setColors] = React.useState({});
       const canvasRef = React.useRef(null);
       useMouseParallax(canvasRef, 14);
+      useFloatCardTilt(canvasRef);
       React.useEffect(() => {
         const c = {};
         PALETTE_CHIPS.forEach(({ label }) => { c[label] = getCssVar(label); });
@@ -942,7 +1236,7 @@
             <div className="hero-canvas-wrap">
               {/* Texto */}
               <div>
-                <p className="eyebrow">Design System · Wave 6.5</p>
+                <p className="eyebrow">Sistema editorial · 56+ componentes</p>
                 <h1 className="hero-title">
                   Anti-AI<br />Design System
                 </h1>
@@ -1067,6 +1361,7 @@
     const FilosofiaSection = () => {
       const tiltRef = React.useRef(null);
       useTilt(tiltRef, 7);
+      useGlowTrail(tiltRef);
       return (
       <section className="alt-bg" id="filosofia">
         <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
@@ -1077,7 +1372,7 @@
           </p>
           <div className="antipatterns-grid" ref={tiltRef}>
             {ANTIPATTERNS.map((ap) => (
-              <div key={ap.title} className="antipattern-card" data-tilt>
+              <div key={ap.title} className="antipattern-card" data-tilt data-glow>
                 <div className="antipattern-icon">{ap.icon}</div>
                 <h4>{ap.title}</h4>
                 <p>{ap.desc}</p>
@@ -1145,6 +1440,8 @@
 
     const TokensVivosSection = () => {
       const [colors, setColors] = React.useState({});
+      const sectionRef = React.useRef(null);
+      useTokenSpotlight(sectionRef);
       React.useEffect(() => {
         const c = {};
         TOKEN_GROUPS.forEach(g => g.tokens.forEach(t => { c[t.name] = getCssVar(t.name); }));
@@ -1152,7 +1449,7 @@
       }, []);
 
       return (
-        <section id="tokens">
+        <section id="tokens" ref={sectionRef}>
           <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
             <p className="eyebrow">Fundação</p>
             <h2 className="section-title">Tokens em vivo</h2>
@@ -1234,6 +1531,26 @@
       { key: "screens", icon: "🖥️", name: "Screens", count: "5 telas", desc: "Dashboard, Profile, Settings, Romaneios, EmptyDashboard" },
     ];
 
+    // Sub-componente de category card com counter rolling
+    const CategoryCard = ({ cat }) => {
+      const ref = React.useRef(null);
+      // extrai número do count string (ex: "7 componentes" → 7)
+      const match = cat.count.match(/(\d+)/);
+      const target = match ? parseInt(match[1], 10) : 0;
+      const suffix = match ? cat.count.replace(match[1], "") : cat.count;
+      const count = useCounterRoll(ref, target, 600);
+      return (
+        <a ref={ref} key={cat.key} href={`./${cat.key}.html`} className="category-card">
+          <div className="cat-icon">{cat.icon}</div>
+          <div className="cat-name">{cat.name}</div>
+          <div className="cat-count">
+            <span className="cat-count-num">{count}</span>{suffix}
+          </div>
+          <div className="cat-arrow">Ver catálogo →</div>
+        </a>
+      );
+    };
+
     const CategoriasSection = () => (
       <section className="alt-bg" id="categorias">
         <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
@@ -1244,12 +1561,7 @@
           </p>
           <div className="categories-grid">
             {CATEGORIES.map((cat) => (
-              <a key={cat.key} href={`./${cat.key}.html`} className="category-card">
-                <div className="cat-icon">{cat.icon}</div>
-                <div className="cat-name">{cat.name}</div>
-                <div className="cat-count">{cat.count}</div>
-                <div className="cat-arrow">Ver catálogo →</div>
-              </a>
+              <CategoryCard key={cat.key} cat={cat} />
             ))}
           </div>
         </div>
@@ -1387,7 +1699,23 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
 
     const ComoUsarSection = () => {
       const [activeTab, setActiveTab] = React.useState("lovable");
-      const tab = TABS_CONTENT[activeTab];
+      const [morphState, setMorphState] = React.useState("visible"); // "visible" | "exiting" | "entering"
+      const [displayedTab, setDisplayedTab] = React.useState("lovable");
+
+      const switchTab = (key) => {
+        if (key === activeTab) return;
+        setMorphState("exiting");
+        setTimeout(() => {
+          setDisplayedTab(key);
+          setActiveTab(key);
+          setMorphState("entering");
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => setMorphState("visible"));
+          });
+        }, 200);
+      };
+
+      const tab = TABS_CONTENT[displayedTab];
       return (
         <section className="alt-bg" id="como-usar">
           <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
@@ -1401,26 +1729,91 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
                 <button
                   key={key}
                   className={`tab-btn${activeTab === key ? " active" : ""}`}
-                  onClick={() => setActiveTab(key)}
+                  onClick={() => switchTab(key)}
                 >{label}</button>
               ))}
             </div>
-            <div className="code-block" dangerouslySetInnerHTML={{ __html: tab.code }} />
+            <div className="code-block-wrap">
+              <div className={`code-block-inner ${morphState}`}>
+                <div className="code-block">
+                  <span dangerouslySetInnerHTML={{ __html: tab.code }} />
+                  <span className="code-cursor" aria-hidden="true" />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       );
     };
 
+    // Constellation SVG animada no footer
+    const CONSTELLATION_DOTS = [
+      { cx: "8%",  cy: "30%" },
+      { cx: "22%", cy: "65%" },
+      { cx: "45%", cy: "20%" },
+      { cx: "68%", cy: "55%" },
+      { cx: "88%", cy: "35%" },
+    ];
+    // linhas entre dots adjacentes
+    const CONSTELLATION_LINES = [
+      [0, 1], [1, 2], [2, 3], [3, 4], [0, 2],
+    ];
+
+    const ConstellationSvg = () => {
+      const prefersReduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      return (
+        <svg
+          className="footer-constellation"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+        >
+          {CONSTELLATION_LINES.map(([a, b], i) => {
+            const da = CONSTELLATION_DOTS[a];
+            const db = CONSTELLATION_DOTS[b];
+            return (
+              <line
+                key={i}
+                x1={da.cx} y1={da.cy}
+                x2={db.cx} y2={db.cy}
+                stroke="hsl(var(--foreground))"
+                strokeOpacity="0.06"
+                strokeWidth="0.3"
+                style={prefersReduced ? {} : {
+                  strokeDasharray: 30,
+                  strokeDashoffset: 30,
+                  animation: `constellation-draw 2s ${i * 0.3}s ease forwards`,
+                }}
+              />
+            );
+          })}
+          {CONSTELLATION_DOTS.map((d, i) => (
+            <circle
+              key={i}
+              cx={d.cx} cy={d.cy} r="0.7"
+              fill="hsl(var(--foreground))"
+              fillOpacity="0.12"
+              style={prefersReduced ? {} : {
+                animation: `constellation-pop 0.4s ${i * 0.25}s ease both`,
+              }}
+            />
+          ))}
+        </svg>
+      );
+    };
+
     // ── Footer ────────────────────────────────────────────────
     const Footer = () => (
-      <footer>
+      <footer style={{ position: "relative", overflow: "hidden" }}>
+        <ConstellationSvg />
         <svg className="footer-wave" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 30 Q 250 0 500 30 T 1000 30 V 60 H 0 Z" fill="hsl(var(--muted) / .5)" />
         </svg>
-        <p style={{ margin: "0 0 6px" }}>
-          Anti-AI Design System · Wave 6.5 · Artemis Studio
+        <p style={{ margin: "0 0 6px", position: "relative" }}>
+          Anti-AI Design System · Artemis Studio
         </p>
-        <p style={{ margin: 0 }}>
+        <p style={{ margin: 0, position: "relative" }}>
           <a href="../index.html">Ver exemplos interativos →</a>
           {" · "}
           <a href="./base.html">Catálogo técnico</a>
