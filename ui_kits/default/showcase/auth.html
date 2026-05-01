@@ -92,6 +92,26 @@
     .field { display: block; width: 100%; padding: 8px 12px; border: 1px solid hsl(var(--border)); border-radius: 8px; font: inherit; background: hsl(var(--card)); }
     .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; }
     .btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .auth-frame {
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid hsl(var(--border));
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .auth-variant {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      pointer-events: none;
+    }
+    .auth-variant.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     /* ── Categories dropdown in float-header ─────────────────── */
     .fh-dropdown { position: relative; }
@@ -219,13 +239,23 @@
             />
           </ShowcaseSection>
 
-          <ShowcaseSection title="Preview — full size">
-            <div style={{ height: 560, border: "1px solid hsl(var(--border))", borderRadius: 12, overflow: "hidden" }}>
-              {picked === "login"    && <LoginScreen onLogin={() => {}} onForgot={() => setPicked("forgot")} onGoRegister={() => setPicked("register")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" showGoogle />}
-              {picked === "register" && <RegisterScreen onRegister={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />}
-              {picked === "forgot"   && <ForgotPasswordScreen onSubmit={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />}
-              {picked === "reset"    && <ResetPasswordScreen onSubmit={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />}
-              {picked === "confirm"  && <ConfirmEmailScreen status="success" email="user@example.com" onContinue={() => {}} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} />}
+          <ShowcaseSection title="Preview — frame fixo + fade 150ms">
+            <div className="auth-frame">
+              <div className={"auth-variant" + (picked === "login" ? " active" : "")}>
+                <LoginScreen onLogin={() => {}} onForgot={() => setPicked("forgot")} onGoRegister={() => setPicked("register")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" showGoogle />
+              </div>
+              <div className={"auth-variant" + (picked === "register" ? " active" : "")}>
+                <RegisterScreen onRegister={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />
+              </div>
+              <div className={"auth-variant" + (picked === "forgot" ? " active" : "")}>
+                <ForgotPasswordScreen onSubmit={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />
+              </div>
+              <div className={"auth-variant" + (picked === "reset" ? " active" : "")}>
+                <ResetPasswordScreen onSubmit={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />
+              </div>
+              <div className={"auth-variant" + (picked === "confirm" ? " active" : "")}>
+                <ConfirmEmailScreen status="success" email="user@example.com" onContinue={() => {}} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} />
+              </div>
             </div>
           </ShowcaseSection>
         </>
