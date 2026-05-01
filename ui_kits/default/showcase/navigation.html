@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Navigation · Showcase</title>
+  <link rel="stylesheet" href="../../../colors_and_type.css" />
+  <style>
+    body { font-family: var(--font-body); background: hsl(var(--background)); color: hsl(var(--foreground)); margin: 0; }
+    .showcase-shell { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+    .showcase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
+    .showcase-nav a { font-size: 13px; padding: 6px 10px; border-radius: 6px; text-decoration: none; color: hsl(var(--muted-foreground)); }
+    .showcase-nav a.active { background: hsl(var(--accent-decorative) / .12); color: hsl(var(--accent)); font-weight: 500; }
+    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .showcase-section > h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); margin: 0; font-weight: 600; }
+    .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
+    .showcase-meta { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 6px; }
+    h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
+    .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
+  </style>
+</head>
+<body class="preset-base">
+  <div id="root" class="showcase-shell"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="../components/Icon.jsx"></script>
+  <script type="text/babel" src="../components/display/Badge.jsx"></script>
+  <script type="text/babel" src="../components/navigation/Tabs.jsx"></script>
+  <script type="text/babel" src="../components/navigation/Breadcrumb.jsx"></script>
+  <script type="text/babel" src="../components/navigation/Pagination.jsx"></script>
+  <script type="text/babel" src="../components/navigation/NavLink.jsx"></script>
+  <script type="text/babel" src="../components/navigation/Sidebar.jsx"></script>
+
+  <script type="text/babel">
+    const Nav = ({ current }) => (
+      <nav className="showcase-nav">
+        {[["index","Visão geral"],["base","Base"],["surfaces","Surfaces"],["display","Display"],["layout","Layout"],["forms","Forms"],["navigation","Navigation"],["data","Data"],["dashboard","Dashboard"],["auth","Auth"]].map(([k,l]) => <a key={k} href={`./${k}.html`} className={current === k ? "active" : ""}>{l}</a>)}
+      </nav>
+    );
+    const ShowcaseSection = ({ title, children, meta }) => (
+      <section className="showcase-section">
+        <h3>{title}</h3>
+        <div className="showcase-block">{children}</div>
+        {meta && <div className="showcase-meta">{meta}</div>}
+      </section>
+    );
+
+    const App = () => {
+      const [tab, setTab] = React.useState("over");
+      const [page, setPage] = React.useState(3);
+      return (
+        <>
+          <Nav current="navigation" />
+          <h1>Navigation</h1>
+          <p className="lead">Tabs, breadcrumb, pagination, nav-link. Sidebar tem preview à parte.</p>
+
+          <ShowcaseSection title="Tabs — underline & pill">
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <Tabs
+                value={tab} onChange={setTab}
+                items={[{value:"over",label:"Overview",count:12},{value:"act",label:"Activity"},{value:"set",label:"Settings",icon:Icon.Settings}]}
+              />
+              <Tabs
+                value={tab} onChange={setTab} variant="pill"
+                items={[{value:"over",label:"Overview"},{value:"act",label:"Activity"},{value:"set",label:"Settings"}]}
+              />
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection title="Breadcrumb">
+            <Breadcrumb items={[
+              { label: "Home", icon: Icon.Home, href: "#" },
+              { label: "Settings", href: "#" },
+              { label: "Team", href: "#" },
+              { label: "Roles" },
+            ]}/>
+          </ShowcaseSection>
+
+          <ShowcaseSection title="Pagination">
+            <Pagination page={page} totalPages={20} onChange={setPage} />
+          </ShowcaseSection>
+
+          <ShowcaseSection title="NavLink"
+            meta="Primitivo pra link de rota. Sidebar usa SidebarItem internamente.">
+            <div style={{ width: 240, display: "flex", flexDirection: "column", gap: 2 }}>
+              <NavLink active leading={<Icon.LayoutDashboard size={16} />}>Dashboard</NavLink>
+              <NavLink leading={<Icon.Package size={16} />} trailing={<Badge>12</Badge>}>Deliveries</NavLink>
+              <NavLink leading={<Icon.FileText size={16} />}>Romaneios</NavLink>
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection title="Sidebar — preview" meta="Versão completa em ../index.html">
+            <div style={{ height: 360, border: "1px solid hsl(var(--border))", borderRadius: 8, overflow: "hidden", display: "flex" }}>
+              <Sidebar
+                active="dashboard"
+                onNavigate={() => {}}
+                collapsed={false}
+                onToggleCollapse={() => {}}
+                onLogout={() => {}}
+                brand={{ logo: "../../../assets/placeholder-logo.svg", mark: "../../../assets/placeholder-mark.svg", name: "App" }}
+                user={{ name: "Nome Sobrenome", email: "email@exemplo.com" }}
+              />
+              <div style={{ flex: 1, padding: 16, color: "hsl(var(--muted-foreground))", fontSize: 13 }}>
+                Conteúdo principal vai aqui.
+              </div>
+            </div>
+          </ShowcaseSection>
+        </>
+      );
+    };
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

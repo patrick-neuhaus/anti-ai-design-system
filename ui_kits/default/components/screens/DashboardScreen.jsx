@@ -1,4 +1,9 @@
-// DashboardScreen — 4 stat cards + recent romaneios table.
+// ui_kits/default/components/screens/DashboardScreen.jsx
+// DashboardScreen — 4 stat cards + recent table. Composition reference.
+// Depends on: StatCard, PageHeader, StatusBadge (display/StatusBadge.jsx).
+// DEMO CONTENT: this screen uses Romaneios/TransLog/Choco-flavored data as
+// illustrative example. For production, replace data + labels via props.
+// Brand-agnostic refactor (prop-driven data) is a Round E candidate.
 const DashboardScreen = ({ onOpenRomaneios }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
     <PageHeader title="Dashboard" subtitle="Visão geral da expedição logística" />
@@ -13,8 +18,8 @@ const DashboardScreen = ({ onOpenRomaneios }) => (
     <div className="card">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px" }}>
         <div>
-          <h3 style={{ fontSize: 14, fontWeight: 600 }}>Romaneios recentes</h3>
-          <p style={{ fontSize: 12, color: "var(--muted-foreground)", marginTop: 2 }}>Últimos romaneios gerados</p>
+          <h3 style={{ fontSize: 14, fontWeight: 600, color: "hsl(var(--foreground))" }}>Romaneios recentes</h3>
+          <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 2 }}>Últimos romaneios gerados</p>
         </div>
         <button className="btn btn-outline btn-sm" onClick={onOpenRomaneios}>Ver todos</button>
       </div>
@@ -43,23 +48,10 @@ const DashboardScreen = ({ onOpenRomaneios }) => (
 
 const RECENT_ROMANEIOS = [
   { id: "RM-2024-001847", transportadora: "TransLog Brasil",   placa: "ABC1D23", motorista: "Carlos Andrade", status: "conferido" },
-  { id: "RM-2024-001846", transportadora: "Expresso Mineiro",   placa: "DEF2E45", motorista: "Marcos Silva",   status: "pendente" },
-  { id: "RM-2024-001845", transportadora: "Rodovia Sul",        placa: "GHI3F67", motorista: "Pedro Lima",     status: "em_conferencia" },
-  { id: "RM-2024-001844", transportadora: "TransLog Brasil",    placa: "JKL4G89", motorista: "Ana Souza",      status: "divergente" },
-  { id: "RM-2024-001843", transportadora: "Cargas Paulista",    placa: "MNO5H01", motorista: "José Ferreira",  status: "conferido" },
+  { id: "RM-2024-001846", transportadora: "Expresso Mineiro",  placa: "DEF2E45", motorista: "Marcos Silva",   status: "pendente" },
+  { id: "RM-2024-001845", transportadora: "Rodovia Sul",       placa: "GHI3F67", motorista: "Pedro Lima",     status: "em_conferencia" },
+  { id: "RM-2024-001844", transportadora: "TransLog Brasil",   placa: "JKL4G89", motorista: "Ana Souza",      status: "divergente" },
+  { id: "RM-2024-001843", transportadora: "Cargas Paulista",   placa: "MNO5H01", motorista: "José Ferreira",  status: "conferido" },
 ];
 
-const StatusBadge = ({ value }) => {
-  const map = {
-    conferido:        { cls: "badge-success", label: "Conferido" },
-    pendente:         { cls: "badge-pending", label: "Pendente" },
-    em_conferencia:   { cls: "badge-outline", label: "Em conferência" },
-    divergente:       { cls: "badge-error",   label: "Divergente" },
-    finalizado:       { cls: "badge-success", label: "Finalizado" },
-  };
-  const m = map[value] || { cls: "badge-pending", label: value };
-  return <span className={`badge ${m.cls}`}>{m.label}</span>;
-};
-
 window.DashboardScreen = DashboardScreen;
-window.StatusBadge = StatusBadge;

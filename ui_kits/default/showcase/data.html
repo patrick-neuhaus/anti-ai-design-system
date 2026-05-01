@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data · Showcase</title>
+  <link rel="stylesheet" href="../../../colors_and_type.css" />
+  <style>
+    body { font-family: var(--font-body); background: hsl(var(--background)); color: hsl(var(--foreground)); margin: 0; }
+    .showcase-shell { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+    .showcase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
+    .showcase-nav a { font-size: 13px; padding: 6px 10px; border-radius: 6px; text-decoration: none; color: hsl(var(--muted-foreground)); }
+    .showcase-nav a.active { background: hsl(var(--accent-decorative) / .12); color: hsl(var(--accent)); font-weight: 500; }
+    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .showcase-section > h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); margin: 0; font-weight: 600; }
+    .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
+    h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
+    .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
+  </style>
+</head>
+<body class="preset-base">
+  <div id="root" class="showcase-shell"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="../components/Icon.jsx"></script>
+  <script type="text/babel" src="../components/display/Badge.jsx"></script>
+  <script type="text/babel" src="../components/display/StatusBadge.jsx"></script>
+  <script type="text/babel" src="../components/display/Avatar.jsx"></script>
+  <script type="text/babel" src="../components/display/Toast.jsx"></script>
+  <script type="text/babel" src="../components/data/Table.jsx"></script>
+  <script type="text/babel" src="../components/data/AppTable.jsx"></script>
+  <script type="text/babel" src="../components/data/ListItem.jsx"></script>
+
+  <script type="text/babel">
+    const Nav = ({ current }) => (
+      <nav className="showcase-nav">
+        {[["index","Visão geral"],["base","Base"],["surfaces","Surfaces"],["display","Display"],["layout","Layout"],["forms","Forms"],["navigation","Navigation"],["data","Data"],["dashboard","Dashboard"],["auth","Auth"]].map(([k,l]) => <a key={k} href={`./${k}.html`} className={current === k ? "active" : ""}>{l}</a>)}
+      </nav>
+    );
+    const ShowcaseSection = ({ title, children }) => (
+      <section className="showcase-section">
+        <h3>{title}</h3>
+        <div className="showcase-block">{children}</div>
+      </section>
+    );
+
+    const ROWS = [
+      { id: "RM-001847", trans: "TransLog Brasil",   placa: "ABC1D23", status: "conferido" },
+      { id: "RM-001846", trans: "Expresso Mineiro",  placa: "DEF2E45", status: "pendente" },
+      { id: "RM-001845", trans: "Rodovia Sul",       placa: "GHI3F67", status: "em_conferencia" },
+      { id: "RM-001844", trans: "TransLog Brasil",   placa: "JKL4G89", status: "divergente" },
+    ];
+
+    const App = () => (
+      <>
+        <Nav current="data" />
+        <h1>Data</h1>
+        <p className="lead">Tabelas e listas. Table = primitivo, AppTable = sortable, ListItem = vertical heterogêneo.</p>
+
+        <ShowcaseSection title="Table — primitivo">
+          <Table>
+            <thead><tr><Th>ID</Th><Th>Transportadora</Th><Th>Placa</Th><Th>Status</Th></tr></thead>
+            <tbody>
+              {ROWS.map((r) => (
+                <Tr key={r.id}>
+                  <Td mono>{r.id}</Td>
+                  <Td>{r.trans}</Td>
+                  <Td mono>{r.placa}</Td>
+                  <Td><StatusBadge value={r.status} /></Td>
+                </Tr>
+              ))}
+            </tbody>
+          </Table>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="AppTable — sortable + clickable">
+          <AppTable
+            columns={[
+              { key: "id", header: "ID", mono: true, sortable: true },
+              { key: "trans", header: "Transportadora", sortable: true },
+              { key: "placa", header: "Placa", mono: true },
+              { key: "status", header: "Status", render: (v) => <StatusBadge value={v} /> },
+            ]}
+            data={ROWS}
+            onRowClick={(r) => window.toast?.(`Abriu ${r.id}`)}
+          />
+        </ShowcaseSection>
+
+        <ShowcaseSection title="ListItem">
+          <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, overflow: "hidden" }}>
+            <ListItem leading={<Avatar name="Carlos Andrade" size={32} />} title="Carlos Andrade" subtitle="Conferiu RM-001847" trailing={<Badge intent="success" dot>2 min</Badge>} onClick={() => {}} />
+            <ListItem leading={<Avatar name="Ana Souza" size={32} color="primary" />} title="Ana Souza" subtitle="Criou romaneio" trailing={<Badge>5 min</Badge>} onClick={() => {}} />
+            <ListItem leading={<Avatar name="Pedro Lima" size={32} color="muted" />} title="Pedro Lima" subtitle="Atualizou cadastro" trailing={<Badge>1h</Badge>} divider={false} onClick={() => {}} />
+          </div>
+        </ShowcaseSection>
+
+        <ToastHost />
+      </>
+    );
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

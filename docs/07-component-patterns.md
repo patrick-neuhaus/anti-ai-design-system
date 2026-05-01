@@ -187,3 +187,73 @@
 **Exemplo do erro real:** gascat antes do fix tinha Configurações em `adminItems` na sidebar (tabelas, **configurações**, usuários, log). User panel só tinha logout. **Duplicação estrutural** com a regra de admin section.
 
 **Exemplo correto:** chocotracking, aw control, gascat (após fix).
+
+---
+
+# WAVE 6.5 — Library inventory
+
+A partir da Wave 6.5, o `ui_kits/default/components/` virou biblioteca completa organizada em subpastas. Este inventário lista o que existe; cada componente carrega no próprio file um cabeçalho `// When to use / // When NOT to use` que é a referência canônica de uso.
+
+## Estrutura
+
+```
+ui_kits/default/components/
+├── Icon.jsx          registry de ícones (Lucide-style inline SVG)
+├── app.jsx           harness React do kit
+├── base/             primitivos de input/ação (7)
+├── surfaces/         Card, Surface (2)
+├── display/          Badge/Tag/Avatar/Alert/EmptyState/StatusBadge/Skeleton/Spinner/Toast/Dialog/Drawer/Tooltip/Popover/ProgressBar (14)
+├── layout/           PageHeader/Section/PageShell/AppLayout (4)
+├── forms/            FormField + NumberField/DateField/FileUpload/Combobox/Slider/Stepper (7)
+├── navigation/       Tabs/Breadcrumb/Pagination/NavLink/Sidebar (5)
+├── data/             Table/AppTable/ListItem (3)
+├── dashboard/        StatCard/KpiGrid/MetricCard (3)
+├── auth/             Login/Register/ForgotPassword/ConfirmEmail (4)
+└── screens/          Dashboard/Romaneios/Settings/Profile/EmptyDashboard (5)
+```
+
+## Convenções obrigatórias
+
+1. **Cor via `hsl(var(--token))`**, nunca `var(--token)` direto. Tokens em `tokens.css` são HSL triples sem `hsl()` wrap; o wrap acontece no consumidor. Falhar isso resolve `color: 16 38% 12%` que CSS rejeita.
+2. **Variantes por prop**, não por fork. `<Button variant="destructive">`, não `DangerButton`.
+3. **Slots para customização**, não strings: `actions={<Button … />}`, não `actions={["filter","new"]}`.
+4. **Brand via props** no consumidor, nunca hardcoded. Componentes default para placeholder SVG/copy genérica.
+5. **Icons como prop** (`iconLeft`, `iconRight`, `icon`), passados pelo consumidor a partir do registry.
+
+Detalhes completos em `docs/10-component-composition.md`.
+
+## Quando criar componente novo
+
+Antes de criar:
+- O caso pode ser uma **variante por prop** num componente existente?
+- O caso pode ser uma **composição** dos primitivos via slots?
+- O caso pode ser um **token override** sem novo componente?
+
+Se sim a qualquer das três, **não** crie file novo. A biblioteca tem ~33 componentes e qualquer composição derivada disso deve viver no consumidor (`screens/`, `app.jsx`, ou no projeto que usa o kit).
+
+Caso genuinamente novo (cobrindo um caso que nenhum dos 33 cobre), seguir as regras de `docs/10`:
+- escolher subpasta correta (`base/`, `display/`, etc.)
+- comentário-cabeçalho com `When to use` / `When NOT to use`
+- consumir tokens via `hsl(var(--*))`
+- expor via `window.<Nome> = <Nome>` (sem ESM/import)
+- adicionar entrada em `docs/07` (este arquivo)
+- adicionar showcase em `ui_kits/default/showcase/<categoria>.html`
+
+## Showcase
+
+`ui_kits/default/showcase/index.html` é a porta de entrada navegável. Cada categoria tem sua page (`base.html`, `display.html`, etc.) com exemplos vivos dos componentes daquela subpasta. Use o showcase pra validar visualmente após token swap ou novo componente.
+
+## Wave 6.5 totals
+
+- **base/**: 7 (Button, Input, Textarea, Select, Checkbox, Radio, Switch)
+- **surfaces/**: 2 (Card, Surface)
+- **display/**: 14 (Badge, Tag, Avatar, Alert, EmptyState, StatusBadge, Skeleton, Spinner, Toast, Dialog, Drawer, Tooltip, Popover, ProgressBar)
+- **layout/**: 4 (PageHeader, Section, PageShell, AppLayout)
+- **forms/**: 7 (FormField, NumberField, DateField, FileUpload, Combobox, Slider, Stepper)
+- **navigation/**: 5 (Tabs, Breadcrumb, Pagination, NavLink, Sidebar)
+- **data/**: 3 (Table, AppTable, ListItem)
+- **dashboard/**: 3 (StatCard, KpiGrid, MetricCard)
+- **auth/**: 4 (LoginScreen, RegisterScreen, ForgotPasswordScreen, ConfirmEmailScreen)
+- **screens/**: 5 (DashboardScreen, RomaneiosScreen, SettingsScreen, ProfileScreen, EmptyDashboardScreen)
+
+**Total: 54 components/screens** distribuídos em 10 subpastas.

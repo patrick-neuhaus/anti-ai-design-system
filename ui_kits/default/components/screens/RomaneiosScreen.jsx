@@ -1,12 +1,14 @@
+// ui_kits/default/components/screens/RomaneiosScreen.jsx
 // RomaneiosScreen — full romaneio list, no dashboard chrome.
+// DEMO CONTENT: Romaneios/TransLog data illustrative. Brand-agnostic refactor Round E.
 const ROMANEIOS = [
-  { id: "RM-2024-001847", date: "28/04/2026", transportadora: "TransLog Brasil",   placa: "ABC1D23", motorista: "Carlos Andrade", deliveries: 12, status: "conferido" },
-  { id: "RM-2024-001846", date: "28/04/2026", transportadora: "Expresso Mineiro",  placa: "DEF2E45", motorista: "Marcos Silva",   deliveries:  8, status: "pendente" },
-  { id: "RM-2024-001845", date: "28/04/2026", transportadora: "Rodovia Sul",       placa: "GHI3F67", motorista: "Pedro Lima",     deliveries: 14, status: "em_conferencia" },
-  { id: "RM-2024-001844", date: "27/04/2026", transportadora: "TransLog Brasil",   placa: "JKL4G89", motorista: "Ana Souza",      deliveries:  9, status: "divergente" },
-  { id: "RM-2024-001843", date: "27/04/2026", transportadora: "Cargas Paulista",   placa: "MNO5H01", motorista: "José Ferreira",  deliveries: 11, status: "conferido" },
-  { id: "RM-2024-001842", date: "27/04/2026", transportadora: "Expresso Mineiro",  placa: "PQR6I12", motorista: "Lucas Mendes",   deliveries:  7, status: "finalizado" },
-  { id: "RM-2024-001841", date: "26/04/2026", transportadora: "Rodovia Sul",       placa: "STU7J34", motorista: "Renata Alves",   deliveries: 13, status: "finalizado" },
+  { id: "RM-2024-001847", date: "28/04/2026", transportadora: "TransLog Brasil",  placa: "ABC1D23", motorista: "Carlos Andrade", deliveries: 12, status: "conferido" },
+  { id: "RM-2024-001846", date: "28/04/2026", transportadora: "Expresso Mineiro", placa: "DEF2E45", motorista: "Marcos Silva",   deliveries:  8, status: "pendente" },
+  { id: "RM-2024-001845", date: "28/04/2026", transportadora: "Rodovia Sul",      placa: "GHI3F67", motorista: "Pedro Lima",     deliveries: 14, status: "em_conferencia" },
+  { id: "RM-2024-001844", date: "27/04/2026", transportadora: "TransLog Brasil",  placa: "JKL4G89", motorista: "Ana Souza",      deliveries:  9, status: "divergente" },
+  { id: "RM-2024-001843", date: "27/04/2026", transportadora: "Cargas Paulista",  placa: "MNO5H01", motorista: "José Ferreira",  deliveries: 11, status: "conferido" },
+  { id: "RM-2024-001842", date: "27/04/2026", transportadora: "Expresso Mineiro", placa: "PQR6I12", motorista: "Lucas Mendes",   deliveries:  7, status: "finalizado" },
+  { id: "RM-2024-001841", date: "26/04/2026", transportadora: "Rodovia Sul",      placa: "STU7J34", motorista: "Renata Alves",   deliveries: 13, status: "finalizado" },
 ];
 
 const RomaneiosScreen = ({ onConfer }) => (
