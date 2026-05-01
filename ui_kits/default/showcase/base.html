@@ -205,19 +205,19 @@
           <p className="lead">Primitivos de input e ação. Compõem todo o resto.</p>
 
           <ShowcaseSection title="Button — variants × sizes">
-            <div className="showcase-row" style={{ marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, max-content))", gap: 8, marginBottom: 12 }}>
               <Button>Primary</Button>
               <Button variant="secondary">Secondary</Button>
               <Button variant="outline">Outline</Button>
               <Button variant="ghost">Ghost</Button>
               <Button variant="destructive">Destructive</Button>
             </div>
-            <div className="showcase-row" style={{ marginBottom: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, max-content))", gap: 8, marginBottom: 12 }}>
               <Button size="sm">Small</Button>
               <Button size="md">Medium</Button>
               <Button size="lg">Large</Button>
             </div>
-            <div className="showcase-row">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, max-content))", gap: 8 }}>
               <Button iconLeft={Icon.Plus}>Add</Button>
               <Button iconRight={Icon.ArrowRight}>Continue</Button>
               <Button iconOnly aria-label="Search" iconLeft={Icon.Search} />
