@@ -2,6 +2,7 @@
 // Sidebar — primary fill, accent left bar on active, eyebrow group labels.
 // Brand-agnostic. Tokens only via hsl(var(--*)). Brand/user/nav arrive as props.
 // Mobile (<768px): hamburger trigger + slide-in drawer + backdrop.
+// Footer: usa UserMenu (avatar+nome+dropdown). Carrega UserMenu ANTES de Sidebar.
 
 const initialsFrom = (name) =>
   String(name || "")
@@ -95,7 +96,7 @@ const DEFAULT_GROUPS = [
 ];
 
 const Sidebar = ({
-  active, onNavigate, collapsed, onToggleCollapse, onLogout,
+  active, onNavigate, collapsed, onToggleCollapse, onLogout, onConfig,
   brand, user, groups,
 }) => {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -220,21 +221,8 @@ const Sidebar = ({
             ))}
           </nav>
 
-          <div style={{ borderTop: "1px solid hsl(var(--sidebar-border))", paddingTop: 10, marginTop: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "0 8px 8px" }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: "50%",
-                background: "hsl(var(--accent))",
-                color: "hsl(var(--accent-foreground))",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 12, fontWeight: 600,
-              }}>{userInitials}</div>
-              <div style={{ minWidth: 0, lineHeight: 1.2 }}>
-                <div style={{ fontSize: 13, fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{userName}</div>
-                <div style={{ fontSize: 11, color: "hsl(var(--sidebar-foreground) / .6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{userEmail}</div>
-              </div>
-            </div>
-            <SidebarItem icon={Icon.LogOut} label="Sair" collapsed={false} onClick={handleLogout} />
+          <div style={{ paddingTop: 10, marginTop: 10 }}>
+            <UserMenu user={user} onConfig={onConfig} onLogout={handleLogout} collapsed={false} align="top" />
           </div>
         </aside>
       </>
@@ -297,23 +285,8 @@ const Sidebar = ({
         ))}
       </nav>
 
-      <div style={{ borderTop: "1px solid hsl(var(--sidebar-border))", paddingTop: 10, marginTop: 10 }}>
-        {!collapsed && (
-          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "0 8px 8px" }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: "50%",
-              background: "hsl(var(--accent))",
-              color: "hsl(var(--accent-foreground))",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 12, fontWeight: 600,
-            }}>{userInitials}</div>
-            <div style={{ minWidth: 0, lineHeight: 1.2 }}>
-              <div style={{ fontSize: 13, fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{userName}</div>
-              <div style={{ fontSize: 11, color: "hsl(var(--sidebar-foreground) / .6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{userEmail}</div>
-            </div>
-          </div>
-        )}
-        <SidebarItem icon={Icon.LogOut} label="Sair" collapsed={collapsed} onClick={onLogout} />
+      <div style={{ paddingTop: 10, marginTop: 10 }}>
+        <UserMenu user={user} onConfig={onConfig} onLogout={onLogout} collapsed={collapsed} align="top" />
       </div>
     </aside>
   );
