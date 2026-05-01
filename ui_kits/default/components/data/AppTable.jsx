@@ -4,9 +4,9 @@
 // When NOT to use: highly custom row layouts (compose Table primitive directly). Spreadsheet editing.
 
 const SortIcon = ({ dir }) => {
-  if (dir === "asc")  return <Icon.ChevronUp size={12} />;
-  if (dir === "desc") return <Icon.ChevronDown size={12} />;
-  return <Icon.ArrowUpDown size={12} />;
+  if (dir === "asc")  return <span title="Ordenado crescente" style={{ display: "inline-flex", color: "hsl(var(--foreground))" }}><Icon.ChevronUp size={12} /></span>;
+  if (dir === "desc") return <span title="Ordenado decrescente" style={{ display: "inline-flex", color: "hsl(var(--foreground))" }}><Icon.ChevronDown size={12} /></span>;
+  return <span title="Clique para ordenar" style={{ display: "inline-flex", opacity: 0.35 }}><Icon.ArrowUpDown size={12} /></span>;
 };
 
 const AppTable = ({

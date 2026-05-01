@@ -218,7 +218,7 @@
           </Table>
         </ShowcaseSection>
 
-        <ShowcaseSection title="AppTable — sortable + clickable">
+        <ShowcaseSection title="AppTable — sortable asc/desc/off + clickable">
           <AppTable
             columns={[
               { key: "id", header: "ID", mono: true, sortable: true },
@@ -229,6 +229,9 @@
             data={ROWS}
             onRowClick={(r) => window.toast?.(`Abriu ${r.id}`)}
           />
+          <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "8px 0 0" }}>
+            Clique nos headers ID/Transportadora: 1º clique = asc (▲), 2º = desc (▼), 3º = off (▼▲ semitransparente).
+          </p>
         </ShowcaseSection>
 
         <ShowcaseSection title="ListItem">
