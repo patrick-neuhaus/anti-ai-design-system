@@ -1,1351 +1,1287 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
 <head>
 <meta charset="utf-8" />
-<title>Choco — default UI kit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Anti-AI Design System · Templates</title>
 <link rel="stylesheet" href="../../colors_and_type.css" />
 <style>
-  html,body{margin:0;padding:0;background:hsl(var(--background));color:hsl(var(--foreground));font-family:var(--font-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-  *{box-sizing:border-box}
-  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-  input,select{font-family:inherit;font-size:14px;color:inherit}
-  .app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
+html,body{margin:0;padding:0;height:100%;background:hsl(var(--background));color:hsl(var(--foreground));font-family:var(--font-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select{font-family:inherit;font-size:14px;color:inherit}
+a{color:inherit;text-decoration:none}
+#root{height:100%}
 
-  /* ===== Sidebar ===== */
-  .side{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));padding:18px 14px;display:flex;flex-direction:column;gap:2px;border-right:1px solid hsl(var(--sidebar-border));position:relative}
-  .brand{display:flex;align-items:center;gap:10px;padding:6px 10px 18px}
-  .brand-mark{width:32px;height:32px;border-radius:8px;background:hsl(var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:15px}
-  .brand-name{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-.01em}
-  .brand-sub{font-size:10px;font-family:var(--font-mono);color:hsl(var(--sidebar-foreground)/.6);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
-  .section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.5);padding:14px 10px 6px}
-  .nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13.5px;color:hsl(var(--sidebar-foreground)/.85);position:relative;cursor:pointer}
-  .nav:hover{background:hsl(var(--sidebar-accent)/.6);color:#fff}
-  .nav.active{background:hsl(var(--sidebar-accent));color:#fff;font-weight:500}
-  .nav.active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
-  .nav .ic{width:16px;height:16px;flex-shrink:0;opacity:.85}
-  .nav .count{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:hsl(var(--sidebar-indicator));font-weight:500}
-  .user{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border))}
-  .avatar{width:32px;height:32px;border-radius:999px;background:hsl(var(--accent)/.25);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5)}
-  .uname{font-size:12.5px;font-weight:500}
-  .umail{font-size:10px;color:hsl(var(--sidebar-foreground)/.65);font-family:var(--font-mono)}
+/* ===== LOGIN ===== */
+.login-root{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+@media(max-width:768px){.login-root{grid-template-columns:1fr}}
+.login-brand{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;gap:32px}
+@media(max-width:768px){.login-brand{display:none}}
+.login-brand-logo{height:44px;width:auto}
+.login-brand-title{font-family:var(--font-display);font-size:36px;font-weight:600;letter-spacing:-.02em;line-height:1.15;text-align:center;margin:0}
+.login-brand-sub{font-size:15px;opacity:.7;text-align:center;max-width:340px;line-height:1.6;margin:0}
+.login-brand-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid hsl(var(--sidebar-foreground)/.25);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;opacity:.75}
+.login-form-side{display:flex;align-items:center;justify-content:center;padding:32px;background:hsl(var(--background))}
+.login-box{width:100%;max-width:420px;display:flex;flex-direction:column;gap:24px}
+.login-box h2{font-family:var(--font-display);font-size:26px;font-weight:600;margin:0 0 4px}
+.login-box p{font-size:13px;color:hsl(var(--muted-foreground));margin:0}
 
-  /* ===== Main (no topbar) ===== */
-  .main{display:flex;flex-direction:column;min-width:0}
-  .page{padding:28px 32px 40px;display:flex;flex-direction:column;gap:18px;width:100%}
+/* Template cards */
+.tpl-cards{display:flex;flex-direction:column;gap:8px}
+.tpl-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid hsl(var(--border));cursor:pointer;transition:border-color 150ms,background 150ms}
+.tpl-card:hover{border-color:hsl(var(--primary)/.5);background:hsl(var(--muted)/.4)}
+.tpl-card.selected{border-color:hsl(var(--primary));background:hsl(var(--primary)/.06)}
+.tpl-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.tpl-card-info{flex:1;min-width:0}
+.tpl-card-name{font-size:13px;font-weight:600}
+.tpl-card-desc{font-size:11.5px;color:hsl(var(--muted-foreground));margin-top:2px}
+.tpl-cred{font-family:var(--font-mono);font-size:10px;color:hsl(var(--muted-foreground));margin-top:4px;padding:3px 7px;border-radius:5px;background:hsl(var(--muted));width:fit-content}
+.tpl-radio{width:18px;height:18px;border-radius:50%;border:2px solid hsl(var(--border));flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color 150ms}
+.tpl-card.selected .tpl-radio{border-color:hsl(var(--primary))}
+.tpl-radio-dot{width:8px;height:8px;border-radius:50%;background:hsl(var(--primary));opacity:0;transition:opacity 150ms}
+.tpl-card.selected .tpl-radio-dot{opacity:1}
 
-  /* Header pattern: eyebrow mono + h2 Lora big + sub */
-  .eyebrow-bar{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:6px}
-  .eyebrow-stack{display:flex;flex-direction:column;gap:4px;min-width:0}
-  .crumb-mono{font-family:var(--font-mono);font-size:11px;color:hsl(var(--muted-foreground));text-transform:lowercase;letter-spacing:.06em;line-height:1}
-  h2.page-title{font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.15;text-transform:none}
-  .page-sub{font-size:12.5px;color:hsl(var(--muted-foreground));margin:6px 0 0;max-width:620px;line-height:1.5}
+/* Form fields */
+.field-group{display:flex;flex-direction:column;gap:6px}
+.field-group label{font-size:12.5px;font-weight:500;color:hsl(var(--foreground))}
+.field-input{padding:10px 14px;border-radius:10px;border:1.5px solid hsl(var(--border));background:hsl(var(--card));outline:none;width:100%;color:hsl(var(--foreground));transition:border-color 150ms,box-shadow 150ms;font-size:13px}
+.field-input:focus{border-color:hsl(var(--primary));box-shadow:0 0 0 3px hsl(var(--primary)/.1)}
+.forgot-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:-2px}
+.forgot-link{font-size:12px;color:hsl(var(--accent));font-weight:500;cursor:pointer}
+.forgot-link:hover{opacity:.8}
+.btn-login{width:100%;padding:11px;border-radius:12px;background:hsl(var(--primary));color:hsl(var(--primary-foreground));font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 150ms}
+.btn-login:hover{background:hsl(var(--primary)/.9)}
+.err-msg{font-size:12px;color:hsl(var(--destructive));text-align:center;padding:8px 12px;background:hsl(var(--destructive)/.08);border-radius:8px}
 
-  /* Buttons */
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;font-size:13px;font-weight:500;transition:all 150ms;white-space:nowrap}
-  .btn-primary{background:hsl(var(--primary));color:hsl(var(--primary-foreground))}
-  .btn-primary:hover{background:hsl(var(--primary)/.92)}
-  .btn-accent{background:hsl(var(--accent));color:hsl(var(--accent-foreground))}
-  .btn-accent:hover{background:hsl(var(--accent)/.92)}
-  .btn-secondary{background:hsl(var(--card));color:hsl(var(--foreground));border:1px solid hsl(var(--border))}
-  .btn-secondary:hover{background:hsl(var(--muted))}
-  .btn-ghost{color:hsl(var(--muted-foreground));padding:6px 10px}
-  .btn-ghost:hover{background:hsl(var(--muted));color:hsl(var(--foreground))}
+/* ===== APP SHELL ===== */
+.app-shell{display:grid;grid-template-columns:272px 1fr;min-height:100vh;transition:grid-template-columns 250ms}
+.app-shell.collapsed{grid-template-columns:68px 1fr}
 
-  /* KPI strip */
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .kpi{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
-  .kpi-label{font-size:11.5px;color:hsl(var(--muted-foreground));font-weight:500;text-transform:uppercase;letter-spacing:.04em}
-  .kpi-value{font-family:var(--font-display);font-size:26px;font-weight:600;letter-spacing:-.02em}
-  .kpi-delta{font-family:var(--font-mono);font-size:11px;display:inline-flex;align-items:center;gap:4px}
-  .kpi-delta.up{color:hsl(var(--success))}
-  .kpi-delta.dn{color:hsl(var(--destructive))}
-  .kpi-delta.flat{color:hsl(var(--muted-foreground))}
+/* ===== SIDEBAR ===== */
+.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px;gap:2px;border-right:1px solid hsl(var(--sidebar-border));position:relative;overflow:hidden;min-width:0}
 
-  /* Filter row + contextual search */
-  .filter-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:12px;background:hsl(var(--card));border:1px solid hsl(var(--border));color:hsl(var(--muted-foreground));cursor:pointer}
-  .chip.active{background:hsl(var(--primary));color:hsl(var(--primary-foreground));border-color:hsl(var(--primary))}
-  .chip:hover:not(.active){background:hsl(var(--muted))}
-  .ctx-search{margin-left:auto;display:flex;align-items:center;gap:8px;background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:10px;padding:6px 12px;width:280px}
-  .ctx-search input{background:transparent;border:none;outline:none;flex:1;font-size:12.5px;color:hsl(var(--foreground))}
-  .ctx-search input::placeholder{color:hsl(var(--muted-foreground))}
-  .ctx-search:focus-within{border-color:hsl(var(--primary)/.5);box-shadow:0 0 0 3px hsl(var(--primary)/.08)}
-  .kbd{font-family:var(--font-mono);font-size:10px;background:hsl(var(--muted));border:1px solid hsl(var(--border));padding:1px 5px;border-radius:4px;color:hsl(var(--muted-foreground))}
+/* Toggle bolinha */
+.sidebar-toggle{position:absolute;right:-14px;top:68px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms;box-shadow:0 1px 4px hsl(var(--foreground)/.1)}
+.sidebar-toggle:hover{background:hsl(var(--muted));box-shadow:0 2px 8px hsl(var(--foreground)/.15)}
 
-  /* Table card */
-  .table-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;overflow:hidden;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
-  .table-head{display:grid;gap:12px;padding:12px 22px;font-size:11px;font-weight:600;color:hsl(var(--muted-foreground));text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid hsl(var(--border));white-space:nowrap}
-  .table-rows{padding:8px 12px}
-  .group-head{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.06em;color:hsl(var(--foreground));text-transform:uppercase;padding:14px 10px 6px;display:flex;align-items:center;gap:10px}
-  .group-head::after{content:"";flex:1;height:1px;background:hsl(var(--border))}
-  .row{display:grid;gap:12px;align-items:center;padding:10px 10px;border-radius:14px;cursor:pointer;font-size:13.5px;transition:background 150ms}
-  .row:hover{background:hsl(var(--muted)/.55)}
-  .row .name{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .row .name strong{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .row .name .meta{font-size:11px;color:hsl(var(--muted-foreground));font-family:var(--font-mono)}
-  .num{font-family:var(--font-mono);font-feature-settings:'tnum';color:hsl(var(--muted-foreground));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .row .actions{display:flex;gap:2px;justify-content:flex-end}
-  .icon-btn{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--muted-foreground))}
-  .icon-btn:hover{background:hsl(var(--muted));color:hsl(var(--foreground))}
+/* Brand logo */
+.sidebar-brand{display:flex;align-items:center;gap:10px;padding:6px 10px 16px;min-width:0}
+.sidebar-logo-full{height:28px;width:auto;flex-shrink:0}
+.sidebar-logo-icon{width:28px;height:28px;border-radius:7px;flex-shrink:0;object-fit:contain}
+.sidebar-brand-text{font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden}
 
-  /* Per-view grid templates */
-  .gt-romaneios .table-head, .gt-romaneios .row{grid-template-columns:1.6fr 200px 140px 110px 80px}
-  .gt-lotes     .table-head, .gt-lotes     .row{grid-template-columns:1.5fr 1.1fr 100px 100px 110px 70px}
-  .gt-rotas     .table-head, .gt-rotas     .row{grid-template-columns:1.4fr 90px 110px 110px 110px 70px}
-  .gt-prod      .table-head, .gt-prod      .row{grid-template-columns:1.5fr 1.1fr 100px 110px 90px 70px}
+/* Nav items */
+.nav-section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.45);padding:12px 10px 4px;white-space:nowrap;overflow:hidden}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms}
+.nav-item:hover{background:hsl(var(--sidebar-accent)/.6);color:hsl(var(--sidebar-foreground))}
+.nav-item.active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground));font-weight:500}
+.nav-item.active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
+.nav-item .nav-label{flex:1;overflow:hidden;text-overflow:ellipsis}
+.nav-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:hsl(var(--sidebar-indicator));font-weight:600}
+.collapsed .nav-label,.collapsed .nav-badge,.collapsed .nav-section-label,.collapsed .sidebar-brand-text{display:none}
+.collapsed .nav-item{justify-content:center;padding:9px}
+.collapsed .sidebar-brand{padding:6px 8px 16px;justify-content:center}
 
-  /* Status pill */
-  .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:500;width:fit-content}
-  .pill .dot{width:6px;height:6px;border-radius:999px;background:currentColor}
-  .pill.ok{background:hsl(var(--success)/.13);color:hsl(var(--success))}
-  .pill.warn{background:hsl(var(--warning)/.18);color:hsl(35 85% 30%)}
-  .pill.err{background:hsl(var(--destructive)/.1);color:hsl(0 70% 40%)}
-  .pill.info{background:hsl(var(--info)/.13);color:hsl(var(--info))}
-  .pill.neutral{background:hsl(var(--muted));color:hsl(var(--muted-foreground))}
+/* User panel */
+.user-panel{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0}
+.avatar{width:34px;height:34px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}
+.user-info{flex:1;min-width:0;overflow:hidden}
+.user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-actions{display:flex;gap:2px;flex-shrink:0}
+.user-action-btn{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer}
+.user-action-btn:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-foreground))}
+.collapsed .user-info,.collapsed .user-actions{display:none}
+.collapsed .user-panel{justify-content:center;padding:10px}
 
-  /* Side panel layout */
-  .layout-2col{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px}
-  .info-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:18px 20px;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
-  .info-card h3{font-size:13.5px;font-weight:500;margin:0 0 14px}
-  .field{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid hsl(var(--border)/.6);gap:12px}
-  .field:last-child{border-bottom:none}
-  .field .k{color:hsl(var(--muted-foreground));flex-shrink:0}
-  .field .v{font-family:var(--font-mono);text-align:right}
+/* ===== MAIN ===== */
+.main-area{display:flex;flex-direction:column;min-width:0;background:hsl(var(--background));overflow:auto}
+.page-content{padding:28px 32px 40px;display:flex;flex-direction:column;gap:18px;width:100%}
 
-  .timeline{display:flex;flex-direction:column;gap:14px;padding-left:6px;border-left:1px dashed hsl(var(--border));margin-left:8px}
-  .ev{position:relative;padding-left:18px;font-size:12.5px}
-  .ev::before{content:"";position:absolute;left:-5px;top:6px;width:8px;height:8px;border-radius:999px;background:hsl(var(--primary))}
-  .ev .when{font-family:var(--font-mono);font-size:10.5px;color:hsl(var(--muted-foreground));margin-bottom:2px}
+/* ===== COMPONENTS reused inline ===== */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:4px}
+.page-header-stack{display:flex;flex-direction:column;gap:4px}
+.page-crumb{font-family:var(--font-mono);font-size:11px;color:hsl(var(--muted-foreground));text-transform:lowercase;letter-spacing:.06em}
+.page-title{font-family:var(--font-display);font-size:28px;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.15}
+.page-sub{font-size:12.5px;color:hsl(var(--muted-foreground));margin:4px 0 0;max-width:580px;line-height:1.5}
+.page-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
-  /* Tabs */
-  .tabs{display:flex;gap:4px;border-bottom:1px solid hsl(var(--border));padding:0 4px}
-  .tab{padding:10px 14px;font-size:13px;color:hsl(var(--muted-foreground));border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer}
-  .tab.active{color:hsl(var(--foreground));border-bottom-color:hsl(var(--accent));font-weight:500}
+.card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:20px 22px;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
+.card-header{margin-bottom:14px}
+.card-header h3{font-size:14px;font-weight:600;color:hsl(var(--foreground));margin:0}
+.card-header p{font-size:12px;color:hsl(var(--muted-foreground));margin:3px 0 0}
 
-  /* Toast */
-  .toast{position:fixed;bottom:20px;right:20px;background:hsl(var(--foreground));color:hsl(var(--background));padding:12px 16px;border-radius:14px;font-size:13px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px -8px hsl(var(--foreground)/.3);z-index:50;animation:rise 300ms ease}
-  @keyframes rise{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
-  .toast .ok-mark{width:20px;height:20px;border-radius:999px;background:hsl(var(--success));display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.kpi{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
+.kpi-label{font-size:11.5px;color:hsl(var(--muted-foreground));font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.kpi-value{font-family:var(--font-display);font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.kpi-delta{font-family:var(--font-mono);font-size:11px;display:inline-flex;align-items:center;gap:3px}
+.kpi-delta.up{color:hsl(var(--success))}
+.kpi-delta.dn{color:hsl(var(--destructive))}
 
-  /* Modal */
-  .scrim{position:fixed;inset:0;background:hsl(var(--foreground)/.35);display:flex;align-items:center;justify-content:center;z-index:40;animation:fade 200ms ease}
-  @keyframes fade{from{opacity:0}to{opacity:1}}
-  .modal{background:hsl(var(--card));border-radius:20px;padding:24px;width:480px;border:1px solid hsl(var(--border));box-shadow:0 30px 80px -20px hsl(var(--foreground)/.4)}
-  .modal h3{font-family:var(--font-display);font-size:20px;margin:0 0 6px;font-weight:600}
-  .modal p{font-size:13px;color:hsl(var(--muted-foreground));margin:0 0 18px}
-  .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-  .form-row label{font-size:12px;color:hsl(var(--muted-foreground));font-weight:500}
-  .form-row input,.form-row select{padding:9px 12px;border-radius:8px;border:1px solid hsl(var(--border));background:hsl(var(--card));outline:none;color:hsl(var(--foreground))}
-  .form-row input:focus,.form-row select:focus{border-color:hsl(var(--primary));box-shadow:0 0 0 3px hsl(var(--primary)/.12)}
-  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:hsl(var(--muted-foreground));padding:10px 16px;text-align:left;border-bottom:1px solid hsl(var(--border))}
+.tbl td{padding:11px 16px;border-bottom:1px solid hsl(var(--border)/.6);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:hsl(var(--muted)/.4)}
+.mono{font-family:var(--font-mono);font-size:11.5px}
+.muted{color:hsl(var(--muted-foreground))}
 
-  /* Origem cards (grid) */
-  .origin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-  .origin-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px hsl(var(--foreground)/.04);cursor:pointer;transition:all 150ms}
-  .origin-card:hover{transform:translateY(-1px);box-shadow:0 4px 12px hsl(var(--foreground)/.08);border-color:hsl(var(--primary)/.3)}
-  .origin-flag{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:hsl(var(--accent))}
-  .origin-name{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-.01em}
-  .origin-region{font-size:12.5px;color:hsl(var(--muted-foreground));margin-top:-4px}
-  .origin-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 12px;margin-top:6px;padding-top:10px;border-top:1px solid hsl(var(--border)/.6)}
-  .origin-stat{display:flex;flex-direction:column;gap:2px}
-  .origin-stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:hsl(var(--muted-foreground));font-weight:500}
-  .origin-stat .v{font-family:var(--font-mono);font-size:13.5px;color:hsl(var(--foreground))}
-  .origin-certs{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:500}
+.pill .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.pill.ok{background:hsl(var(--success)/.12);color:hsl(var(--success))}
+.pill.warn{background:hsl(var(--warning)/.18);color:hsl(35 85% 30%)}
+.pill.err{background:hsl(var(--destructive)/.1);color:hsl(0 70% 40%)}
+.pill.neutral{background:hsl(var(--muted));color:hsl(var(--muted-foreground))}
+.pill.info{background:hsl(var(--info)/.12);color:hsl(var(--info))}
 
-  /* Config view */
-  .config-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-  .config-card{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:20px;box-shadow:0 1px 2px hsl(var(--foreground)/.04);display:flex;flex-direction:column;gap:12px}
-  .config-card h3{font-size:14px;font-weight:600;margin:0}
-  .config-card .desc{font-size:12.5px;color:hsl(var(--muted-foreground));margin:0}
-  .toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid hsl(var(--border)/.6);font-size:13px}
-  .toggle-row:last-child{border-bottom:none}
-  .toggle-row .toggle{width:32px;height:18px;background:hsl(var(--muted));border-radius:999px;position:relative;cursor:pointer;transition:background 150ms;flex-shrink:0}
-  .toggle-row .toggle.on{background:hsl(var(--primary))}
-  .toggle-row .toggle::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:999px;transition:transform 150ms}
-  .toggle-row .toggle.on::after{transform:translateX(14px)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;transition:all 150ms;white-space:nowrap;cursor:pointer;border:none}
+.btn-primary{background:hsl(var(--primary));color:hsl(var(--primary-foreground))}
+.btn-primary:hover{background:hsl(var(--primary)/.9)}
+.btn-outline{background:hsl(var(--card));color:hsl(var(--foreground));border:1px solid hsl(var(--border))}
+.btn-outline:hover{background:hsl(var(--muted))}
+.btn-sm{padding:6px 10px;font-size:12px;border-radius:8px}
+.btn-ghost{color:hsl(var(--muted-foreground));padding:6px 10px}
+.btn-ghost:hover{background:hsl(var(--muted));color:hsl(var(--foreground))}
+.btn-destructive{background:hsl(var(--destructive)/.1);color:hsl(0 70% 40%)}
+.btn-destructive:hover{background:hsl(var(--destructive)/.18)}
 
-  /* Design system view */
-  .ds-section-label{font-family:var(--font-mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--accent));padding:14px 6px 4px;display:flex;align-items:center;gap:12px}
-  .ds-section-label::after{content:"";flex:1;height:1px;background:hsl(var(--border))}
-  .ds-section{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:24px 28px;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
-  .ds-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .ds-demo-frame{background:hsl(var(--background));border:1px dashed hsl(var(--border));border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
-  .ds-callout-bad{font-family:var(--font-mono);font-size:11px;color:hsl(var(--destructive));padding:6px 10px;background:hsl(var(--destructive)/.08);border-radius:6px;width:fit-content}
-  .ds-callout-good{font-family:var(--font-mono);font-size:11px;color:hsl(var(--success));padding:6px 10px;background:hsl(var(--success)/.1);border-radius:6px;width:fit-content}
-  .ds-icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:10px}
-  .ds-icon-cell{aspect-ratio:1;border:1px solid hsl(var(--border));border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;color:hsl(var(--foreground))}
-  .ds-icon-cell .ds-icon-name{font-family:var(--font-mono);font-size:9.5px;color:hsl(var(--muted-foreground))}
-  .ds-icon-cell svg{width:20px;height:20px}
-  .ds-input-demo{display:flex;flex-direction:column;gap:6px;width:240px}
-  .ds-input-demo label{font-size:12px;color:hsl(var(--muted-foreground));font-weight:500}
-  .ds-input-demo input{padding:9px 12px;border-radius:8px;border:1px solid hsl(var(--border));background:hsl(var(--card));outline:none;color:hsl(var(--foreground));font-size:13px}
-  .ds-input-demo input:focus{border-color:hsl(var(--primary));box-shadow:0 0 0 3px hsl(var(--primary)/.12)}
-  .ds-anim-box{width:80px;height:48px;background:hsl(var(--primary)/.15);border:1px solid hsl(var(--primary)/.4);border-radius:8px;cursor:pointer;transition:all 200ms cubic-bezier(0.4,0,0.2,1)}
-  .ds-anim-box:hover{background:hsl(var(--primary));transform:translateY(-2px)}
-  .ds-mini-toast{background:hsl(var(--foreground));color:hsl(var(--background));padding:10px 14px;border-radius:14px;font-size:12.5px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 8px 20px -6px hsl(var(--foreground)/.3)}
-  .ds-mini-toast .ok-mark{width:18px;height:18px;border-radius:999px;background:hsl(var(--success));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
-  .ds-mini-modal{background:hsl(var(--card));border-radius:16px;padding:18px;width:280px;border:1px solid hsl(var(--border));box-shadow:0 20px 50px -16px hsl(var(--foreground)/.3)}
-  .ds-mini-modal h4{font-family:var(--font-display);font-size:16px;margin:0 0 4px;font-weight:600}
-  .ds-mini-modal p{font-size:11.5px;color:hsl(var(--muted-foreground));margin:0 0 12px}
-  .ds-side-demo{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));padding:10px;border-radius:14px;display:flex;flex-direction:column;gap:2px;width:240px}
-  .ds-side-demo .nav-demo{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.85);position:relative}
-  .ds-side-demo .nav-demo.active{background:hsl(var(--sidebar-accent));color:#fff;font-weight:500}
-  .ds-side-demo .nav-demo.active::before{content:"";position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
-  .ds-side-demo .nav-demo svg{width:14px;height:14px;opacity:.85}
-  .ds-container-vis{display:flex;flex-direction:column;gap:8px;width:100%}
-  .ds-container-bar{height:24px;background:hsl(var(--accent)/.2);border:1px solid hsl(var(--accent)/.5);border-radius:6px;display:flex;align-items:center;padding:0 10px;font-family:var(--font-mono);font-size:10.5px;color:hsl(var(--foreground))}
-  .ds-divider-demo{width:200px;height:1px;background:hsl(var(--border))}
-  .ds-divider-dashed{width:200px;height:1px;background:repeating-linear-gradient(to right,hsl(var(--border)) 0,hsl(var(--border)) 4px,transparent 4px,transparent 8px)}
-  .ds-section h3{font-family:var(--font-display);font-size:20px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
-  .ds-section .ds-sub{font-size:12.5px;color:hsl(var(--muted-foreground));margin:0 0 18px}
-  .ds-type-row{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:baseline;padding:14px 0;border-bottom:1px solid hsl(var(--border)/.6)}
-  .ds-type-row:last-child{border-bottom:none}
-  .ds-type-meta{font-family:var(--font-mono);font-size:11px;color:hsl(var(--muted-foreground));line-height:1.5}
-  .ds-type-meta strong{color:hsl(var(--foreground));font-weight:500;display:block;margin-bottom:2px}
-  .ds-swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-  .ds-swatch{border:1px solid hsl(var(--border));border-radius:14px;overflow:hidden;background:hsl(var(--card))}
-  .ds-swatch-color{height:64px;display:flex;align-items:flex-end;padding:10px;color:#fff;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em}
-  .ds-swatch-color.dark-fg{color:hsl(16 38% 12%)}
-  .ds-swatch-meta{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
-  .ds-swatch-meta .name{font-size:12.5px;font-weight:500}
-  .ds-swatch-meta .hsl{font-family:var(--font-mono);font-size:10.5px;color:hsl(var(--muted-foreground))}
-  .ds-token-list{display:flex;flex-direction:column}
-  .ds-token-row{display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;padding:10px 0;border-bottom:1px solid hsl(var(--border)/.6)}
-  .ds-token-row:last-child{border-bottom:none}
-  .ds-token-name{font-family:var(--font-mono);font-size:11.5px;color:hsl(var(--foreground))}
-  .ds-token-vis{display:flex;align-items:center;gap:8px}
-  .ds-spacing-bar{height:8px;background:hsl(var(--accent)/.5);border-radius:2px}
-  .ds-radius-box{width:48px;height:48px;background:hsl(var(--primary)/.12);border:2px solid hsl(var(--primary));display:flex;align-items:center;justify-content:center;color:hsl(var(--primary));font-family:var(--font-mono);font-size:10px}
-  .ds-shadow-box{width:80px;height:48px;background:hsl(var(--card));border-radius:8px;border:1px solid hsl(var(--border)/.4)}
-  .ds-token-px{font-family:var(--font-mono);font-size:11px;color:hsl(var(--muted-foreground));text-align:right}
-  .ds-component-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-  .ds-rules ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px}
-  .ds-rules li{font-size:13px;line-height:1.5}
-  .ds-rules code{font-family:var(--font-mono);font-size:11.5px;background:hsl(var(--muted));padding:1px 5px;border-radius:4px}
+/* Settings color editor */
+.token-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid hsl(var(--border));background:hsl(var(--card))}
+.color-swatch{width:40px;height:40px;border-radius:8px;border:1px solid hsl(var(--border));cursor:pointer;overflow:hidden;position:relative;flex-shrink:0}
+.color-swatch input[type=color]{position:absolute;inset:-4px;opacity:0;cursor:pointer;width:calc(100%+8px);height:calc(100%+8px)}
+.section-label-mono{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:hsl(var(--muted-foreground));margin:0 0 10px}
 
-  /* Empty stub (kept for future) */
-  .empty-stub{background:hsl(var(--card));border:1px solid hsl(var(--border));border-radius:20px;padding:48px 32px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 1px 2px hsl(var(--foreground)/.04)}
-  .empty-stub .stub-mark{width:44px;height:44px;border-radius:14px;background:hsl(var(--muted));color:hsl(var(--muted-foreground));display:flex;align-items:center;justify-content:center}
+/* Profile */
+.profile-avatar-wrap{position:relative;width:88px;height:88px;flex-shrink:0}
+.profile-avatar{width:88px;height:88px;border-radius:50%;background:hsl(var(--primary)/.2);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:28px;font-weight:700;color:hsl(var(--primary));overflow:hidden;border:2px solid hsl(var(--border))}
+.avatar-img{width:100%;height:100%;object-fit:cover}
+.avatar-edit-btn{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 4px hsl(var(--foreground)/.1);color:hsl(var(--foreground));transition:background 150ms}
+.avatar-edit-btn:hover{background:hsl(var(--muted))}
+.avatar-upload-input{display:none}
+
+/* Tabs */
+.tabs-nav{display:flex;gap:2px;border-bottom:1px solid hsl(var(--border));margin-bottom:20px}
+.tab-item{padding:10px 16px;font-size:13px;color:hsl(var(--muted-foreground));border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:color 150ms}
+.tab-item.active{color:hsl(var(--foreground));border-bottom-color:hsl(var(--accent));font-weight:500}
+.tab-item:hover:not(.active){color:hsl(var(--foreground))}
+
+/* Danger zone */
+.danger-zone{border-top:1px solid hsl(var(--destructive)/.3);padding-top:20px;margin-top:4px}
 </style>
 </head>
-<body>
+<body class="preset-base">
 <div id="root"></div>
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 
-<script type="text/babel" data-presets="react">
-const { useState } = React;
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
 
-// ============================================================
-// Icon set (lucide-style, stroke 1.5)
-// ============================================================
-const Ic = {
-  pkg:    () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
-  truck:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M5 18H3V6h13v12h-2"/><path d="M14 9h4l3 3v6h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>,
-  globe:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20"/><path d="M12 2a15 15 0 0 0 0 20"/></svg>,
-  users:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>,
-  list:   () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><circle cx="3.5" cy="6" r=".7"/><circle cx="3.5" cy="12" r=".7"/><circle cx="3.5" cy="18" r=".7"/></svg>,
-  cog:    () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.36.21.78.33 1.21.33H21a2 2 0 1 1 0 4h-.09c-.43 0-.85.12-1.21.33Z"/></svg>,
-  search: () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
-  plus:   () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M5 12h14"/><path d="M12 5v14"/></svg>,
-  more:   () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>,
-  arrow:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg>,
-  spark:  () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="ic"><path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="m5.6 5.6 2.1 2.1"/><path d="m16.3 16.3 2.1 2.1"/><path d="m5.6 18.4 2.1-2.1"/><path d="m16.3 7.7 2.1-2.1"/></svg>,
+// ─── Icons ────────────────────────────────────────────────────────
+const ic = (d) => ({ size = 16, ...p } = {}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}>
+    {d.map((x, i) => <path key={i} d={x} />)}
+  </svg>
+);
+const I = {
+  Menu:        ic(["M3 12h18","M3 6h18","M3 18h18"]),
+  ChevronLeft: ic(["m15 18-6-6 6-6"]),
+  ChevronRight:ic(["m9 18 6-6-6-6"]),
+  Package:     ic(["M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z","m3.3 7 8.7 5 8.7-5","M12 22V12"]),
+  Truck:       ic(["M5 18H3V6h13v12h-2","M14 9h4l3 3v6h-2","M7.5 17a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z","M17.5 17a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"]),
+  Users:       ic(["M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2","M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8z","M22 21v-2a4 4 0 0 0-3-3.87","M16 3.13a4 4 0 0 1 0 7.75"]),
+  Settings:    ic(["M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z","M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"]),
+  LogOut:      ic(["M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4","M16 17l5-5-5-5","M21 12H9"]),
+  FileText:    ic(["M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z","M14 2v4a2 2 0 0 0 2 2h4","M10 9H8","M16 13H8","M16 17H8"]),
+  BarChart:    ic(["M12 20V10","M18 20V4","M6 20v-4"]),
+  User:        ic(["M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2","M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"]),
+  BookOpen:    ic(["M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z","M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"]),
+  Edit:        ic(["M12 20h9","M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"]),
+  Camera:      ic(["M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z","M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"]),
+  Check:       ic(["M20 6 9 17l-5-5"]),
+  Plus:        ic(["M5 12h14","M12 5v14"]),
+  Pipelines:   ic(["M3 3h7v7H3z","M14 3h7v7h-7z","M14 14h7v7h-7z","M3 14h7v7H3z"]),
+  TrendingUp:  ic(["M22 7l-8.5 8.5-5-5L2 17","M16 7h6v6"]),
+  Bell:        ic(["M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9","M13.73 21a2 2 0 0 1-3.46 0"]),
+  Article:     ic(["M4 6h16","M4 12h16","M4 18h7"]),
+  RotateCcw:   ic(["M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8","M3 3v5h5"]),
+  Save:        ic(["M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3z","M15 3v6h6","M10 16H8","M16 16h-2","M8 12h8"]),
+  Trash2:      ic(["M3 6h18","M8 6V4h8v2","M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6","M10 11v6","M14 11v6"]),
+  Upload:      ic(["M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4","M17 8l-5-5-5 5","M12 3v12"]),
+  Copy:        ic(["M8 17.929H6c-1.105 0-2-.912-2-2.036V5.036C4 3.91 4.895 3 6 3h8c1.105 0 2 .911 2 2.036v1.866m-6 .17h8c1.105 0 2 .91 2 2.036v10.857C20 21.09 19.105 22 18 22h-8c-1.105 0-2-.911-2-2.036V9.107c0-1.124.895-2.036 2-2.036z"]),
+  Info:        ic(["M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z","M12 16v-4","M12 8h.01"]),
+  Link:        ic(["M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71","M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"]),
+  Undo:        ic(["M3 7v6h6","M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"]),
+  Redo:        ic(["M21 7v6h-6","M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"]),
 };
 
-// ============================================================
-// Sidebar
-// ============================================================
-const NAV_GROUPS = [
-  { label: "Operação", items: [
-    { k: "romaneios", lbl: "Romaneios", I: Ic.list, count: 28 },
-    { k: "lotes",     lbl: "Lotes",      I: Ic.pkg,  count: 84 },
-    { k: "rotas",     lbl: "Rotas",      I: Ic.truck },
-    { k: "origens",   lbl: "Origens",    I: Ic.globe },
+// ─── Color utils ─────────────────────────────────────────────────
+const hexToRgb = (hex) => {
+  const h = hex.replace("#", "");
+  const n = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  return [parseInt(n.slice(0,2),16), parseInt(n.slice(2,4),16), parseInt(n.slice(4,6),16)];
+};
+const rgbToHex = (r,g,b) => "#"+[r,g,b].map((v)=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,"0")).join("");
+const rgbToHsl = (r,g,b) => {
+  r/=255; g/=255; b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b);
+  let h=0, s=0; const l=(max+min)/2;
+  if(max!==min){ const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min);
+    switch(max){ case r: h=(g-b)/d+(g<b?6:0); break; case g: h=(b-r)/d+2; break; case b: h=(r-g)/d+4; break; }
+    h*=60; }
+  return [Math.round(h),Math.round(s*100),Math.round(l*100)];
+};
+const hslToRgb = (h,s,l) => {
+  s/=100; l/=100;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs(((h/60)%2)-1)), m=l-c/2;
+  let [r,g,b]=[0,0,0];
+  if(h<60)[r,g,b]=[c,x,0]; else if(h<120)[r,g,b]=[x,c,0]; else if(h<180)[r,g,b]=[0,c,x];
+  else if(h<240)[r,g,b]=[0,x,c]; else if(h<300)[r,g,b]=[x,0,c]; else [r,g,b]=[c,0,x];
+  return [(r+m)*255,(g+m)*255,(b+m)*255];
+};
+const hexToHslStr = (hex) => { const [r,g,b]=hexToRgb(hex); const [h,s,l]=rgbToHsl(r,g,b); return `${h} ${s}% ${l}%`; };
+const hslStrToHex = (str) => {
+  const m=String(str).trim().match(/^(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%/);
+  if(!m) return "#000000";
+  const [r,g,b]=hslToRgb(parseFloat(m[1]),parseFloat(m[2]),parseFloat(m[3]));
+  return rgbToHex(r,g,b);
+};
+const relLum = (r,g,b) => [r,g,b].map(v=>{ v/=255; return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4); }).reduce((s,v,i)=>s+[0.2126,0.7152,0.0722][i]*v, 0);
+const contrast = (h1,h2) => { const l1=relLum(...hexToRgb(h1)), l2=relLum(...hexToRgb(h2)); return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05); };
+const getCssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+// ─── Template config ──────────────────────────────────────────────
+const TEMPLATES = {
+  ops: {
+    name: "Ops Template",
+    icon: "📦",
+    iconBg: "hsl(var(--accent)/.15)",
+    desc: "Gestão de romaneios, rotas e expedição logística",
+    email: "template1@gmail.com",
+    password: "Demo!Ops-2026",
+    user: { name: "Carlos Andrade", role: "Operador" },
+    navGroups: [
+      { label: "Operação", items: [
+        { k:"dashboard", lbl:"Dashboard", Icon:I.BarChart, badge:null },
+        { k:"romaneios", lbl:"Romaneios", Icon:I.FileText, badge:"28" },
+        { k:"rotas",    lbl:"Rotas",     Icon:I.Truck,    badge:null },
+      ]},
+      { label: "Cadastros", items: [
+        { k:"produtores", lbl:"Produtores", Icon:I.Users, badge:"312" },
+      ]},
+      { label: "Conta", items: [
+        { k:"profile",   lbl:"Perfil",          Icon:I.User,     badge:null },
+        { k:"settings",  lbl:"Configurações",   Icon:I.Settings, badge:null },
+      ]},
+    ],
+  },
+  crm: {
+    name: "CRM Template",
+    icon: "📊",
+    iconBg: "hsl(var(--primary)/.15)",
+    desc: "Pipeline de vendas, contatos e análise de conversão",
+    email: "template2@gmail.com",
+    password: "Demo!Crm-2026",
+    user: { name: "Mariana Costa", role: "Comercial" },
+    navGroups: [
+      { label: "Vendas", items: [
+        { k:"dashboard", lbl:"Dashboard",  Icon:I.BarChart,    badge:null },
+        { k:"pipeline",  lbl:"Pipeline",   Icon:I.Pipelines,   badge:"14" },
+        { k:"contatos",  lbl:"Contatos",   Icon:I.Users,       badge:"89" },
+      ]},
+      { label: "Análise", items: [
+        { k:"relatorios", lbl:"Relatórios", Icon:I.TrendingUp, badge:null },
+      ]},
+      { label: "Conta", items: [
+        { k:"profile",   lbl:"Perfil",          Icon:I.User,     badge:null },
+        { k:"settings",  lbl:"Configurações",   Icon:I.Settings, badge:null },
+      ]},
+    ],
+  },
+  wiki: {
+    name: "Wiki Template",
+    icon: "📚",
+    iconBg: "hsl(var(--success)/.15)",
+    desc: "Base de conhecimento, artigos e documentação interna",
+    email: "template3@gmail.com",
+    password: "Demo!Wiki-2026",
+    user: { name: "Fernanda Lima", role: "Editor" },
+    navGroups: [
+      { label: "Conteúdo", items: [
+        { k:"dashboard", lbl:"Dashboard",  Icon:I.BarChart,  badge:null },
+        { k:"artigos",   lbl:"Artigos",    Icon:I.Article,   badge:"47" },
+        { k:"editor",    lbl:"Editor",     Icon:I.Edit,      badge:null },
+      ]},
+      { label: "Conta", items: [
+        { k:"profile",   lbl:"Perfil",          Icon:I.User,     badge:null },
+        { k:"settings",  lbl:"Configurações",   Icon:I.Settings, badge:null },
+      ]},
+    ],
+  },
+};
+
+// ─── Mock data ────────────────────────────────────────────────────
+const OPS_ROWS = [
+  { id:"RM-2024-001847", date:"28/04", trans:"TransLog Brasil",  status:"ok",      label:"Conferido" },
+  { id:"RM-2024-001846", date:"28/04", trans:"Expresso Mineiro", status:"warn",    label:"Pendente" },
+  { id:"RM-2024-001845", date:"28/04", trans:"Rodovia Sul",      status:"info",    label:"Em conferência" },
+  { id:"RM-2024-001844", date:"27/04", trans:"TransLog Brasil",  status:"err",     label:"Divergente" },
+  { id:"RM-2024-001843", date:"27/04", trans:"Cargas Paulista",  status:"ok",      label:"Conferido" },
+];
+const CRM_ROWS = [
+  { id:"OP-4921", cliente:"Tech Solutions SA",  valor:"R$ 48.000",  fase:"Proposta",    status:"info",   label:"Em andamento" },
+  { id:"OP-4920", cliente:"Grupo Meridional",   valor:"R$ 120.000", fase:"Negociação",  status:"warn",   label:"Em risco" },
+  { id:"OP-4919", cliente:"Agro Norte Ltda",    valor:"R$ 22.500",  fase:"Fechamento",  status:"ok",     label:"Quente" },
+  { id:"OP-4918", cliente:"Retail Prime",       valor:"R$ 67.000",  fase:"Qualificação",status:"neutral",label:"Novo" },
+  { id:"OP-4917", cliente:"MegaComm Brasil",    valor:"R$ 95.000",  fase:"Fechamento",  status:"ok",     label:"Quente" },
+];
+const WIKI_ROWS = [
+  { id:"ART-0071", titulo:"Onboarding de novos usuários",     autor:"Fernanda Lima",  views:"1.2k", status:"ok",   label:"Publicado" },
+  { id:"ART-0070", titulo:"Guia de integração via API",       autor:"Carlos Andrade", views:"843",  status:"info", label:"Revisão" },
+  { id:"ART-0069", titulo:"Política de acesso a dados",       autor:"Mariana Costa",  views:"530",  status:"ok",   label:"Publicado" },
+  { id:"ART-0068", titulo:"Template de proposta comercial",   autor:"Rafael Torres",  views:"412",  status:"warn", label:"Rascunho" },
+];
+
+// ─── TOKEN config for SettingsScreen ─────────────────────────────
+const TOKEN_SECTIONS = [
+  { title:"Marca", tokens:[
+    { id:"--primary",  label:"Primária",       contrastWith:"--primary-foreground" },
+    { id:"--accent",   label:"Acento",         contrastWith:null },
   ]},
-  { label: "Cadastros", items: [
-    { k: "produtores", lbl: "Produtores", I: Ic.users, count: 312 },
-    { k: "config",     lbl: "Configurações", I: Ic.cog },
+  { title:"Sidebar", tokens:[
+    { id:"--sidebar-background", label:"Fundo" },
+    { id:"--sidebar-accent",     label:"Item ativo" },
+    { id:"--sidebar-indicator",  label:"Indicador" },
   ]},
-  { label: "Sistema", items: [
-    { k: "design", lbl: "Design System", I: Ic.spark },
+  { title:"Superfícies", tokens:[
+    { id:"--background", label:"Fundo da página" },
+    { id:"--card",       label:"Card" },
+    { id:"--foreground", label:"Texto",           contrastWith:"--background" },
+    { id:"--border",     label:"Bordas" },
+  ]},
+  { title:"Status", tokens:[
+    { id:"--success",     label:"Sucesso" },
+    { id:"--warning",     label:"Aviso" },
+    { id:"--destructive", label:"Erro" },
   ]},
 ];
 
-function Sidebar({ active, onNav }) {
+// ─── Color presets ────────────────────────────────────────────────
+const COLOR_PRESETS = {
+  "Ops Default": {
+    "--primary":"184 100% 18%","--accent":"12 65% 55%",
+    "--background":"30 33% 96%","--foreground":"16 38% 12%",
+    "--card":"0 0% 100%","--border":"30 20% 87%",
+    "--sidebar-background":"184 100% 18%","--sidebar-accent":"184 80% 25%","--sidebar-indicator":"12 65% 55%",
+    "--success":"152 85% 30%","--warning":"38 92% 50%","--destructive":"0 100% 43%",
+  },
+  "CRM Dark": {
+    "--primary":"220 90% 55%","--accent":"280 70% 65%",
+    "--background":"222 20% 10%","--foreground":"220 15% 92%",
+    "--card":"222 20% 14%","--border":"222 20% 20%",
+    "--sidebar-background":"222 20% 7%","--sidebar-accent":"222 20% 15%","--sidebar-indicator":"220 90% 65%",
+    "--success":"152 70% 45%","--warning":"38 90% 55%","--destructive":"0 85% 55%",
+  },
+  "Wiki Sage": {
+    "--primary":"145 40% 35%","--accent":"38 80% 55%",
+    "--background":"120 10% 96%","--foreground":"130 25% 12%",
+    "--card":"0 0% 100%","--border":"120 10% 85%",
+    "--sidebar-background":"145 40% 30%","--sidebar-accent":"145 40% 38%","--sidebar-indicator":"38 80% 60%",
+    "--success":"152 80% 32%","--warning":"38 90% 50%","--destructive":"0 90% 45%",
+  },
+  "Dark Mode": {
+    "--primary":"200 80% 55%","--accent":"25 90% 60%",
+    "--background":"220 15% 8%","--foreground":"220 10% 90%",
+    "--card":"220 15% 12%","--border":"220 15% 20%",
+    "--sidebar-background":"220 15% 5%","--sidebar-accent":"220 15% 13%","--sidebar-indicator":"25 90% 60%",
+    "--success":"152 70% 50%","--warning":"38 90% 55%","--destructive":"0 80% 60%",
+  },
+};
+
+// ─── Login Screen ─────────────────────────────────────────────────
+function LoginScreen({ onLogin }) {
+  const [selected, setSelected] = useState("ops");
+  const [email, setEmail] = useState(TEMPLATES.ops.email);
+  const [password, setPassword] = useState(TEMPLATES.ops.password);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const selectTemplate = (key) => {
+    setSelected(key);
+    setEmail(TEMPLATES[key].email);
+    setPassword(TEMPLATES[key].password);
+    setError(null);
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+    setTimeout(() => {
+      const tpl = Object.entries(TEMPLATES).find(([, t]) => t.email === email.trim());
+      if (tpl && password === tpl[1].password) {
+        onLogin({ templateKey: tpl[0] });
+      } else {
+        setError("Email ou senha inválidos. Use as credenciais de um dos templates.");
+        setLoading(false);
+      }
+    }, 600);
+  };
+
   return (
-    <aside className="side">
-      <div className="brand">
-        <div className="brand-mark">B</div>
-        <div>
-          <div className="brand-name">Choco</div>
-          <div className="brand-sub">barry callebaut</div>
+    <div className="login-root">
+      {/* Brand panel */}
+      <div className="login-brand">
+        <img src="../../assets/artemis-logo.svg" alt="Artemis" className="login-brand-logo" />
+        <h1 className="login-brand-title">Anti-AI<br />Design System</h1>
+        <p className="login-brand-sub">
+          Componentes com personalidade. Escolha um template e explore o DS em ação.
+        </p>
+        <div className="login-brand-badge">Wave 6.5 · 3 Templates</div>
+      </div>
+
+      {/* Form side */}
+      <div className="login-form-side">
+        <div className="login-box">
+          <div>
+            <h2>Entrar no demo</h2>
+            <p>Escolha um template para explorar</p>
+          </div>
+
+          {/* Template cards */}
+          <div className="tpl-cards">
+            {Object.entries(TEMPLATES).map(([key, tpl]) => (
+              <div key={key} className={`tpl-card${selected === key ? " selected" : ""}`}
+                onClick={() => selectTemplate(key)}>
+                <div className="tpl-icon" style={{ background: tpl.iconBg }}>{tpl.icon}</div>
+                <div className="tpl-card-info">
+                  <div className="tpl-card-name">{tpl.name}</div>
+                  <div className="tpl-card-desc">{tpl.desc}</div>
+                  <div className="tpl-cred">{tpl.email} · {tpl.password}</div>
+                </div>
+                <div className="tpl-radio">
+                  <div className="tpl-radio-dot" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleLogin} style={{ display:"flex", flexDirection:"column", gap:14 }}>
+            <div className="field-group">
+              <label>Email</label>
+              <input className="field-input" type="email" value={email}
+                onChange={e => setEmail(e.target.value)} placeholder="email@exemplo.com" required />
+            </div>
+            <div className="field-group">
+              <div className="forgot-row">
+                <label>Senha</label>
+                <span className="forgot-link">Esqueceu a senha?</span>
+              </div>
+              <input className="field-input" type="password" value={password}
+                onChange={e => setPassword(e.target.value)} placeholder="••••••••" required />
+            </div>
+            {error && <div className="err-msg">{error}</div>}
+            <button type="submit" className="btn-login" disabled={loading}>
+              {loading ? "Entrando..." : (<><I.Check size={16} /> Entrar</>)}
+            </button>
+          </form>
+
+          <p style={{ fontSize:12, color:"hsl(var(--muted-foreground))", textAlign:"center", margin:0 }}>
+            Demo showcase — sem dados reais. <a href="./showcase/" style={{ color:"hsl(var(--accent))" }}>Ver documentação →</a>
+          </p>
         </div>
       </div>
-      {NAV_GROUPS.map(g => (
-        <React.Fragment key={g.label}>
-          <div className="section-label">{g.label}</div>
-          {g.items.map(({ k, lbl, I, count }) => (
-            <div key={k} className={"nav " + (active === k ? "active" : "")} onClick={() => onNav(k)}>
-              <I />
-              <span>{lbl}</span>
-              {count != null && <span className="count">{count}</span>}
+    </div>
+  );
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────────
+function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const tpl = TEMPLATES[templateKey];
+  const initials = tpl.user.name.split(" ").slice(0,2).map(w=>w[0]).join("");
+
+  return (
+    <aside className={`sidebar${collapsed ? " collapsed":""}`} style={{ gridColumn:1 }}>
+      {/* Toggle bolinha */}
+      <button className="sidebar-toggle" onClick={() => setCollapsed(c=>!c)} title={collapsed?"Expandir":"Recolher"}>
+        {collapsed ? <I.ChevronRight size={14} /> : <I.ChevronLeft size={14} />}
+      </button>
+
+      {/* Brand */}
+      <div className="sidebar-brand">
+        {collapsed
+          ? <img src="../../assets/artemis-icon.png" alt="Artemis" className="sidebar-logo-icon" />
+          : <img src="../../assets/artemis-logo.svg" alt="Artemis" className="sidebar-logo-full" />
+        }
+        {!collapsed && <span className="sidebar-brand-text">{tpl.name}</span>}
+      </div>
+
+      {/* Nav groups */}
+      {tpl.navGroups.map((grp) => (
+        <React.Fragment key={grp.label}>
+          {!collapsed && <div className="nav-section-label">{grp.label}</div>}
+          {grp.items.map(({ k, lbl, Icon, badge }) => (
+            <div key={k}
+              className={`nav-item${activePage === k ? " active" : ""}`}
+              onClick={() => onNav(k)}
+              title={collapsed ? lbl : undefined}>
+              <Icon size={16} />
+              <span className="nav-label">{lbl}</span>
+              {badge && !collapsed && <span className="nav-badge">{badge}</span>}
             </div>
           ))}
         </React.Fragment>
       ))}
-      <div className="user">
-        <div className="avatar">PN</div>
-        <div style={{flex:1, minWidth:0}}>
-          <div className="uname">Patrick N.</div>
-          <div className="umail">patrick@bc.com</div>
-        </div>
+
+      {/* User panel */}
+      <div className="user-panel">
+        <div className="avatar">{initials}</div>
+        {!collapsed && (
+          <>
+            <div className="user-info">
+              <div className="user-name">{tpl.user.name}</div>
+            </div>
+            <div className="user-actions">
+              <div className="user-action-btn" title="Configurações" onClick={() => onNav("settings")}>
+                <I.Settings size={14} />
+              </div>
+              <div className="user-action-btn" title="Sair" onClick={onLogout}>
+                <I.LogOut size={14} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </aside>
   );
 }
 
-// ============================================================
-// Page head — eyebrow mono small + h2 Lora big
-// ============================================================
-function PageHead({ section, page, sub, actions }) {
+// ─── Dashboard pages ──────────────────────────────────────────────
+function OpsDashboard({ onNav }) {
   return (
-    <div className="eyebrow-bar">
-      <div className="eyebrow-stack">
-        <div className="crumb-mono">{section}/</div>
-        <h2 className="page-title">{page}</h2>
-        {sub && <p className="page-sub">{sub}</p>}
-      </div>
-      {actions && <div style={{display:"flex",gap:10,flexShrink:0}}>{actions}</div>}
-    </div>
-  );
-}
-
-// ============================================================
-// Atoms
-// ============================================================
-function Kpi({ label, value, delta, dir }) {
-  return (
-    <div className="kpi">
-      <div className="kpi-label">{label}</div>
-      <div className="kpi-value">{value}</div>
-      <div className={"kpi-delta " + dir}>
-        {dir === "up" ? "▲" : dir === "dn" ? "▼" : "•"} {delta}
-      </div>
-    </div>
-  );
-}
-function Pill({ kind, children }) {
-  return <span className={"pill " + kind}><span className="dot"></span>{children}</span>;
-}
-function CtxSearch({ placeholder }) {
-  return (
-    <div className="ctx-search">
-      <Ic.search />
-      <input placeholder={placeholder} />
-      <span className="kbd">⌘K</span>
-    </div>
-  );
-}
-
-// ============================================================
-// DATA — Romaneios
-// ============================================================
-const ROMANEIOS_DATA = [
-  { group: "BARRY CALLEBAUT · BR", rows: [
-    { id: "RM-0421", name: "Selo Sustentável · Bahia",     origin: "Salvador → Lyon",        vol: "15.0 t", status: ["ok","Entregue"],         date: "2026-04-22" },
-    { id: "RM-0422", name: "Cacao Horizons · Itabuna",     origin: "Itabuna → Rotterdam",    vol: "12.4 t", status: ["info","Em trânsito"],   date: "2026-04-25" },
-    { id: "RM-0423", name: "Direto do Produtor · Linhares",origin: "Vitória → Bordeaux",     vol: "8.1 t",  status: ["warn","Em revisão"],    date: "2026-04-26" },
-    { id: "RM-0424", name: "Origem ES · Cooperativa Sul",  origin: "Vitória → Hamburg",      vol: "9.8 t",  status: ["info","Em trânsito"],   date: "2026-04-27" },
-    { id: "RM-0425", name: "Lote Cabruca",                 origin: "Ilhéus → Antwerp",       vol: "11.2 t", status: ["ok","Entregue"],         date: "2026-04-19" },
-  ]},
-  { group: "FEMSA · MX", rows: [
-    { id: "RM-0501", name: "Lote Nayarit",            origin: "Manzanillo → Long Beach", vol: "22.8 t", status: ["ok","Entregue"],          date: "2026-04-21" },
-    { id: "RM-0502", name: "Trazabilidad MX-09",      origin: "Veracruz → Hamburg",      vol: "9.6 t",  status: ["err","Pendente docs"],    date: "2026-04-26" },
-    { id: "RM-0503", name: "Tabasco Cooperativo",     origin: "Villahermosa → Le Havre", vol: "18.3 t", status: ["info","Em trânsito"],    date: "2026-04-28" },
-  ]},
-  { group: "NESTLÉ · CIV", rows: [
-    { id: "RM-0612", name: "Cooperative ECAPEX · Daloa", origin: "Abidjan → Antwerp",   vol: "31.4 t", status: ["info","Em trânsito"], date: "2026-04-24" },
-    { id: "RM-0613", name: "San Pedro · safra alta",     origin: "San Pedro → Genoa",   vol: "26.7 t", status: ["ok","Entregue"],       date: "2026-04-20" },
-    { id: "RM-0614", name: "ECAPEX · revalida cert.",    origin: "Abidjan → Hamburg",   vol: "14.9 t", status: ["warn","Em revisão"],   date: "2026-04-26" },
-  ]},
-];
-
-// ============================================================
-// DATA — Lotes
-// ============================================================
-const LOTES_DATA = [
-  { group: "RAINFOREST ALLIANCE · 2026", rows: [
-    { id: "LT-2026-0114", name: "Cabruca Sul · safra abr",     prod: "Coop. Cabruca · BA",       cert: "RA-2027",  vol: "12.0 t", status: ["ok","Ativo"]   },
-    { id: "LT-2026-0115", name: "Cooperativa Itabuna",         prod: "Coop. Itabuna · BA",       cert: "RA-2026",  vol: "9.4 t",  status: ["warn","Renovar"] },
-    { id: "LT-2026-0117", name: "Linhares Direct",             prod: "Linhares Direct · ES",     cert: "RA-2027",  vol: "6.8 t",  status: ["ok","Ativo"]   },
-    { id: "LT-2026-0119", name: "Vale do Caparaó",             prod: "Coop. Caparaó · ES",       cert: "RA-2027",  vol: "8.1 t",  status: ["ok","Ativo"]   },
-  ]},
-  { group: "COCOA HORIZONS · 2026", rows: [
-    { id: "LT-2026-0210", name: "Programa Horizons · Itabuna", prod: "Coop. Itabuna · BA",       cert: "CH-2027",  vol: "15.2 t", status: ["ok","Ativo"]   },
-    { id: "LT-2026-0212", name: "ECAPEX Daloa fase 1",         prod: "ECAPEX · Daloa · CIV",     cert: "CH-2027",  vol: "31.4 t", status: ["info","Em trânsito"] },
-    { id: "LT-2026-0214", name: "Asociación Norte · EC",       prod: "Cacao Norte · Manabí",     cert: "CH-2027",  vol: "11.6 t", status: ["ok","Ativo"]   },
-    { id: "LT-2026-0218", name: "Tabasco Coop · safra MX",     prod: "Coop. Tabasco · MX",       cert: "CH-2026",  vol: "18.3 t", status: ["warn","Renovar"] },
-  ]},
-  { group: "DIRECT TRADE", rows: [
-    { id: "LT-2026-0301", name: "Linhares · Premium ES",       prod: "Linhares Direct · ES",     cert: "DT-2027",  vol: "4.2 t",  status: ["ok","Ativo"]   },
-    { id: "LT-2026-0303", name: "Madagascar · Sambirano",      prod: "Sambirano Coop · MG",      cert: "DT-2026",  vol: "2.9 t",  status: ["ok","Ativo"]   },
-    { id: "LT-2026-0305", name: "Peru · Tumbes finos",         prod: "APP Tumbes · PE",          cert: "DT-2027",  vol: "3.8 t",  status: ["info","Em trânsito"] },
-  ]},
-  { group: "CONVENCIONAL", rows: [
-    { id: "LT-2026-0401", name: "Lote Nayarit aberto",         prod: "FEMSA Nayarit · MX",       cert: "—",       vol: "22.8 t", status: ["ok","Ativo"]   },
-    { id: "LT-2026-0407", name: "San Pedro · safra alta",      prod: "Coop. San Pedro · CIV",    cert: "—",       vol: "26.7 t", status: ["ok","Ativo"]   },
-    { id: "LT-2026-0410", name: "Indonesia · Sulawesi",        prod: "Coop. Sulawesi · ID",      cert: "—",       vol: "19.1 t", status: ["err","Pendente docs"] },
-  ]},
-];
-
-// ============================================================
-// DATA — Rotas
-// ============================================================
-const ROTAS_DATA = [
-  { group: "MARÍTIMO · LONG-HAUL", rows: [
-    { id: "RT-MAR-001", name: "Salvador → Rotterdam",   modal: "MAR", sla: "21d",  cost: "€312/t", lastTrip: "2026-04-12", status: ["ok","Ativa"] },
-    { id: "RT-MAR-002", name: "Itabuna → Antwerp",      modal: "MAR", sla: "23d",  cost: "€298/t", lastTrip: "2026-04-19", status: ["ok","Ativa"] },
-    { id: "RT-MAR-003", name: "Vitória → Hamburg",      modal: "MAR", sla: "25d",  cost: "€324/t", lastTrip: "2026-04-21", status: ["ok","Ativa"] },
-    { id: "RT-MAR-004", name: "Manzanillo → Long Beach",modal: "MAR", sla: "8d",   cost: "$184/t", lastTrip: "2026-04-21", status: ["ok","Ativa"] },
-    { id: "RT-MAR-005", name: "Veracruz → Hamburg",     modal: "MAR", sla: "22d",  cost: "€289/t", lastTrip: "2026-04-26", status: ["warn","Atraso 3d"] },
-    { id: "RT-MAR-006", name: "Abidjan → Antwerp",      modal: "MAR", sla: "17d",  cost: "€241/t", lastTrip: "2026-04-24", status: ["ok","Ativa"] },
-    { id: "RT-MAR-007", name: "San Pedro → Genoa",      modal: "MAR", sla: "19d",  cost: "€267/t", lastTrip: "2026-04-20", status: ["ok","Ativa"] },
-    { id: "RT-MAR-008", name: "Sulawesi → Hamburg",     modal: "MAR", sla: "28d",  cost: "€352/t", lastTrip: "2026-04-09", status: ["warn","Sob revisão"] },
-  ]},
-  { group: "RODOVIÁRIO + TRANSBORDO", rows: [
-    { id: "RT-ROD-101", name: "Itabuna → Salvador (porto)", modal: "ROD", sla: "1d", cost: "R$ 240/t",  lastTrip: "2026-04-25", status: ["ok","Ativa"] },
-    { id: "RT-ROD-102", name: "Vitória → Suape",            modal: "ROD", sla: "3d", cost: "R$ 410/t",  lastTrip: "2026-04-22", status: ["ok","Ativa"] },
-    { id: "RT-ROD-103", name: "Daloa → Abidjan (porto)",    modal: "ROD", sla: "1d", cost: "$96/t",     lastTrip: "2026-04-23", status: ["ok","Ativa"] },
-    { id: "RT-ROD-104", name: "Tumbes → Callao",            modal: "ROD", sla: "2d", cost: "$118/t",    lastTrip: "—",          status: ["neutral","Sem viagem"] },
-  ]},
-];
-
-// ============================================================
-// DATA — Origens
-// ============================================================
-const ORIGENS_DATA = [
-  { code: "BR-BA", country: "Brasil", region: "Bahia · Sul cacaueiro",  vol: "186 t/mês", prod: 78,  certs: ["Cocoa Horizons","Rainforest","Direct Trade"] },
-  { code: "BR-ES", country: "Brasil", region: "Espírito Santo · Norte", vol: "94 t/mês",  prod: 41,  certs: ["Rainforest","Direct Trade"] },
-  { code: "BR-PA", country: "Brasil", region: "Pará · Transamazônica",  vol: "62 t/mês",  prod: 28,  certs: ["Cocoa Horizons"] },
-  { code: "EC-MA", country: "Equador",region: "Manabí · costa",         vol: "112 t/mês", prod: 36,  certs: ["Cocoa Horizons","Rainforest"] },
-  { code: "EC-ES", country: "Equador",region: "Esmeraldas",             vol: "58 t/mês",  prod: 22,  certs: ["Rainforest"] },
-  { code: "CIV-DAL",country:"Costa do Marfim", region: "Daloa · centro",vol: "284 t/mês", prod: 64,  certs: ["Cocoa Horizons"] },
-  { code: "CIV-SP", country:"Costa do Marfim", region: "San Pedro · sul",vol: "318 t/mês",prod: 71,  certs: ["Cocoa Horizons","Rainforest"] },
-  { code: "GH-AS",  country: "Gana", region: "Ashanti",                 vol: "142 t/mês", prod: 38,  certs: ["Rainforest"] },
-  { code: "MX-TB",  country: "México", region: "Tabasco",               vol: "76 t/mês",  prod: 18,  certs: ["Cocoa Horizons"] },
-  { code: "MX-NA",  country: "México", region: "Nayarit",               vol: "54 t/mês",  prod: 12,  certs: [] },
-  { code: "ID-SU",  country: "Indonésia", region: "Sulawesi",           vol: "98 t/mês",  prod: 26,  certs: ["Cocoa Horizons"] },
-  { code: "MG-SA",  country: "Madagascar",region: "Sambirano · norte",  vol: "21 t/mês",  prod: 9,   certs: ["Direct Trade"] },
-  { code: "PE-TU",  country: "Peru",   region: "Tumbes · costa norte",  vol: "34 t/mês",  prod: 14,  certs: ["Direct Trade","Rainforest"] },
-  { code: "DO-DU",  country: "Rep. Dominicana", region: "Duarte",       vol: "47 t/mês",  prod: 16,  certs: ["Rainforest"] },
-];
-
-// ============================================================
-// DATA — Produtores
-// ============================================================
-const PRODUTORES_DATA = [
-  { group: "BRASIL · BAHIA + ES", rows: [
-    { id: "PR-BR-0014", name: "Cooperativa Cabruca",          coop: "Coop. Cabruca · BA",    safras: 12, certs: 3, status: ["ok","Ativo"] },
-    { id: "PR-BR-0027", name: "Coop. Itabuna",                coop: "Coop. Itabuna · BA",    safras: 9,  certs: 2, status: ["ok","Ativo"] },
-    { id: "PR-BR-0034", name: "Linhares Direct",              coop: "Linhares Direct · ES",  safras: 5,  certs: 2, status: ["ok","Ativo"] },
-    { id: "PR-BR-0041", name: "Coop. Caparaó",                coop: "Coop. Caparaó · ES",    safras: 7,  certs: 1, status: ["ok","Ativo"] },
-    { id: "PR-BR-0058", name: "Cabruca Sul · membros",        coop: "Coop. Cabruca · BA",    safras: 4,  certs: 1, status: ["warn","Renovar doc"] },
-    { id: "PR-BR-0072", name: "Vale do Cacau · ES",           coop: "Vale do Cacau · ES",    safras: 6,  certs: 1, status: ["ok","Ativo"] },
-  ]},
-  { group: "COSTA DO MARFIM", rows: [
-    { id: "PR-CIV-0102", name: "ECAPEX Daloa",                coop: "ECAPEX · Daloa",        safras: 14, certs: 2, status: ["ok","Ativo"] },
-    { id: "PR-CIV-0118", name: "Coop. San Pedro",             coop: "Coop. San Pedro",       safras: 11, certs: 2, status: ["ok","Ativo"] },
-    { id: "PR-CIV-0124", name: "Cooperative Yamoussoukro",    coop: "Yamoussoukro Coop.",    safras: 8,  certs: 1, status: ["warn","Renovar doc"] },
-    { id: "PR-CIV-0131", name: "GRACE-CI · centro-leste",     coop: "GRACE-CI",              safras: 6,  certs: 1, status: ["ok","Ativo"] },
-  ]},
-  { group: "EQUADOR", rows: [
-    { id: "PR-EC-0201", name: "Asociación Cacao Norte",       coop: "Cacao Norte · Manabí",  safras: 9,  certs: 2, status: ["ok","Ativo"] },
-    { id: "PR-EC-0207", name: "APP Esmeraldas",               coop: "APP Esmeraldas",        safras: 5,  certs: 1, status: ["ok","Ativo"] },
-    { id: "PR-EC-0214", name: "Cooperativa Manabí Sur",       coop: "Manabí Sur Coop.",      safras: 4,  certs: 1, status: ["info","Em onboarding"] },
-  ]},
-  { group: "MÉXICO", rows: [
-    { id: "PR-MX-0301", name: "FEMSA Nayarit · raiz",         coop: "FEMSA Nayarit",         safras: 7,  certs: 0, status: ["ok","Ativo"] },
-    { id: "PR-MX-0306", name: "Coop. Tabasco · sul",          coop: "Coop. Tabasco",         safras: 5,  certs: 1, status: ["ok","Ativo"] },
-    { id: "PR-MX-0312", name: "Soconusco · Chiapas",          coop: "Soconusco Cacao",       safras: 3,  certs: 1, status: ["info","Em onboarding"] },
-  ]},
-  { group: "OUTROS · ID + GH + MG + PE + DO", rows: [
-    { id: "PR-ID-0401", name: "Coop. Sulawesi",               coop: "Sulawesi Coop.",        safras: 6,  certs: 1, status: ["err","Pendente docs"] },
-    { id: "PR-GH-0411", name: "Ashanti Coop.",                coop: "Ashanti · Kumasi",      safras: 8,  certs: 1, status: ["ok","Ativo"] },
-    { id: "PR-MG-0418", name: "Sambirano Coop. · norte MG",   coop: "Sambirano Coop.",       safras: 4,  certs: 1, status: ["ok","Ativo"] },
-    { id: "PR-PE-0422", name: "APP Tumbes · norte PE",        coop: "APP Tumbes",            safras: 5,  certs: 2, status: ["ok","Ativo"] },
-    { id: "PR-DO-0427", name: "Coop. Duarte · DO",            coop: "Duarte Coop.",          safras: 6,  certs: 1, status: ["ok","Ativo"] },
-  ]},
-];
-
-// ============================================================
-// View: Romaneios
-// ============================================================
-function RomaneiosView({ onNew }) {
-  const [filter, setFilter] = useState("todos");
-  const [tab, setTab] = useState("ativos");
-  return (
-    <div className="page">
-      <PageHead
-        section="operação"
-        page="Romaneios"
-        sub="28 abertos · 6 em revisão · semana 18 de 2026. Última sincronização há 2 minutos."
-        actions={<>
-          <button className="btn btn-secondary">Exportar</button>
-          <button className="btn btn-primary" onClick={onNew}><Ic.plus /> Novo romaneio</button>
-        </>}
-      />
-
-      <div className="kpis">
-        <Kpi label="Volume (semana)" value="468.2 t" delta="6.8% vs anterior" dir="up" />
-        <Kpi label="Em trânsito"     value="38"      delta="2 atrasos"        dir="dn" />
-        <Kpi label="Entregues (mês)" value="124"     delta="98.4% no prazo"   dir="up" />
-        <Kpi label="Pendentes docs"  value="5"       delta="1 alerta novo"    dir="dn" />
-      </div>
-
-      <div className="tabs">
-        {["ativos","arquivados","modelos"].map(t => (
-          <div key={t} className={"tab " + (tab===t?"active":"")} onClick={()=>setTab(t)}>
-            {t === "ativos" ? "Ativos" : t === "arquivados" ? "Arquivados" : "Modelos"}
-          </div>
-        ))}
-      </div>
-
-      <div className="filter-row">
-        {["todos","entregues","em-transito","revisao","pendentes"].map(f => (
-          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
-            {f === "todos" ? "Todos" : f === "em-transito" ? "Em trânsito" : f === "revisao" ? "Em revisão" : f.charAt(0).toUpperCase()+f.slice(1)}
-          </div>
-        ))}
-        <CtxSearch placeholder="Buscar romaneio, lote, rota..." />
-      </div>
-
-      <div className="layout-2col">
-        <div className="table-card gt-romaneios">
-          <div className="table-head">
-            <span>Lote</span>
-            <span>Rota</span>
-            <span>Status</span>
-            <span style={{textAlign:"right"}}>Volume</span>
-            <span></span>
-          </div>
-          <div className="table-rows">
-            {ROMANEIOS_DATA.map(g => (
-              <React.Fragment key={g.group}>
-                <div className="group-head">{g.group}</div>
-                {g.rows.map(r => (
-                  <div key={r.id} className="row">
-                    <div className="name">
-                      <strong>{r.name}</strong>
-                      <span className="meta">{r.id} · {r.date}</span>
-                    </div>
-                    <span className="num">{r.origin}</span>
-                    <span><Pill kind={r.status[0]}>{r.status[1]}</Pill></span>
-                    <span className="num" style={{textAlign:"right"}}>{r.vol}</span>
-                    <span className="actions">
-                      <button className="icon-btn" aria-label="Open"><Ic.arrow /></button>
-                      <button className="icon-btn" aria-label="More"><Ic.more /></button>
-                    </span>
-                  </div>
-                ))}
-              </React.Fragment>
-            ))}
-          </div>
+    <div className="page-content">
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">ops · dashboard</span>
+          <h2 className="page-title">Dashboard</h2>
+          <p className="page-sub">Visão geral da expedição logística</p>
         </div>
-
-        <div style={{display:"flex",flexDirection:"column",gap:14}}>
-          <div className="info-card">
-            <h3>RM-0422 · Cacao Horizons</h3>
-            <div className="field"><span className="k">Lote</span><span className="v">CH-2026-0422</span></div>
-            <div className="field"><span className="k">Origem</span><span className="v">Itabuna · BA</span></div>
-            <div className="field"><span className="k">Destino</span><span className="v">Rotterdam · NL</span></div>
-            <div className="field"><span className="k">Volume</span><span className="v">12.4 t</span></div>
-            <div className="field"><span className="k">ETA</span><span className="v">2026-05-08</span></div>
-            <div className="field"><span className="k">Status</span><span><Pill kind="info">Em trânsito</Pill></span></div>
+      </div>
+      <div className="kpis">
+        {[["1.247","Total Deliveries","up","+12%"],["183","Romaneios","up","+5%"],["42","Em Conferência",null,null],["29","Finalizados hoje","up","+18%"]].map(([v,l,d,pct])=>(
+          <div key={l} className="kpi">
+            <div className="kpi-label">{l}</div>
+            <div className="kpi-value">{v}</div>
+            {d && <span className={`kpi-delta ${d}`}>{pct}</span>}
           </div>
-          <div className="info-card">
-            <h3>Histórico</h3>
-            <div className="timeline">
-              <div className="ev"><div className="when">26/04 · 09:14</div>Saiu de Salvador rumo a Itaqui.</div>
-              <div className="ev"><div className="when">25/04 · 17:02</div>Documentação aduaneira aprovada.</div>
-              <div className="ev"><div className="when">25/04 · 11:30</div>Lote conferido por Patrick N.</div>
-              <div className="ev"><div className="when">22/04 · 14:00</div>Romaneio criado.</div>
+        ))}
+      </div>
+      <div className="card" style={{ padding:0 }}>
+        <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Romaneios recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas 72 horas</p></div>
+          <button className="btn btn-outline btn-sm" onClick={()=>onNav("romaneios")}>Ver todos</button>
+        </div>
+        <table className="tbl">
+          <thead><tr><th>ID</th><th>Data</th><th>Transportadora</th><th>Status</th></tr></thead>
+          <tbody>{OPS_ROWS.map(r=>(
+            <tr key={r.id}>
+              <td className="mono">{r.id}</td>
+              <td className="muted">{r.date}</td>
+              <td>{r.trans}</td>
+              <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function CrmDashboard({ onNav }) {
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">crm · dashboard</span>
+          <h2 className="page-title">Dashboard</h2>
+          <p className="page-sub">Pipeline de vendas e conversão</p>
+        </div>
+      </div>
+      <div className="kpis">
+        {[["R$ 352k","Volume pipeline","up","+23%"],["14","Oportunidades","up","+4"],["68%","Taxa conversão","dn","-2pt"],["R$ 95k","Fechamentos mês","up","+11%"]].map(([v,l,d,pct])=>(
+          <div key={l} className="kpi">
+            <div className="kpi-label">{l}</div>
+            <div className="kpi-value" style={{ fontSize:22 }}>{v}</div>
+            {d && <span className={`kpi-delta ${d}`}>{pct}</span>}
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{ padding:0 }}>
+        <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Oportunidades ativas</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Ordenado por valor</p></div>
+          <button className="btn btn-outline btn-sm" onClick={()=>onNav("pipeline")}>Ver pipeline</button>
+        </div>
+        <table className="tbl">
+          <thead><tr><th>ID</th><th>Cliente</th><th>Valor</th><th>Fase</th><th>Status</th></tr></thead>
+          <tbody>{CRM_ROWS.map(r=>(
+            <tr key={r.id}>
+              <td className="mono">{r.id}</td>
+              <td>{r.cliente}</td>
+              <td className="mono">{r.valor}</td>
+              <td className="muted">{r.fase}</td>
+              <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function WikiDashboard({ onNav }) {
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">wiki · dashboard</span>
+          <h2 className="page-title">Dashboard</h2>
+          <p className="page-sub">Base de conhecimento e publicações</p>
+        </div>
+      </div>
+      <div className="kpis">
+        {[["47","Artigos publicados","up","+3"],["8.4k","Visualizações/mês","up","+15%"],["3","Em revisão",null,null],["12","Colaboradores","up","+2"]].map(([v,l,d,pct])=>(
+          <div key={l} className="kpi">
+            <div className="kpi-label">{l}</div>
+            <div className="kpi-value">{v}</div>
+            {d && <span className={`kpi-delta ${d}`}>{pct}</span>}
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{ padding:0 }}>
+        <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Artigos recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas publicações</p></div>
+          <button className="btn btn-outline btn-sm" onClick={()=>onNav("artigos")}>Ver todos</button>
+        </div>
+        <table className="tbl">
+          <thead><tr><th>ID</th><th>Título</th><th>Autor</th><th>Views</th><th>Status</th></tr></thead>
+          <tbody>{WIKI_ROWS.map(r=>(
+            <tr key={r.id}>
+              <td className="mono">{r.id}</td>
+              <td>{r.titulo}</td>
+              <td className="muted">{r.autor}</td>
+              <td className="mono">{r.views}</td>
+              <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
+            </tr>
+          ))}</tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// Generic sub-pages just show title + coming-soon card
+function PlaceholderPage({ title, crumb }) {
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">{crumb}</span>
+          <h2 className="page-title">{title}</h2>
+        </div>
+      </div>
+      <div className="card" style={{ textAlign:"center", padding:"60px 32px", color:"hsl(var(--muted-foreground))" }}>
+        <div style={{ fontSize:32, marginBottom:12 }}>🚧</div>
+        <p style={{ margin:0, fontSize:14 }}>Conteúdo desta tela disponível no quick-start-remix.</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── ProfileScreen ────────────────────────────────────────────────
+function ProfileScreen({ user }) {
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [name, setName] = useState(user.name);
+  const [editing, setEditing] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const fileRef = useRef(null);
+
+  const handleFile = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const url = URL.createObjectURL(f);
+    setAvatarUrl(url);
+  };
+
+  const handleSave = () => {
+    setSaved(true);
+    setEditing(false);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const initials = name.split(" ").slice(0,2).map(w=>w[0]).join("");
+
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">conta · perfil</span>
+          <h2 className="page-title">Perfil</h2>
+          <p className="page-sub">Suas informações pessoais e configurações de conta</p>
+        </div>
+      </div>
+
+      {saved && (
+        <div style={{ display:"flex",alignItems:"center",gap:8,padding:"10px 16px",borderRadius:10,background:"hsl(var(--success)/.12)",color:"hsl(var(--success))",fontSize:13 }}>
+          <I.Check size={16}/> Perfil salvo com sucesso.
+        </div>
+      )}
+
+      {/* Avatar + Nome */}
+      <div className="card">
+        <div className="card-header"><h3>Avatar e Nome</h3><p>Foto de perfil e nome de exibição</p></div>
+        <div style={{ display:"flex",alignItems:"flex-start",gap:20,flexWrap:"wrap" }}>
+          <div className="profile-avatar-wrap">
+            <div className="profile-avatar">
+              {avatarUrl ? <img src={avatarUrl} alt="Avatar" className="avatar-img" /> : initials}
             </div>
+            <button className="avatar-edit-btn" onClick={() => fileRef.current?.click()} title="Trocar foto">
+              <I.Camera size={13} />
+            </button>
+            <input ref={fileRef} type="file" accept="image/*" className="avatar-upload-input" onChange={handleFile} />
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================
-// View: Lotes
-// ============================================================
-function LotesView() {
-  const [filter, setFilter] = useState("todos");
-  return (
-    <div className="page">
-      <PageHead
-        section="operação"
-        page="Lotes"
-        sub="84 lotes ativos · rastreabilidade do produtor ao destino. Quatro programas de certificação ativos."
-        actions={<>
-          <button className="btn btn-secondary">Exportar</button>
-          <button className="btn btn-primary"><Ic.plus /> Novo lote</button>
-        </>}
-      />
-
-      <div className="kpis">
-        <Kpi label="Lotes ativos"      value="84"   delta="12 novos esta semana"     dir="up" />
-        <Kpi label="Volume rastreado"  value="612 t" delta="3.2% vs mês passado"     dir="up" />
-        <Kpi label="Selos sustentáv."  value="58"   delta="69% do total"              dir="up" />
-        <Kpi label="Renovar até maio"  value="9"    delta="Cocoa Horizons + RA"       dir="dn" />
-      </div>
-
-      <div className="filter-row">
-        {["todos","cocoa-horizons","rainforest","direct","convencional"].map(f => (
-          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
-            {f === "todos" ? "Todos" : f === "cocoa-horizons" ? "Cocoa Horizons" : f === "rainforest" ? "Rainforest" : f === "direct" ? "Direct Trade" : "Convencional"}
-          </div>
-        ))}
-        <CtxSearch placeholder="Buscar lote, produtor, certificação..." />
-      </div>
-
-      <div className="table-card gt-lotes">
-        <div className="table-head">
-          <span>Lote</span>
-          <span>Produtor</span>
-          <span>Certif.</span>
-          <span>Status</span>
-          <span style={{textAlign:"right"}}>Volume</span>
-          <span></span>
-        </div>
-        <div className="table-rows">
-          {LOTES_DATA.map(g => (
-            <React.Fragment key={g.group}>
-              <div className="group-head">{g.group}</div>
-              {g.rows.map(r => (
-                <div key={r.id} className="row">
-                  <div className="name">
-                    <strong>{r.name}</strong>
-                    <span className="meta">{r.id}</span>
-                  </div>
-                  <span className="num">{r.prod}</span>
-                  <span className="num">{r.cert}</span>
-                  <span><Pill kind={r.status[0]}>{r.status[1]}</Pill></span>
-                  <span className="num" style={{textAlign:"right"}}>{r.vol}</span>
-                  <span className="actions">
-                    <button className="icon-btn" aria-label="Open"><Ic.arrow /></button>
-                    <button className="icon-btn" aria-label="More"><Ic.more /></button>
-                  </span>
+          <div style={{ flex:1, minWidth:240 }}>
+            {editing ? (
+              <div style={{ display:"flex",flexDirection:"column",gap:12,maxWidth:360 }}>
+                <div className="field-group">
+                  <label>Nome</label>
+                  <input className="field-input" value={name} onChange={e=>setName(e.target.value)} />
                 </div>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================
-// View: Rotas
-// ============================================================
-function RotasView() {
-  const [filter, setFilter] = useState("todos");
-  return (
-    <div className="page">
-      <PageHead
-        section="operação"
-        page="Rotas"
-        sub="22 rotas cadastradas · marítima long-haul + transbordos rodoviários. SLA médio 18d."
-        actions={<>
-          <button className="btn btn-secondary">Mapa</button>
-          <button className="btn btn-primary"><Ic.plus /> Nova rota</button>
-        </>}
-      />
-
-      <div className="kpis">
-        <Kpi label="Rotas ativas"     value="22"    delta="+1 esta semana"        dir="up" />
-        <Kpi label="Tempo médio"      value="18d"   delta="2d acima da meta"      dir="dn" />
-        <Kpi label="Modal preferido"  value="MAR"   delta="rodoviário em 2º"      dir="flat" />
-        <Kpi label="Custo médio/t"    value="€312"  delta="estável vs trimestre"  dir="flat" />
-      </div>
-
-      <div className="filter-row">
-        {["todos","maritimo","rodoviario","atrasadas"].map(f => (
-          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
-            {f === "todos" ? "Todos" : f === "maritimo" ? "Marítimo" : f === "rodoviario" ? "Rodoviário" : "Com atraso"}
-          </div>
-        ))}
-        <CtxSearch placeholder="Buscar rota, porto, modal..." />
-      </div>
-
-      <div className="table-card gt-rotas">
-        <div className="table-head">
-          <span>Rota</span>
-          <span>Modal</span>
-          <span>SLA</span>
-          <span>Custo</span>
-          <span>Última viagem</span>
-          <span></span>
-        </div>
-        <div className="table-rows">
-          {ROTAS_DATA.map(g => (
-            <React.Fragment key={g.group}>
-              <div className="group-head">{g.group}</div>
-              {g.rows.map(r => (
-                <div key={r.id} className="row">
-                  <div className="name">
-                    <strong>{r.name}</strong>
-                    <span className="meta">{r.id}</span>
-                  </div>
-                  <span className="num">{r.modal}</span>
-                  <span className="num">{r.sla}</span>
-                  <span className="num">{r.cost}</span>
-                  <span><Pill kind={r.status[0]}>{r.lastTrip} · {r.status[1]}</Pill></span>
-                  <span className="actions">
-                    <button className="icon-btn" aria-label="More"><Ic.more /></button>
-                  </span>
+                <div className="field-group">
+                  <label>Email <span style={{ fontSize:11,color:"hsl(var(--muted-foreground))" }}>(somente leitura)</span></label>
+                  <input className="field-input" value={user.email || `${user.name.toLowerCase().replace(" ",".")}@exemplo.com`} disabled style={{ opacity:.6 }} />
                 </div>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================
-// View: Origens
-// ============================================================
-function OrigensView() {
-  return (
-    <div className="page">
-      <PageHead
-        section="operação"
-        page="Origens"
-        sub="14 origens ativas em 9 países · 1.587 t/mês de volume agregado · 412 produtores cadastrados."
-        actions={<>
-          <button className="btn btn-secondary">Mapa global</button>
-          <button className="btn btn-primary"><Ic.plus /> Nova origem</button>
-        </>}
-      />
-
-      <div className="kpis">
-        <Kpi label="Origens ativas"  value="14"      delta="9 países"               dir="flat" />
-        <Kpi label="Volume agregado" value="1.587 t/m" delta="4.1% vs mês anterior" dir="up" />
-        <Kpi label="Produtores"      value="412"     delta="14 novos no mês"        dir="up" />
-        <Kpi label="Certificações"   value="3"       delta="programas vigentes"     dir="flat" />
-      </div>
-
-      <div className="origin-grid">
-        {ORIGENS_DATA.map(o => (
-          <div key={o.code} className="origin-card">
-            <div className="origin-flag">{o.code}</div>
-            <div>
-              <div className="origin-name">{o.country}</div>
-              <div className="origin-region">{o.region}</div>
-            </div>
-            <div className="origin-stats">
-              <div className="origin-stat"><span className="k">Volume</span><span className="v">{o.vol}</span></div>
-              <div className="origin-stat"><span className="k">Produtores</span><span className="v">{o.prod}</span></div>
-            </div>
-            <div className="origin-certs">
-              {o.certs.length > 0 ? o.certs.map(c => <Pill key={c} kind="info">{c}</Pill>) : <Pill kind="neutral">Sem certificação</Pill>}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ============================================================
-// View: Produtores
-// ============================================================
-function ProdutoresView() {
-  const [filter, setFilter] = useState("todos");
-  return (
-    <div className="page">
-      <PageHead
-        section="cadastros"
-        page="Produtores"
-        sub="312 produtores cadastrados em 9 países · 18 cooperativas · 241 com certificação ativa."
-        actions={<>
-          <button className="btn btn-secondary">Exportar CSV</button>
-          <button className="btn btn-primary"><Ic.plus /> Novo produtor</button>
-        </>}
-      />
-
-      <div className="kpis">
-        <Kpi label="Produtores"     value="312" delta="14 novos no mês"          dir="up" />
-        <Kpi label="Cooperativas"   value="18"  delta="6 origens BR"             dir="flat" />
-        <Kpi label="Certificados"   value="241" delta="77% do total"             dir="up" />
-        <Kpi label="Renovar 2027"   value="42"  delta="precisam atualizar doc"   dir="dn" />
-      </div>
-
-      <div className="filter-row">
-        {["todos","brasil","civ","equador","mexico","outros"].map(f => (
-          <div key={f} className={"chip " + (filter===f?"active":"")} onClick={()=>setFilter(f)}>
-            {f === "todos" ? "Todos" : f === "civ" ? "Costa do Marfim" : f.charAt(0).toUpperCase()+f.slice(1)}
-          </div>
-        ))}
-        <CtxSearch placeholder="Buscar produtor, cooperativa, ID..." />
-      </div>
-
-      <div className="table-card gt-prod">
-        <div className="table-head">
-          <span>Produtor</span>
-          <span>Cooperativa</span>
-          <span>Safras</span>
-          <span>Certif.</span>
-          <span>Status</span>
-          <span></span>
-        </div>
-        <div className="table-rows">
-          {PRODUTORES_DATA.map(g => (
-            <React.Fragment key={g.group}>
-              <div className="group-head">{g.group}</div>
-              {g.rows.map(r => (
-                <div key={r.id} className="row">
-                  <div className="name">
-                    <strong>{r.name}</strong>
-                    <span className="meta">{r.id}</span>
-                  </div>
-                  <span className="num">{r.coop}</span>
-                  <span className="num">{r.safras}</span>
-                  <span className="num">{r.certs}</span>
-                  <span><Pill kind={r.status[0]}>{r.status[1]}</Pill></span>
-                  <span className="actions">
-                    <button className="icon-btn" aria-label="Open"><Ic.arrow /></button>
-                  </span>
+                <div style={{ display:"flex",gap:8 }}>
+                  <button className="btn btn-primary btn-sm" onClick={handleSave}>Salvar</button>
+                  <button className="btn btn-outline btn-sm" onClick={()=>setEditing(false)}>Cancelar</button>
                 </div>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================
-// View: Configurações
-// ============================================================
-function ConfigView() {
-  const [notif, setNotif] = useState(true);
-  const [autosync, setAutosync] = useState(true);
-  const [twoFa, setTwoFa] = useState(false);
-  return (
-    <div className="page">
-      <PageHead
-        section="cadastros"
-        page="Configurações"
-        sub="Preferências da workspace e integrações ativas."
-      />
-      <div className="config-grid">
-        <div className="config-card">
-          <h3>Notificações</h3>
-          <p className="desc">Como o time é avisado de eventos importantes.</p>
-          <div>
-            <div className="toggle-row"><span>E-mail diário de resumo</span><div className={"toggle " + (notif?"on":"")} onClick={()=>setNotif(!notif)}></div></div>
-            <div className="toggle-row"><span>Alerta de pendência docs</span><div className="toggle on"></div></div>
-            <div className="toggle-row"><span>Push no app móvel</span><div className="toggle"></div></div>
-          </div>
-        </div>
-        <div className="config-card">
-          <h3>Sincronização</h3>
-          <p className="desc">Conexão com sistemas externos (ERP, planilha master).</p>
-          <div>
-            <div className="toggle-row"><span>Auto-sync a cada 15 min</span><div className={"toggle " + (autosync?"on":"")} onClick={()=>setAutosync(!autosync)}></div></div>
-            <div className="toggle-row"><span>Notificar em conflitos</span><div className="toggle on"></div></div>
-          </div>
-        </div>
-        <div className="config-card">
-          <h3>Segurança</h3>
-          <p className="desc">Acesso e autenticação do workspace.</p>
-          <div>
-            <div className="toggle-row"><span>Autenticação em duas etapas</span><div className={"toggle " + (twoFa?"on":"")} onClick={()=>setTwoFa(!twoFa)}></div></div>
-            <div className="toggle-row"><span>Sessão expira em 24h</span><div className="toggle on"></div></div>
-          </div>
-        </div>
-        <div className="config-card">
-          <h3>Workspace</h3>
-          <p className="desc">Identificação e branding do espaço de trabalho.</p>
-          <div className="field"><span className="k">Nome</span><span className="v">Choco</span></div>
-          <div className="field"><span className="k">Cliente raiz</span><span className="v">Barry Callebaut</span></div>
-          <div className="field"><span className="k">Plano</span><span className="v">Operations</span></div>
-          <div className="field"><span className="k">Membros</span><span className="v">14 ativos</span></div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================
-// View: Design System (showcase do DS aplicado)
-// ============================================================
-function SystemView() {
-  return (
-    <div className="page">
-      <PageHead
-        section="sistema"
-        page="Design System"
-        sub="Default preset · warm-editorial flavor. Tudo abaixo é renderizado direto dos tokens em colors_and_type.css. Foundations → Components → Layout → Rules."
-      />
-
-      {/* ============ FOUNDATIONS ============ */}
-      <div className="ds-section-label">Foundations</div>
-
-      <div className="ds-section">
-        <h3>Tipografia</h3>
-        <p className="ds-sub">Duas famílias de marca + uma mono. Nunca três display. Lora pra display, Poppins pra body, Geist Mono pra tabular numbers e eyebrows.</p>
-        <div>
-          <div className="ds-type-row">
-            <div className="ds-type-meta"><strong>t-h1 · landing only</strong>30 / 1.15 / 600<br/>Lora · tracking -0.025em</div>
-            <div style={{fontFamily:"var(--font-display)",fontSize:30,fontWeight:600,letterSpacing:"-0.025em",lineHeight:1.15}}>Anti-AI Design System</div>
-          </div>
-          <div className="ds-type-row">
-            <div className="ds-type-meta"><strong>t-h2 · page title</strong>20 / 1.25 / 600<br/>Lora · tracking -0.025em</div>
-            <div style={{fontFamily:"var(--font-display)",fontSize:20,fontWeight:600,letterSpacing:"-0.025em",lineHeight:1.25}}>Romaneios em trânsito</div>
-          </div>
-          <div className="ds-type-row">
-            <div className="ds-type-meta"><strong>t-h3 · section</strong>14 / 1.25 / 500<br/>Poppins</div>
-            <div style={{fontSize:14,fontWeight:500,lineHeight:1.25}}>Histórico do romaneio</div>
-          </div>
-          <div className="ds-type-row">
-            <div className="ds-type-meta"><strong>t-body</strong>14 / 1.5 / 400<br/>Poppins</div>
-            <div style={{fontSize:14,lineHeight:1.5}}>Texto corrido em densidade normal. O default é denso por padrões de IA — isso é o ponto, não acidente.</div>
-          </div>
-          <div className="ds-type-row">
-            <div className="ds-type-meta"><strong>t-label</strong>12 / 1.4 / 500<br/>Poppins · muted-fg</div>
-            <div style={{fontSize:12,fontWeight:500,color:"hsl(var(--muted-foreground))"}}>Volume estimado (toneladas)</div>
-          </div>
-          <div className="ds-type-row">
-            <div className="ds-type-meta"><strong>t-mono · eyebrow</strong>11 / 1.3 / 600<br/>Geist Mono · uppercase · letter-spacing 0.06em</div>
-            <div style={{fontFamily:"var(--font-mono)",fontSize:11,fontWeight:600,textTransform:"uppercase",letterSpacing:"0.06em",color:"hsl(var(--muted-foreground))"}}>operação · cooperativa cabruca</div>
-          </div>
-          <div className="ds-type-row">
-            <div className="ds-type-meta"><strong>t-num · tabular</strong>13.5 / 1.5 / 400<br/>Geist Mono · font-feature-settings 'tnum'</div>
-            <div style={{fontFamily:"var(--font-mono)",fontSize:13.5,fontFeatureSettings:"'tnum'"}}>142.4 t · €312 · 18d · RM-0422</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Paleta · tokens semânticos</h3>
-        <p className="ds-sub">Todo neutro carrega matiz (S &gt; 0). Pure 0 0% L% é proibido — é o tell #1 de gerador de IA. Status alinhados ao temperature da marca.</p>
-        <div className="ds-swatch-grid">
-          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--background))"}}>BG</div><div className="ds-swatch-meta"><div className="name">--background</div><div className="hsl">30 33% 96%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--foreground))"}}>FG</div><div className="ds-swatch-meta"><div className="name">--foreground</div><div className="hsl">16 38% 12%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--primary))"}}>PRI</div><div className="ds-swatch-meta"><div className="name">--primary</div><div className="hsl">184 100% 18% · #00585c</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--accent))"}}>ACC</div><div className="ds-swatch-meta"><div className="name">--accent</div><div className="hsl">12 65% 55%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--secondary))"}}>SEC</div><div className="ds-swatch-meta"><div className="name">--secondary</div><div className="hsl">30 33% 93%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--muted))"}}>MUT</div><div className="ds-swatch-meta"><div className="name">--muted</div><div className="hsl">30 20% 90%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))"}}>CARD</div><div className="ds-swatch-meta"><div className="name">--card</div><div className="hsl">0 0% 100%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color dark-fg" style={{background:"hsl(var(--border))"}}>BORD</div><div className="ds-swatch-meta"><div className="name">--border</div><div className="hsl">30 20% 87%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--success))"}}>OK</div><div className="ds-swatch-meta"><div className="name">--success</div><div className="hsl">152 85% 30%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--warning))"}}>WARN</div><div className="ds-swatch-meta"><div className="name">--warning</div><div className="hsl">38 92% 50%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--destructive))"}}>ERR</div><div className="ds-swatch-meta"><div className="name">--destructive</div><div className="hsl">0 100% 50%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--info))"}}>INFO</div><div className="ds-swatch-meta"><div className="name">--info</div><div className="hsl">217 91% 45%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--sidebar-background))"}}>SIDE</div><div className="ds-swatch-meta"><div className="name">--sidebar-bg</div><div className="hsl">184 100% 18%</div></div></div>
-          <div className="ds-swatch"><div className="ds-swatch-color" style={{background:"hsl(var(--sidebar-accent))"}}>S-ACC</div><div className="ds-swatch-meta"><div className="name">--sidebar-accent</div><div className="hsl">184 80% 25%</div></div></div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Espaçamento</h3>
-        <p className="ds-sub">Escala curta e religiosa: 1, 1.5, 2, 4, 5, 6, 8. Sem 3, 7, 9. Improvisação é cara de IA.</p>
-        <div className="ds-token-list">
-          {[
-            ["--space-1","4px",4],["--space-1-5","6px",6],["--space-2","8px",8],
-            ["--space-4","16px",16],["--space-5","20px",20],["--space-6","24px",24],["--space-8","32px",32],
-          ].map(([n,px,w]) => (
-            <div key={n} className="ds-token-row">
-              <span className="ds-token-name">{n}</span>
-              <div className="ds-token-vis"><div className="ds-spacing-bar" style={{width:w}}></div></div>
-              <span className="ds-token-px">{px}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Radius</h3>
-        <p className="ds-sub">Escala variável por componente — input (sm), botão (lg), row (xl), card (2xl). Sem radius único pra tudo.</p>
-        <div className="ds-token-list">
-          {[
-            ["--radius-sm","6px · input/badge",6],["--radius-md","8px · input lg",8],["--radius-lg","12px · botões",12],
-            ["--radius-xl","16px · rows",16],["--radius-2xl","20px · cards",20],
-          ].map(([n,px,r]) => (
-            <div key={n} className="ds-token-row">
-              <span className="ds-token-name">{n}</span>
-              <div className="ds-token-vis"><div className="ds-radius-box" style={{borderRadius:r}}>{r}</div></div>
-              <span className="ds-token-px">{px}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Shadows</h3>
-        <p className="ds-sub">Apenas três tiers. shadow-xl/2xl são over-elevation — cara de IA garantida.</p>
-        <div className="ds-token-list">
-          {[
-            ["shadow-sm","cards estáticos","0 1px 2px hsl(var(--foreground)/.04)"],
-            ["shadow-md","hover / lift",     "0 4px 12px hsl(var(--foreground)/.08)"],
-            ["shadow-lg","modals / popovers","0 30px 80px -20px hsl(var(--foreground)/.4)"],
-          ].map(([n,desc,sh]) => (
-            <div key={n} className="ds-token-row">
-              <span className="ds-token-name">{n}</span>
-              <div className="ds-token-vis">
-                <div className="ds-shadow-box" style={{boxShadow:sh}}></div>
-                <span style={{fontSize:12,color:"hsl(var(--muted-foreground))"}}>{desc}</span>
               </div>
-              <span className="ds-token-px"></span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Borders &amp; dividers</h3>
-        <p className="ds-sub">Um único <code>--border</code> token, com matiz. Dashed reservado para timelines (gestural). Solid pra estrutura.</p>
-        <div className="ds-grid-2">
-          <div className="ds-demo-frame">
-            <div className="ds-divider-demo"></div>
-            <span className="ds-callout-good">solid · 1px · hsl(var(--border))</span>
-            <span style={{fontSize:12,color:"hsl(var(--muted-foreground))"}}>Card outline, table head, field separator</span>
-          </div>
-          <div className="ds-demo-frame">
-            <div className="ds-divider-dashed"></div>
-            <span className="ds-callout-good">dashed · 1px</span>
-            <span style={{fontSize:12,color:"hsl(var(--muted-foreground))"}}>Timeline rail (eventos sequenciais), só</span>
+            ) : (
+              <>
+                <div style={{ fontSize:20,fontWeight:600,marginBottom:4 }}>{name}</div>
+                <div style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>{user.role}</div>
+                <button className="btn btn-outline btn-sm" style={{ marginTop:14 }} onClick={()=>setEditing(true)}>
+                  <I.Edit size={13}/> Editar perfil
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="ds-section">
-        <h3>Animations</h3>
-        <p className="ds-sub">150–300ms. Easing default Tailwind. Sem bounce, sem spring, sem duration-500+. <code>transition-colors</code> &gt; <code>transition-all</code>.</p>
-        <div className="ds-component-row">
-          <div className="ds-anim-box" title="hover me · 200ms"></div>
-          <span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>hover · 200ms · cubic-bezier(0.4, 0, 0.2, 1)</span>
-        </div>
-        <div className="ds-token-list" style={{marginTop:14}}>
-          <div className="ds-token-row"><span className="ds-token-name">--dur-150</span><div className="ds-token-vis"><span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>hover (color, opacity)</span></div><span className="ds-token-px">150ms</span></div>
-          <div className="ds-token-row"><span className="ds-token-name">--dur-200</span><div className="ds-token-vis"><span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>state change (toggle, focus)</span></div><span className="ds-token-px">200ms</span></div>
-          <div className="ds-token-row"><span className="ds-token-name">--dur-300</span><div className="ds-token-vis"><span style={{fontSize:12.5,color:"hsl(var(--muted-foreground))"}}>layout shift, modal entrance</span></div><span className="ds-token-px">300ms</span></div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Iconografia</h3>
-        <p className="ds-sub">Lucide React · stroke 1.5 · rounded joins · 16px no body, 20px em demos. Default count = zero — cada ícone justifica presença.</p>
-        <div className="ds-icon-grid">
-          {Object.entries(Ic).map(([name, IconC]) => (
-            <div key={name} className="ds-icon-cell">
-              <IconC />
-              <div className="ds-icon-name">{name}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{marginTop:14,fontSize:12.5,color:"hsl(var(--muted-foreground))",lineHeight:1.6}}>
-          <strong style={{color:"hsl(var(--success))"}}>✓ usar em:</strong> status badges, primary action, file type, sidebar nav.<br/>
-          <strong style={{color:"hsl(var(--destructive))"}}>✗ NÃO usar em:</strong> form labels, secondary buttons, section titles, hero decoration.
-        </div>
-      </div>
-
-      {/* ============ COMPONENTS ============ */}
-      <div className="ds-section-label">Components</div>
-
-      <div className="ds-section">
-        <h3>Status pills</h3>
-        <p className="ds-sub">Capsule rounded-full com bg semi-transparente, dot de cor e label. Nunca solid bg saturado.</p>
-        <div className="ds-component-row">
-          <Pill kind="ok">Entregue</Pill>
-          <Pill kind="info">Em trânsito</Pill>
-          <Pill kind="warn">Em revisão</Pill>
-          <Pill kind="err">Pendente docs</Pill>
-          <Pill kind="neutral">Sem viagem</Pill>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Botões</h3>
-        <p className="ds-sub">Quatro variantes, mesma altura, mesmo radius (lg / 12px). Primary é teal petroleum, accent é terracota.</p>
-        <div className="ds-component-row">
-          <button className="btn btn-primary"><Ic.plus /> Primary action</button>
-          <button className="btn btn-accent">Accent action</button>
-          <button className="btn btn-secondary">Secondary</button>
-          <button className="btn btn-ghost">Ghost</button>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Cards · raw div pattern</h3>
-        <p className="ds-sub">Sempre raw div com classes explícitas. Nunca <code>&lt;Card&gt;&lt;CardHeader&gt;&lt;CardContent&gt;</code> do shadcn — anti-pattern #1.</p>
-        <div className="ds-grid-2">
-          <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:20,padding:"18px 20px",boxShadow:"0 1px 2px hsl(var(--foreground)/.04)"}}>
-            <h4 style={{margin:"0 0 8px",fontSize:14,fontWeight:500}}>Card simples</h4>
-            <p style={{margin:0,fontSize:13,color:"hsl(var(--muted-foreground))"}}>div + bg-card + border + radius-2xl + shadow-sm. Padding interno 18-20px.</p>
-            <div style={{marginTop:10}}><span className="ds-callout-good">{`<div className="info-card">...`}</span></div>
+      {/* Preferências */}
+      <div className="card">
+        <div className="card-header"><h3>Preferências</h3><p>Notificações e idioma</p></div>
+        {[["Notificações por email","Receber alertas de atividade"],[" Resumo semanal","Email toda segunda-feira"],["Idioma","Português (Brasil)"]].map(([l,d],i)=>(
+          <div key={i} style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom: i<2?"1px solid hsl(var(--border))":"none" }}>
+            <div><div style={{ fontSize:13,fontWeight:500 }}>{l}</div><div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))",marginTop:1 }}>{d}</div></div>
+            <ToggleSwitch defaultOn={i===0} />
           </div>
-          <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:20,overflow:"hidden",boxShadow:"0 1px 2px hsl(var(--foreground)/.04)"}}>
-            <div style={{padding:"12px 20px",borderBottom:"1px solid hsl(var(--border))",fontSize:13,fontWeight:500}}>Card com seção</div>
-            <div style={{padding:"14px 20px",fontSize:13,color:"hsl(var(--muted-foreground))"}}>Header divided com border-b. Spacing px-5 py-3 no header, px-5 py-4 no content.</div>
+        ))}
+      </div>
+
+      {/* Atividade */}
+      <div className="card">
+        <div className="card-header"><h3>Atividade recente</h3></div>
+        {[["Entrou no sistema","Agora há pouco","info"],["Perfil atualizado","há 2 dias","ok"],["Senha alterada","há 14 dias","warn"]].map(([act,when,st])=>(
+          <div key={act} style={{ display:"flex",alignItems:"center",gap:12,padding:"8px 0",borderBottom:"1px solid hsl(var(--border)/.6)" }}>
+            <span className={`pill ${st}`} style={{ minWidth:8,padding:"3px 8px",fontSize:11 }}>{act}</span>
+            <span style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginLeft:"auto" }}>{when}</span>
           </div>
-        </div>
+        ))}
       </div>
 
-      <div className="ds-section">
-        <h3>KPI tile</h3>
-        <p className="ds-sub">Label uppercase + valor display Lora 26px + delta mono. Nunca centralizado, nunca com gradient.</p>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:14,maxWidth:520}}>
-          <Kpi label="Volume (semana)" value="468.2 t" delta="6.8% vs anterior" dir="up" />
-          <Kpi label="Pendentes docs"  value="5"       delta="1 alerta novo"    dir="dn" />
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Inputs · forms</h3>
-        <p className="ds-sub">Label small acima, input radius-md (8px), focus ring com primary 12% alpha. Sem placeholder fancy, sem floating labels.</p>
-        <div className="ds-component-row" style={{alignItems:"flex-start"}}>
-          <div className="ds-input-demo">
-            <label>Volume estimado (t)</label>
-            <input defaultValue="11.0" />
+      {/* Segurança */}
+      <div className="card">
+        <div className="card-header"><h3>Segurança</h3><p>Senha e autenticação de dois fatores</p></div>
+        {[["Senha","Última alteração há 14 dias","Alterar senha"],["2FA","Não configurado","Configurar 2FA"]].map(([l,d,btn])=>(
+          <div key={l} style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid hsl(var(--border)/.6)" }}>
+            <div><div style={{ fontSize:13,fontWeight:500 }}>{l}</div><div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>{d}</div></div>
+            <button className="btn btn-outline btn-sm">{btn}</button>
           </div>
-          <div className="ds-input-demo">
-            <label>Cliente</label>
-            <input defaultValue="Barry Callebaut · BR" />
+        ))}
+      </div>
+
+      {/* Zona perigosa */}
+      <div className="card">
+        <div className="card-header"><h3 style={{ color:"hsl(var(--destructive))" }}>Zona perigosa</h3><p>Ações irreversíveis</p></div>
+        <div className="danger-zone" style={{ display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexWrap:"wrap" }}>
+          <div>
+            <div style={{ fontSize:13,fontWeight:500 }}>Excluir conta</div>
+            <div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>Remove todos os dados permanentemente</div>
           </div>
-          <div className="ds-input-demo">
-            <label>Origem</label>
-            <input placeholder="Salvador, BA" />
-          </div>
+          <button className="btn btn-destructive btn-sm"><I.Trash2 size={13}/> Excluir conta</button>
         </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Tabs · contextual</h3>
-        <p className="ds-sub">Border-bottom 2px com accent na ativa. Sem pill-style, sem bg-fill por aba. Eyebrow tight (10/14px padding).</p>
-        <div className="tabs" style={{maxWidth:380}}>
-          <div className="tab active">Ativos</div>
-          <div className="tab">Arquivados</div>
-          <div className="tab">Modelos</div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Filter chips</h3>
-        <p className="ds-sub">Rounded-full small, 5px 12px padding. Active = bg-primary, inactive = bg-card border. Nunca solid color forte sem ser ativo.</p>
-        <div className="ds-component-row">
-          <div className="chip active">Todos</div>
-          <div className="chip">Entregues</div>
-          <div className="chip">Em trânsito</div>
-          <div className="chip">Em revisão</div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Search · contextual</h3>
-        <p className="ds-sub">Live no <code>filter-row</code> acima da table — não em topbar global. Busca é específica da view, não app-wide.</p>
-        <div style={{maxWidth:280}}>
-          <CtxSearch placeholder="Buscar romaneio, lote, rota..." />
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Info card · k/v rows</h3>
-        <p className="ds-sub">Side panel pattern. Field key em muted-fg, value em mono right-aligned. Border-bottom 1px com alpha (.6) entre rows, exceto última.</p>
-        <div style={{maxWidth:340}}>
-          <div className="info-card">
-            <h3>RM-0422 · Cacao Horizons</h3>
-            <div className="field"><span className="k">Lote</span><span className="v">CH-2026-0422</span></div>
-            <div className="field"><span className="k">Origem</span><span className="v">Itabuna · BA</span></div>
-            <div className="field"><span className="k">Volume</span><span className="v">12.4 t</span></div>
-            <div className="field"><span className="k">Status</span><span><Pill kind="info">Em trânsito</Pill></span></div>
-          </div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Timeline · dashed</h3>
-        <p className="ds-sub">Border-left dashed, dot primary 8px à esquerda, when em mono small. Ordem cronológica reversa (mais recente em cima).</p>
-        <div style={{maxWidth:340,padding:"4px 14px"}}>
-          <div className="timeline">
-            <div className="ev"><div className="when">26/04 · 09:14</div>Saiu de Salvador rumo a Itaqui.</div>
-            <div className="ev"><div className="when">25/04 · 17:02</div>Documentação aduaneira aprovada.</div>
-            <div className="ev"><div className="when">22/04 · 14:00</div>Romaneio criado.</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Sidebar nav item</h3>
-        <p className="ds-sub">Background sidebar-accent quando ativo + barra terracota 3×18px à esquerda (gesture, não bg). Hover = sidebar-accent /60.</p>
-        <div className="ds-side-demo">
-          <div className="nav-demo active"><Ic.list /><span>Romaneios</span><span style={{marginLeft:"auto",fontFamily:"var(--font-mono)",fontSize:11,color:"hsl(var(--sidebar-indicator))"}}>28</span></div>
-          <div className="nav-demo"><Ic.pkg /><span>Lotes</span></div>
-          <div className="nav-demo"><Ic.truck /><span>Rotas</span></div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Modal</h3>
-        <p className="ds-sub">Card 480px max-width, radius-2xl (20px), padding 24px. Scrim foreground/.35. Animation fade 200ms. Nunca center-absolute sem scrim.</p>
-        <div className="ds-demo-frame" style={{alignItems:"center",background:"hsl(var(--foreground)/.08)"}}>
-          <div className="ds-mini-modal">
-            <h4>Novo romaneio</h4>
-            <p>Crie um novo romaneio. O número será gerado automaticamente.</p>
-            <div className="modal-actions" style={{marginTop:12}}>
-              <button className="btn btn-ghost" style={{fontSize:11.5}}>Cancelar</button>
-              <button className="btn btn-primary" style={{fontSize:11.5,padding:"6px 12px"}}>Criar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Toast · snackbar</h3>
-        <p className="ds-sub">Inverse pill (foreground bg + bg fg), bottom-right fixed, dismiss em 2.4s. ✓ check em circle success. Sem progress bar.</p>
-        <div className="ds-component-row">
-          <div className="ds-mini-toast">
-            <div className="ok-mark">✓</div>
-            <span>Romaneio RM-0625 criado</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ============ LAYOUT ============ */}
-      <div className="ds-section-label">Layout</div>
-
-      <div className="ds-section">
-        <h3>Container widths</h3>
-        <p className="ds-sub">Largura intencional por contexto. <code>container mx-auto</code> sozinho é proibido — fluida sem identidade.</p>
-        <div className="ds-container-vis">
-          <div className="ds-container-bar" style={{width:"100%"}}>app shell · max-w-7xl (80rem) ou full · 32px padding lateral</div>
-          <div className="ds-container-bar" style={{width:"60%"}}>conteúdo editorial · max-w-5xl (64rem)</div>
-          <div className="ds-container-bar" style={{width:"40%"}}>form pages · max-w-xl (36rem)</div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>Page head pattern</h3>
-        <p className="ds-sub">Eyebrow mono lowercase + h2 Lora grande + sub muted. Actions à direita alinhadas ao top. Sem topbar global cruzando.</p>
-        <div className="ds-demo-frame">
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:24,width:"100%"}}>
-            <div style={{display:"flex",flexDirection:"column",gap:4}}>
-              <div style={{fontFamily:"var(--font-mono)",fontSize:11,color:"hsl(var(--muted-foreground))",textTransform:"lowercase",letterSpacing:"0.06em"}}>operação/</div>
-              <div style={{fontFamily:"var(--font-display)",fontSize:24,fontWeight:600,letterSpacing:"-0.02em",lineHeight:1.15}}>Romaneios</div>
-              <div style={{fontSize:12.5,color:"hsl(var(--muted-foreground))",marginTop:4}}>28 abertos · 6 em revisão · semana 18 de 2026.</div>
-            </div>
-            <div style={{display:"flex",gap:8}}>
-              <button className="btn btn-secondary" style={{fontSize:11.5,padding:"6px 12px"}}>Exportar</button>
-              <button className="btn btn-primary" style={{fontSize:11.5,padding:"6px 12px"}}>+ Novo</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="ds-section">
-        <h3>2-col com side panel</h3>
-        <p className="ds-sub">Tabela principal <code>minmax(0,1fr)</code> + side panel fixo 360px. Gap 20px. Sem 3-col em dashboards — viola hierarquia de leitura.</p>
-        <div className="ds-demo-frame">
-          <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) 140px",gap:14,width:"100%"}}>
-            <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:14,padding:14,fontSize:12,color:"hsl(var(--muted-foreground))"}}>main · table-card · grid colunas nomeadas</div>
-            <div style={{background:"hsl(var(--card))",border:"1px solid hsl(var(--border))",borderRadius:14,padding:14,fontSize:11,color:"hsl(var(--muted-foreground))"}}>side · info-card · 360px</div>
-          </div>
-        </div>
-      </div>
-
-      {/* ============ RULES ============ */}
-      <div className="ds-section-label">Rules</div>
-
-      <div className="ds-section ds-rules">
-        <h3>Anti-AI · 10 regras estruturais</h3>
-        <p className="ds-sub">Documentação completa em <code>docs/01-anti-patterns.md</code> + <code>docs/02-structural-rules.md</code>. Resumo executável aqui.</p>
-        <ul>
-          <li><strong>Card soup proibido.</strong> Nunca <code>&lt;Card&gt;&lt;CardHeader&gt;&lt;CardContent&gt;</code> do shadcn — raw divs com classes explícitas.</li>
-          <li><strong>Foreground sempre com hue.</strong> <code>S &gt; 0</code>. <code>0 0% L%</code> é proibido — tell #1 de IA.</li>
-          <li><strong>Spacing scale curta.</strong> 1 / 1.5 / 2 / 4 / 5 / 6 / 8. Nunca 3, 7, 9.</li>
-          <li><strong>Radius variável OU zero.</strong> Não <code>--radius: 0.5rem</code> único pra tudo. Decisão deliberada.</li>
-          <li><strong><code>&lt;table&gt;</code> em UI proibido.</strong> Use grid CSS com colunas nomeadas.</li>
-          <li><strong>Page title = h2.</strong> <code>&lt;h1&gt;</code> reservado pra landing/marketing.</li>
-          <li><strong>Sidebar = surface diferente</strong>, não tint. Delta &ge; 10% L OU hue oposto.</li>
-          <li><strong>font-bold (700) proibido.</strong> 600 é o teto. <code>tracking-wide</code> também não — vira "fancy".</li>
-          <li><strong>Ícone com propósito</strong>, não decoração. Status, primary action, file type. Não em todo label.</li>
-          <li><strong>Sem gradientes em UI.</strong> Banido em hero AI bluish-purple. Surface flat hue-washed é o canvas.</li>
-        </ul>
       </div>
     </div>
   );
 }
 
-// ============================================================
-// App shell
-// ============================================================
-function App() {
-  const [active, setActive] = useState("romaneios");
-  const [modal, setModal] = useState(false);
+function ToggleSwitch({ defaultOn=false }) {
+  const [on, setOn] = useState(defaultOn);
+  return (
+    <div onClick={()=>setOn(o=>!o)} style={{
+      width:36,height:20,borderRadius:999,background:on?"hsl(var(--primary))":"hsl(var(--muted))",
+      position:"relative",cursor:"pointer",transition:"background 150ms",flexShrink:0
+    }}>
+      <div style={{
+        position:"absolute",top:2,left:on?16:2,width:16,height:16,borderRadius:50,
+        background:"#fff",transition:"left 150ms",boxShadow:"0 1px 3px rgba(0,0,0,.15)"
+      }}/>
+    </div>
+  );
+}
+
+// ─── SettingsScreen (+1 to +7) ────────────────────────────────────
+const STORAGE_KEY = "ds-tokens-override-v2";
+
+function SettingsScreen() {
+  const [defaults, setDefaults] = useState({});
+  const [overrides, setOverrides] = useState({});
+  const [history, setHistory] = useState([{}]);
+  const [histIdx, setHistIdx] = useState(0);
+  const [namedThemes, setNamedThemes] = useState({});
+  const [themeName, setThemeName] = useState("");
+  const [darkDerived, setDarkDerived] = useState(false);
+  const [workspaceWide, setWorkspaceWide] = useState(true);
+  const [tab, setTab] = useState("editor");
   const [toast, setToast] = useState(null);
 
-  const submit = () => {
-    setModal(false);
-    setToast("Romaneio RM-0625 criado");
-    setTimeout(() => setToast(null), 2400);
+  useEffect(() => {
+    const root = getComputedStyle(document.documentElement);
+    const defs = {};
+    TOKEN_SECTIONS.forEach(s => s.tokens.forEach(t => {
+      const v = root.getPropertyValue(t.id).trim();
+      if (v) defs[t.id] = v;
+    }));
+    setDefaults(defs);
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+      setOverrides(saved);
+      Object.entries(saved).forEach(([k,v]) => document.documentElement.style.setProperty(k,v));
+    } catch {}
+    try { setNamedThemes(JSON.parse(localStorage.getItem(STORAGE_KEY+"-named")||"{}")); } catch {}
+  }, []);
+
+  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2000); };
+
+  const valueOf = (id) => overrides[id] ?? defaults[id] ?? "";
+  const isOverridden = (id) => id in overrides;
+
+  const pushHistory = (next) => {
+    const newHist = history.slice(0, histIdx+1).concat([next]);
+    setHistory(newHist.slice(-11));
+    setHistIdx(Math.min(newHist.length-1, 10));
   };
 
-  const VIEWS = {
-    romaneios:  () => <RomaneiosView onNew={() => setModal(true)} />,
-    lotes:      LotesView,
-    rotas:      RotasView,
-    origens:    OrigensView,
-    produtores: ProdutoresView,
-    config:     ConfigView,
-    design:     SystemView,
+  const applyOverrides = (next) => {
+    setOverrides(next);
+    Object.entries(next).forEach(([k,v]) => document.documentElement.style.setProperty(k,v));
+    Object.keys(defaults).filter(k=>!(k in next)).forEach(k => document.documentElement.style.removeProperty(k));
   };
-  const View = VIEWS[active] || RomaneiosView;
+
+  const handleChange = (id, hex) => {
+    const hsl = hexToHslStr(hex);
+    const next = { ...overrides, [id]: hsl };
+    pushHistory(next);
+    applyOverrides(next);
+  };
+
+  const handleReset = (id) => {
+    const next = { ...overrides };
+    delete next[id];
+    pushHistory(next);
+    applyOverrides(next);
+  };
+
+  const handleResetAll = () => {
+    pushHistory({});
+    applyOverrides({});
+  };
+
+  const handleSave = () => {
+    const ratio = getMinContrast();
+    if (ratio < 3) { showToast("❌ Contraste abaixo de 3:1 — salvar bloqueado."); return; }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
+    showToast("✅ Tema salvo!");
+  };
+
+  const handleApplyPreset = (name) => {
+    const preset = COLOR_PRESETS[name];
+    pushHistory(preset);
+    applyOverrides(preset);
+    showToast(`✅ Preset "${name}" aplicado`);
+  };
+
+  const handleExportJson = () => {
+    const blob = new Blob([JSON.stringify(overrides, null, 2)], { type:"application/json" });
+    const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="theme.json"; a.click();
+  };
+
+  const handleImportJson = (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        pushHistory(data); applyOverrides(data); showToast("✅ Tema importado!");
+      } catch { showToast("❌ JSON inválido"); }
+    };
+    r.readAsText(f);
+  };
+
+  const handleShareUrl = () => {
+    const b64 = btoa(JSON.stringify(overrides));
+    const url = new URL(window.location.href);
+    url.searchParams.set("theme", b64);
+    navigator.clipboard?.writeText(url.toString());
+    showToast("📋 Link copiado!");
+  };
+
+  const handleUndo = () => {
+    if (histIdx <= 0) return;
+    const ni = histIdx - 1;
+    setHistIdx(ni);
+    applyOverrides(history[ni]);
+  };
+
+  const handleRedo = () => {
+    if (histIdx >= history.length-1) return;
+    const ni = histIdx + 1;
+    setHistIdx(ni);
+    applyOverrides(history[ni]);
+  };
+
+  const handleSaveNamed = () => {
+    if (!themeName.trim()) return;
+    const next = { ...namedThemes, [themeName]: overrides };
+    setNamedThemes(next);
+    localStorage.setItem(STORAGE_KEY+"-named", JSON.stringify(next));
+    setThemeName("");
+    showToast(`✅ Tema "${themeName}" salvo`);
+  };
+
+  const handleLoadNamed = (name) => {
+    const t = namedThemes[name];
+    if (!t) return;
+    pushHistory(t); applyOverrides(t); showToast(`✅ Tema "${name}" carregado`);
+  };
+
+  const handleDarkDerive = (on) => {
+    setDarkDerived(on);
+    if (on) {
+      // Invert lightness of background/foreground/card tokens
+      const next = { ...overrides };
+      ["--background","--card","--foreground","--muted"].forEach(id => {
+        const val = valueOf(id);
+        const m = val.match(/^(\d+)\s+(\d+)%\s+(\d+)%/);
+        if (m) {
+          const l = parseInt(m[3]);
+          next[id] = `${m[1]} ${m[2]}% ${100-l}%`;
+        }
+      });
+      pushHistory(next); applyOverrides(next);
+      showToast("🌙 Dark mode derivado aplicado");
+    } else {
+      handleResetAll();
+      showToast("☀️ Light mode restaurado");
+    }
+  };
+
+  const getMinContrast = () => {
+    const bgHex = hslStrToHex(valueOf("--background"));
+    const fgHex = hslStrToHex(valueOf("--foreground"));
+    return contrast(bgHex, fgHex);
+  };
+
+  const minContrast = getMinContrast();
+  const contrastOk = minContrast >= 4.5;
+  const contrastWarn = minContrast >= 3 && minContrast < 4.5;
+
+  const importRef = useRef(null);
 
   return (
-    <div className="app">
-      <Sidebar active={active} onNav={setActive} />
-      <div className="main">
-        <View />
+    <div className="page-content" style={{ position:"relative" }}>
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">conta · configurações</span>
+          <h2 className="page-title">Design System</h2>
+          <p className="page-sub">Editor de tokens de cor + histórico + presets + export/import</p>
+        </div>
+        <div className="page-actions">
+          <button className="btn btn-outline btn-sm" onClick={handleUndo} disabled={histIdx<=0} title="Desfazer">
+            <I.Undo size={13}/> Undo
+          </button>
+          <button className="btn btn-outline btn-sm" onClick={handleRedo} disabled={histIdx>=history.length-1} title="Refazer">
+            <I.Redo size={13}/> Redo
+          </button>
+          <button className="btn btn-outline btn-sm" onClick={handleResetAll}><I.RotateCcw size={13}/> Restaurar</button>
+          <button className="btn btn-primary btn-sm" onClick={handleSave}
+            style={{ opacity: minContrast<3?0.5:1 }}><I.Save size={13}/> Salvar</button>
+        </div>
       </div>
 
-      {modal && (
-        <div className="scrim" onClick={(e)=>{if(e.target===e.currentTarget) setModal(false)}}>
-          <div className="modal">
-            <h3>Novo romaneio</h3>
-            <p>Crie um novo romaneio. O número será gerado automaticamente.</p>
-            <div className="form-row"><label>Cliente</label><select><option>Barry Callebaut · BR</option><option>FEMSA · MX</option><option>Nestlé · CIV</option></select></div>
-            <div className="form-row"><label>Origem</label><input defaultValue="Salvador, BA" /></div>
-            <div className="form-row"><label>Destino</label><input defaultValue="Lyon, FR" /></div>
-            <div className="form-row"><label>Volume estimado (t)</label><input defaultValue="11.0" /></div>
-            <div className="modal-actions">
-              <button className="btn btn-ghost" onClick={()=>setModal(false)}>Cancelar</button>
-              <button className="btn btn-primary" onClick={submit}>Criar romaneio</button>
+      {/* WCAG banner */}
+      {!contrastOk && (
+        <div style={{ display:"flex",alignItems:"center",gap:10,padding:"10px 16px",borderRadius:10,
+          background: contrastWarn?"hsl(var(--warning)/.12)":"hsl(var(--destructive)/.1)",
+          color: contrastWarn?"hsl(35 85% 30%)":"hsl(0 70% 40%)",fontSize:13 }}>
+          <I.Info size={16}/>
+          {contrastWarn
+            ? `Contraste text/bg: ${minContrast.toFixed(1)}:1 — abaixo de WCAG AA (4.5:1). Corrija antes de salvar.`
+            : `Contraste text/bg: ${minContrast.toFixed(1)}:1 — CRÍTICO (< 3:1). Salvar bloqueado.`}
+        </div>
+      )}
+
+      {/* Tabs */}
+      <div className="tabs-nav">
+        {[["editor","Editor"],["presets","Presets"],["export","Export/Import"],["history","Histórico"],["named","Temas Salvos"],["options","Opções"]].map(([k,l])=>(
+          <div key={k} className={`tab-item${tab===k?" active":""}`} onClick={()=>setTab(k)}>{l}</div>
+        ))}
+      </div>
+
+      {/* Editor tab */}
+      {tab==="editor" && TOKEN_SECTIONS.map(sec => (
+        <div key={sec.title} className="card">
+          <div className="card-header"><h3>{sec.title}</h3></div>
+          <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:10 }}>
+            {sec.tokens.map(t => {
+              const val = valueOf(t.id);
+              const hex = val ? hslStrToHex(val) : "#000000";
+              const bgHex = t.contrastWith ? hslStrToHex(valueOf(t.contrastWith)||"0 0% 100%") : null;
+              const ratio = bgHex ? contrast(hex, bgHex) : null;
+              const ratioOk = ratio !== null ? ratio >= 4.5 : null;
+              return (
+                <div key={t.id} className="token-row">
+                  <label className="color-swatch" style={{ background:`hsl(${val})` }}>
+                    <input type="color" value={hex} onChange={e=>handleChange(t.id,e.target.value)} />
+                  </label>
+                  <div style={{ flex:1,minWidth:0 }}>
+                    <div style={{ display:"flex",alignItems:"center",gap:6,flexWrap:"wrap" }}>
+                      <span style={{ fontSize:13,fontWeight:500 }}>{t.label}</span>
+                      {isOverridden(t.id) && <span style={{ fontSize:9,fontWeight:600,padding:"1px 5px",borderRadius:4,background:"hsl(var(--accent)/.15)",color:"hsl(var(--accent))",textTransform:"uppercase" }}>CUSTOM</span>}
+                      {ratio !== null && (
+                        <span style={{ fontSize:10,fontWeight:700,color:ratioOk?"hsl(var(--success))":"hsl(var(--destructive))" }}
+                          title={`Contraste: ${ratio.toFixed(2)}:1`}>
+                          {ratioOk?`AA ✓ ${ratio.toFixed(1)}:1`:`AA ✗ ${ratio.toFixed(1)}:1`}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontFamily:"var(--font-mono)",fontSize:10,color:"hsl(var(--muted-foreground))",marginTop:2 }}>{hex} · {t.id}</div>
+                  </div>
+                  {isOverridden(t.id) && (
+                    <button onClick={()=>handleReset(t.id)} style={{ width:26,height:26,border:0,borderRadius:6,background:"transparent",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:"hsl(var(--muted-foreground))" }}
+                      onMouseEnter={e=>e.currentTarget.style.background="hsl(var(--muted))"}
+                      onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                      <I.RotateCcw size={13}/>
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {/* Presets tab */}
+      {tab==="presets" && (
+        <div className="card">
+          <div className="card-header"><h3>Presets prontos</h3><p>Aplicar preset substitui todos os tokens</p></div>
+          <div style={{ display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:12 }}>
+            {Object.keys(COLOR_PRESETS).map(name => {
+              const p = COLOR_PRESETS[name];
+              return (
+                <div key={name} onClick={()=>handleApplyPreset(name)} style={{
+                  cursor:"pointer",padding:"16px",borderRadius:14,border:"1.5px solid hsl(var(--border))",
+                  background:"hsl(var(--card))",transition:"border-color 150ms,box-shadow 150ms",
+                }} onMouseEnter={e=>{e.currentTarget.style.borderColor="hsl(var(--primary)/.5)";e.currentTarget.style.boxShadow="0 4px 12px hsl(var(--foreground)/.06)"}}
+                  onMouseLeave={e=>{e.currentTarget.style.borderColor="hsl(var(--border))";e.currentTarget.style.boxShadow="none"}}>
+                  <div style={{ display:"flex",gap:6,marginBottom:10 }}>
+                    {["--primary","--accent","--background","--sidebar-background"].map(tk=>(
+                      <div key={tk} style={{ width:24,height:24,borderRadius:6,background:`hsl(${p[tk]})`,border:"1px solid hsl(0 0% 0% / .1)` `" }} />
+                    ))}
+                  </div>
+                  <div style={{ fontSize:13,fontWeight:600 }}>{name}</div>
+                  <div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))",marginTop:2 }}>Clique para aplicar</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Export/Import tab */}
+      {tab==="export" && (
+        <div className="card">
+          <div className="card-header"><h3>Export / Import</h3><p>JSON e URL compartilhável</p></div>
+          <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
+            <button className="btn btn-outline" onClick={handleExportJson}><I.Copy size={14}/> Exportar JSON</button>
+            <button className="btn btn-outline" onClick={()=>importRef.current?.click()}><I.Upload size={14}/> Importar JSON</button>
+            <input ref={importRef} type="file" accept=".json" style={{ display:"none" }} onChange={handleImportJson} />
+            <button className="btn btn-outline" onClick={handleShareUrl}><I.Link size={14}/> Copiar link de tema</button>
+          </div>
+          <div style={{ marginTop:16,padding:16,borderRadius:10,background:"hsl(var(--muted)/.5)",fontFamily:"var(--font-mono)",fontSize:12,maxHeight:200,overflow:"auto",whiteSpace:"pre" }}>
+            {JSON.stringify(overrides,null,2)||"// nenhum override ativo"}
+          </div>
+        </div>
+      )}
+
+      {/* History tab */}
+      {tab==="history" && (
+        <div className="card">
+          <div className="card-header"><h3>Histórico (últimos 10 estados)</h3><p>Clique para restaurar</p></div>
+          <div style={{ display:"flex",flexDirection:"column",gap:8 }}>
+            {history.slice().reverse().map((state, ri) => {
+              const idx = history.length-1-ri;
+              const isCurrent = idx===histIdx;
+              const keys = Object.keys(state);
+              return (
+                <div key={idx} onClick={()=>{setHistIdx(idx);applyOverrides(state);}}
+                  style={{ display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,border:`1.5px solid ${isCurrent?"hsl(var(--primary))":"hsl(var(--border))"}`,cursor:"pointer",background:isCurrent?"hsl(var(--primary)/.05)":"hsl(var(--card))" }}>
+                  <span style={{ fontFamily:"var(--font-mono)",fontSize:11,color:"hsl(var(--muted-foreground))",minWidth:20 }}>{idx}</span>
+                  <span style={{ fontSize:13,flex:1 }}>{keys.length===0?"Estado inicial":keys.length===Object.keys(defaults).length?"Preset completo":`${keys.length} tokens sobrescritos`}</span>
+                  {isCurrent && <span style={{ fontSize:11,fontWeight:600,color:"hsl(var(--primary))" }}>ATUAL</span>}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ display:"flex",gap:8,marginTop:12 }}>
+            <button className="btn btn-outline btn-sm" onClick={handleUndo} disabled={histIdx<=0}><I.Undo size={13}/> Undo</button>
+            <button className="btn btn-outline btn-sm" onClick={handleRedo} disabled={histIdx>=history.length-1}><I.Redo size={13}/> Redo</button>
+          </div>
+        </div>
+      )}
+
+      {/* Named themes tab */}
+      {tab==="named" && (
+        <div className="card">
+          <div className="card-header"><h3>Temas nomeados</h3><p>Salvar e carregar múltiplos temas</p></div>
+          <div style={{ display:"flex",gap:8,marginBottom:16 }}>
+            <input className="field-input" style={{ maxWidth:240 }} placeholder="Nome do tema (ex: verão 2026)"
+              value={themeName} onChange={e=>setThemeName(e.target.value)} />
+            <button className="btn btn-primary btn-sm" onClick={handleSaveNamed}><I.Save size={13}/> Salvar tema atual</button>
+          </div>
+          {Object.keys(namedThemes).length===0
+            ? <p style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>Nenhum tema salvo ainda.</p>
+            : (
+              <div style={{ display:"flex",flexDirection:"column",gap:6 }}>
+                {Object.keys(namedThemes).map(name=>(
+                  <div key={name} style={{ display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,border:"1px solid hsl(var(--border))",background:"hsl(var(--card))" }}>
+                    <span style={{ flex:1,fontSize:13,fontWeight:500 }}>{name}</span>
+                    <button className="btn btn-outline btn-sm" onClick={()=>handleLoadNamed(name)}>Carregar</button>
+                    <button className="btn btn-ghost btn-sm" onClick={()=>{const n={...namedThemes};delete n[name];setNamedThemes(n);localStorage.setItem(STORAGE_KEY+"-named",JSON.stringify(n));}}><I.Trash2 size={13}/></button>
+                  </div>
+                ))}
+              </div>
+            )}
+        </div>
+      )}
+
+      {/* Options tab */}
+      {tab==="options" && (
+        <div className="card">
+          <div className="card-header"><h3>Opções avançadas</h3></div>
+          <div style={{ display:"flex",flexDirection:"column",gap:16 }}>
+            <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid hsl(var(--border))" }}>
+              <div>
+                <div style={{ fontSize:13,fontWeight:500 }}>Gerar dark mode automaticamente</div>
+                <div style={{ fontSize:12,color:"hsl(var(--muted-foreground))" }}>Inverte luminance dos tokens de superfície</div>
+              </div>
+              <div onClick={()=>handleDarkDerive(!darkDerived)} style={{ width:36,height:20,borderRadius:999,background:darkDerived?"hsl(var(--primary))":"hsl(var(--muted))",position:"relative",cursor:"pointer",transition:"background 150ms" }}>
+                <div style={{ position:"absolute",top:2,left:darkDerived?16:2,width:16,height:16,borderRadius:50,background:"#fff",transition:"left 150ms" }}/>
+              </div>
+            </div>
+            <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0" }}>
+              <div>
+                <div style={{ fontSize:13,fontWeight:500 }}>Aplicar para todos os usuários</div>
+                <div style={{ fontSize:12,color:"hsl(var(--muted-foreground))" }}>Workspace-wide (no quick-start-remix: persiste em DB)</div>
+              </div>
+              <div onClick={()=>setWorkspaceWide(o=>!o)} style={{ width:36,height:20,borderRadius:999,background:workspaceWide?"hsl(var(--primary))":"hsl(var(--muted))",position:"relative",cursor:"pointer",transition:"background 150ms" }}>
+                <div style={{ position:"absolute",top:2,left:workspaceWide?16:2,width:16,height:16,borderRadius:50,background:"#fff",transition:"left 150ms" }}/>
+              </div>
             </div>
           </div>
         </div>
       )}
 
+      {/* Toast */}
       {toast && (
-        <div className="toast">
-          <div className="ok-mark">✓</div>
-          <span>{toast}</span>
+        <div style={{ position:"fixed",bottom:20,right:20,background:"hsl(var(--foreground))",color:"hsl(var(--background))",padding:"12px 16px",borderRadius:14,fontSize:13,fontWeight:500,boxShadow:"0 8px 24px hsl(var(--foreground)/.25)",zIndex:100,animation:"fadeUp 200ms ease" }}>
+          {toast}
         </div>
       )}
+
+      <style>{`@keyframes fadeUp{from{transform:translateY(6px);opacity:0}to{transform:translateY(0);opacity:1}}`}</style>
     </div>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+// ─── App ──────────────────────────────────────────────────────────
+function App() {
+  const [session, setSession] = useState(null);
+  const [activePage, setActivePage] = useState("dashboard");
+
+  // Apply theme from URL ?theme= on mount
+  useEffect(() => {
+    try {
+      const p = new URLSearchParams(window.location.search).get("theme");
+      if (p) {
+        const data = JSON.parse(atob(p));
+        Object.entries(data).forEach(([k,v]) => document.documentElement.style.setProperty(k,v));
+      }
+    } catch {}
+  }, []);
+
+  if (!session) return <LoginScreen onLogin={({ templateKey }) => { setSession(templateKey); setActivePage("dashboard"); }} />;
+
+  const tpl = TEMPLATES[session];
+
+  const renderPage = () => {
+    if (activePage === "profile") return <ProfileScreen user={tpl.user} />;
+    if (activePage === "settings") return <SettingsScreen />;
+    if (activePage === "dashboard") {
+      if (session === "ops") return <OpsDashboard onNav={setActivePage} />;
+      if (session === "crm") return <CrmDashboard onNav={setActivePage} />;
+      if (session === "wiki") return <WikiDashboard onNav={setActivePage} />;
+    }
+    // Generic sub-pages
+    const flat = tpl.navGroups.flatMap(g=>g.items).find(i=>i.k===activePage);
+    const label = flat?.lbl ?? activePage;
+    return <PlaceholderPage title={label} crumb={`${session} · ${activePage}`} />;
+  };
+
+  return (
+    <div className="app-shell" style={{ gridTemplateColumns: undefined }}>
+      <AppSidebar
+        templateKey={session}
+        activePage={activePage}
+        onNav={setActivePage}
+        onLogout={() => { setSession(null); setActivePage("dashboard"); }}
+      />
+      <main className="main-area">
+        {renderPage()}
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
 </html>
