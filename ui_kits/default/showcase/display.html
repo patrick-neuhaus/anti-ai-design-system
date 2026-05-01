@@ -203,14 +203,22 @@
           <h1>Display</h1>
           <p className="lead">Pílulas de status, avatares, alerts e estados de carregamento.</p>
 
-          <ShowcaseSection title="Badge — intents">
-            <div className="showcase-row">
+          <ShowcaseSection title="Badge — intents (dot auto em non-neutral)"
+            meta="Regra: intent !== neutral → dot=true por padrão. Opt-out com dot={false}.">
+            <div className="showcase-row" style={{ marginBottom: 12 }}>
               <Badge>Neutral</Badge>
               <Badge intent="primary">Primary</Badge>
-              <Badge intent="success" dot>Success</Badge>
-              <Badge intent="warning" dot>Warning</Badge>
+              <Badge intent="success">Success</Badge>
+              <Badge intent="warning">Warning</Badge>
               <Badge intent="info">Info</Badge>
               <Badge intent="destructive" strong>Destructive strong</Badge>
+            </div>
+            <div className="showcase-row">
+              <span style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginRight: 8 }}>Opt-out dot=false:</span>
+              <Badge intent="primary" dot={false}>Primary</Badge>
+              <Badge intent="success" dot={false}>Success</Badge>
+              <Badge intent="warning" dot={false}>Warning</Badge>
+              <Badge intent="info" dot={false}>Info</Badge>
             </div>
           </ShowcaseSection>
 

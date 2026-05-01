@@ -12,7 +12,7 @@ const BADGE_INTENTS = {
   destructive: { bg: "hsl(var(--destructive) / .10)", fg: "hsl(var(--destructive))" },
 };
 
-const Badge = ({ children, intent = "neutral", strong = false, dot = false }) => {
+const Badge = ({ children, intent = "neutral", strong = false, dot = intent !== "neutral" }) => {
   const c = BADGE_INTENTS[intent] ?? BADGE_INTENTS.neutral;
   const isStrong = strong;
   return (
