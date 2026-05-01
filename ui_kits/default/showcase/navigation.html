@@ -192,24 +192,40 @@
       </section>
     );
 
+    const TAB_CONTENT = {
+      over: <div style={{ padding: "12px 0", fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Overview: métricas gerais, gráficos e KPIs de alto nível.</div>,
+      act:  <div style={{ padding: "12px 0", fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Activity: histórico de ações, logs e eventos recentes.</div>,
+      set:  <div style={{ padding: "12px 0", fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Settings: configurações de preferências, notificações e integrações.</div>,
+    };
+
     const App = () => {
       const [tab, setTab] = React.useState("over");
+      const [tabPill, setTabPill] = React.useState("over");
       const [page, setPage] = React.useState(3);
+      const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
+      const [sidebarActive, setSidebarActive] = React.useState("dashboard");
       return (
         <>
           <h1>Navigation</h1>
           <p className="lead">Tabs, breadcrumb, pagination, nav-link. Sidebar tem preview à parte.</p>
 
-          <ShowcaseSection title="Tabs — underline & pill">
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <ShowcaseSection title="Tabs — underline (single tablist com conteúdo)">
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <Tabs
                 value={tab} onChange={setTab}
                 items={[{value:"over",label:"Overview",count:12},{value:"act",label:"Activity"},{value:"set",label:"Settings",icon:Icon.Settings}]}
               />
+              {TAB_CONTENT[tab]}
+            </div>
+          </ShowcaseSection>
+
+          <ShowcaseSection title="Tabs — pill variant">
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <Tabs
-                value={tab} onChange={setTab} variant="pill"
+                value={tabPill} onChange={setTabPill} variant="pill"
                 items={[{value:"over",label:"Overview"},{value:"act",label:"Activity"},{value:"set",label:"Settings"}]}
               />
+              {TAB_CONTENT[tabPill]}
             </div>
           </ShowcaseSection>
 
@@ -226,28 +242,32 @@
             <Pagination page={page} totalPages={20} onChange={setPage} />
           </ShowcaseSection>
 
-          <ShowcaseSection title="NavLink"
-            meta="Primitivo pra link de rota. Sidebar usa SidebarItem internamente.">
+          <ShowcaseSection title="NavLink — hover em todos os items"
+            meta="Primitivo pra link de rota. Hover state em todos (não só active).">
             <div style={{ width: 240, display: "flex", flexDirection: "column", gap: 2 }}>
               <NavLink active leading={<Icon.LayoutDashboard size={16} />}>Dashboard</NavLink>
-              <NavLink leading={<Icon.Package size={16} />} trailing={<Badge>12</Badge>}>Deliveries</NavLink>
+              <NavLink leading={<Icon.Package size={16} />} trailing={<Badge intent="primary">12</Badge>}>Deliveries</NavLink>
               <NavLink leading={<Icon.FileText size={16} />}>Romaneios</NavLink>
+              <NavLink leading={<Icon.Settings size={16} />}>Configurações</NavLink>
             </div>
           </ShowcaseSection>
 
-          <ShowcaseSection title="Sidebar — preview" meta="Versão completa em ../index.html">
-            <div style={{ height: 360, border: "1px solid hsl(var(--border))", borderRadius: 8, overflow: "hidden", display: "flex" }}>
+          <ShowcaseSection title="Sidebar — collapse toggle funcional" meta="Clique no botão divisória pra colapsar/expandir.">
+            <div style={{ height: 420, border: "1px solid hsl(var(--border))", borderRadius: 8, overflow: "hidden", display: "flex", position: "relative" }}>
               <Sidebar
-                active="dashboard"
-                onNavigate={() => {}}
-                collapsed={false}
-                onToggleCollapse={() => {}}
+                active={sidebarActive}
+                onNavigate={setSidebarActive}
+                collapsed={sidebarCollapsed}
+                onToggleCollapse={() => setSidebarCollapsed(c => !c)}
                 onLogout={() => {}}
                 brand={{ logo: "../../../assets/placeholder-logo.svg", mark: "../../../assets/placeholder-mark.svg", name: "App" }}
                 user={{ name: "Nome Sobrenome", email: "email@exemplo.com" }}
               />
-              <div style={{ flex: 1, padding: 16, color: "hsl(var(--muted-foreground))", fontSize: 13 }}>
-                Conteúdo principal vai aqui.
+              <div style={{ flex: 1, padding: 16, overflow: "auto" }}>
+                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Página: {sidebarActive}</div>
+                <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>
+                  Sidebar {sidebarCollapsed ? "colapsada" : "expandida"}. Clique no botão circular na borda pra alternar.
+                </div>
               </div>
             </div>
           </ShowcaseSection>

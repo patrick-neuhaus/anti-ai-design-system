@@ -242,8 +242,28 @@ const Sidebar = ({
       display: "flex", flexDirection: "column",
       borderRight: "1px solid hsl(var(--sidebar-border))",
       transition: "width .25s ease-in-out",
+      position: "relative",
     }}>
-      <div style={{ position: "relative", padding: "8px 4px", height: 44, display: "flex", alignItems: "center", justifyContent: collapsed ? "center" : "flex-start" }}>
+      {/* Collapse toggle — centrado na divisória vertical */}
+      <button
+        onClick={onToggleCollapse}
+        aria-label="Toggle sidebar"
+        style={{
+          position: "absolute", right: -12, top: "50%", transform: "translateY(-50%)",
+          width: 24, height: 24, borderRadius: "50%",
+          background: "hsl(var(--sidebar-foreground))",
+          color: "hsl(var(--sidebar-background))",
+          border: "1px solid hsl(var(--border))",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 1px 2px 0 rgb(0 0 0 / .05)",
+          cursor: "pointer",
+          zIndex: 10,
+        }}
+      >
+        {collapsed ? <Icon.ChevronRight size={14} /> : <Icon.ChevronLeft size={14} />}
+      </button>
+
+      <div style={{ padding: "8px 4px", height: 44, display: "flex", alignItems: "center", justifyContent: collapsed ? "center" : "flex-start" }}>
         {collapsed ? (
           <div style={{
             width: 40, height: 40, borderRadius: 10,
@@ -256,22 +276,6 @@ const Sidebar = ({
         ) : (
           <img src={logoSrc} alt={brandAlt} style={{ height: 28 }} />
         )}
-        <button
-          onClick={onToggleCollapse}
-          aria-label="Toggle sidebar"
-          style={{
-            position: "absolute", right: -16, top: "50%", transform: "translateY(-50%)",
-            width: 24, height: 24, borderRadius: "50%",
-            background: "hsl(var(--sidebar-foreground))",
-            color: "hsl(var(--sidebar-background))",
-            border: "1px solid hsl(var(--border))",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: "0 1px 2px 0 rgb(0 0 0 / .05)",
-            cursor: "pointer",
-          }}
-        >
-          {collapsed ? <Icon.ChevronRight size={14} /> : <Icon.ChevronLeft size={14} />}
-        </button>
       </div>
 
       <nav style={{ flex: 1, overflowY: "auto", marginTop: 4 }}>
