@@ -88,6 +88,8 @@
     .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
     h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
     .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
+    /* DateField overflow fix — 7.5 */
+    input[type="date"] { width: 100%; max-width: 100%; box-sizing: border-box; }
 
     /* ── Categories dropdown in float-header ─────────────────── */
     .fh-dropdown { position: relative; }
