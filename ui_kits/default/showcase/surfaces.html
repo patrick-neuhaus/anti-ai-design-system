@@ -187,18 +187,100 @@
       </section>
     );
 
-    const App = () => (
+    const CardVariantLabel = ({ children }) => (
+      <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "8px 0 0", fontStyle: "italic" }}>{children}</p>
+    );
+
+    const App = () => {
+      const [hovered, setHovered] = React.useState(false);
+      return (
       <>
         <h1>Surfaces</h1>
         <p className="lead">Tijolos de fundo. Card é o default; Surface é tonal sem hierarquia forte.</p>
 
-        <ShowcaseSection title="Card">
+        <ShowcaseSection title="Card — padrão">
           <Card>
-            <CardHeader title="Card simples" subtitle="Header + corpo" actions={<Button size="sm" variant="outline">Action</Button>} />
+            <CardHeader title="Card padrão" subtitle="Header + corpo + footer" actions={<Button size="sm" variant="outline">Action</Button>} />
             <p style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", margin: 0 }}>
               Conteúdo dentro do Card. 12px radius, hairline border, padding 20.
             </p>
           </Card>
+          <CardVariantLabel>Use quando: bloco de conteúdo isolado, formulário, painel com título.</CardVariantLabel>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="Card — elevated (shadow)">
+          <Card style={{ boxShadow: "0 4px 16px hsl(var(--foreground) / .08)", border: "none" }}>
+            <CardHeader title="Card elevated" subtitle="Sem borda, com sombra" />
+            <p style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", margin: 0 }}>
+              Ideal pra elementos flutuantes acima do background (modal-like, dropdowns, popovers).
+            </p>
+          </Card>
+          <CardVariantLabel>Use quando: sobreposição visual necessária, fundo neutro sem contraste de borda.</CardVariantLabel>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="Card — interactive (hover lift)">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+            {["Romaneio #001","Romaneio #002","Romaneio #003"].map((label, i) => (
+              <Card key={i} style={{
+                cursor: "pointer",
+                transition: "box-shadow 200ms, transform 200ms",
+                boxShadow: "0 1px 4px hsl(var(--foreground) / .05)",
+              }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.boxShadow = "0 8px 24px hsl(var(--foreground) / .12)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.boxShadow = "0 1px 4px hsl(var(--foreground) / .05)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                <div style={{ fontSize: 13, fontWeight: 600 }}>{label}</div>
+                <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 4 }}>Hover pra ver o lift</div>
+              </Card>
+            ))}
+          </div>
+          <CardVariantLabel>Use quando: card é clicável (navega pra detalhe, abre modal). Hover lift sinaliza interatividade.</CardVariantLabel>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="Card — nested-avoidance (border vs shadow)">
+          <Card style={{ background: "hsl(var(--muted))", boxShadow: "none", padding: 16 }}>
+            <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginBottom: 12 }}>Card externo (muted)</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <Card style={{ padding: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>Card interno — borda</div>
+                <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 4 }}>Use border, não shadow, dentro de outro Card.</div>
+              </Card>
+              <Card style={{ padding: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>Card interno — borda</div>
+                <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 4 }}>Shadow dentro de muted cria ruído visual.</div>
+              </Card>
+            </div>
+          </Card>
+          <CardVariantLabel>Use quando: conteúdo aninhado. Borda separa sem adicionar profundidade desnecessária.</CardVariantLabel>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="Card — exemplo real (header + body + footer)">
+          <Card style={{ maxWidth: 420 }}>
+            <CardHeader
+              title="Resumo do Romaneio"
+              subtitle="RM-001847 · 26/04/2025"
+              actions={<Button size="sm" variant="outline" iconLeft={Icon.Download}>PDF</Button>}
+            />
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {[["Transportadora","TransLog Brasil"],["Placa","ABC-1D23"],["Volumes","48 caixas"],["Status","Conferido"]].map(([k,v]) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
+                  <span style={{ color: "hsl(var(--muted-foreground))" }}>{k}</span>
+                  <span style={{ fontWeight: 500 }}>{v}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 16, paddingTop: 12, borderTop: "1px solid hsl(var(--border))", display: "flex", gap: 8, justifyContent: "flex-end" }}>
+              <Button size="sm" variant="ghost">Cancelar</Button>
+              <Button size="sm">Confirmar</Button>
+            </div>
+          </Card>
+          <CardVariantLabel>Use quando: exibir entidade com ações. Header = contexto, body = atributos, footer = ações.</CardVariantLabel>
         </ShowcaseSection>
 
         <ShowcaseSection title="Surface — tones">
@@ -210,7 +292,8 @@
           </div>
         </ShowcaseSection>
       </>
-    );
+      );
+    };
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
 
