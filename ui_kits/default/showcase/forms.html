@@ -207,15 +207,18 @@
             </div>
           </ShowcaseSection>
 
-          <ShowcaseSection title="NumberField, DateField">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+          <ShowcaseSection title="NumberField, DateField — mesma largura e altura (40px)">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               <FormField label="Quantidade">
                 <NumberField value={n} onChange={(_, v) => setN(v)} min={0} max={99} unit="un" />
               </FormField>
-              <FormField label="Valor">
+              <FormField label="Data" required>
+                <DateField value={d} onChange={(e) => setD(e.target.value)} />
+              </FormField>
+              <FormField label="Valor (R$)">
                 <NumberField value={n} onChange={(_, v) => setN(v)} prefix="R$" step={0.5} />
               </FormField>
-              <FormField label="Data" required>
+              <FormField label="Data limite">
                 <DateField value={d} onChange={(e) => setD(e.target.value)} />
               </FormField>
             </div>
