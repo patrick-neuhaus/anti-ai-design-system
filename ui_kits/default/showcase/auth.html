@@ -172,6 +172,10 @@
       align-items: center;
       justify-content: center;
     }
+    /* Wave 9.1 — ConfirmEmail: tela single-panel, override grid pra 1 coluna */
+    .auth-variant.auth-confirm > div {
+      grid-template-columns: 1fr !important;
+    }
     .auth-variant.active {
       opacity: 1;
       pointer-events: auto;
@@ -317,7 +321,7 @@
               <div className={"auth-variant" + (picked === "reset" ? " active" : "")}>
                 <ResetPasswordScreen onSubmit={() => {}} onGoLogin={() => setPicked("login")} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} appName="App Name" tagline="Tagline" />
               </div>
-              <div className={"auth-variant" + (picked === "confirm" ? " active" : "")}>
+              <div className={"auth-variant auth-confirm" + (picked === "confirm" ? " active" : "")}>
                 <ConfirmEmailScreen status="success" email="user@example.com" onContinue={() => {}} brand={{ logo: "../../../assets/placeholder-logo.svg", name: "App" }} />
               </div>
             </div>
