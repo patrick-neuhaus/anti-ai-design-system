@@ -88,6 +88,9 @@
     .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
     .showcase-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
     .showcase-grid { display: grid; gap: 16px; }
+    .showcase-grid > * { min-width: 0; }
+    .showcase-grid textarea,
+    .showcase-grid select { width: 100%; max-width: 100%; box-sizing: border-box; }
     h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
     .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
 
