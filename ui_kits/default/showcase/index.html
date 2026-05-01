@@ -394,10 +394,149 @@
       .section-wrap { padding: 48px 20px; }
       .sticky-cta { top: 12px; right: 12px; padding: 8px 14px; font-size: 12px; }
     }
+
+    /* ==================================================
+       SCROLLYTELLING — sections fade-up + stagger children
+       ================================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 700ms cubic-bezier(.2,.8,.2,1), transform 700ms cubic-bezier(.2,.8,.2,1);
+      will-change: opacity, transform;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Stagger children (.reveal-stagger > *) */
+    .reveal-stagger > * { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.8,.2,1); }
+    .reveal-stagger.in > *  { opacity: 1; transform: translateY(0); }
+    .reveal-stagger.in > *:nth-child(1) { transition-delay: 0ms; }
+    .reveal-stagger.in > *:nth-child(2) { transition-delay: 80ms; }
+    .reveal-stagger.in > *:nth-child(3) { transition-delay: 160ms; }
+    .reveal-stagger.in > *:nth-child(4) { transition-delay: 240ms; }
+    .reveal-stagger.in > *:nth-child(5) { transition-delay: 320ms; }
+    .reveal-stagger.in > *:nth-child(6) { transition-delay: 400ms; }
+
+    /* Section progress bar (top of viewport) */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
+      z-index: 200;
+      transition: width 80ms linear;
+      pointer-events: none;
+    }
+
+    /* ==================================================
+       HERO CANVAS — floating component cards + parallax
+       ================================================== */
+    .hero-canvas-wrap {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+      min-height: 520px;
+    }
+    @media (min-width: 960px) {
+      .hero-canvas-wrap { grid-template-columns: 1.1fr 1fr; }
+    }
+    .hero-canvas {
+      position: relative;
+      height: 480px;
+      perspective: 1200px;
+      pointer-events: none;
+    }
+    .float-card {
+      position: absolute;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 20px 50px -20px hsl(var(--foreground) / .18), 0 4px 12px -4px hsl(var(--foreground) / .08);
+      transition: transform 200ms cubic-bezier(.2,.8,.2,1);
+      will-change: transform;
+      pointer-events: auto;
+    }
+    .float-card.fc-stat   { top: 8%;  left: 0;  width: 220px; animation: float-a 6s ease-in-out infinite; }
+    .float-card.fc-side   { top: 26%; right: 4%; width: 200px; animation: float-b 7s ease-in-out infinite; padding: 0; overflow: hidden; }
+    .float-card.fc-pal    { bottom: 14%; left: 8%; width: 240px; animation: float-c 8s ease-in-out infinite; }
+    .float-card.fc-badge  { bottom: 6%; right: 10%; width: auto; animation: float-d 5.5s ease-in-out infinite; padding: 8px 14px; border-radius: 999px; }
+
+    @keyframes float-a { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(-1deg); } }
+    @keyframes float-b { 0%,100% { transform: translateY(0) rotate(1deg); } 50% { transform: translateY(-14px) rotate(2deg); } }
+    @keyframes float-c { 0%,100% { transform: translateY(0) rotate(2deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+    @keyframes float-d { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    /* Hero card content */
+    .fc-stat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .fc-stat-icon { width: 32px; height: 32px; border-radius: 8px; background: hsl(var(--accent) / .15); display: grid; place-items: center; color: hsl(var(--accent)); font-size: 16px; }
+    .fc-stat-label { font-size: 11px; color: hsl(var(--muted-foreground)); font-family: var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+    .fc-stat-value { font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1; }
+    .fc-stat-trend { font-size: 11px; color: hsl(var(--success)); margin-top: 4px; font-family: var(--font-mono); }
+
+    .fc-side-mini { background: hsl(var(--sidebar-background)); padding: 12px 10px; }
+    .fc-side-brand { font-family: var(--font-display); font-size: 13px; color: hsl(var(--sidebar-foreground)); font-weight: 600; margin-bottom: 10px; padding-left: 6px; }
+    .fc-side-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; font-size: 11px; color: hsl(var(--sidebar-foreground) / .8); }
+    .fc-side-row.active { background: hsl(var(--sidebar-accent)); color: hsl(var(--sidebar-accent-foreground)); position: relative; }
+    .fc-side-row.active::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 14px; background: hsl(var(--sidebar-indicator)); border-radius: 2px; }
+    .fc-side-dot { width: 10px; height: 10px; border-radius: 3px; background: currentColor; opacity: .7; }
+
+    .fc-pal-title { font-size: 11px; font-family: var(--font-mono); color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+    .fc-pal-row { display: flex; gap: 6px; }
+    .fc-pal-chip {
+      flex: 1;
+      height: 32px;
+      border-radius: 6px;
+      animation: pal-morph 8s ease-in-out infinite;
+    }
+    .fc-pal-chip:nth-child(1) { background: hsl(var(--primary)); animation-delay: 0s; }
+    .fc-pal-chip:nth-child(2) { background: hsl(var(--accent)); animation-delay: .8s; }
+    .fc-pal-chip:nth-child(3) { background: hsl(var(--success)); animation-delay: 1.6s; }
+    .fc-pal-chip:nth-child(4) { background: hsl(var(--info)); animation-delay: 2.4s; }
+    .fc-pal-chip:nth-child(5) { background: hsl(var(--destructive)); animation-delay: 3.2s; }
+    @keyframes pal-morph {
+      0%, 100% { filter: hue-rotate(0deg) saturate(1); }
+      50%      { filter: hue-rotate(20deg) saturate(1.15); }
+    }
+
+    .fc-badge-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .fc-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--success)); animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 hsl(var(--success) / .5); }
+      50%      { box-shadow: 0 0 0 6px hsl(var(--success) / 0); }
+    }
+
+    /* Subtle background grid in hero canvas (anti-AI: deliberate, not random) */
+    .hero-canvas::before {
+      content: "";
+      position: absolute;
+      inset: -20px;
+      background-image:
+        linear-gradient(hsl(var(--foreground) / .04) 1px, transparent 1px),
+        linear-gradient(90deg, hsl(var(--foreground) / .04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Reduced motion: kill all animations */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-stagger > * { transition: none; opacity: 1; transform: none; }
+      .float-card { animation: none !important; }
+      .fc-pal-chip { animation: none !important; }
+      .fc-badge-dot { animation: none !important; }
+    }
   </style>
 </head>
 <body class="preset-base">
 
+  <div class="progress-bar" id="progressBar"></div>
   <a class="sticky-cta" href="../index.html">Ver exemplos →</a>
 
   <div id="root"></div>
@@ -413,6 +552,68 @@
       return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     };
 
+    // Hook: aplica classe "in" quando o elemento entra no viewport.
+    // Usa IntersectionObserver, fires once (unobserve apos triggerar).
+    const useReveal = (options = { threshold: 0.15, rootMargin: "-40px 0px" }) => {
+      const ref = React.useRef(null);
+      React.useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const io = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) {
+            el.classList.add("in");
+            io.unobserve(el);
+          }
+        }, options);
+        io.observe(el);
+        return () => io.disconnect();
+      }, []);
+      return ref;
+    };
+
+    // Progress bar global (top of viewport)
+    const useScrollProgress = () => {
+      React.useEffect(() => {
+        const bar = document.getElementById("progressBar");
+        if (!bar) return;
+        const onScroll = () => {
+          const h = document.documentElement;
+          const max = (h.scrollHeight - h.clientHeight) || 1;
+          const pct = (h.scrollTop / max) * 100;
+          bar.style.width = pct + "%";
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+      }, []);
+    };
+
+    // Parallax mouse no hero canvas (subtle: max ±10px)
+    const useMouseParallax = (ref, intensity = 12) => {
+      React.useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const onMove = (e) => {
+          const r = el.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+          const y = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+          el.querySelectorAll("[data-parallax]").forEach((card) => {
+            const depth = parseFloat(card.dataset.parallax) || 1;
+            card.style.transform = `translate3d(${x * intensity * depth}px, ${y * intensity * depth}px, 0)`;
+          });
+        };
+        const onLeave = () => {
+          el.querySelectorAll("[data-parallax]").forEach((c) => { c.style.transform = ""; });
+        };
+        el.addEventListener("mousemove", onMove);
+        el.addEventListener("mouseleave", onLeave);
+        return () => {
+          el.removeEventListener("mousemove", onMove);
+          el.removeEventListener("mouseleave", onLeave);
+        };
+      }, []);
+    };
+
     // ── Hero Section ──────────────────────────────────────────
     const PALETTE_CHIPS = [
       { label: "--primary", name: "Petroleum" },
@@ -425,6 +626,8 @@
 
     const HeroSection = () => {
       const [colors, setColors] = React.useState({});
+      const canvasRef = React.useRef(null);
+      useMouseParallax(canvasRef, 14);
       React.useEffect(() => {
         const c = {};
         PALETTE_CHIPS.forEach(({ label }) => { c[label] = getCssVar(label); });
@@ -434,24 +637,73 @@
       return (
         <section>
           <div className="section-wrap" style={{ paddingBottom: 64 }}>
-            <p className="eyebrow">Design System · Wave 6.5</p>
-            <h1 className="hero-title">
-              Anti-AI<br />Design System
-            </h1>
-            <p className="hero-sub">
-              Componentes com personalidade. Sem sombras genéricas, sem azul shadcn padrão,
-              sem a cara de IA que todo mundo usa. Um sistema que demonstra a si mesmo.
-            </p>
-            <div className="palette-chips">
-              {PALETTE_CHIPS.map(({ label, name }) => (
-                <div key={label} className="chip-swatch">
-                  <div
-                    className="chip-dot"
-                    style={{ background: colors[label] ? `hsl(${colors[label]})` : "transparent" }}
-                  />
-                  <span>{name}</span>
+            <div className="hero-canvas-wrap">
+              {/* Texto */}
+              <div>
+                <p className="eyebrow">Design System · Wave 6.5</p>
+                <h1 className="hero-title">
+                  Anti-AI<br />Design System
+                </h1>
+                <p className="hero-sub">
+                  Componentes com personalidade. Sem sombras genéricas, sem azul shadcn padrão,
+                  sem a cara de IA que todo mundo usa. Um sistema que demonstra a si mesmo.
+                </p>
+                <div className="palette-chips">
+                  {PALETTE_CHIPS.map(({ label, name }) => (
+                    <div key={label} className="chip-swatch">
+                      <div
+                        className="chip-dot"
+                        style={{ background: colors[label] ? `hsl(${colors[label]})` : "transparent" }}
+                      />
+                      <span>{name}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              {/* Canvas: floating component cards animados */}
+              <div className="hero-canvas" ref={canvasRef} aria-hidden="true">
+                {/* StatCard mock */}
+                <div className="float-card fc-stat" data-parallax="1.4">
+                  <div className="fc-stat-row">
+                    <div className="fc-stat-icon">↗</div>
+                    <div className="fc-stat-label">Pedidos hoje</div>
+                  </div>
+                  <div className="fc-stat-value">1.284</div>
+                  <div className="fc-stat-trend">+12.4% vs ontem</div>
+                </div>
+
+                {/* Sidebar mini mock */}
+                <div className="float-card fc-side" data-parallax="0.8">
+                  <div className="fc-side-mini">
+                    <div className="fc-side-brand">Artemis</div>
+                    <div className="fc-side-row active"><span className="fc-side-dot" /> Dashboard</div>
+                    <div className="fc-side-row"><span className="fc-side-dot" /> Romaneios</div>
+                    <div className="fc-side-row"><span className="fc-side-dot" /> Conferência</div>
+                    <div className="fc-side-row"><span className="fc-side-dot" /> Importação</div>
+                  </div>
+                </div>
+
+                {/* Palette mock — chips morfam HSL */}
+                <div className="float-card fc-pal" data-parallax="1.1">
+                  <div className="fc-pal-title">Tokens vivos</div>
+                  <div className="fc-pal-row">
+                    <div className="fc-pal-chip" />
+                    <div className="fc-pal-chip" />
+                    <div className="fc-pal-chip" />
+                    <div className="fc-pal-chip" />
+                    <div className="fc-pal-chip" />
+                  </div>
+                </div>
+
+                {/* Status badge animado */}
+                <div className="float-card fc-badge" data-parallax="1.6">
+                  <div className="fc-badge-row">
+                    <div className="fc-badge-dot" />
+                    <span>Build verde · 0 axes-violations</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -484,7 +736,7 @@
 
     const FilosofiaSection = () => (
       <section className="alt-bg">
-        <div className="section-wrap">
+        <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
           <p className="eyebrow">Por que existe</p>
           <h2 className="section-title">4 anti-padrões que combatemos</h2>
           <p className="section-sub">
@@ -567,7 +819,7 @@
 
       return (
         <section>
-          <div className="section-wrap">
+          <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
             <p className="eyebrow">Fundação</p>
             <h2 className="section-title">Tokens em vivo</h2>
             <p className="section-sub">
@@ -650,7 +902,7 @@
 
     const CategoriasSection = () => (
       <section className="alt-bg">
-        <div className="section-wrap">
+        <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
           <p className="eyebrow">Catálogo técnico</p>
           <h2 className="section-title">Categorias de componentes</h2>
           <p className="section-sub">
@@ -711,7 +963,7 @@
 
     const TemplatesSection = () => (
       <section>
-        <div className="section-wrap">
+        <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
           <p className="eyebrow">Exemplos completos</p>
           <h2 className="section-title">Templates interativos</h2>
           <p className="section-sub">
@@ -798,7 +1050,7 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
       const tab = TABS_CONTENT[activeTab];
       return (
         <section className="alt-bg">
-          <div className="section-wrap">
+          <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
             <p className="eyebrow">Integração</p>
             <h2 className="section-title">Como usar</h2>
             <p className="section-sub">
@@ -834,17 +1086,20 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
     );
 
     // ── App ───────────────────────────────────────────────────
-    const App = () => (
-      <>
-        <HeroSection />
-        <FilosofiaSection />
-        <TokensVivosSection />
-        <CategoriasSection />
-        <TemplatesSection />
-        <ComoUsarSection />
-        <Footer />
-      </>
-    );
+    const App = () => {
+      useScrollProgress();
+      return (
+        <>
+          <HeroSection />
+          <FilosofiaSection />
+          <TokensVivosSection />
+          <CategoriasSection />
+          <TemplatesSection />
+          <ComoUsarSection />
+          <Footer />
+        </>
+      );
+    };
 
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
