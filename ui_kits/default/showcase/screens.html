@@ -211,7 +211,7 @@
       </section>
     );
 
-    // Presets visuais do Design System
+    // Presets visuais do Design System — scoped (não altera :root)
     const PRESETS = [
       {
         name: "Ops Default",
@@ -220,16 +220,20 @@
         bg: "#ffffff",
         card: "#f8fafc",
         muted: "#f1f5f9",
+        border: "#e2e8f0",
         text: "#0f172a",
+        textMuted: "#64748b",
       },
       {
         name: "CRM Dark",
         desc: "Dark mode denso. Para CRMs e painéis analíticos.",
-        accent: "#6366f1",
-        bg: "#0f172a",
-        card: "#1e293b",
-        muted: "#334155",
+        accent: "#818cf8",
+        bg: "#1a2236",
+        card: "#243049",
+        muted: "#2d3c56",
+        border: "#374c6e",
         text: "#f1f5f9",
+        textMuted: "#94a3b8",
       },
       {
         name: "Wiki Sage",
@@ -238,7 +242,9 @@
         bg: "#f9fafb",
         card: "#ffffff",
         muted: "#f0fdf4",
+        border: "#dcfce7",
         text: "#111827",
+        textMuted: "#6b7280",
       },
     ];
 
@@ -254,19 +260,17 @@
           boxShadow: active ? `0 0 0 3px ${preset.accent}33` : "none",
         }}
       >
-        {/* Mini preview */}
+        {/* Mini preview — scoped com cores do preset */}
         <div style={{ background: preset.bg, padding: 12, display: "flex", gap: 8 }}>
-          {/* Sidebar mini */}
-          <div style={{ width: 32, background: preset.card, borderRadius: 6, border: `1px solid ${preset.muted}`, display: "flex", flexDirection: "column", alignItems: "center", padding: "6px 4px", gap: 4 }}>
+          <div style={{ width: 32, background: preset.card, borderRadius: 6, border: `1px solid ${preset.border}`, display: "flex", flexDirection: "column", alignItems: "center", padding: "6px 4px", gap: 4 }}>
             <div style={{ width: 16, height: 4, borderRadius: 2, background: preset.accent }} />
             {[0,1,2].map(i => <div key={i} style={{ width: 16, height: 3, borderRadius: 2, background: preset.muted }} />)}
           </div>
-          {/* Content mini */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
             <div style={{ height: 10, borderRadius: 3, background: preset.text, opacity: 0.8, width: "60%" }} />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
-              <div style={{ height: 28, borderRadius: 6, background: preset.card, border: `1px solid ${preset.muted}` }} />
-              <div style={{ height: 28, borderRadius: 6, background: preset.card, border: `1px solid ${preset.muted}` }} />
+              <div style={{ height: 28, borderRadius: 6, background: preset.card, border: `1px solid ${preset.border}` }} />
+              <div style={{ height: 28, borderRadius: 6, background: preset.card, border: `1px solid ${preset.border}` }} />
             </div>
             <div style={{ height: 6, borderRadius: 3, background: preset.accent, width: "40%" }} />
           </div>
@@ -284,6 +288,54 @@
       </div>
     );
 
+    // Mockup interno que aplica preset via inline style vars — scoped, não afeta :root
+    const PresetMockup = ({ preset }) => (
+      <div style={{
+        background: preset.bg,
+        borderRadius: 10,
+        border: `1px solid ${preset.border}`,
+        overflow: "hidden",
+        marginTop: 16,
+        display: "flex",
+        minHeight: 220,
+      }}>
+        {/* Sidebar mini */}
+        <div style={{ width: 140, background: preset.card, borderRight: `1px solid ${preset.border}`, padding: "12px 8px", display: "flex", flexDirection: "column", gap: 4 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: preset.accent, padding: "4px 8px", marginBottom: 4 }}>Anti-AI DS</div>
+          {["Dashboard","Romaneios","Config. Sistema"].map((l, i) => (
+            <div key={l} style={{
+              padding: "6px 8px", borderRadius: 6, fontSize: 12,
+              background: i === 0 ? preset.accent + "22" : "transparent",
+              color: i === 0 ? preset.accent : preset.textMuted,
+              fontWeight: i === 0 ? 600 : 400,
+              borderLeft: i === 0 ? `3px solid ${preset.accent}` : "3px solid transparent",
+            }}>{l}</div>
+          ))}
+        </div>
+        {/* Content area */}
+        <div style={{ flex: 1, padding: 16, display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 14, fontWeight: 600, color: preset.text }}>Dashboard</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+            {[["48","Total Hoje"],["12","Em Trânsito"],["36","Concluídos"]].map(([v,l]) => (
+              <div key={l} style={{ background: preset.card, border: `1px solid ${preset.border}`, borderRadius: 8, padding: "10px 12px" }}>
+                <div style={{ fontSize: 20, fontWeight: 600, color: preset.text }}>{v}</div>
+                <div style={{ fontSize: 11, color: preset.textMuted, marginTop: 2 }}>{l}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ background: preset.card, border: `1px solid ${preset.border}`, borderRadius: 8, padding: "8px 12px" }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: preset.text, marginBottom: 6 }}>Romaneios recentes</div>
+            {[["RM-001847","Carlos Andrade"],["RM-001846","Marcos Silva"]].map(([id,m]) => (
+              <div key={id} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: preset.textMuted, padding: "4px 0", borderTop: `1px solid ${preset.border}` }}>
+                <span style={{ fontFamily: "monospace" }}>{id}</span>
+                <span>{m}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
     const DesignSystemTab = () => {
       const [activePreset, setActivePreset] = React.useState(0);
       return (
@@ -291,17 +343,18 @@
           <div>
             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>3 Presets visuais</div>
             <div style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", marginBottom: 16 }}>
-              Selecione um preset pra ver o preview. O SettingsScreen (admin) permite editar tokens com live swap.
+              Selecione um preset. O preview abaixo reflete as cores sem afetar a página.
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
               {PRESETS.map((p, i) => (
                 <PresetCard key={p.name} preset={p} active={activePreset === i} onClick={() => setActivePreset(i)} />
               ))}
             </div>
+            <PresetMockup preset={PRESETS[activePreset]} />
           </div>
           <div>
             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>Token Editor (SettingsScreen)</div>
-            <div style={{ border: "1px solid hsl(var(--border))", borderRadius: 8, overflow: "hidden", minHeight: 400 }}>
+            <div style={{ borderRadius: 8, overflow: "hidden", minHeight: 400 }}>
               <SettingsScreen onSave={(o) => console.log("save", o)} />
             </div>
           </div>
@@ -330,7 +383,7 @@
           </ShowcaseSection>
 
           <ShowcaseSection title="Preview">
-            <div className="preview-frame">
+            <div className="preview-frame" style={picked === "design-system" ? { border: 0, padding: 0 } : {}}>
               {picked === "design-system" && <DesignSystemTab />}
               {picked === "profile"    && <ProfileScreen
                 user={{ name: "Patrick Neuhaus", email: "patrick@studioartemis.com", role: "Admin", since: "Mar/2024" }}
