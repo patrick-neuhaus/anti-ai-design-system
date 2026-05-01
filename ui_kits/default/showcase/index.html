@@ -146,47 +146,121 @@
       border: 1px solid hsl(var(--border));
     }
 
-    /* Anti-padrão cards */
-    .antipatterns-grid {
+    /* Anti-padrão split side-by-side */
+    .antipatterns-split {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .split-subsection {
+      padding: 32px 0;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .split-subsection:last-child { border-bottom: none; }
+    .split-cols {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 16px;
     }
-    .antipattern-card {
-      padding: 24px;
-      border: 1px solid hsl(var(--border));
-      border-radius: 16px;
+    @media (max-width: 700px) {
+      .split-cols { grid-template-columns: 1fr; }
+    }
+    .split-card {
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+    }
+    .split-card.ai-default {
+      background: #f4f4f4;
+      border: 1px solid #e0e0e0;
+    }
+    .split-card.anti-ai {
       background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
     }
-    .antipattern-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: hsl(var(--accent) / .12);
-      color: hsl(var(--accent));
+    .split-legend {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      margin-bottom: 14px;
+      gap: 6px;
     }
-    .antipattern-card h4 {
-      font-size: 15px;
-      font-weight: 600;
-      margin: 0 0 6px;
-    }
-    .antipattern-card p {
-      font-size: 13px;
+    .split-legend.bad { color: #888; }
+    .split-legend.good { color: hsl(var(--success)); }
+    .split-desc {
+      font-size: 12.5px;
       color: hsl(var(--muted-foreground));
       line-height: 1.6;
-      margin: 0;
+      margin: 12px 0 0;
+    }
+    /* Mockup elements inside split cards */
+    .mock-btn-generic {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 18px; border-radius: 6px;
+      border: 1px solid #d1d5db; background: #fff;
+      font-size: 13px; color: #374151; font-family: sans-serif;
+      box-shadow: 0 4px 6px rgba(0,0,0,.1);
+      cursor: default;
+    }
+    .mock-badge-generic {
+      display: inline-flex; align-items: center;
+      padding: 2px 10px; border-radius: 4px;
+      background: #e5e7eb; color: #6b7280;
+      font-size: 11px; font-family: sans-serif;
+    }
+    .mock-card-generic {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+      padding: 14px; margin-top: 10px;
+      font-size: 12px; color: #6b7280; font-family: sans-serif;
+      box-shadow: 0 4px 6px rgba(0,0,0,.1);
+    }
+    .mock-btn-ds {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 18px; border-radius: var(--radius-md, 10px);
+      border: none; background: hsl(var(--accent));
+      font-size: 13px; color: hsl(var(--accent-foreground));
+      font-family: var(--font-body); font-weight: 500;
+      cursor: default;
+    }
+    .mock-badge-ds {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px; border-radius: 999px;
+      background: hsl(var(--accent) / .12); color: hsl(var(--accent));
+      font-size: 11px; font-family: var(--font-mono);
+      font-weight: 600; letter-spacing: .04em; border: 1px solid hsl(var(--accent) / .25);
+    }
+    .mock-card-ds {
+      background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-xl, 20px);
+      padding: 14px; margin-top: 10px;
+      font-size: 12px; color: hsl(var(--muted-foreground));
+      font-family: var(--font-body);
+    }
+    .split-subsection-label {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -.02em;
+      color: hsl(var(--foreground));
+      margin: 0 0 20px;
+    }
+    @media (max-width: 700px) {
+      .split-subsection { grid-template-columns: 1fr; }
     }
 
-    /* Tokens vivos */
+    /* Tokens vivos — grid 2×2 fixo */
     .tokens-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 640px) {
+      .tokens-grid { grid-template-columns: 1fr; }
     }
     .token-group h4 {
       font-family: var(--font-mono);
@@ -216,15 +290,25 @@
     .token-swatch-label { font-size: 12px; font-weight: 500; }
     .token-swatch-var { font-family: var(--font-mono); font-size: 10px; color: hsl(var(--muted-foreground)); margin-top: 1px; }
 
-    /* Type scale */
-    .type-scale { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+    /* Type scale — amostras grandes no tamanho real */
+    .type-scale { display: flex; flex-direction: column; gap: 0; margin-top: 24px; }
     .type-row {
-      display: flex;
-      align-items: baseline;
-      gap: 20px;
-      padding-bottom: 12px;
+      display: grid;
+      grid-template-columns: 140px auto;
+      align-items: center;
+      gap: 24px;
+      padding: 16px 0;
       border-bottom: 1px solid hsl(var(--border));
     }
+    .type-meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .type-meta-name { font-family: var(--font-mono); font-size: 10px; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: .06em; }
+    .type-meta-size { font-family: var(--font-mono); font-size: 11px; color: hsl(var(--foreground)); font-weight: 500; }
+    .type-meta-lh { font-family: var(--font-mono); font-size: 9px; color: hsl(var(--muted-foreground) / .7); }
     .type-meta { font-family: var(--font-mono); font-size: 10px; color: hsl(var(--muted-foreground)); min-width: 100px; flex-shrink: 0; }
     .radius-demo { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
     .radius-swatch {
@@ -241,114 +325,77 @@
     }
     .radius-label { font-family: var(--font-mono); font-size: 10px; color: hsl(var(--muted-foreground)); }
 
-    /* Categorias — BENTO GRID layout (cards de tamanhos diferentes por importancia) */
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      grid-auto-rows: 140px;
-      gap: 12px;
-    }
-    /* Cards grandes (mais componentes / mais importantes) */
-    .category-card.bento-hero    { grid-column: span 3; grid-row: span 2; }
-    .category-card.bento-large   { grid-column: span 3; grid-row: span 2; }
-    .category-card.bento-medium  { grid-column: span 2; grid-row: span 1; }
-    .category-card.bento-small   { grid-column: span 2; grid-row: span 1; }
-    @media (max-width: 800px) {
-      .categories-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
-      .category-card.bento-hero, .category-card.bento-large { grid-column: span 2; grid-row: span 2; }
-      .category-card.bento-medium, .category-card.bento-small { grid-column: span 1; grid-row: span 1; }
-    }
-    .category-card {
+    /* Categorias — TOC editorial (lista vertical) */
+    .categories-toc {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      padding: 20px;
-      border: 1px solid hsl(var(--border));
-      border-radius: 16px;
-      background: hsl(var(--card));
+      max-width: 980px;
+    }
+    .toc-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid hsl(var(--border));
       text-decoration: none;
       color: inherit;
-      transition: border-color 200ms, box-shadow 200ms, transform 200ms;
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
+      transition: background 150ms;
+      border-radius: 8px;
+      cursor: default;
     }
-    .category-card:hover {
-      border-color: hsl(var(--accent) / .5);
-      box-shadow: 0 12px 32px -8px hsl(var(--foreground) / .12);
-      transform: translateY(-3px);
+    .toc-row:last-child { border-bottom: none; }
+    .toc-row:hover { background: hsl(var(--muted) / .35); padding-left: 12px; padding-right: 12px; margin: 0 -12px; }
+    .toc-row:hover .toc-chips .toc-chip { filter: brightness(1.08); }
+    .toc-row:hover .toc-cta { transform: translateX(4px); }
+    .toc-left {
+      flex: 0 0 220px;
+      min-width: 0;
     }
-    .category-card.bento-hero {
-      background: linear-gradient(135deg, hsl(var(--accent) / .08), hsl(var(--primary) / .04));
-      border: 1px solid hsl(var(--accent) / .25);
+    .toc-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -.02em;
+      color: hsl(var(--foreground));
+      margin: 0 0 2px;
     }
-    .category-card.bento-large {
-      background: linear-gradient(135deg, hsl(var(--primary) / .06), hsl(var(--accent) / .03));
-    }
-    .category-card .cat-icon {
-      font-size: 24px;
-      margin-bottom: 10px;
-      display: inline-block;
-      transition: transform 350ms cubic-bezier(.34,1.56,.64,1);
-    }
-    .category-card.bento-hero .cat-icon,
-    .category-card.bento-large .cat-icon { font-size: 36px; }
-    .category-card:hover .cat-icon { transform: scale(1.18) rotate(-6deg); }
-    .category-card .cat-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-    .category-card.bento-hero .cat-name,
-    .category-card.bento-large .cat-name { font-size: 22px; font-family: var(--font-display); letter-spacing: -.02em; }
-    .category-card .cat-desc {
-      font-size: 12.5px;
+    .toc-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
       color: hsl(var(--muted-foreground));
-      line-height: 1.5;
-      margin: 6px 0 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      letter-spacing: .04em;
     }
-    .category-card.bento-hero .cat-desc,
-    .category-card.bento-large .cat-desc { -webkit-line-clamp: 3; font-size: 13.5px; }
-    .category-card .cat-count {
+    .toc-chips {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .toc-chip {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid hsl(var(--border));
+      background: hsl(var(--muted) / .5);
       font-size: 11px;
       font-family: var(--font-mono);
       color: hsl(var(--muted-foreground));
-      letter-spacing: .04em;
-      text-transform: uppercase;
+      transition: filter 150ms;
     }
-    .category-card .cat-count-num {
+    .toc-cta {
+      flex: 0 0 auto;
       font-size: 13px;
-      font-weight: 600;
-      color: hsl(var(--accent));
-    }
-    .category-card.bento-hero .cat-count-num,
-    .category-card.bento-large .cat-count-num { font-size: 16px; }
-    .category-card .cat-arrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 8px;
-      font-size: 12px;
       font-weight: 500;
       color: hsl(var(--accent));
       transition: transform 200ms;
+      white-space: nowrap;
     }
-    .category-card:hover .cat-arrow { transform: translateX(4px); }
-    /* Sweep gradient mantido */
-    .category-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 0%, hsl(var(--accent) / .12) 50%, transparent 100%);
-      transform: translateX(-100%);
-      transition: transform 700ms cubic-bezier(.2,.8,.2,1);
-      pointer-events: none;
-      z-index: -1;
+    @media (max-width: 700px) {
+      .toc-left { flex: 0 0 140px; }
+      .toc-chips { display: none; }
     }
-    .category-card:hover::before { transform: translateX(100%); }
 
     /* Template preview */
     .templates-grid {
@@ -475,19 +522,92 @@
       white-space: pre;
     }
     .code-comment { color: hsl(var(--sidebar-foreground) / .5); }
-    .code-tag { color: hsl(var(--accent)); }
+    /* 2.6: amarelo claro sobre verde escuro — ratio >= 4.5:1 AA */
+    .code-tag { color: hsl(45 95% 75%); }
     .code-attr { color: hsl(var(--sidebar-indicator)); }
     .code-string { color: hsl(174 60% 65%); }
 
-    /* Footer */
+    /* Footer 3-col funcional */
     footer {
-      border-top: 1px solid hsl(var(--border));
-      padding: 40px 32px;
-      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: hsl(var(--muted) / .3);
+    }
+    .footer-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 32px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+    }
+    .footer-col h4 {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: hsl(var(--foreground));
+      font-weight: 600;
+      margin: 0 0 16px;
+    }
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-col ul li a {
+      font-size: 13px;
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      transition: color 150ms;
+    }
+    .footer-col ul li a:hover { color: hsl(var(--foreground)); }
+    .footer-status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 13px;
       color: hsl(var(--muted-foreground));
     }
-    footer a { color: hsl(var(--accent)); text-decoration: none; }
+    .footer-status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: hsl(var(--success));
+      flex-shrink: 0;
+    }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 32px;
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-bottom-brand {
+      font-size: 12px;
+      color: hsl(var(--muted-foreground));
+      font-family: var(--font-mono);
+    }
+    .footer-bottom-links {
+      display: flex;
+      gap: 16px;
+    }
+    .footer-bottom-links a {
+      font-size: 12px;
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      transition: color 150ms;
+    }
+    .footer-bottom-links a:hover { color: hsl(var(--foreground)); }
+    @media (max-width: 700px) {
+      .footer-body { grid-template-columns: 1fr; gap: 32px; padding: 40px 20px 32px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; padding: 16px 20px; }
+    }
 
     @media (max-width: 640px) {
       .section-wrap { padding: 48px 20px; }
@@ -793,31 +913,9 @@
     }
 
     /* ==================================================
-       Categorias — gradient sweep on hover + icon morph
+       Categorias — TOC row hover sweep
        ================================================== */
-    .category-card {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-    }
-    .category-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 0%, hsl(var(--accent) / .08) 50%, transparent 100%);
-      transform: translateX(-100%);
-      transition: transform 600ms cubic-bezier(.2,.8,.2,1);
-      pointer-events: none;
-      z-index: -1;
-    }
-    .category-card:hover::before { transform: translateX(100%); }
-    .category-card .cat-icon {
-      transition: transform 350ms cubic-bezier(.34,1.56,.64,1);
-      display: inline-block;
-    }
-    .category-card:hover .cat-icon {
-      transform: scale(1.18) rotate(-6deg);
-    }
+    /* toc-row hover handled above */
 
     /* ==================================================
        Templates preview — mock cursor auto-clicking
@@ -905,22 +1003,12 @@
     }
 
     /* ==================================================
-       Float cards — 3D tilt individual on hover
-       Animation float-* sobrepoe transform JS — pausar no hover
+       Float cards — sem hover interaction (2.1: static float anim)
        ================================================== */
     .float-card {
-      transition: transform 200ms cubic-bezier(.2,.8,.2,1), box-shadow 200ms, border-color 200ms;
-      cursor: pointer;
-    }
-    .float-card.is-hovered {
-      z-index: 10;
-      animation-play-state: paused !important;
-      border-color: hsl(var(--accent) / .6) !important;
-      box-shadow: 0 32px 64px -20px hsl(var(--foreground) / .35), 0 8px 20px -4px hsl(var(--accent) / .25) !important;
-    }
-    .hero-canvas:hover .float-card:not(.is-hovered) {
-      filter: blur(.5px);
-      opacity: .65;
+      transition: none;
+      cursor: default;
+      opacity: 0.85;
     }
 
     /* ==================================================
@@ -1329,8 +1417,7 @@
     const HeroSection = () => {
       const [colors, setColors] = React.useState({});
       const canvasRef = React.useRef(null);
-      useMouseParallax(canvasRef, 14);
-      useFloatCardTilt(canvasRef);
+      // 2.1: sem useMouseParallax nem useFloatCardTilt — float anim puro via CSS keyframes
       React.useEffect(() => {
         const c = {};
         PALETTE_CHIPS.forEach(({ label }) => { c[label] = getCssVar(label); });
@@ -1413,83 +1500,116 @@
       );
     };
 
-    // ── Filosofia Section ─────────────────────────────────────
-    const ANTIPATTERNS = [
+    // ── Filosofia Section — split side-by-side (2.2) ──────────
+    const SPLIT_COMPARISONS = [
       {
-        icon: "🚫",
-        title: "Sem sombras AI-default",
-        desc: "box-shadow: 0 4px 6px rgba(0,0,0,.1) é a marca registrada de todo projeto gerado por IA. Aqui, sombras são hue-aware ou não existem.",
+        label: "Sombras genéricas",
+        desc: "box-shadow: 0 4px 6px rgba(0,0,0,.1) é a assinatura de todo output de IA. Aqui, sombras são hue-aware ou simplesmente não existem.",
+        aiContent: (
+          <div>
+            <div className="mock-btn-generic">Salvar alterações</div>
+            <div className="mock-card-generic">
+              Componente com sombra genérica rgba — sem hue, sem contexto.
+            </div>
+          </div>
+        ),
+        dsContent: (
+          <div>
+            <div className="mock-btn-ds">Salvar alterações</div>
+            <div className="mock-card-ds">
+              Sombra hue-aware ou ausente — proposital, não acidental.
+            </div>
+          </div>
+        ),
       },
       {
-        icon: "🎨",
-        title: "Neutros com cor",
-        desc: "Nenhum neutro é 0 0% L%. Todo foreground e background carrega hue. É a diferença entre editorial e output padrão.",
+        label: "Cores tristes",
+        desc: "Nenhum neutro é 0 0% L%. Todo foreground e background carrega hue. É a diferença entre editorial e output cinza.",
+        aiContent: (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            {["#f3f4f6","#e5e7eb","#d1d5db","#9ca3af","#6b7280"].map((c,i) => (
+              <div key={i} style={{ width: 36, height: 36, borderRadius: 6, background: c, border: "1px solid #e5e7eb" }} />
+            ))}
+            <span style={{ fontSize: 11, color: "#9ca3af", fontFamily: "monospace" }}>0 0% 95% → 0 0% 45%</span>
+          </div>
+        ),
+        dsContent: (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            {["hsl(var(--background))","hsl(var(--muted))","hsl(var(--border))","hsl(var(--muted-foreground))","hsl(var(--foreground))"].map((c,i) => (
+              <div key={i} style={{ width: 36, height: 36, borderRadius: 6, background: c, border: "1px solid hsl(var(--border))" }} />
+            ))}
+            <span style={{ fontSize: 11, color: "hsl(var(--muted-foreground))", fontFamily: "var(--font-mono)" }}>hue nos neutros</span>
+          </div>
+        ),
       },
       {
-        icon: "📐",
-        title: "Tipografia deliberada",
-        desc: "Poppins (body) + Lora (display) + Geist Mono (dados). Nunca Inter sozinha. Font pairing é identidade, não detalhe.",
+        label: "Inter sozinha",
+        desc: "Poppins (body) + Lora (display) + Geist Mono (dados). Font pairing é identidade, não detalhe.",
+        aiContent: (
+          <div>
+            <div style={{ fontFamily: "Inter, sans-serif", fontSize: 22, fontWeight: 700, color: "#111" }}>Título da Página</div>
+            <div style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "#6b7280", marginTop: 6 }}>Texto corrido com Inter em todos os níveis.</div>
+            <div style={{ fontFamily: "monospace", fontSize: 12, color: "#9ca3af", marginTop: 6 }}>dados · stats · código</div>
+          </div>
+        ),
+        dsContent: (
+          <div>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 600, letterSpacing: "-.02em", color: "hsl(var(--foreground))" }}>Título da Página</div>
+            <div style={{ fontFamily: "var(--font-body)", fontSize: 14, color: "hsl(var(--muted-foreground))", marginTop: 6 }}>Texto corrido Poppins — legível e com personalidade.</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "hsl(var(--accent))", marginTop: 6 }}>dados · stats · código</div>
+          </div>
+        ),
       },
       {
-        icon: "⚡",
-        title: "Tokens vivos, não hardcoded",
-        desc: "Toda cor passa por hsl(var(--token)). Um override no :root muda o app inteiro. Sem hex bakeado nos componentes.",
+        label: "ShadCN look-alike",
+        desc: "Badge, botão e card sem identidade. Poderiam ser qualquer app gerado por IA. Aqui cada token carrega escolha deliberada.",
+        aiContent: (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+            <div className="mock-badge-generic">default</div>
+            <div className="mock-badge-generic">secondary</div>
+            <div className="mock-btn-generic" style={{ fontSize: 12, padding: "6px 14px" }}>Button</div>
+          </div>
+        ),
+        dsContent: (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+            <div className="mock-badge-ds">terracotta</div>
+            <div className="mock-badge-ds" style={{ background: "hsl(var(--primary) / .12)", color: "hsl(var(--primary))", borderColor: "hsl(var(--primary) / .25)" }}>petroleum</div>
+            <div className="mock-btn-ds" style={{ fontSize: 12, padding: "6px 14px" }}>Ação</div>
+          </div>
+        ),
       },
     ];
 
-    // Hook: 3D tilt mouse-driven nas cards filhas (cada elemento com data-tilt)
-    const useTilt = (ref, max = 6) => {
-      React.useEffect(() => {
-        const root = ref.current;
-        if (!root) return;
-        const cards = root.querySelectorAll("[data-tilt]");
-        const handlers = [];
-        cards.forEach((card) => {
-          const onMove = (e) => {
-            const r = card.getBoundingClientRect();
-            const x = (e.clientX - r.left) / r.width;
-            const y = (e.clientY - r.top) / r.height;
-            const rx = (0.5 - y) * max;
-            const ry = (x - 0.5) * max;
-            card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
-          };
-          const onLeave = () => { card.style.transform = ""; };
-          card.addEventListener("mousemove", onMove);
-          card.addEventListener("mouseleave", onLeave);
-          handlers.push([card, onMove, onLeave]);
-        });
-        return () => handlers.forEach(([c, m, l]) => {
-          c.removeEventListener("mousemove", m);
-          c.removeEventListener("mouseleave", l);
-        });
-      }, []);
-    };
-
-    const FilosofiaSection = () => {
-      const tiltRef = React.useRef(null);
-      useTilt(tiltRef, 7);
-      useGlowTrail(tiltRef);
-      return (
+    const FilosofiaSection = () => (
       <section className="alt-bg" id="filosofia">
-        <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
+        <div className="section-wrap reveal" ref={useReveal()}>
           <p className="eyebrow">Por que existe</p>
           <h2 className="section-title">4 anti-padrões que combatemos</h2>
           <p className="section-sub">
-            Cada decisão aqui é uma resposta direta ao que todo AI coding tool gera por padrão.
+            Cada decisão é uma resposta direta ao que todo AI coding tool gera por padrão. Esquerda: o default. Direita: a escolha deliberada.
           </p>
-          <div className="antipatterns-grid" ref={tiltRef}>
-            {ANTIPATTERNS.map((ap) => (
-              <div key={ap.title} className="antipattern-card" data-tilt data-glow>
-                <div className="antipattern-icon">{ap.icon}</div>
-                <h4>{ap.title}</h4>
-                <p>{ap.desc}</p>
+          <div className="antipatterns-split">
+            {SPLIT_COMPARISONS.map((comp) => (
+              <div key={comp.label} className="split-subsection">
+                <div className="split-subsection-label">{comp.label}</div>
+                <div className="split-cols">
+                  <div className="split-card ai-default">
+                    <div className="split-legend bad">❌ AI-default — o padrão genérico</div>
+                    {comp.aiContent}
+                    <p className="split-desc">{comp.desc}</p>
+                  </div>
+                  <div className="split-card anti-ai">
+                    <div className="split-legend good">✅ Anti-AI — DS aplicado</div>
+                    {comp.dsContent}
+                    <p className="split-desc" style={{ color: "hsl(var(--foreground) / .7)" }}>Escolha deliberada com tokens do sistema.</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-      );
-    };
+    );
 
     // ── Tokens Vivos Section ──────────────────────────────────
     const TOKEN_GROUPS = [
@@ -1530,11 +1650,12 @@
     ];
 
     const TYPE_SCALE = [
-      { meta: "display / 600", size: 36, family: "var(--font-display)", sample: "Lora Display" },
-      { meta: "h2 / 600", size: 24, family: "var(--font-display)", sample: "Seção principal" },
-      { meta: "body / 500", size: 15, family: "var(--font-body)", sample: "Texto corrido do app" },
-      { meta: "caption / 400", size: 12, family: "var(--font-body)", sample: "Metadados e labels" },
-      { meta: "mono / 400", size: 12, family: "var(--font-mono)", sample: "2024-05-01 · token-id" },
+      { name: "Display", size: 56, lh: "1.0", family: "var(--font-display)", weight: 600, sample: "Lora Display" },
+      { name: "H1", size: 40, lh: "1.05", family: "var(--font-display)", weight: 600, sample: "Título principal" },
+      { name: "H2", size: 32, lh: "1.1", family: "var(--font-display)", weight: 600, sample: "Seção do app" },
+      { name: "Body", size: 16, lh: "1.6", family: "var(--font-body)", weight: 400, sample: "Texto corrido legível e elegante" },
+      { name: "Caption", size: 13, lh: "1.5", family: "var(--font-body)", weight: 400, sample: "Metadados · labels · datas" },
+      { name: "Mono", size: 12, lh: "1.6", family: "var(--font-mono)", weight: 400, sample: "2026-05-01 · --token-id · 0x3f" },
     ];
 
     const RADIUS_SCALE = [
@@ -1587,7 +1708,7 @@
               ))}
             </div>
 
-            {/* Typography */}
+            {/* Typography 2.4 — amostras reais grandes */}
             <div style={{ marginTop: 48 }}>
               <h3 style={{ fontSize: 16, fontWeight: 600, margin: "0 0 4px" }}>Escala tipográfica</h3>
               <p style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", margin: "0 0 20px" }}>
@@ -1595,9 +1716,13 @@
               </p>
               <div className="type-scale">
                 {TYPE_SCALE.map((t) => (
-                  <div key={t.meta} className="type-row">
-                    <div className="type-meta">{t.meta}</div>
-                    <div style={{ fontSize: t.size, fontFamily: t.family, lineHeight: 1.2 }}>{t.sample}</div>
+                  <div key={t.name} className="type-row">
+                    <div className="type-meta-block">
+                      <span className="type-meta-name">{t.name}</span>
+                      <span className="type-meta-size">{t.size}px</span>
+                      <span className="type-meta-lh">lh {t.lh}</span>
+                    </div>
+                    <div style={{ fontSize: t.size, fontFamily: t.family, fontWeight: t.weight, lineHeight: t.lh, color: "hsl(var(--foreground))", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.sample}</div>
                   </div>
                 ))}
               </div>
@@ -1624,59 +1749,50 @@
       );
     };
 
-    // ── Categorias Section ────────────────────────────────────
-    // BENTO sizes — destacar categorias mais ricas (Display 14 + Base 7 + Forms 7) como hero/large
+    // ── Categorias Section — TOC editorial (2.5) ─────────────
     const CATEGORIES = [
-      { key: "display", icon: "💎", name: "Display", count: "14 componentes", desc: "Badge, Avatar, Alert, Dialog, Toast, Tooltip, Popover, Skeleton e mais 6", size: "bento-hero" },
-      { key: "base", icon: "⬜", name: "Base", count: "7 componentes", desc: "Button, Input, Textarea, Select, Checkbox, Radio, Switch — fundação dos formulários", size: "bento-large" },
-      { key: "surfaces", icon: "🃏", name: "Surfaces", count: "2 componentes", desc: "Card, Surface", size: "bento-medium" },
-      { key: "layout", icon: "📐", name: "Layout", count: "4 componentes", desc: "PageHeader, Section, PageShell, AppLayout", size: "bento-medium" },
-      { key: "forms", icon: "📝", name: "Forms", count: "7 componentes", desc: "FormField, FileUpload, Combobox, Slider, Stepper, NumberField, DateField", size: "bento-large" },
-      { key: "navigation", icon: "🧭", name: "Navigation", count: "5 componentes", desc: "Tabs, Breadcrumb, Pagination, NavLink, Sidebar", size: "bento-medium" },
-      { key: "data", icon: "📊", name: "Data", count: "3 componentes", desc: "Table, AppTable, ListItem", size: "bento-medium" },
-      { key: "dashboard", icon: "📈", name: "Dashboard", count: "3 componentes", desc: "StatCard, KpiGrid, MetricCard", size: "bento-small" },
-      { key: "auth", icon: "🔐", name: "Auth", count: "4 telas", desc: "Login, Register, ForgotPassword, ConfirmEmail", size: "bento-small" },
-      { key: "screens", icon: "🖥️", name: "Screens", count: "5 telas", desc: "Dashboard, Profile, Settings, Romaneios, EmptyDashboard", size: "bento-small" },
+      { key: "display",    name: "Display",    count: 14, unit: "componentes", chips: ["Badge","Avatar","Alert","Dialog","Toast","Tooltip","Popover","Skeleton","Tag","Chip","Progress","Spinner","Divider","EmptyState"] },
+      { key: "base",       name: "Base",       count: 7,  unit: "componentes", chips: ["Button","Input","Textarea","Select","Checkbox","Radio","Switch"] },
+      { key: "forms",      name: "Forms",      count: 7,  unit: "componentes", chips: ["FormField","FileUpload","Combobox","Slider","Stepper","NumberField","DateField"] },
+      { key: "navigation", name: "Navigation", count: 5,  unit: "componentes", chips: ["Tabs","Breadcrumb","Pagination","NavLink","Sidebar"] },
+      { key: "data",       name: "Data",       count: 3,  unit: "componentes", chips: ["Table","AppTable","ListItem"] },
+      { key: "dashboard",  name: "Dashboard",  count: 3,  unit: "componentes", chips: ["StatCard","KpiGrid","MetricCard"] },
+      { key: "surfaces",   name: "Surfaces",   count: 2,  unit: "componentes", chips: ["Card","Surface"] },
+      { key: "layout",     name: "Layout",     count: 4,  unit: "componentes", chips: ["PageHeader","Section","PageShell","AppLayout"] },
+      { key: "auth",       name: "Auth",       count: 4,  unit: "telas",       chips: ["Login","Register","ForgotPassword","ConfirmEmail"] },
+      { key: "screens",    name: "Screens",    count: 5,  unit: "telas",       chips: ["Dashboard","Profile","Settings","Romaneios","EmptyDashboard"] },
     ];
 
-    // Sub-componente de category card com counter rolling
-    const CategoryCard = ({ cat }) => {
+    const TocRow = ({ cat }) => {
       const ref = React.useRef(null);
-      // extrai número do count string (ex: "7 componentes" → 7)
-      const match = cat.count.match(/(\d+)/);
-      const target = match ? parseInt(match[1], 10) : 0;
-      const suffix = match ? cat.count.replace(match[1], "") : cat.count;
-      const count = useCounterRoll(ref, target, 600);
+      const count = useCounterRoll(ref, cat.count, 600);
       return (
-        <a ref={ref} key={cat.key} href={`./${cat.key}.html`} className={`category-card ${cat.size || "bento-medium"}`}>
-          <div>
-            <div className="cat-icon">{cat.icon}</div>
-            <div className="cat-name">{cat.name}</div>
-            {(cat.size === "bento-hero" || cat.size === "bento-large") && (
-              <p className="cat-desc">{cat.desc}</p>
-            )}
+        <div ref={ref} className="toc-row">
+          <div className="toc-left">
+            <div className="toc-name">{cat.name}</div>
+            <div className="toc-count">({count} {cat.unit})</div>
           </div>
-          <div>
-            <div className="cat-count">
-              <span className="cat-count-num">{count}</span>{suffix}
-            </div>
-            <div className="cat-arrow">Ver catálogo →</div>
+          <div className="toc-chips">
+            {cat.chips.map((c) => (
+              <span key={c} className="toc-chip">{c}</span>
+            ))}
           </div>
-        </a>
+          <div className="toc-cta">Ver →</div>
+        </div>
       );
     };
 
     const CategoriasSection = () => (
       <section className="alt-bg" id="categorias">
-        <div className="section-wrap reveal reveal-stagger" ref={useReveal()}>
+        <div className="section-wrap reveal" ref={useReveal()}>
           <p className="eyebrow">Catálogo técnico</p>
           <h2 className="section-title">Categorias de componentes</h2>
           <p className="section-sub">
             56+ componentes e telas organizados por função. Cada categoria tem showcase técnico próprio.
           </p>
-          <div className="categories-grid">
+          <div className="categories-toc">
             {CATEGORIES.map((cat) => (
-              <CategoryCard key={cat.key} cat={cat} />
+              <TocRow key={cat.key} cat={cat} />
             ))}
           </div>
         </div>
@@ -1918,21 +2034,56 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
       );
     };
 
-    // ── Footer ────────────────────────────────────────────────
+    // ── Footer 3-col funcional (2.7) ─────────────────────────
     const Footer = () => (
-      <footer style={{ position: "relative", overflow: "hidden" }}>
+      <footer>
         <ConstellationSvg />
         <svg className="footer-wave" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 30 Q 250 0 500 30 T 1000 30 V 60 H 0 Z" fill="hsl(var(--muted) / .5)" />
         </svg>
-        <p style={{ margin: "0 0 6px", position: "relative" }}>
-          Anti-AI Design System · Artemis Studio
-        </p>
-        <p style={{ margin: 0, position: "relative" }}>
-          <a href="../index.html">Ver exemplos interativos →</a>
-          {" · "}
-          <a href="./base.html">Catálogo técnico</a>
-        </p>
+        <div className="footer-body">
+          <div className="footer-col">
+            <h4>Recursos</h4>
+            <ul>
+              <li><a href="./base.html">Showcase técnico</a></li>
+              <li><a href="../index.html">Templates demo</a></li>
+              <li><a href="#tokens">Tokens</a></li>
+              <li><a href="#como-usar">Como usar</a></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h4>Repositório</h4>
+            <ul>
+              <li><a href="https://github.com/patrick-neuhaus/anti-ai-design-system" target="_blank" rel="noopener">GitHub</a></li>
+              <li><a href="https://github.com/patrick-neuhaus/anti-ai-design-system/blob/main/LICENSE" target="_blank" rel="noopener">License MIT</a></li>
+              <li><a href="https://github.com/patrick-neuhaus/anti-ai-design-system/issues" target="_blank" rel="noopener">Issues</a></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h4>Status</h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div className="footer-status-item">
+                <div className="footer-status-dot" />
+                <span>v6.5 · stable</span>
+              </div>
+              <div className="footer-status-item" style={{ gap: 0, flexDirection: "column", alignItems: "flex-start" }}>
+                <span style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>Último update</span>
+                <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "hsl(var(--foreground))" }}>2026-05-01</span>
+              </div>
+              <div className="footer-status-item" style={{ gap: 0, flexDirection: "column", alignItems: "flex-start" }}>
+                <span style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>Build</span>
+                <span style={{ fontSize: 13, color: "hsl(var(--success))", fontWeight: 500 }}>✓ stable</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span className="footer-bottom-brand">Anti-AI Design System · v6.5 · MIT · Artemis Studio</span>
+          <div className="footer-bottom-links">
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Termos de Uso</a>
+          </div>
+        </div>
       </footer>
     );
 
