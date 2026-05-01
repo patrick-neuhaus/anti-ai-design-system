@@ -21,6 +21,7 @@ const Textarea = ({ value, onChange, placeholder, rows = 4, disabled = false, in
       borderRadius: 8,
       outline: "none",
       resize: "vertical",
+      maxHeight: 320,
       lineHeight: 1.5,
       transition: "border-color .15s, box-shadow .15s",
       opacity: disabled ? 0.5 : 1,

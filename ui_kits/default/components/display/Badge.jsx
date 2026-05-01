@@ -7,7 +7,7 @@ const BADGE_INTENTS = {
   neutral: { bg: "hsl(var(--muted))", fg: "hsl(var(--muted-foreground))" },
   primary: { bg: "hsl(var(--primary) / .12)", fg: "hsl(var(--primary))" },
   success: { bg: "hsl(var(--success) / .12)", fg: "hsl(var(--success))" },
-  warning: { bg: "hsl(var(--warning) / .16)", fg: "hsl(var(--warning-foreground))" },
+  warning: { bg: "hsl(var(--warning) / .16)", fg: "hsl(var(--warning))" },
   info: { bg: "hsl(var(--info) / .10)", fg: "hsl(var(--info))" },
   destructive: { bg: "hsl(var(--destructive) / .10)", fg: "hsl(var(--destructive))" },
 };

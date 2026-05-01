@@ -83,7 +83,7 @@
     .showcase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
     .showcase-nav a { font-size: 13px; padding: 6px 10px; border-radius: 6px; text-decoration: none; color: hsl(var(--muted-foreground)); }
     .showcase-nav a.active { background: hsl(var(--accent-decorative) / .12); color: hsl(var(--accent)); font-weight: 500; }
-    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 48px; padding-bottom: 8px; }
     .showcase-section > h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); margin: 0; font-weight: 600; }
     .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
     .showcase-meta { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 6px; }
@@ -106,7 +106,7 @@
       border-radius: 12px; padding: 6px;
       box-shadow: 0 8px 32px hsl(var(--foreground) / .10);
       min-width: 200px; z-index: 300;
-      display: none; flex-direction: column; gap: 2px;
+      flex-direction: column; gap: 2px;
     }
     .fh-dropdown:hover .fh-dropdown-menu,
     .fh-dropdown-menu:hover { display: flex; }
@@ -204,11 +204,33 @@
 
         <ShowcaseSection title="PageShell · AppLayout"
           meta="AppLayout = sidebar + main; PageShell = padding wrapper interno.">
-          <div style={{ fontSize: 13, color: "hsl(var(--muted-foreground))" }}>
-            Composição canônica:<br/>
-            <code style={{ fontSize: 12 }}>
-              {`<AppLayout sidebar={<Sidebar … />}><PageShell><PageHeader … /><Card>…</Card></PageShell></AppLayout>`}
-            </code>
+          <div style={{ height: 320, border: "1px solid hsl(var(--border))", borderRadius: 8, overflow: "hidden", display: "flex", background: "hsl(var(--background))" }}>
+            {/* Mock sidebar */}
+            <div style={{ width: 200, background: "hsl(var(--card))", borderRight: "1px solid hsl(var(--border))", padding: "16px 12px", display: "flex", flexDirection: "column", gap: 4, flexShrink: 0 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "hsl(var(--foreground))", marginBottom: 8, paddingLeft: 8 }}>App</div>
+              {["Dashboard","Romaneios","Clientes","Configurações"].map((item, i) => (
+                <div key={item} style={{ fontSize: 13, padding: "6px 8px", borderRadius: 6, background: i === 0 ? "hsl(var(--accent) / .12)" : "transparent", color: i === 0 ? "hsl(var(--accent))" : "hsl(var(--muted-foreground))", cursor: "default" }}>{item}</div>
+              ))}
+            </div>
+            {/* Main via AppLayout+PageShell pattern */}
+            <main style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", overflow: "auto" }}>
+              <PageShell>
+                <PageHeader
+                  title="Dashboard"
+                  subtitle="Visão geral da operação"
+                  actions={<Button size="sm" iconLeft={Icon.Plus}>Novo</Button>}
+                />
+                <div style={{ padding: "4px 0", display: "flex", flexDirection: "column", gap: 8 }}>
+                  <Surface tone="card" padding={16} radius={8} style={{ border: "1px solid hsl(var(--border))" }}>
+                    <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginBottom: 6 }}>TOTAL</div>
+                    <div style={{ fontSize: 24, fontWeight: 600 }}>—</div>
+                  </Surface>
+                  <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", textAlign: "center", padding: "16px 0" }}>
+                    Nenhum dado ainda.
+                  </div>
+                </div>
+              </PageShell>
+            </main>
           </div>
         </ShowcaseSection>
       </>

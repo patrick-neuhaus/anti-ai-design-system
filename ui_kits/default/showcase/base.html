@@ -83,7 +83,7 @@
     .showcase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
     .showcase-nav a { font-size: 13px; padding: 6px 10px; border-radius: 6px; text-decoration: none; color: hsl(var(--muted-foreground)); }
     .showcase-nav a.active { background: hsl(var(--accent-decorative) / .12); color: hsl(var(--accent)); font-weight: 500; }
-    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 48px; padding-bottom: 8px; }
     .showcase-section > h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); margin: 0; font-weight: 600; }
     .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
     .showcase-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -107,7 +107,7 @@
       border-radius: 12px; padding: 6px;
       box-shadow: 0 8px 32px hsl(var(--foreground) / .10);
       min-width: 200px; z-index: 300;
-      display: none; flex-direction: column; gap: 2px;
+      flex-direction: column; gap: 2px;
     }
     .fh-dropdown:hover .fh-dropdown-menu,
     .fh-dropdown-menu:hover { display: flex; }
@@ -222,8 +222,8 @@
           </ShowcaseSection>
 
           <ShowcaseSection title="Textarea, Select">
-            <div className="showcase-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              <Textarea placeholder="Escreva algo…" />
+            <div className="showcase-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "start" }}>
+              <Textarea placeholder="Escreva algo…" rows={3} />
               <Select
                 value={sel}
                 onChange={(e) => setSel(e.target.value)}
