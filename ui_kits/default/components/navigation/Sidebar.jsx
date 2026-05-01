@@ -1,6 +1,7 @@
-// ui_kits/default/components/Sidebar.jsx
+// ui_kits/default/components/navigation/Sidebar.jsx
 // Sidebar — primary fill, accent left bar on active, eyebrow group labels.
 // Brand-agnostic. Tokens only via hsl(var(--*)). Brand/user/nav arrive as props.
+// Mobile (<768px): hamburger trigger + slide-in drawer + backdrop.
 
 const initialsFrom = (name) =>
   String(name || "")
@@ -29,6 +30,7 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
       border: 0,
       width: "100%",
       textAlign: "left",
+      cursor: "pointer",
       transition: "background-color .15s, color .15s",
     }}
     onMouseEnter={(e) => {
@@ -96,7 +98,30 @@ const Sidebar = ({
   active, onNavigate, collapsed, onToggleCollapse, onLogout,
   brand, user, groups,
 }) => {
-  const width = collapsed ? 72 : 272;
+  const [isMobile, setIsMobile] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    } else {
+      mq.addListener(update);
+      return () => mq.removeListener(update);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (!mobileOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [mobileOpen]);
+
   const navGroups = groups ?? DEFAULT_GROUPS;
   const userName = user?.name ?? "Nome Sobrenome";
   const userEmail = user?.email ?? "email@exemplo.com";
@@ -105,6 +130,119 @@ const Sidebar = ({
   const markSrc = brand?.mark ?? "../../assets/placeholder-mark.svg";
   const brandAlt = brand?.name ?? "App";
 
+  const handleNavigate = (key) => {
+    onNavigate?.(key);
+    if (isMobile) setMobileOpen(false);
+  };
+
+  const handleLogout = () => {
+    onLogout?.();
+    if (isMobile) setMobileOpen(false);
+  };
+
+  // — MOBILE: hamburger + drawer + backdrop —
+  if (isMobile) {
+    return (
+      <>
+        <button
+          onClick={() => setMobileOpen(true)}
+          aria-label="Abrir menu"
+          style={{
+            position: "fixed", top: 14, left: 14, zIndex: 100,
+            width: 40, height: 40, borderRadius: 10,
+            background: "hsl(var(--card))",
+            border: "1px solid hsl(var(--border))",
+            display: mobileOpen ? "none" : "flex",
+            alignItems: "center", justifyContent: "center",
+            color: "hsl(var(--foreground))",
+            cursor: "pointer",
+            boxShadow: "0 1px 3px rgb(0 0 0 / .08)",
+            padding: 0,
+          }}
+        >
+          <Icon.Menu size={20} />
+        </button>
+
+        {mobileOpen && (
+          <div
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+            style={{
+              position: "fixed", inset: 0,
+              background: "rgb(0 0 0 / .4)",
+              zIndex: 90,
+            }}
+          />
+        )}
+
+        <aside
+          aria-hidden={!mobileOpen}
+          style={{
+            position: "fixed", top: 0, left: 0, bottom: 0,
+            width: 280, zIndex: 95,
+            transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
+            transition: "transform .25s ease-out",
+            background: "hsl(var(--sidebar-background))",
+            color: "hsl(var(--sidebar-foreground))",
+            padding: "14px 12px",
+            display: "flex", flexDirection: "column",
+            boxShadow: mobileOpen ? "0 0 24px rgb(0 0 0 / .15)" : "none",
+          }}
+        >
+          <div style={{ position: "relative", padding: "8px 4px", height: 44, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <img src={logoSrc} alt={brandAlt} style={{ height: 28 }} />
+            <button
+              onClick={() => setMobileOpen(false)}
+              aria-label="Fechar menu"
+              style={{
+                width: 32, height: 32, borderRadius: 8,
+                background: "transparent", border: 0,
+                color: "hsl(var(--sidebar-foreground))",
+                cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >
+              <Icon.X size={20} />
+            </button>
+          </div>
+
+          <nav style={{ flex: 1, overflowY: "auto", marginTop: 4 }}>
+            {navGroups.map((g) => (
+              <SidebarGroup key={g.label} label={g.label} collapsed={false}>
+                {g.items.map((it) => (
+                  <SidebarItem
+                    key={it.key} icon={it.icon} label={it.label} collapsed={false}
+                    active={active === it.key}
+                    onClick={() => handleNavigate(it.key)}
+                  />
+                ))}
+              </SidebarGroup>
+            ))}
+          </nav>
+
+          <div style={{ borderTop: "1px solid hsl(var(--sidebar-border))", paddingTop: 10, marginTop: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "0 8px 8px" }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: "50%",
+                background: "hsl(var(--accent))",
+                color: "hsl(var(--accent-foreground))",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 12, fontWeight: 600,
+              }}>{userInitials}</div>
+              <div style={{ minWidth: 0, lineHeight: 1.2 }}>
+                <div style={{ fontSize: 13, fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{userName}</div>
+                <div style={{ fontSize: 11, color: "hsl(var(--sidebar-foreground) / .6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{userEmail}</div>
+              </div>
+            </div>
+            <SidebarItem icon={Icon.LogOut} label="Sair" collapsed={false} onClick={handleLogout} />
+          </div>
+        </aside>
+      </>
+    );
+  }
+
+  // — DESKTOP —
+  const width = collapsed ? 72 : 272;
   return (
     <aside style={{
       width, flexShrink: 0,
@@ -141,6 +279,7 @@ const Sidebar = ({
             border: "1px solid hsl(var(--border))",
             display: "flex", alignItems: "center", justifyContent: "center",
             boxShadow: "0 1px 2px 0 rgb(0 0 0 / .05)",
+            cursor: "pointer",
           }}
         >
           {collapsed ? <Icon.ChevronRight size={14} /> : <Icon.ChevronLeft size={14} />}
@@ -152,7 +291,7 @@ const Sidebar = ({
           <SidebarGroup key={g.label} label={g.label} collapsed={collapsed}>
             {g.items.map((it) => (
               <SidebarItem key={it.key} icon={it.icon} label={it.label} collapsed={collapsed}
-                active={active === it.key} onClick={() => onNavigate(it.key)} />
+                active={active === it.key} onClick={() => onNavigate?.(it.key)} />
             ))}
           </SidebarGroup>
         ))}

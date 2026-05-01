@@ -5,12 +5,14 @@
 
 const Input = ({
   value,
+  defaultValue,
   onChange,
   placeholder,
   type = "text",
   size = "md",
   disabled = false,
   invalid = false,
+  readOnly,
   iconLeft: IL,
   iconRight: IR,
   ...rest
@@ -19,6 +21,19 @@ const Input = ({
   const fontSizes = { sm: 13, md: 14, lg: 15 };
   const h = heights[size] ?? 40;
   const fs = fontSizes[size] ?? 14;
+
+  // Controlled vs uncontrolled bindings.
+  // If onChange present → controlled (value required).
+  // If value without onChange → uncontrolled with defaultValue + readOnly fallback.
+  // If only defaultValue → uncontrolled.
+  const valueBindings = onChange
+    ? { value: value ?? "", onChange }
+    : value !== undefined
+      ? { defaultValue: value, readOnly: readOnly ?? true }
+      : defaultValue !== undefined
+        ? { defaultValue, readOnly }
+        : { readOnly };
+
   return (
     <div style={{ position: "relative", display: "flex", alignItems: "center", width: "100%" }}>
       {IL && (
@@ -28,8 +43,7 @@ const Input = ({
       )}
       <input
         type={type}
-        value={value ?? ""}
-        onChange={onChange}
+        {...valueBindings}
         placeholder={placeholder}
         disabled={disabled}
         style={{

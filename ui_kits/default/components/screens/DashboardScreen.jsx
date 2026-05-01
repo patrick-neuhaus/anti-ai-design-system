@@ -8,7 +8,7 @@ const DashboardScreen = ({ onOpenRomaneios }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
     <PageHeader title="Dashboard" subtitle="Visão geral da expedição logística" />
 
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
       <StatCard icon={Icon.Package}        value="1.247" label="Total Deliveries" sublabel="Cadastradas no sistema" trend="+12%" />
       <StatCard icon={Icon.FileText}       value="183"   label="Romaneios" sublabel="Gerados este mês" trend="+5%" />
       <StatCard icon={Icon.ScanBarcode}    value="42"    label="Em Conferência" sublabel="Aguardando bipagem" />
@@ -16,32 +16,34 @@ const DashboardScreen = ({ onOpenRomaneios }) => (
     </div>
 
     <div className="card">
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", flexWrap: "wrap", gap: 8 }}>
         <div>
           <h3 style={{ fontSize: 14, fontWeight: 600, color: "hsl(var(--foreground))" }}>Romaneios recentes</h3>
           <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 2 }}>Últimos romaneios gerados</p>
         </div>
         <button className="btn btn-outline btn-sm" onClick={onOpenRomaneios}>Ver todos</button>
       </div>
-      <table className="tbl">
-        <thead><tr>
-          <th>ID</th><th>Transportadora</th><th>Placa</th><th>Motorista</th><th>Status</th><th></th>
-        </tr></thead>
-        <tbody>
-          {RECENT_ROMANEIOS.map((r) => (
-            <tr key={r.id}>
-              <td className="mono" style={{ fontSize: 12 }}>{r.id}</td>
-              <td className="muted">{r.transportadora}</td>
-              <td className="mono" style={{ fontSize: 12 }}>{r.placa}</td>
-              <td>{r.motorista}</td>
-              <td><StatusBadge value={r.status} /></td>
-              <td style={{ width: 36 }}>
-                <button className="btn btn-ghost btn-icon btn-sm"><Icon.MoreHorizontal size={16} /></button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div style={{ overflowX: "auto" }}>
+        <table className="tbl">
+          <thead><tr>
+            <th>ID</th><th>Transportadora</th><th>Placa</th><th>Motorista</th><th>Status</th><th></th>
+          </tr></thead>
+          <tbody>
+            {RECENT_ROMANEIOS.map((r) => (
+              <tr key={r.id}>
+                <td className="mono" style={{ fontSize: 12 }}>{r.id}</td>
+                <td className="muted">{r.transportadora}</td>
+                <td className="mono" style={{ fontSize: 12 }}>{r.placa}</td>
+                <td>{r.motorista}</td>
+                <td><StatusBadge value={r.status} /></td>
+                <td style={{ width: 36 }}>
+                  <button className="btn btn-ghost btn-icon btn-sm" aria-label="Mais ações"><Icon.MoreHorizontal size={16} /></button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 );

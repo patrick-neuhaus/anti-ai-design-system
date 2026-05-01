@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anti-AI Design System</title>
+  <meta http-equiv="refresh" content="0; url=./ui_kits/default/index.html" />
+  <link rel="stylesheet" href="./colors_and_type.css" />
+  <style>
+    body { font-family: var(--font-body); background: hsl(var(--background)); color: hsl(var(--foreground)); margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .root-shell { max-width: 640px; text-align: center; }
+    h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 12px; }
+    p { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; line-height: 1.5; }
+    .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    a { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; transition: background-color .15s; }
+    a.primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    a.primary:hover { background: hsl(var(--primary) / .9); }
+    a.outline { background: transparent; color: hsl(var(--foreground)); border: 1px solid hsl(var(--border)); }
+    a.outline:hover { background: hsl(var(--muted)); }
+  </style>
+</head>
+<body class="preset-base">
+  <div class="root-shell">
+    <h1>Anti-AI Design System</h1>
+    <p>Carregando demo… Se não redirecionou automaticamente, escolha:</p>
+    <div class="row">
+      <a class="primary" href="./ui_kits/default/index.html">Demo interativa</a>
+      <a class="outline" href="./ui_kits/default/showcase/index.html">Catálogo de componentes</a>
+    </div>
+  </div>
+</body>
+</html>

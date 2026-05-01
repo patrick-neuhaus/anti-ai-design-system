@@ -31,11 +31,13 @@
     --muted: 30 20% 90%;
     --muted-foreground: 20 29% 33%;
 
-    /* Accent terracotta — complemento warm clássico do teal #00585c */
+    /* Accent terracotta — complemento warm clássico do teal #00585c
+       FG dark sobre terracotta atinge AA (>=4.5:1). White FG só atinge ~3.74:1 (AA Large only). */
     --accent: 12 65% 55%;
-    --accent-foreground: 0 0% 100%;
+    --accent-foreground: 16 38% 11%;
 
-    --destructive: 0 100% 50%;
+    /* Destructive escurecido p/ atingir AA com white FG (~5:1 vs ~4.0:1 anterior) */
+    --destructive: 0 100% 43%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 30 20% 87%;
