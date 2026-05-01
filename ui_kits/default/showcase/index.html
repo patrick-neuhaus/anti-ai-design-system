@@ -451,23 +451,21 @@
       scroll-snap-align: center;
     }
     .templates-slide-card {
-      max-width: 1036px;
+      max-width: 1180px;
       width: 100%;
-      aspect-ratio: 16/9;
       background: hsl(var(--sidebar-background));
       border: 1px solid hsl(var(--sidebar-foreground) / .1);
       border-radius: 16px;
       overflow: hidden;
-      display: grid;
-      grid-template-columns: 45% 55%;
+      display: flex;
+      flex-direction: column;
       box-shadow: 0 24px 64px -16px hsl(0 0% 0% / .35);
     }
     .slide-text {
-      padding: 40px 40px 40px 40px;
+      padding: 32px 40px 24px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 0;
+      gap: 6px;
     }
     .slide-eyebrow {
       font-family: var(--font-mono);
@@ -531,8 +529,9 @@
     .slide-visual {
       display: flex;
       align-items: stretch;
-      padding: 20px 20px 20px 0;
+      padding: 0 20px 20px;
       overflow: hidden;
+      height: 620px;
     }
     .slide-mockup {
       flex: 1;
@@ -543,6 +542,14 @@
       flex-direction: column;
       border: 1px solid hsl(var(--border));
       box-shadow: 0 8px 24px -8px hsl(0 0% 0% / .2);
+      position: relative;
+    }
+    .slide-mockup iframe {
+      transform: scale(0.65);
+      transform-origin: top left;
+      width: 153.85%;
+      height: 153.85%;
+      border: 0;
     }
     /* Mini app mockups */
     .mockup-topbar {
@@ -690,13 +697,8 @@
     }
     .mockup-wiki-title { height: 6px; background: hsl(var(--foreground) / .5); border-radius: 3px; width: 70%; }
     .mockup-wiki-line { height: 4px; background: hsl(var(--muted-foreground) / .3); border-radius: 2px; }
-    /* Dots indicator */
-    .templates-dots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 16px;
-    }
+    /* Dots indicator removido — duplica scroll-snap + arrows */
+    .templates-dots { display: none; }
     .templates-dot {
       width: 8px;
       height: 8px;
@@ -2274,8 +2276,7 @@
                         <h3 className="slide-title">{title}</h3>
                         <p className="slide-body">{body}</p>
                         <div className="slide-btns">
-                          <a href="../index.html#templates" className="slide-btn-primary">Ver template completo →</a>
-                          <a href="../index.html" className="slide-btn-ghost">Saiba mais</a>
+                          <a href={`../index.html?demo=${key}`} className="slide-btn-primary">Ver template completo →</a>
                         </div>
                       </div>
                       <div className="slide-visual">
@@ -2291,16 +2292,6 @@
                 disabled={active === TEMPLATE_SLIDES.length - 1}
                 onClick={() => scrollTo(Math.min(TEMPLATE_SLIDES.length - 1, active + 1))}
               >&#8594;</button>
-            </div>
-            <div className="templates-dots">
-              {TEMPLATE_SLIDES.map((_, i) => (
-                <button
-                  key={i}
-                  className={`templates-dot${active === i ? " active" : ""}`}
-                  onClick={() => scrollTo(i)}
-                  aria-label={`Slide ${i + 1}`}
-                />
-              ))}
             </div>
           </div>
         </section>
