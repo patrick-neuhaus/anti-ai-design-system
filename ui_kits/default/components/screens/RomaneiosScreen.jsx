@@ -17,8 +17,8 @@ const RomaneiosScreen = ({ onConfer }) => (
       title="Romaneios"
       subtitle="Romaneios gerados nas últimas 72 horas"
       actions={<>
-        <button className="btn btn-outline btn-sm"><Icon.Calendar size={14} /> 26/04 – 28/04</button>
-        <button className="btn btn-primary"><Icon.Plus size={14} /> Novo romaneio</button>
+        <Button variant="outline" size="sm" iconLeft={Icon.Calendar}>26/04 – 28/04</Button>
+        <Button variant="primary" size="sm" iconLeft={Icon.Plus}>Novo Romaneio</Button>
       </>}
     />
 
@@ -39,7 +39,7 @@ const RomaneiosScreen = ({ onConfer }) => (
               <td style={{ textAlign: "right" }}>{r.deliveries}</td>
               <td><StatusBadge value={r.status} /></td>
               <td style={{ width: 40 }}>
-                <button className="btn btn-ghost btn-icon btn-sm"><Icon.ChevronRight size={16} /></button>
+                <Button variant="ghost" size="sm" iconOnly aria-label="Ver detalhes" iconLeft={Icon.ChevronRight} />
               </td>
             </tr>
           ))}
