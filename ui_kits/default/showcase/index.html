@@ -832,47 +832,6 @@
     /* Hide redundant old sticky-cta when new header present */
     .sticky-cta { display: none !important; }
 
-    /* ==================================================
-       DISCLAIMER BANNER — "isto é showcase, não DS"
-       ================================================== */
-    .meta-banner {
-      max-width: 1100px;
-      margin: 96px auto 0;
-      padding: 14px 20px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      background: hsl(var(--info) / .08);
-      border: 1px solid hsl(var(--info) / .25);
-      border-radius: 14px;
-      font-size: 13px;
-      line-height: 1.5;
-      color: hsl(var(--foreground));
-    }
-    .meta-banner-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      background: hsl(var(--info) / .2);
-      color: hsl(var(--info));
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      font-weight: 700;
-      font-family: var(--font-mono);
-      font-size: 12px;
-    }
-    .meta-banner strong { color: hsl(var(--foreground)); }
-    .meta-banner code {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      padding: 1px 6px;
-      background: hsl(var(--muted) / .8);
-      border-radius: 4px;
-    }
-    @media (max-width: 640px) {
-      .meta-banner { margin-top: 80px; padding: 12px 14px; font-size: 12.5px; }
-    }
 
     /* ==================================================
        3D TILT cards (Filosofia)
@@ -1170,15 +1129,6 @@
   </nav>
 
   <a class="sticky-cta" href="../index.html">Ver exemplos →</a>
-
-  <div class="meta-banner" role="note">
-    <div class="meta-banner-icon">i</div>
-    <div>
-      Você está vendo o <strong>showcase</strong> — uma página construída com o design system pra <strong>demonstrar</strong> o que ele faz.
-      O design system <em>propriamente dito</em> é o conjunto de tokens em <code>colors_and_type.css</code> + componentes em <code>components/</code>.
-      Tudo que está abaixo (esta página + os <a href="../index.html" style="color: hsl(var(--accent));">exemplos interativos</a>) consome o DS.
-    </div>
-  </div>
 
   <div id="root"></div>
 
