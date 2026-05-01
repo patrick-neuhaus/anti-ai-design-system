@@ -16,12 +16,30 @@ a{color:inherit;text-decoration:none}
 /* ===== LOGIN ===== */
 .login-root{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
 @media(max-width:768px){.login-root{grid-template-columns:1fr}}
-.login-brand{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;gap:32px}
+.login-brand{position:relative;background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;gap:32px;overflow:hidden;isolation:isolate}
 @media(max-width:768px){.login-brand{display:none}}
-.login-brand-logo{height:44px;width:auto}
-.login-brand-title{font-family:var(--font-display);font-size:36px;font-weight:600;letter-spacing:-.02em;line-height:1.15;text-align:center;margin:0}
-.login-brand-sub{font-size:15px;opacity:.7;text-align:center;max-width:340px;line-height:1.6;margin:0}
-.login-brand-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid hsl(var(--sidebar-foreground)/.25);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;opacity:.75}
+.login-brand-logo{height:44px;width:auto;position:relative;z-index:2}
+.login-brand-title{position:relative;z-index:2;font-family:var(--font-display);font-size:36px;font-weight:600;letter-spacing:-.02em;line-height:1.15;text-align:center;margin:0}
+.login-brand-sub{position:relative;z-index:2;font-size:15px;opacity:.75;text-align:center;max-width:340px;line-height:1.6;margin:0}
+.login-brand-badge{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid hsl(var(--sidebar-foreground)/.25);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;opacity:.85;background:hsl(var(--sidebar-foreground)/.04);backdrop-filter:blur(4px)}
+
+/* Brand panel — animated background orbs (muda hue por template selecionado) */
+.login-brand-orbs{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55}
+.login-brand-orbs::before,.login-brand-orbs::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);transition:background 600ms,transform 800ms ease-out}
+.login-brand-orbs::before{width:380px;height:380px;background:hsl(var(--sidebar-indicator));top:-120px;left:-100px;animation:orb-float-a 16s ease-in-out infinite}
+.login-brand-orbs::after{width:320px;height:320px;background:hsl(var(--accent));bottom:-80px;right:-80px;animation:orb-float-b 18s ease-in-out infinite}
+@keyframes orb-float-a{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.1)}}
+@keyframes orb-float-b{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,-40px) scale(.95)}}
+.login-brand-grid{position:absolute;inset:0;z-index:1;opacity:.06;pointer-events:none;background-image:linear-gradient(hsl(var(--sidebar-foreground)) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--sidebar-foreground)) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
+
+/* Floating template glyphs */
+.brand-floats{position:absolute;inset:0;z-index:1;pointer-events:none}
+.brand-float{position:absolute;color:hsl(var(--sidebar-foreground)/.12);transition:color 400ms,transform 400ms}
+.brand-float svg{width:100%;height:100%}
+.brand-float.bf-1{top:18%;left:12%;width:46px;height:46px;animation:bf-drift 12s ease-in-out infinite}
+.brand-float.bf-2{top:62%;right:14%;width:54px;height:54px;animation:bf-drift 14s ease-in-out infinite reverse}
+.brand-float.bf-3{bottom:20%;left:20%;width:38px;height:38px;animation:bf-drift 16s ease-in-out infinite}
+@keyframes bf-drift{0%,100%{transform:translate(0,0) rotate(0)}33%{transform:translate(8px,-12px) rotate(8deg)}66%{transform:translate(-6px,8px) rotate(-6deg)}}
 .login-form-side{display:flex;align-items:center;justify-content:center;padding:32px;background:hsl(var(--background))}
 .login-box{width:100%;max-width:420px;display:flex;flex-direction:column;gap:24px}
 .login-box h2{font-family:var(--font-display);font-size:26px;font-weight:600;margin:0 0 4px}
@@ -55,21 +73,28 @@ a{color:inherit;text-decoration:none}
 .err-msg{font-size:12px;color:hsl(var(--destructive));text-align:center;padding:8px 12px;background:hsl(var(--destructive)/.08);border-radius:8px}
 
 /* ===== APP SHELL ===== */
-.app-shell{display:grid;grid-template-columns:272px 1fr;min-height:100vh;transition:grid-template-columns 250ms}
+.app-shell{display:grid;grid-template-columns:272px 1fr;height:100vh;overflow:hidden;transition:grid-template-columns 250ms}
 .app-shell.collapsed{grid-template-columns:68px 1fr}
 
 /* ===== SIDEBAR ===== */
-.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px;gap:2px;border-right:1px solid hsl(var(--sidebar-border));position:relative;overflow:hidden;min-width:0}
+/* overflow:visible no root pra toggle bolinha nao ser cortado, scroll interno fica no .sidebar-nav */
+.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px 14px;gap:2px;position:relative;overflow:visible;min-width:0;height:100vh}
+.sidebar-nav{flex:1 1 auto;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden;min-height:0;margin:0 -14px;padding:0 14px;scrollbar-width:thin;scrollbar-color:hsl(var(--sidebar-foreground)/.15) transparent}
+.sidebar-nav::-webkit-scrollbar{width:4px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:hsl(var(--sidebar-foreground)/.18);border-radius:4px}
 
-/* Toggle bolinha */
-.sidebar-toggle{position:absolute;right:-14px;top:68px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms;box-shadow:0 1px 4px hsl(var(--foreground)/.1)}
-.sidebar-toggle:hover{background:hsl(var(--muted));box-shadow:0 2px 8px hsl(var(--foreground)/.15)}
+/* Toggle bolinha — fica fora do clip da sidebar */
+.sidebar-toggle{position:absolute;right:-14px;top:60px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms,transform 150ms;box-shadow:0 2px 8px hsl(var(--foreground)/.18)}
+.sidebar-toggle:hover{background:hsl(var(--muted));box-shadow:0 3px 12px hsl(var(--foreground)/.25);transform:scale(1.08)}
 
-/* Brand logo */
-.sidebar-brand{display:flex;align-items:center;gap:10px;padding:6px 10px 16px;min-width:0}
-.sidebar-logo-full{height:28px;width:auto;flex-shrink:0}
-.sidebar-logo-icon{width:28px;height:28px;border-radius:7px;flex-shrink:0;object-fit:contain}
-.sidebar-brand-text{font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden}
+/* Brand logo + label diagonal sobre logo */
+.sidebar-brand{display:flex;align-items:center;gap:10px;padding:6px 10px 16px;min-width:0;flex-shrink:0}
+.sidebar-logo-wrap{position:relative;flex-shrink:0;display:inline-block}
+.sidebar-logo-full{height:30px;width:auto;display:block}
+.sidebar-logo-icon{width:30px;height:30px;border-radius:7px;display:block;object-fit:contain}
+.sidebar-brand-text{font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:hsl(var(--sidebar-foreground)/.55);padding:3px 8px;border-radius:4px;background:hsl(var(--sidebar-indicator)/.18);border:1px solid hsl(var(--sidebar-indicator)/.3)}
+/* Label diagonal aplicado sobre o logo (collapsed) */
+.sidebar-logo-tag{position:absolute;top:-6px;right:-10px;font-family:var(--font-mono);font-size:7.5px;font-weight:700;letter-spacing:.12em;color:hsl(var(--sidebar-indicator));background:hsl(var(--sidebar-background));padding:2px 4px;border-radius:3px;transform:rotate(-12deg);transform-origin:center;border:1px solid hsl(var(--sidebar-indicator)/.5);box-shadow:0 2px 4px hsl(var(--foreground)/.15);pointer-events:none}
 
 /* Nav items */
 .nav-section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.45);padding:12px 10px 4px;white-space:nowrap;overflow:hidden}
@@ -83,9 +108,12 @@ a{color:inherit;text-decoration:none}
 .collapsed .nav-label,.collapsed .nav-badge,.collapsed .nav-section-label,.collapsed .sidebar-brand-text{display:none}
 .collapsed .nav-item{justify-content:center;padding:9px}
 .collapsed .sidebar-brand{padding:6px 8px 16px;justify-content:center}
+.collapsed .sidebar-logo-tag{font-size:7px;top:-4px;right:-6px}
 
-/* User panel */
-.user-panel{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0}
+/* User panel — flex-shrink:0 pra nao ser comprimido + cursor pointer no clickable area */
+.user-panel{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:8px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0}
+.user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left}
+.user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-foreground))}
 .avatar{width:34px;height:34px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}
 .user-info{flex:1;min-width:0;overflow:hidden}
 .user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -259,12 +287,15 @@ const getCssVar = (n) => getComputedStyle(document.documentElement).getPropertyV
 const TEMPLATES = {
   ops: {
     name: "Ops Template",
-    icon: "📦",
+    label: "OPS",
+    IconCmp: I.Truck,
     iconBg: "hsl(var(--accent)/.15)",
+    iconColor: "hsl(var(--accent))",
     desc: "Gestão de romaneios, rotas e expedição logística",
     email: "template1@gmail.com",
     password: "Demo!Ops-2026",
     user: { name: "Carlos Andrade", role: "Operador" },
+    presetKey: "Ops Default",
     navGroups: [
       { label: "Operação", items: [
         { k:"dashboard", lbl:"Dashboard", Icon:I.BarChart, badge:null },
@@ -274,20 +305,19 @@ const TEMPLATES = {
       { label: "Cadastros", items: [
         { k:"produtores", lbl:"Produtores", Icon:I.Users, badge:"312" },
       ]},
-      { label: "Conta", items: [
-        { k:"profile",   lbl:"Perfil",          Icon:I.User,     badge:null },
-        { k:"settings",  lbl:"Configurações",   Icon:I.Settings, badge:null },
-      ]},
     ],
   },
   crm: {
     name: "CRM Template",
-    icon: "📊",
+    label: "CRM",
+    IconCmp: I.Pipelines,
     iconBg: "hsl(var(--primary)/.15)",
+    iconColor: "hsl(var(--primary))",
     desc: "Pipeline de vendas, contatos e análise de conversão",
     email: "template2@gmail.com",
     password: "Demo!Crm-2026",
     user: { name: "Mariana Costa", role: "Comercial" },
+    presetKey: "CRM Dark",
     navGroups: [
       { label: "Vendas", items: [
         { k:"dashboard", lbl:"Dashboard",  Icon:I.BarChart,    badge:null },
@@ -297,29 +327,24 @@ const TEMPLATES = {
       { label: "Análise", items: [
         { k:"relatorios", lbl:"Relatórios", Icon:I.TrendingUp, badge:null },
       ]},
-      { label: "Conta", items: [
-        { k:"profile",   lbl:"Perfil",          Icon:I.User,     badge:null },
-        { k:"settings",  lbl:"Configurações",   Icon:I.Settings, badge:null },
-      ]},
     ],
   },
   wiki: {
     name: "Wiki Template",
-    icon: "📚",
+    label: "WIKI",
+    IconCmp: I.Article,
     iconBg: "hsl(var(--success)/.15)",
+    iconColor: "hsl(var(--success))",
     desc: "Base de conhecimento, artigos e documentação interna",
     email: "template3@gmail.com",
     password: "Demo!Wiki-2026",
     user: { name: "Fernanda Lima", role: "Editor" },
+    presetKey: "Wiki Sage",
     navGroups: [
       { label: "Conteúdo", items: [
         { k:"dashboard", lbl:"Dashboard",  Icon:I.BarChart,  badge:null },
         { k:"artigos",   lbl:"Artigos",    Icon:I.Article,   badge:"47" },
         { k:"editor",    lbl:"Editor",     Icon:I.Edit,      badge:null },
-      ]},
-      { label: "Conta", items: [
-        { k:"profile",   lbl:"Perfil",          Icon:I.User,     badge:null },
-        { k:"settings",  lbl:"Configurações",   Icon:I.Settings, badge:null },
       ]},
     ],
   },
@@ -433,16 +458,33 @@ function LoginScreen({ onLogin }) {
     }, 600);
   };
 
+  // Aplica preset de cores do template selecionado em tempo real (preview)
+  useEffect(() => {
+    const preset = COLOR_PRESETS[TEMPLATES[selected]?.presetKey];
+    if (!preset) return;
+    Object.entries(preset).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+  }, [selected]);
+
+  const SelTplIcon = TEMPLATES[selected]?.IconCmp || I.BarChart;
+
   return (
     <div className="login-root">
-      {/* Brand panel */}
+      {/* Brand panel — animated por template */}
       <div className="login-brand">
+        <div className="login-brand-orbs" aria-hidden="true" />
+        <div className="login-brand-grid" aria-hidden="true" />
+        <div className="brand-floats" aria-hidden="true">
+          <div className="brand-float bf-1"><SelTplIcon size={46} /></div>
+          <div className="brand-float bf-2"><SelTplIcon size={54} /></div>
+          <div className="brand-float bf-3"><SelTplIcon size={38} /></div>
+        </div>
+
         <img src="../../assets/artemis-logo.svg" alt="Artemis" className="login-brand-logo" />
         <h1 className="login-brand-title">Anti-AI<br />Design System</h1>
         <p className="login-brand-sub">
           Componentes com personalidade. Escolha um template e explore o DS em ação.
         </p>
-        <div className="login-brand-badge">Wave 6.5 · 3 Templates</div>
+        <div className="login-brand-badge">{TEMPLATES[selected]?.label} · {TEMPLATES[selected]?.name}</div>
       </div>
 
       {/* Form side */}
@@ -455,20 +497,25 @@ function LoginScreen({ onLogin }) {
 
           {/* Template cards */}
           <div className="tpl-cards">
-            {Object.entries(TEMPLATES).map(([key, tpl]) => (
-              <div key={key} className={`tpl-card${selected === key ? " selected" : ""}`}
-                onClick={() => selectTemplate(key)}>
-                <div className="tpl-icon" style={{ background: tpl.iconBg }}>{tpl.icon}</div>
-                <div className="tpl-card-info">
-                  <div className="tpl-card-name">{tpl.name}</div>
-                  <div className="tpl-card-desc">{tpl.desc}</div>
-                  <div className="tpl-cred">{tpl.email} · {tpl.password}</div>
+            {Object.entries(TEMPLATES).map(([key, tpl]) => {
+              const TIcon = tpl.IconCmp;
+              return (
+                <div key={key} className={`tpl-card${selected === key ? " selected" : ""}`}
+                  onClick={() => selectTemplate(key)}>
+                  <div className="tpl-icon" style={{ background: tpl.iconBg, color: tpl.iconColor }}>
+                    <TIcon size={20} />
+                  </div>
+                  <div className="tpl-card-info">
+                    <div className="tpl-card-name">{tpl.name}</div>
+                    <div className="tpl-card-desc">{tpl.desc}</div>
+                    <div className="tpl-cred">{tpl.email} · {tpl.password}</div>
+                  </div>
+                  <div className="tpl-radio">
+                    <div className="tpl-radio-dot" />
+                  </div>
                 </div>
-                <div className="tpl-radio">
-                  <div className="tpl-radio-dot" />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Form */}
@@ -503,7 +550,16 @@ function LoginScreen({ onLogin }) {
 
 // ─── Sidebar ──────────────────────────────────────────────────────
 function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
-  const [collapsed, setCollapsed] = useState(false);
+  // Auto-collapse mobile (<= 768px)
+  const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth <= 768) setCollapsed(true);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const tpl = TEMPLATES[templateKey];
   const initials = tpl.user.name.split(" ").slice(0,2).map(w=>w[0]).join("");
 
@@ -514,40 +570,49 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
         {collapsed ? <I.ChevronRight size={14} /> : <I.ChevronLeft size={14} />}
       </button>
 
-      {/* Brand */}
+      {/* Brand — logo Artemis com label diagonal sobre canto */}
       <div className="sidebar-brand">
-        {collapsed
-          ? <img src="../../assets/artemis-icon.png" alt="Artemis" className="sidebar-logo-icon" />
-          : <img src="../../assets/artemis-logo.svg" alt="Artemis" className="sidebar-logo-full" />
-        }
-        {!collapsed && <span className="sidebar-brand-text">{tpl.name}</span>}
+        <div className="sidebar-logo-wrap">
+          {collapsed
+            ? <img src="../../assets/artemis-icon.png" alt="Artemis" className="sidebar-logo-icon" />
+            : <img src="../../assets/artemis-logo.svg" alt="Artemis" className="sidebar-logo-full" />
+          }
+          <span className="sidebar-logo-tag">{tpl.label}</span>
+        </div>
+        {!collapsed && <span className="sidebar-brand-text">{tpl.label}</span>}
       </div>
 
-      {/* Nav groups */}
-      {tpl.navGroups.map((grp) => (
-        <React.Fragment key={grp.label}>
-          {!collapsed && <div className="nav-section-label">{grp.label}</div>}
-          {grp.items.map(({ k, lbl, Icon, badge }) => (
-            <div key={k}
-              className={`nav-item${activePage === k ? " active" : ""}`}
-              onClick={() => onNav(k)}
-              title={collapsed ? lbl : undefined}>
-              <Icon size={16} />
-              <span className="nav-label">{lbl}</span>
-              {badge && !collapsed && <span className="nav-badge">{badge}</span>}
-            </div>
-          ))}
-        </React.Fragment>
-      ))}
+      {/* Nav scrollable middle (group "Conta" removido — perfil/config no user-panel) */}
+      <nav className="sidebar-nav">
+        {tpl.navGroups.map((grp) => (
+          <React.Fragment key={grp.label}>
+            {!collapsed && <div className="nav-section-label">{grp.label}</div>}
+            {grp.items.map(({ k, lbl, Icon, badge }) => (
+              <div key={k}
+                className={`nav-item${activePage === k ? " active" : ""}`}
+                onClick={() => onNav(k)}
+                title={collapsed ? lbl : undefined}>
+                <Icon size={16} />
+                <span className="nav-label">{lbl}</span>
+                {badge && !collapsed && <span className="nav-badge">{badge}</span>}
+              </div>
+            ))}
+          </React.Fragment>
+        ))}
+      </nav>
 
-      {/* User panel */}
+      {/* User panel — clique no avatar/nome abre Perfil; botoes Config/Sair separados */}
       <div className="user-panel">
-        <div className="avatar">{initials}</div>
-        {!collapsed && (
-          <>
+        <button className="user-panel-clickable" onClick={() => onNav("profile")} title="Meu perfil">
+          <div className="avatar">{initials}</div>
+          {!collapsed && (
             <div className="user-info">
               <div className="user-name">{tpl.user.name}</div>
             </div>
+          )}
+        </button>
+        {!collapsed && (
+          <>
             <div className="user-actions">
               <div className="user-action-btn" title="Configurações" onClick={() => onNav("settings")}>
                 <I.Settings size={14} />
@@ -1971,6 +2036,13 @@ function App() {
       }
     } catch {}
   }, []);
+
+  // Aplica preset de cores do template ao logar
+  useEffect(() => {
+    if (!session) return;
+    const preset = COLOR_PRESETS[TEMPLATES[session]?.presetKey];
+    if (preset) Object.entries(preset).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+  }, [session]);
 
   if (!session) return <LoginScreen onLogin={({ templateKey }) => { setSession(templateKey); setActivePage("dashboard"); }} />;
 
