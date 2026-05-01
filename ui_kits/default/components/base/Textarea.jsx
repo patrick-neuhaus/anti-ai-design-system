@@ -3,10 +3,17 @@
 // When to use: free-form prose, notes, descriptions, comments.
 // When NOT to use: short single-line input (use Input). Rich text (out of scope — needs editor).
 
-const Textarea = ({ value, onChange, placeholder, rows = 4, disabled = false, invalid = false, ...rest }) => (
+const Textarea = ({ value, defaultValue, onChange, readOnly, placeholder, rows = 4, disabled = false, invalid = false, ...rest }) => {
+  const valueBindings = onChange
+    ? { value: value ?? "", onChange }
+    : value !== undefined
+      ? { defaultValue: value, readOnly: readOnly ?? true }
+      : defaultValue !== undefined
+        ? { defaultValue, readOnly }
+        : { readOnly };
+  return (
   <textarea
-    value={value ?? ""}
-    onChange={onChange}
+    {...valueBindings}
     placeholder={placeholder}
     disabled={disabled}
     rows={rows}
@@ -36,6 +43,7 @@ const Textarea = ({ value, onChange, placeholder, rows = 4, disabled = false, in
     }}
     {...rest}
   />
-);
+  );
+};
 
 window.Textarea = Textarea;
