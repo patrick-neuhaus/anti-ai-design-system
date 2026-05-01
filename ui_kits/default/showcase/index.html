@@ -2161,222 +2161,33 @@
 
     // ── Templates Cases Section — scroll-snap carousel (Wave 6.4 / 9.2 real DS components) ──
 
-    /* Wave 9.2 — MockupOps: real StatCard + KpiGrid + interactive table */
-    const OPS_ROWS = [
-      { id: "TL-2041", romaneio: "ROM-441", status: "Entregue",  intent: "success" },
-      { id: "TL-2042", romaneio: "ROM-442", status: "Em rota",   intent: "warning" },
-      { id: "TL-2043", romaneio: "ROM-443", status: "Agendado",  intent: "info"    },
-    ];
-    const OPS_SIDEBAR = ["Dashboard","Romaneios","Conferência","Relatórios"];
-
-    const MockupOps = () => {
-      const [activeSide, setActiveSide] = React.useState(0);
-      const [activeRow, setActiveRow] = React.useState(null);
-      const view = OPS_SIDEBAR[activeSide];
-      return (
-        <div className="slide-mockup" style={{ fontSize: 11 }}>
-          <div className="mockup-topbar">
-            <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
-            <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
-            <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
-            <span style={{ fontSize: 9, color: "hsl(var(--muted-foreground))", marginLeft: 6 }}>{view}</span>
-          </div>
-          <div className="mockup-main-area">
-            {/* Sidebar */}
-            <div style={{ width: 80, background: "hsl(var(--sidebar-background))", display: "flex", flexDirection: "column", gap: 2, padding: "8px 6px", flexShrink: 0 }}>
-              <div style={{ width: 24, height: 24, borderRadius: 6, background: "hsl(var(--accent))", marginBottom: 8 }} />
-              {OPS_SIDEBAR.map((label, i) => (
-                <div key={label} onClick={() => setActiveSide(i)} style={{
-                  padding: "4px 6px", borderRadius: 6, cursor: "pointer", fontSize: 9,
-                  color: activeSide === i ? "hsl(var(--sidebar-indicator))" : "hsl(var(--sidebar-foreground) / .6)",
-                  background: activeSide === i ? "hsl(var(--sidebar-indicator) / .12)" : "transparent",
-                  fontWeight: activeSide === i ? 600 : 400,
-                  transition: "background 150ms, color 150ms",
-                }}>{label}</div>
-              ))}
-            </div>
-            {/* Main content */}
-            <div style={{ flex: 1, padding: 8, display: "flex", flexDirection: "column", gap: 6, overflow: "hidden" }}>
-              {view === "Dashboard" ? (
-                <>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5 }}>
-                    {[
-                      { label: "Entregas", value: "142", trend: "+8%", intent: "success" },
-                      { label: "Em rota",  value: "23",  trend: "+3%", intent: "warning" },
-                      { label: "Pendentes",value: "7",   trend: "-2%", intent: "info"    },
-                    ].map(k => (
-                      <div key={k.label} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6, padding: "6px 8px" }}>
-                        <div style={{ fontSize: 16, fontWeight: 600, color: "hsl(var(--foreground))" }}>{k.value}</div>
-                        <div style={{ fontSize: 8, color: "hsl(var(--muted-foreground))" }}>{k.label}</div>
-                        <Badge intent={k.intent}>{k.trend}</Badge>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6, flex: 1, overflow: "hidden" }}>
-                    <div style={{ padding: "4px 8px", borderBottom: "1px solid hsl(var(--border))", fontSize: 9, fontWeight: 600, color: "hsl(var(--muted-foreground))", display: "flex", gap: 8 }}>
-                      <span style={{ flex: 1 }}>ID</span><span style={{ flex: 2 }}>Romaneio</span><span>Status</span>
-                    </div>
-                    {OPS_ROWS.map(r => (
-                      <div key={r.id} onClick={() => setActiveRow(r.id)} style={{
-                        padding: "4px 8px", borderBottom: "1px solid hsl(var(--border))", fontSize: 9,
-                        display: "flex", gap: 8, cursor: "pointer",
-                        background: activeRow === r.id ? "hsl(var(--accent) / .07)" : "transparent",
-                        transition: "background 150ms",
-                      }}>
-                        <span style={{ flex: 1, fontFamily: "var(--font-mono)", color: "hsl(var(--foreground))" }}>{r.id}</span>
-                        <span style={{ flex: 2, color: "hsl(var(--muted-foreground))" }}>{r.romaneio}</span>
-                        <Badge intent={r.intent}>{r.status}</Badge>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 5, flex: 1 }}>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: "hsl(var(--foreground))" }}>{view}</div>
-                  {[1,2,3].map(i => (
-                    <div key={i} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6, height: 28, padding: "0 8px", display: "flex", alignItems: "center", gap: 8 }}>
-                      <div style={{ width: 6, height: 6, borderRadius: "50%", background: "hsl(var(--accent))" }} />
-                      <div style={{ height: 4, flex: 1, background: "hsl(var(--muted-foreground) / .2)", borderRadius: 2 }} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+    /* Wave 10 — iframe templates reais (single source of truth) */
+    /* Edit em ui_kits/default/index.html?demo=ops|crm|wiki reflete aqui automaticamente */
+    const TemplateIframe = ({ src, title }) => (
+      <div className="slide-mockup">
+        <div className="mockup-topbar">
+          <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }}></div>
+          <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }}></div>
+          <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }}></div>
         </div>
-      );
-    };
-
-    /* Wave 9.2 — MockupCrm: real pipeline kanban + contact list view */
-    const CRM_COLS = [
-      { label: "Prospect",   cards: [{ name: "Empresa A", value: "R$12k" }, { name: "Empresa B", value: "R$8k" }, { name: "Empresa C", value: "R$5k" }] },
-      { label: "Proposta",   cards: [{ name: "Empresa D", value: "R$22k" }, { name: "Empresa E", value: "R$15k" }] },
-      { label: "Negociação", cards: [{ name: "Empresa F", value: "R$40k" }, { name: "Empresa G", value: "R$18k" }] },
-      { label: "Fechado",    cards: [{ name: "Empresa H", value: "R$55k" }] },
-    ];
-    const CRM_SIDEBAR = ["Dashboard","Pipeline","Contatos","Negócios"];
-    const CRM_CONTACTS = ["Ana Silva","Bruno Costa","Carol Matos","Diego Lima"];
-
-    const MockupCrm = () => {
-      const [activeSide, setActiveSide] = React.useState(1);
-      const [activeCard, setActiveCard] = React.useState(null);
-      const view = CRM_SIDEBAR[activeSide];
-      return (
-        <div className="slide-mockup" style={{ fontSize: 11 }}>
-          <div className="mockup-topbar">
-            <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
-            <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
-            <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
-            <span style={{ fontSize: 9, color: "hsl(var(--muted-foreground))", marginLeft: 6 }}>{view}</span>
-          </div>
-          <div className="mockup-main-area">
-            <div style={{ width: 80, background: "hsl(var(--sidebar-background))", display: "flex", flexDirection: "column", gap: 2, padding: "8px 6px", flexShrink: 0 }}>
-              <div style={{ width: 24, height: 24, borderRadius: 6, background: "hsl(var(--primary))", marginBottom: 8 }} />
-              {CRM_SIDEBAR.map((label, i) => (
-                <div key={label} onClick={() => setActiveSide(i)} style={{
-                  padding: "4px 6px", borderRadius: 6, cursor: "pointer", fontSize: 9,
-                  color: activeSide === i ? "hsl(var(--sidebar-indicator))" : "hsl(var(--sidebar-foreground) / .6)",
-                  background: activeSide === i ? "hsl(var(--sidebar-indicator) / .12)" : "transparent",
-                  fontWeight: activeSide === i ? 600 : 400,
-                  transition: "background 150ms, color 150ms",
-                }}>{label}</div>
-              ))}
-            </div>
-            <div style={{ flex: 1, padding: 8, display: "flex", flexDirection: "column", gap: 6, overflow: "hidden" }}>
-              {view === "Pipeline" ? (
-                <div style={{ display: "flex", gap: 4, flex: 1, overflow: "hidden" }}>
-                  {CRM_COLS.map(col => (
-                    <div key={col.label} style={{ flex: 1, background: "hsl(var(--muted) / .4)", borderRadius: 6, padding: "5px 4px", display: "flex", flexDirection: "column", gap: 3, overflow: "hidden" }}>
-                      <div style={{ fontSize: 8, color: "hsl(var(--muted-foreground))", textTransform: "uppercase", letterSpacing: ".04em", marginBottom: 2 }}>{col.label}</div>
-                      {col.cards.map(card => (
-                        <div key={card.name} onClick={() => setActiveCard(activeCard === card.name ? null : card.name)} style={{
-                          background: activeCard === card.name ? "hsl(var(--accent) / .07)" : "hsl(var(--card))",
-                          border: `1px solid ${activeCard === card.name ? "hsl(var(--accent))" : "hsl(var(--border))"}`,
-                          borderRadius: 4, padding: "3px 5px", cursor: "pointer", transition: "all 150ms",
-                        }}>
-                          <div style={{ fontSize: 8, fontWeight: 600, color: "hsl(var(--foreground))" }}>{card.name}</div>
-                          <div style={{ fontSize: 8, color: "hsl(var(--muted-foreground))" }}>{card.value}</div>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              ) : view === "Contatos" ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  {CRM_CONTACTS.map(c => (
-                    <div key={c} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 6px", background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6 }}>
-                      <div style={{ width: 20, height: 20, borderRadius: "50%", background: "hsl(var(--accent) / .15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "hsl(var(--accent))", fontWeight: 700 }}>{c[0]}</div>
-                      <span style={{ fontSize: 9, color: "hsl(var(--foreground))" }}>{c}</span>
-                      <Badge intent="neutral" dot={false}>Lead</Badge>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 5, flex: 1 }}>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: "hsl(var(--foreground))" }}>{view}</div>
-                  {[1,2,3].map(i => (
-                    <div key={i} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6, height: 28, padding: "0 8px", display: "flex", alignItems: "center", gap: 8 }}>
-                      <div style={{ height: 4, flex: 1, background: "hsl(var(--muted-foreground) / .2)", borderRadius: 2 }} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    /* Wave 9.2 — MockupWiki: real sidebar nav + article cards */
-    const WIKI_NAV = ["Início","Guias","API","Tutoriais","Changelog"];
-    const WIKI_ARTICLES = {
-      "Início":     [{ title: "Primeiros passos", tag: "Essencial" }, { title: "Configuração inicial", tag: "Setup" }, { title: "FAQ", tag: "Suporte" }],
-      "Guias":      [{ title: "Deploy em produção", tag: "DevOps" }, { title: "Monitoramento", tag: "Ops" }, { title: "Backups", tag: "Segurança" }],
-      "API":        [{ title: "Autenticação JWT", tag: "Auth" }, { title: "Endpoints REST", tag: "Referência" }, { title: "Rate Limiting", tag: "Config" }],
-      "Tutoriais":  [{ title: "Crie seu primeiro flow", tag: "Beginner" }, { title: "Integração n8n", tag: "Avançado" }],
-      "Changelog":  [{ title: "v2.1.0 — Novas rotas", tag: "Release" }, { title: "v2.0.0 — Redesign", tag: "Major" }],
-    };
-
-    const MockupWiki = () => {
-      const [activeNav, setActiveNav] = React.useState("Início");
-      const articles = WIKI_ARTICLES[activeNav] || [];
-      return (
-        <div className="slide-mockup" style={{ fontSize: 11 }}>
-          <div className="mockup-topbar">
-            <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
-            <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
-            <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
-            <span style={{ fontSize: 9, color: "hsl(var(--muted-foreground))", marginLeft: 6 }}>Wiki — {activeNav}</span>
-          </div>
-          <div className="mockup-main-area">
-            <div style={{ width: 90, background: "hsl(var(--muted) / .4)", borderRight: "1px solid hsl(var(--border))", padding: "8px 6px", display: "flex", flexDirection: "column", gap: 2, flexShrink: 0 }}>
-              {WIKI_NAV.map(nav => (
-                <div key={nav} onClick={() => setActiveNav(nav)} style={{
-                  padding: "4px 8px", borderRadius: 6, cursor: "pointer", fontSize: 9,
-                  color: activeNav === nav ? "hsl(var(--accent))" : "hsl(var(--muted-foreground))",
-                  background: activeNav === nav ? "hsl(var(--accent) / .10)" : "transparent",
-                  fontWeight: activeNav === nav ? 600 : 400,
-                  transition: "background 150ms, color 150ms",
-                }}>{nav}</div>
-              ))}
-            </div>
-            <div style={{ flex: 1, padding: 8, display: "flex", flexDirection: "column", gap: 5, overflow: "hidden" }}>
-              {articles.map(art => (
-                <div key={art.title} style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 6, padding: "6px 8px", display: "flex", flexDirection: "column", gap: 3 }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: 10, fontWeight: 600, color: "hsl(var(--foreground))" }}>{art.title}</span>
-                    <Badge intent="primary" dot={false}>{art.tag}</Badge>
-                  </div>
-                  <div style={{ height: 4, background: "hsl(var(--muted-foreground) / .2)", borderRadius: 2, width: "80%" }} />
-                  <div style={{ height: 4, background: "hsl(var(--muted-foreground) / .15)", borderRadius: 2, width: "60%" }} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
-    };
-
+        <iframe
+          src={src}
+          title={title}
+          loading="lazy"
+          style={{
+            flex: 1,
+            width: "100%",
+            border: 0,
+            background: "hsl(var(--background))",
+            display: "block",
+            minHeight: 0,
+          }}
+        />
+      </div>
+    );
+    const MockupOps  = () => <TemplateIframe src="../index.html?demo=ops"  title="Template Operação demo" />;
+    const MockupCrm  = () => <TemplateIframe src="../index.html?demo=crm"  title="Template CRM demo" />;
+    const MockupWiki = () => <TemplateIframe src="../index.html?demo=wiki" title="Template Wiki demo" />;
     const TEMPLATE_SLIDES = [
       {
         key: "ops",

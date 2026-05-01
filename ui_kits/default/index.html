@@ -2022,7 +2022,14 @@ function SettingsScreen() {
 
 // ─── App ──────────────────────────────────────────────────────────
 function App() {
-  const [session, setSession] = useState(null);
+  // Demo mode: ?demo=ops|crm|wiki bypassa login (usado pelo showcase em iframe)
+  const initDemo = (() => {
+    try {
+      const p = new URLSearchParams(window.location.search).get("demo");
+      return (p && ["ops","crm","wiki"].includes(p)) ? p : null;
+    } catch { return null; }
+  })();
+  const [session, setSession] = useState(initDemo);
   const [activePage, setActivePage] = useState("dashboard");
 
   // Apply theme from URL ?theme= on mount
