@@ -263,7 +263,7 @@ const Sidebar = ({
         {collapsed ? <Icon.ChevronRight size={14} /> : <Icon.ChevronLeft size={14} />}
       </button>
 
-      <div style={{ padding: "8px 4px", height: 44, display: "flex", alignItems: "center", justifyContent: collapsed ? "center" : "flex-start" }}>
+      <div style={{ padding: "8px 4px", height: 88, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {collapsed ? (
           <div style={{
             width: 40, height: 40, borderRadius: 10,

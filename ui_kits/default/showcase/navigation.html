@@ -177,6 +177,9 @@
   <script type="text/babel" src="../components/navigation/NavLink.jsx"></script>
   <script type="text/babel" src="../components/navigation/UserMenu.jsx"></script>
   <script type="text/babel" src="../components/navigation/Sidebar.jsx"></script>
+  <script type="text/babel" src="../components/display/StatusBadge.jsx"></script>
+  <script type="text/babel" src="../components/dashboard/StatCard.jsx"></script>
+  <script type="text/babel" src="../components/dashboard/KpiGrid.jsx"></script>
 
   <script type="text/babel">
     const Nav = ({ current }) => (
@@ -263,10 +266,37 @@
                 brand={{ logo: "../../../assets/placeholder-logo.svg", mark: "../../../assets/placeholder-mark.svg", name: "App" }}
                 user={{ name: "Nome Sobrenome", email: "email@exemplo.com" }}
               />
-              <div style={{ flex: 1, padding: 16, overflow: "auto" }}>
-                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Página: {sidebarActive}</div>
-                <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>
-                  Sidebar {sidebarCollapsed ? "colapsada" : "expandida"}. Clique no botão circular na borda pra alternar.
+              <div style={{ flex: 1, padding: 16, overflow: "auto", background: "hsl(var(--background))" }}>
+                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 12, color: "hsl(var(--foreground))" }}>Dashboard</div>
+                <KpiGrid columns={3} gap={10}>
+                  <StatCard icon={Icon.Package} value="48" label="Total Hoje" sublabel="Volumes expedidos" trend="+8%" />
+                  <StatCard icon={Icon.Truck} value="12" label="Em Trânsito" sublabel="Aguardando entrega" />
+                  <StatCard icon={Icon.CheckCircle} value="36" label="Concluídos" sublabel="Finalizados hoje" trend="+12%" />
+                </KpiGrid>
+                <div style={{ marginTop: 12, background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, overflow: "hidden" }}>
+                  <div style={{ padding: "10px 14px", fontSize: 12, fontWeight: 600, borderBottom: "1px solid hsl(var(--border))", color: "hsl(var(--foreground))" }}>Romaneios recentes</div>
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+                    <thead>
+                      <tr style={{ background: "hsl(var(--muted) / .4)" }}>
+                        <th style={{ padding: "6px 12px", textAlign: "left", fontWeight: 500, color: "hsl(var(--muted-foreground))" }}>ID</th>
+                        <th style={{ padding: "6px 12px", textAlign: "left", fontWeight: 500, color: "hsl(var(--muted-foreground))" }}>Motorista</th>
+                        <th style={{ padding: "6px 12px", textAlign: "left", fontWeight: 500, color: "hsl(var(--muted-foreground))" }}>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { id: "RM-001847", motorista: "Carlos Andrade", status: "conferido" },
+                        { id: "RM-001846", motorista: "Marcos Silva", status: "pendente" },
+                        { id: "RM-001845", motorista: "Pedro Lima", status: "em_conferencia" },
+                      ].map((r) => (
+                        <tr key={r.id} style={{ borderTop: "1px solid hsl(var(--border))" }}>
+                          <td style={{ padding: "7px 12px", fontFamily: "var(--font-mono, monospace)", color: "hsl(var(--muted-foreground))" }}>{r.id}</td>
+                          <td style={{ padding: "7px 12px" }}>{r.motorista}</td>
+                          <td style={{ padding: "7px 12px" }}><StatusBadge value={r.status} /></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
