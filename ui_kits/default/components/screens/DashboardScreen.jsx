@@ -21,7 +21,7 @@ const DashboardScreen = ({ onOpenRomaneios }) => (
           <h3 style={{ fontSize: 14, fontWeight: 600, color: "hsl(var(--foreground))" }}>Romaneios recentes</h3>
           <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 2 }}>Últimos romaneios gerados</p>
         </div>
-        <button className="btn btn-outline btn-sm" onClick={onOpenRomaneios}>Ver todos</button>
+        <Button variant="ghost" size="sm" onClick={onOpenRomaneios}>Ver todos</Button>
       </div>
       <div style={{ overflowX: "auto" }}>
         <table className="tbl">
@@ -37,7 +37,7 @@ const DashboardScreen = ({ onOpenRomaneios }) => (
                 <td>{r.motorista}</td>
                 <td><StatusBadge value={r.status} /></td>
                 <td style={{ width: 36 }}>
-                  <button className="btn btn-ghost btn-icon btn-sm" aria-label="Mais ações"><Icon.MoreHorizontal size={16} /></button>
+                  <Button variant="ghost" size="sm" iconOnly aria-label="Mais opções" iconLeft={Icon.MoreHorizontal} />
                 </td>
               </tr>
             ))}
