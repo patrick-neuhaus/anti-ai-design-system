@@ -204,24 +204,41 @@
           <h1>Base</h1>
           <p className="lead">Primitivos de input e ação. Compõem todo o resto.</p>
 
-          <ShowcaseSection title="Button — variants × sizes">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, max-content))", gap: 8, marginBottom: 12 }}>
-              <Button>Primary</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="destructive">Destructive</Button>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, max-content))", gap: 8, marginBottom: 12 }}>
-              <Button size="sm">Small</Button>
-              <Button size="md">Medium</Button>
-              <Button size="lg">Large</Button>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(80px, max-content))", gap: 8 }}>
-              <Button iconLeft={Icon.Plus}>Add</Button>
-              <Button iconRight={Icon.ArrowRight}>Continue</Button>
-              <Button iconOnly aria-label="Search" iconLeft={Icon.Search} />
-              <Button disabled>Disabled</Button>
+          <ShowcaseSection title="Button">
+            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+              <div>
+                <div style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "hsl(var(--muted-foreground))", marginBottom: 10 }}>Variants</div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                  <Button>Primary</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="outline">Outline</Button>
+                  <Button variant="ghost">Ghost</Button>
+                  <Button variant="destructive">Destructive</Button>
+                </div>
+              </div>
+              <div style={{ borderTop: "1px solid hsl(var(--border) / .5)", paddingTop: 20 }}>
+                <div style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "hsl(var(--muted-foreground))", marginBottom: 10 }}>Sizes</div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                  <Button size="sm">Small</Button>
+                  <Button size="md">Medium</Button>
+                  <Button size="lg">Large</Button>
+                </div>
+              </div>
+              <div style={{ borderTop: "1px solid hsl(var(--border) / .5)", paddingTop: 20 }}>
+                <div style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "hsl(var(--muted-foreground))", marginBottom: 10 }}>With Icons</div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                  <Button iconLeft={Icon.Plus}>Icon Left</Button>
+                  <Button iconRight={Icon.ArrowRight}>Icon Right</Button>
+                  <Button iconOnly aria-label="Search" iconLeft={Icon.Search} />
+                </div>
+              </div>
+              <div style={{ borderTop: "1px solid hsl(var(--border) / .5)", paddingTop: 20 }}>
+                <div style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "hsl(var(--muted-foreground))", marginBottom: 10 }}>States</div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                  <Button disabled>Disabled</Button>
+                  <Button variant="outline" disabled>Disabled Outline</Button>
+                </div>
+              </div>
             </div>
           </ShowcaseSection>
 
