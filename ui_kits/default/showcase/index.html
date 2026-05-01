@@ -2095,102 +2095,172 @@
       </section>
     );
 
-    // ── Templates Cases Section — scroll-snap carousel (Wave 6.4) ──
-    const MockupOps = () => (
-      <div className="slide-mockup">
-        <div className="mockup-topbar">
-          <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
-          <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
-          <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
-        </div>
-        <div className="mockup-main-area">
-          <div className="mockup-sidebar-mini">
-            <div className="mockup-sidebar-brand" />
-            <div className="mockup-sidebar-item active" />
-            <div className="mockup-sidebar-item" />
-            <div className="mockup-sidebar-item" />
-            <div className="mockup-sidebar-item" />
-          </div>
-          <div className="mockup-content">
-            <div className="mockup-kpi-row">
-              {["hsl(var(--accent))","hsl(var(--success))","hsl(var(--info))"].map((c,i) => (
-                <div key={i} className="mockup-kpi">
-                  <div className="mockup-kpi-dot" style={{ background: c }} />
-                  <div className="mockup-kpi-bar" style={{ background: `${c.replace(")","")} / .35)` }} />
-                </div>
-              ))}
-            </div>
-            <div className="mockup-table">
-              {["TL-2041","TL-2042","TL-2043"].map((id, i) => (
-                <div key={id} className="mockup-table-row">
-                  <div className="mockup-table-dot" style={{ background: i === 0 ? "hsl(var(--success))" : i === 1 ? "hsl(var(--warning))" : "hsl(var(--info))" }} />
-                  <span>{id}</span>
-                  <span style={{ marginLeft: "auto", opacity: .6 }}>{["Entregue","Em rota","Agendado"][i]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    // ── Templates Cases Section — scroll-snap carousel (Wave 6.4 / 8.3 interactive) ──
+    const OPS_ROWS = [
+      { id: "TL-2041", status: "Entregue",  color: "hsl(var(--success))" },
+      { id: "TL-2042", status: "Em rota",   color: "hsl(var(--warning))" },
+      { id: "TL-2043", status: "Agendado",  color: "hsl(var(--info))" },
+    ];
+    const OPS_KPI_COLORS = ["hsl(var(--accent))","hsl(var(--success))","hsl(var(--info))"];
 
-    const MockupCrm = () => (
-      <div className="slide-mockup">
-        <div className="mockup-topbar">
-          <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
-          <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
-          <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
-        </div>
-        <div className="mockup-main-area">
-          <div className="mockup-sidebar-mini">
-            <div className="mockup-sidebar-brand" style={{ background: "hsl(var(--primary))" }} />
-            <div className="mockup-sidebar-item active" />
-            <div className="mockup-sidebar-item" />
-            <div className="mockup-sidebar-item" />
+    const MockupOps = () => {
+      const [activeRow, setActiveRow] = React.useState(null);
+      const [activeSide, setActiveSide] = React.useState(0);
+      return (
+        <div className="slide-mockup">
+          <div className="mockup-topbar">
+            <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
+            <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
+            <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
           </div>
-          <div className="mockup-content">
-            <div className="mockup-pipeline">
-              {["Prospect","Proposta","Negociação","Fechado"].map((col, i) => (
-                <div key={col} className="mockup-pipeline-col">
-                  <div className="mockup-pipeline-header">{col}</div>
-                  {Array(i === 0 ? 3 : i === 1 ? 2 : i === 2 ? 2 : 1).fill(0).map((_, j) => (
-                    <div key={j} className="mockup-pipeline-card" />
+          <div className="mockup-main-area">
+            <div className="mockup-sidebar-mini" style={{ cursor: "pointer" }}>
+              <div className="mockup-sidebar-brand" />
+              {[0,1,2,3].map(i => (
+                <div
+                  key={i}
+                  className={"mockup-sidebar-item" + (activeSide === i ? " active" : "")}
+                  onClick={() => setActiveSide(i)}
+                  style={{ cursor: "pointer", transition: "background 150ms" }}
+                />
+              ))}
+            </div>
+            <div className="mockup-content">
+              <div className="mockup-kpi-row">
+                {OPS_KPI_COLORS.map((c,i) => (
+                  <div key={i} className="mockup-kpi">
+                    <div className="mockup-kpi-dot" style={{ background: c }} />
+                    <div className="mockup-kpi-bar" style={{ background: `${c.replace(")","")} / .35)` }} />
+                  </div>
+                ))}
+              </div>
+              <div className="mockup-table">
+                {OPS_ROWS.map(({ id, status, color }) => (
+                  <div
+                    key={id}
+                    className="mockup-table-row"
+                    onClick={() => setActiveRow(id)}
+                    style={{
+                      cursor: "pointer",
+                      background: activeRow === id ? "hsl(var(--accent) / .08)" : "transparent",
+                      transition: "background 150ms",
+                    }}
+                  >
+                    <div className="mockup-table-dot" style={{ background: color }} />
+                    <span style={{ fontWeight: activeRow === id ? 600 : 400 }}>{id}</span>
+                    <span style={{ marginLeft: "auto", opacity: .6 }}>{status}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const CRM_COLS = [
+      { label: "Prospect",   cards: 3 },
+      { label: "Proposta",   cards: 2 },
+      { label: "Negociação", cards: 2 },
+      { label: "Fechado",    cards: 1 },
+    ];
+
+    const MockupCrm = () => {
+      const [activeSide, setActiveSide] = React.useState(0);
+      const [activeCard, setActiveCard] = React.useState(null);
+      return (
+        <div className="slide-mockup">
+          <div className="mockup-topbar">
+            <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
+            <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
+            <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
+          </div>
+          <div className="mockup-main-area">
+            <div className="mockup-sidebar-mini">
+              <div className="mockup-sidebar-brand" style={{ background: "hsl(var(--primary))" }} />
+              {[0,1,2].map(i => (
+                <div
+                  key={i}
+                  className={"mockup-sidebar-item" + (activeSide === i ? " active" : "")}
+                  onClick={() => setActiveSide(i)}
+                  style={{ cursor: "pointer", transition: "background 150ms" }}
+                />
+              ))}
+            </div>
+            <div className="mockup-content">
+              <div className="mockup-pipeline">
+                {CRM_COLS.map(({ label, cards }, ci) => (
+                  <div key={label} className="mockup-pipeline-col">
+                    <div className="mockup-pipeline-header">{label}</div>
+                    {Array(cards).fill(0).map((_, j) => {
+                      const cardId = `${ci}-${j}`;
+                      return (
+                        <div
+                          key={j}
+                          className="mockup-pipeline-card"
+                          onClick={() => setActiveCard(activeCard === cardId ? null : cardId)}
+                          style={{
+                            cursor: "pointer",
+                            border: activeCard === cardId ? "1px solid hsl(var(--accent))" : "1px solid hsl(var(--border))",
+                            background: activeCard === cardId ? "hsl(var(--accent) / .07)" : "hsl(var(--card))",
+                            transition: "border-color 150ms, background 150ms",
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const WIKI_NAV = ["Onboarding","Processos","API Reference","Guias","Changelog"];
+    const WIKI_CONTENT = {
+      "Onboarding":      [{ title: "Primeiros passos", lines: [.9, .7, .55] }, { title: "Configuração", lines: [.85, .6] }],
+      "Processos":       [{ title: "Fluxo de aprovação", lines: [.95, .75, .5] }, { title: "Revisão", lines: [.8, .65] }],
+      "API Reference":   [{ title: "Autenticação", lines: [.9, .8, .6] }, { title: "Endpoints", lines: [.7, .5] }],
+      "Guias":           [{ title: "Deploy", lines: [.85, .7] }, { title: "Monitoramento", lines: [.9, .6, .45] }],
+      "Changelog":       [{ title: "v2.1.0", lines: [.8, .6] }, { title: "v2.0.0", lines: [.95, .75, .55] }],
+    };
+
+    const MockupWiki = () => {
+      const [activeNav, setActiveNav] = React.useState("Onboarding");
+      const cards = WIKI_CONTENT[activeNav] || [];
+      return (
+        <div className="slide-mockup">
+          <div className="mockup-topbar">
+            <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
+            <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
+            <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
+          </div>
+          <div className="mockup-main-area">
+            <div className="mockup-wiki-sidebar">
+              {WIKI_NAV.map(nav => (
+                <div
+                  key={nav}
+                  className={"mockup-wiki-nav-item" + (activeNav === nav ? " active" : "")}
+                  onClick={() => setActiveNav(nav)}
+                  style={{ cursor: "pointer", transition: "background 150ms, width 150ms" }}
+                />
+              ))}
+            </div>
+            <div className="mockup-wiki-content">
+              {cards.map((card) => (
+                <div key={card.title} className="mockup-wiki-card" style={{ transition: "opacity 200ms" }}>
+                  <div className="mockup-wiki-title" />
+                  {card.lines.map((w, i) => (
+                    <div key={i} className="mockup-wiki-line" style={{ width: `${w * 100}%` }} />
                   ))}
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </div>
-    );
-
-    const MockupWiki = () => (
-      <div className="slide-mockup">
-        <div className="mockup-topbar">
-          <div className="mockup-dot" style={{ background: "hsl(var(--destructive) / .7)" }} />
-          <div className="mockup-dot" style={{ background: "hsl(var(--warning) / .7)" }} />
-          <div className="mockup-dot" style={{ background: "hsl(var(--success) / .7)" }} />
-        </div>
-        <div className="mockup-main-area">
-          <div className="mockup-wiki-sidebar">
-            <div className="mockup-wiki-nav-item active" />
-            <div className="mockup-wiki-nav-item" />
-            <div className="mockup-wiki-nav-item" />
-            <div className="mockup-wiki-nav-item" />
-            <div className="mockup-wiki-nav-item" />
-          </div>
-          <div className="mockup-wiki-content">
-            {["Onboarding","Processos","API Reference"].map((title) => (
-              <div key={title} className="mockup-wiki-card">
-                <div className="mockup-wiki-title" />
-                <div className="mockup-wiki-line" style={{ width: "90%" }} />
-                <div className="mockup-wiki-line" style={{ width: "65%" }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+      );
+    };
 
     const TEMPLATE_SLIDES = [
       {
