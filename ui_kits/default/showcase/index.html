@@ -518,6 +518,16 @@
       flex-direction: column;
       box-shadow: 0 24px 64px -16px hsl(0 0% 0% / .35);
     }
+    .slide-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .slide-header-row .slide-title { margin: 0; flex: 1 1 auto; min-width: 0; }
+    .slide-header-row .slide-btn-primary { flex-shrink: 0; }
     .slide-text {
       padding: 32px 40px 24px;
       display: flex;
@@ -1888,11 +1898,11 @@
                     <div className="templates-slide-card">
                       <div className="slide-text">
                         <p className="slide-eyebrow">{eyebrow}</p>
-                        <h3 className="slide-title">{title}</h3>
-                        <p className="slide-body">{body}</p>
-                        <div className="slide-btns">
+                        <div className="slide-header-row">
+                          <h3 className="slide-title">{title}</h3>
                           <a href={`../index.html?demo=${key}`} className="slide-btn-primary">Ver template completo →</a>
                         </div>
+                        <p className="slide-body">{body}</p>
                       </div>
                       <div className="slide-visual">
                         <Mockup />

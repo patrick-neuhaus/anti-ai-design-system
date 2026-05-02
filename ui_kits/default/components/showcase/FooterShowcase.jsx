@@ -6,7 +6,7 @@
 // Dependencias: React global, _footer.css carregado no head.
 
 const FooterShowcase = ({
-  version    = "v6.5",
+  version    = "v6.6",
   updatedAt  = "2026-05-02",
   resources  = [
     { label: "Showcase tecnico", href: "./base.html" },
@@ -110,7 +110,7 @@ const FooterShowcase = ({
             <p className="footer-ed-tagline">
               Design system artesanal — tokens declarativos, componentes sem cara de IA, identidade visual que nao parece gerada.
             </p>
-            <p className="footer-ed-by">by Patrick Neuhaus</p>
+            <p className="footer-ed-by">by Studio Artemis</p>
           </div>
 
           {/* Col 2 — Recursos */}

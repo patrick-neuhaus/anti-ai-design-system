@@ -12,7 +12,7 @@
 // Requires: _nav.css loaded in the HTML <head>
 // Requires: dropdown JS init script (see bottom of each showcase HTML)
 
-const CATEGORIES = [
+const NAV_CATEGORIES = [
   { slug: "index",      label: "Visão geral" },
   { slug: "auth",       label: "Auth" },
   { slug: "base",       label: "Base" },
@@ -109,7 +109,7 @@ const NavHeader = ({ currentCategory = null, mode = "category" }) => {
             Categorias <span className="fh-arrow">&#9662;</span>
           </button>
           <div className="fh-dropdown-menu">
-            {CATEGORIES.map(({ slug, label }) => {
+            {NAV_CATEGORIES.map(({ slug, label }) => {
               const href = isHome ? `./${slug === "index" ? "" : slug + ".html"}` : `./${slug === "index" ? "index.html" : slug + ".html"}`;
               const isActive = slug === currentCategory || (slug === "index" && currentCategory === null && !isHome);
               return (
