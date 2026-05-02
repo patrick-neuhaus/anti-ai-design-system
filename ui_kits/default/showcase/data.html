@@ -49,6 +49,10 @@
   <script type="text/babel" src="../components/display/StatusBadge.jsx"></script>
   <script type="text/babel" src="../components/display/Avatar.jsx"></script>
   <script type="text/babel" src="../components/display/Toast.jsx"></script>
+  <script type="text/babel" src="../components/display/Accordion.jsx"></script>
+  <script type="text/babel" src="../components/display/Separator.jsx"></script>
+  <script type="text/babel" src="../components/base/Button.jsx"></script>
+  <script type="text/babel" src="../components/base/ToggleGroup.jsx"></script>
   <script type="text/babel" src="../components/data/Table.jsx"></script>
   <script type="text/babel" src="../components/data/AppTable.jsx"></script>
   <script type="text/babel" src="../components/data/ListItem.jsx"></script>
@@ -74,10 +78,32 @@
       { id: "RM-001844", trans: "TransLog Brasil",   placa: "JKL4G89", status: "divergente" },
     ];
 
-    const App = () => (
+    const ACCORDION_ITEMS = [
+      {
+        id: "tokens",
+        header: "O que são design tokens?",
+        content: "Tokens são variáveis CSS que representam decisões de design — cores, espaçamentos, tipografia, motion. Em vez de hardcodar `#2D6A4F`, você usa `hsl(var(--accent))`. O resultado: trocas de tema sem tocar em componentes."
+      },
+      {
+        id: "antiAI",
+        header: "Por que Anti-AI Design System?",
+        content: "Ferramentas de IA geram interfaces genéricas: neutros `0 0% L%`, grid de 3 colunas simétricas, nada de editorial. O Anti-AI DS quebra isso com neutrals hue-aware (todo foreground carrega hue), tipografia editorial (Lora + Poppins) e grid assimétrico quando faz sentido."
+      },
+      {
+        id: "usage",
+        header: "Como usar os componentes?",
+        content: "Cada componente é um arquivo .jsx standalone — sem build step. Inclua via <script type=\"text/babel\" src=\"...\">. Todos consomem tokens CSS do colors_and_type.css. Customização: sobrescreva tokens no :root ou em um seletor pai."
+      },
+    ];
+
+    const App = () => {
+      const [tgSingle, setTgSingle] = React.useState("grid");
+      const [tgMulti, setTgMulti] = React.useState(["bold"]);
+
+      return (
       <>
         <h1>Data</h1>
-        <p className="lead">Tabelas e listas. Table = primitivo, AppTable = sortable, ListItem = vertical heterogêneo.</p>
+        <p className="lead">Tabelas, listas, accordion, separadores e toggle groups.</p>
 
         <ShowcaseSection title="Table — primitivo">
           <Table>
@@ -119,9 +145,71 @@
           </div>
         </ShowcaseSection>
 
+        <ShowcaseSection title="Accordion — collapse expandable (single)">
+          <Accordion items={ACCORDION_ITEMS} multiple={false} defaultOpen={["tokens"]} />
+          <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "8px 0 0" }}>
+            single: abre um item por vez. Use <code>multiple</code> pra abrir vários simultaneamente.
+          </p>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="Accordion — multiple">
+          <Accordion items={ACCORDION_ITEMS} multiple={true} defaultOpen={["tokens", "usage"]} />
+        </ShowcaseSection>
+
+        <ShowcaseSection title="Separator — horizontal, vertical e com label">
+          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            <span style={{ fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Conteúdo acima</span>
+            <Separator decorative={false} />
+            <span style={{ fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Conteúdo abaixo</span>
+          </div>
+          <Separator label="ou" decorative={true} />
+          <div style={{ display: "flex", alignItems: "center", height: 40 }}>
+            <span style={{ fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Esquerda</span>
+            <Separator orientation="vertical" decorative={false} />
+            <span style={{ fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Direita</span>
+          </div>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="ToggleGroup — single (view mode)">
+          <ToggleGroup
+            aria-label="Modo de visualização"
+            type="single"
+            value={tgSingle}
+            onChange={setTgSingle}
+            items={[
+              { value: "grid", label: "Grid" },
+              { value: "list", label: "Lista" },
+              { value: "compact", label: "Compacto" },
+            ]}
+          />
+          <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "8px 0 0" }}>
+            Selecionado: <strong>{tgSingle ?? "—"}</strong>
+          </p>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="ToggleGroup — multiple (text formatting)">
+          <ToggleGroup
+            aria-label="Formatação de texto"
+            type="multiple"
+            variant="outline"
+            value={tgMulti}
+            onChange={setTgMulti}
+            items={[
+              { value: "bold",      label: "B" },
+              { value: "italic",    label: "I" },
+              { value: "underline", label: "U" },
+              { value: "mono",      label: "M" },
+            ]}
+          />
+          <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "8px 0 0" }}>
+            Ativos: <strong>{tgMulti.join(", ") || "—"}</strong> · variant outline
+          </p>
+        </ShowcaseSection>
+
         <ToastHost />
       </>
-    );
+      );
+    };
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
     ReactDOM.createRoot(document.getElementById("nav-root")).render(<NavHeader currentCategory="data" mode="category" />);
   </script>
