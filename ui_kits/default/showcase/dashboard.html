@@ -48,6 +48,7 @@
   <script type="text/babel" src="../components/dashboard/StatCard.jsx"></script>
   <script type="text/babel" src="../components/dashboard/KpiGrid.jsx"></script>
   <script type="text/babel" src="../components/dashboard/MetricCard.jsx"></script>
+  <script type="text/babel" src="../components/dashboard/Chart.jsx"></script>
   <script type="text/babel" src="../components/layout/NavHeader.jsx"></script>
 
   <script type="text/babel">
@@ -63,10 +64,16 @@
       </section>
     );
 
+    const LINE_DATA   = [12, 18, 14, 22, 20, 28, 24, 32, 29, 36, 33, 40];
+    const BAR_DATA    = [45, 62, 38, 71, 55, 80, 48];
+    const AREA_DATA   = [20, 28, 24, 35, 30, 42, 38, 50, 44, 58, 52, 64];
+    const SPARK_DATA  = [8, 12, 9, 14, 11, 16];
+    const SPARK_DOWN  = [16, 14, 12, 10, 13, 9];
+
     const App = () => (
       <>
         <h1>Dashboard</h1>
-        <p className="lead">KPIs e tiles. StatCard pra contagem; MetricCard pra delta com contexto.</p>
+        <p className="lead">KPIs, tiles e charts inline. StatCard pra contagem; MetricCard pra delta; Charts pra tendência visual.</p>
 
         <ShowcaseSection title="KpiGrid + StatCard">
           <KpiGrid columns={4}>
@@ -83,6 +90,65 @@
             <MetricCard label="Conversão" value="3,8" unit="%" delta={-1.2} comparison="vs. mês anterior" />
             <MetricCard label="Tempo médio" value="42" unit="min" delta={0} deltaSuffix=" min" comparison="estável" />
           </KpiGrid>
+        </ShowcaseSection>
+
+        <ShowcaseSection title="Charts — visualizações inline (SVG puro, sem lib)">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+
+            {/* LineChart */}
+            <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, padding: 20 }}>
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".08em", color: "hsl(var(--muted-foreground))", marginBottom: 6 }}>LineChart</div>
+              <div style={{ fontSize: 22, fontWeight: 600, fontFamily: "var(--font-display)", marginBottom: 12 }}>R$ 47,2k</div>
+              <LineChart data={LINE_DATA} height={64} color="--accent" showGrid={true} aria-label="Receita mensal — tendência crescente" />
+              <div style={{ fontSize: 11, color: "hsl(var(--success))", marginTop: 6, fontFamily: "var(--font-mono)" }}>▲ +12% vs período anterior</div>
+            </div>
+
+            {/* BarChart 7-day */}
+            <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, padding: 20 }}>
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".08em", color: "hsl(var(--muted-foreground))", marginBottom: 6 }}>BarChart — 7-day</div>
+              <div style={{ fontSize: 22, fontWeight: 600, fontFamily: "var(--font-display)", marginBottom: 12 }}>183 entregas</div>
+              <BarChart data={BAR_DATA} height={64} color="--primary" showGrid={false} aria-label="Entregas por dia da semana" />
+              <div style={{ fontSize: 11, color: "hsl(var(--muted-foreground))", marginTop: 6, fontFamily: "var(--font-mono)" }}>Seg — Dom · semana atual</div>
+            </div>
+
+            {/* AreaChart */}
+            <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, padding: 20 }}>
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".08em", color: "hsl(var(--muted-foreground))", marginBottom: 6 }}>AreaChart</div>
+              <div style={{ fontSize: 22, fontWeight: 600, fontFamily: "var(--font-display)", marginBottom: 12 }}>64% ocupação</div>
+              <AreaChart data={AREA_DATA} height={64} color="--info" showGrid={true} aria-label="Ocupação de frota — últimas 12 semanas" />
+              <div style={{ fontSize: 11, color: "hsl(var(--info))", marginTop: 6, fontFamily: "var(--font-mono)" }}>Últimas 12 semanas</div>
+            </div>
+
+            {/* SparklineChart KPI inline */}
+            <div style={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, padding: 20 }}>
+              <div style={{ fontSize: 11, fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: ".08em", color: "hsl(var(--muted-foreground))", marginBottom: 12 }}>SparklineChart — KPI inline</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 500 }}>Romaneios</div>
+                    <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-display)" }}>183</div>
+                  </div>
+                  <div style={{ width: 80, flexShrink: 0 }}>
+                    <SparklineChart data={SPARK_DATA} height={28} color="--accent" aria-label="Tendência de romaneios — crescendo" />
+                  </div>
+                </div>
+                <div style={{ height: 1, background: "hsl(var(--border))" }} />
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 500 }}>Divergências</div>
+                    <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-display)" }}>7</div>
+                  </div>
+                  <div style={{ width: 80, flexShrink: 0 }}>
+                    <SparklineChart data={SPARK_DOWN} height={28} color="--destructive" aria-label="Tendência de divergências — caindo" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <p style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", margin: "12px 0 0" }}>
+            SVG inline puro — sem Chart.js, Recharts ou D3. Props: <code>data</code>, <code>height</code>, <code>color</code> (token CSS ou string), <code>animated</code>, <code>showGrid</code>.
+          </p>
         </ShowcaseSection>
       </>
     );
