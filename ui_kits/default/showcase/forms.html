@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Forms · Showcase</title>
   <link rel="stylesheet" href="../../../colors_and_type.css" />
+  <link rel="stylesheet" href="./_nav.css" />
   <style>
     body { font-family: var(--font-body); background: hsl(var(--background)); color: hsl(var(--foreground)); margin: 0; overflow-x: hidden; max-width: 100vw; }
     .showcase-shell { max-width: 1100px; margin: 0 auto; padding: 96px 24px 80px; }
@@ -15,167 +16,6 @@
       height: 3px; width: 0%;
       background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
       z-index: 300; transition: width 80ms linear; pointer-events: none;
-    }
-
-    /* ── Nav header (unified Wave 4) ────────────────────── */
-    @keyframes nav-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / .5); }
-      50%      { box-shadow: 0 0 0 6px hsl(var(--accent) / 0); }
-    }
-    .nav-header {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 6px 6px 18px;
-      background: hsl(var(--card) / .72);
-      backdrop-filter: blur(14px) saturate(140%);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
-      border: 1px solid hsl(var(--border) / .6);
-      border-radius: 999px;
-      box-shadow: 0 8px 32px -8px hsl(var(--foreground) / .12);
-      max-width: calc(100vw - 24px);
-    }
-    .nav-brand {
-      font-family: var(--font-display);
-      font-weight: 600;
-      font-size: 14px;
-      letter-spacing: -.01em;
-      color: hsl(var(--foreground));
-      padding-right: 14px;
-      border-right: 1px solid hsl(var(--border) / .5);
-      margin-right: 6px;
-      flex-shrink: 0;
-      text-decoration: none;
-    }
-    .nav-brand-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: hsl(var(--accent));
-      margin-right: 6px;
-      vertical-align: middle;
-      animation: nav-pulse 1.6s ease-in-out infinite;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-    .nav-link {
-      font-size: 12.5px;
-      font-weight: 500;
-      color: hsl(var(--muted-foreground));
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 999px;
-      transition: color 150ms, background 150ms;
-      white-space: nowrap;
-    }
-    .nav-link:hover {
-      color: hsl(var(--foreground));
-      background: hsl(var(--muted) / .6);
-    }
-    .nav-cta-mini {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 7px 14px;
-      background: hsl(var(--accent));
-      color: hsl(var(--accent-foreground));
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      text-decoration: none;
-      margin-left: 8px;
-      transition: transform 150ms, box-shadow 150ms;
-    }
-    .nav-cta-mini:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px hsl(var(--accent) / .4);
-    }
-    @media (max-width: 760px) {
-      .nav-links { display: none; }
-      .nav-header { padding: 6px 6px 6px 14px; }
-      .nav-brand { padding-right: 8px; margin-right: 0; border-right: none; font-size: 13px; }
-    }
-
-    /* ── Scrollytelling — reveal on scroll ────────────────── */
-    .reveal {
-      opacity: 0; transform: translateY(32px);
-      transition: opacity 700ms cubic-bezier(.2,.8,.2,1), transform 700ms cubic-bezier(.2,.8,.2,1);
-      will-change: opacity, transform;
-    }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-    .reveal-stagger > * {
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.8,.2,1);
-    }
-    .reveal-stagger.in > * { opacity: 1; transform: translateY(0); }
-    .reveal-stagger.in > *:nth-child(1) { transition-delay: 0ms; }
-    .reveal-stagger.in > *:nth-child(2) { transition-delay: 80ms; }
-    .reveal-stagger.in > *:nth-child(3) { transition-delay: 160ms; }
-    .reveal-stagger.in > *:nth-child(4) { transition-delay: 240ms; }
-    .reveal-stagger.in > *:nth-child(5) { transition-delay: 320ms; }
-    .reveal-stagger.in > *:nth-child(6) { transition-delay: 400ms; }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal, .reveal-stagger > * { transition: none; opacity: 1; transform: none; }
-    }
-    .showcase-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid hsl(var(--border)); }
-    .showcase-nav a { font-size: 13px; padding: 6px 10px; border-radius: 6px; text-decoration: none; color: hsl(var(--muted-foreground)); }
-    .showcase-nav a.active { background: hsl(var(--accent-decorative) / .12); color: hsl(var(--accent)); font-weight: 500; }
-    .showcase-section { display: flex; flex-direction: column; gap: 12px; margin-top: 48px; padding-bottom: 8px; }
-    .showcase-section > h3 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--muted-foreground)); margin: 0; font-weight: 600; }
-    .showcase-block { padding: 24px; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 12px; }
-    h1 { font-size: 28px; font-weight: 600; letter-spacing: -.01em; margin: 0 0 6px; }
-    .lead { font-size: 15px; color: hsl(var(--muted-foreground)); margin: 0 0 24px; }
-    /* DateField overflow fix — 7.5 */
-    input[type="date"] { width: 100%; max-width: 100%; box-sizing: border-box; }
-
-    /* ── Categories dropdown ──────────────────────────────────── */
-    .fh-dropdown { position: relative; }
-    .fh-dropdown-btn {
-      font-size: 12.5px; color: hsl(var(--muted-foreground));
-      text-decoration: none; padding: 5px 10px; border-radius: 999px;
-      white-space: nowrap; transition: color 150ms, background 150ms;
-      background: none; border: none; cursor: pointer; font-family: inherit;
-      display: inline-flex; align-items: center; gap: 4px;
-    }
-    .fh-dropdown-btn:hover { color: hsl(var(--foreground)); background: hsl(var(--muted) / .5); }
-    .fh-dropdown-menu {
-      display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-      background: hsl(var(--card)); border: 1px solid hsl(var(--border) / .6);
-      border-radius: 12px; padding: 6px;
-      box-shadow: 0 8px 32px hsl(var(--foreground) / .10);
-      min-width: 200px; z-index: 300;
-      flex-direction: column; gap: 2px;
-    }
-    .fh-dropdown[data-open="true"] .fh-dropdown-menu { display: flex; }
-    .fh-dropdown-btn .fh-arrow { display: inline-block; transition: transform 200ms ease; }
-    .fh-dropdown[data-open="true"] .fh-dropdown-btn .fh-arrow { transform: rotate(180deg); }
-    .fh-dropdown-menu a {
-      font-size: 12.5px; color: hsl(var(--muted-foreground));
-      text-decoration: none; padding: 6px 10px; border-radius: 8px;
-      white-space: nowrap; transition: color 150ms, background 150ms;
-    }
-    .fh-dropdown-menu a:hover { color: hsl(var(--foreground)); background: hsl(var(--muted) / .5); }
-    .fh-dropdown-menu a.fh-active { color: hsl(var(--accent)); background: hsl(var(--accent-decorative, var(--accent)) / .10); font-weight: 500; }
-  
-    /* Mobile overflow fix Wave 1.3 */
-    @media (max-width: 480px) {
-      .showcase-shell { padding: 80px 16px 60px; }
-      table { display: block; max-width: 100%; overflow-x: auto; }
-      .preview-frame, .showcase-block, .demo-frame { max-width: 100%; overflow-x: hidden; }
-      pre, code { max-width: 100%; overflow-x: auto; word-wrap: break-word; }
-      .showcase-section > * { min-width: 0; }
-      .showcase-block > * { min-width: 0; }
-      .nav-header { left: 8px; right: 8px; max-width: calc(100vw - 16px); }
-      .nav-links { gap: 8px; flex-wrap: wrap; }
     }
   
     /* Wave 9.4 — CTA responsive */
@@ -196,32 +36,7 @@
 
   <div class="progress-bar" id="progressBar"></div>
 
-  <nav class="nav-header" aria-label="Navegacao principal">
-    <a class="nav-brand" href="../index.html"><span class="nav-brand-dot"></span>Anti-AI</a>
-    <div class="nav-links">
-      <a class="nav-link" href="./index.html#templates">Templates</a>
-      <a class="nav-link" href="./index.html#filosofia">Filosofia</a>
-      <a class="nav-link" href="./index.html#tokens">Tokens</a>
-      <div class="fh-dropdown">
-        <button class="fh-dropdown-btn">Categorias <span class="fh-arrow">&#9662;</span></button>
-        <div class="fh-dropdown-menu">
-        <a href="./index.html">Visao geral</a>
-        <a href="./auth.html">Auth</a>
-        <a href="./base.html">Base</a>
-        <a href="./dashboard.html">Dashboard</a>
-        <a href="./data.html">Data</a>
-        <a href="./display.html">Display</a>
-        <a href="./forms.html" class="fh-active">Forms</a>
-        <a href="./layout.html">Layout</a>
-        <a href="./navigation.html">Navigation</a>
-        <a href="./screens.html">Screens</a>
-        <a href="./surfaces.html">Surfaces</a>
-        </div>
-      </div>
-      <a class="nav-link" href="./index.html#como-usar">Como Usar</a>
-    </div>
-    <a class="nav-cta-mini" href="../index.html"><span class="nav-cta-text">Ver exemplos</span><span class="nav-cta-icon">&#8594;</span></a>
-  </nav>
+  <div id="nav-root"></div>
 
   <div id="root" class="showcase-shell"></div>
 
@@ -235,6 +50,7 @@
   <script type="text/babel" src="../components/forms/NumberField.jsx"></script>
   <script type="text/babel" src="../components/forms/DateField.jsx"></script>
   <script type="text/babel" src="../components/forms/FileUpload.jsx"></script>
+  <script type="text/babel" src="../components/layout/NavHeader.jsx"></script>
 
   <script type="text/babel">
     const Nav = ({ current }) => (
@@ -292,6 +108,7 @@
       );
     };
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    ReactDOM.createRoot(document.getElementById("nav-root")).render(<NavHeader currentCategory="forms" mode="category" />);
   </script>
 
   <script>

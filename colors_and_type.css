@@ -117,6 +117,7 @@
 
   /* Status — same warm temperature */
   --destructive:        0 100% 43%;  /* escurecido p/ AA c/ white FG (~5:1 vs ~4.0:1 anterior) */
+  --destructive-foreground: 0 0% 100%; /* white — AA vs destructive red (~5:1) */
   --success:          152 85% 30%;
   --warning:           38 92% 50%;
   --info:             217 91% 45%;

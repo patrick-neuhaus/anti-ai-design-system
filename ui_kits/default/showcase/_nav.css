@@ -1,0 +1,207 @@
+/* _nav.css — Floating nav header shared across all showcase pages.
+   Wave 6.1: extraído de 11 HTMLs pra single source of truth.
+   NÃO editar CSS nav nos HTMLs individuais — edite aqui.
+*/
+
+/* ── Pulse animation ──────────────────────────────────── */
+@keyframes nav-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / .5); }
+  50%       { box-shadow: 0 0 0 6px hsl(var(--accent) / 0); }
+}
+
+/* ── Floating header ──────────────────────────────────── */
+.nav-header {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 6px 6px 18px;
+  background: hsl(var(--card) / .72);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid hsl(var(--border) / .6);
+  border-radius: 999px;
+  box-shadow: 0 8px 32px -8px hsl(var(--foreground) / .12);
+  max-width: calc(100vw - 24px);
+}
+
+/* ── Brand ────────────────────────────────────────────── */
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -.01em;
+  color: hsl(var(--foreground));
+  padding-right: 14px;
+  border-right: 1px solid hsl(var(--border) / .5);
+  margin-right: 6px;
+  flex-shrink: 0;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-brand-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: hsl(var(--accent));
+  margin-right: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+  animation: nav-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-brand-dot { animation: none; }
+}
+
+/* ── Nav links ────────────────────────────────────────── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-link {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: color 150ms, background 150ms;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: hsl(var(--foreground));
+  background: hsl(var(--muted) / .6);
+}
+
+/* ── CTA mini — B1 fix: white text on accent bg ───────── */
+.nav-cta-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  background: hsl(var(--accent));
+  color: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 8px;
+  transition: transform 150ms, box-shadow 150ms;
+}
+
+.nav-cta-mini:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--accent) / .4);
+}
+
+/* ── CTA responsive ───────────────────────────────────── */
+.nav-cta-mini .nav-cta-text { display: inline; }
+.nav-cta-mini .nav-cta-icon { display: none; }
+@media (max-width: 768px) {
+  .nav-cta-mini {
+    width: 36px; height: 36px; padding: 0;
+    border-radius: 50%; display: inline-flex;
+    align-items: center; justify-content: center;
+  }
+  .nav-cta-mini .nav-cta-text { display: none; }
+  .nav-cta-mini .nav-cta-icon { display: inline; font-size: 16px; }
+}
+
+/* ── Categories dropdown ──────────────────────────────── */
+.fh-dropdown { position: relative; }
+
+.fh-dropdown-btn {
+  font-size: 12.5px;
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: color 150ms, background 150ms;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fh-dropdown-btn:hover {
+  color: hsl(var(--foreground));
+  background: hsl(var(--muted) / .6);
+}
+
+.fh-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / .6);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 8px 32px hsl(var(--foreground) / .10);
+  min-width: 200px;
+  z-index: 300;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fh-dropdown[data-open="true"] .fh-dropdown-menu { display: flex; }
+
+.fh-dropdown-btn .fh-arrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+  font-style: normal;
+}
+
+.fh-dropdown[data-open="true"] .fh-dropdown-btn .fh-arrow {
+  transform: rotate(180deg);
+}
+
+.fh-dropdown-menu a {
+  font-size: 12.5px;
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: color 150ms, background 150ms;
+  display: block;
+}
+
+.fh-dropdown-menu a:hover {
+  color: hsl(var(--foreground));
+  background: hsl(var(--muted) / .5);
+}
+
+.fh-dropdown-menu a.fh-active {
+  color: hsl(var(--accent));
+  background: hsl(var(--accent-decorative, var(--accent)) / .10);
+  font-weight: 500;
+}
+
+/* ── Mobile ───────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .nav-links { display: none; }
+  .nav-header { padding: 6px 6px 6px 14px; }
+  .nav-brand { padding-right: 8px; margin-right: 0; border-right: none; font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+  .nav-header { left: 8px; right: 8px; max-width: calc(100vw - 16px); transform: none; }
+}

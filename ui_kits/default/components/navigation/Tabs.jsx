@@ -8,7 +8,7 @@ const Tabs = ({ items = [], value, onChange, variant = "underline" }) => {
   return (
     <div role="tablist" style={{
       display: "flex",
-      gap: isUnderline ? 4 : 6,
+      gap: isUnderline ? 0 : 6,
       borderBottom: isUnderline ? "1px solid hsl(var(--border))" : "none",
       background: isUnderline ? "transparent" : "hsl(var(--muted))",
       padding: isUnderline ? 0 : 4,
@@ -34,9 +34,10 @@ const Tabs = ({ items = [], value, onChange, variant = "underline" }) => {
               color: active ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
               borderRadius: isUnderline ? 0 : 8,
               cursor: "pointer",
-              display: "inline-flex", alignItems: "center", gap: 8,
+              display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
               transition: "color .15s, background-color .15s",
               boxShadow: !isUnderline && active ? "0 1px 2px rgb(0 0 0 / .05)" : "none",
+              flex: isUnderline ? "1" : undefined,
             }}
           >
             {it.icon && <it.icon size={14} />}
