@@ -118,7 +118,7 @@ a{color:inherit;text-decoration:none}
 .user-info{flex:1;min-width:0;overflow:hidden}
 .user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-actions{display:flex;gap:2px;flex-shrink:0}
-.user-action-btn{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer}
+.user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer}
 .user-action-btn:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-foreground))}
 .collapsed .user-info,.collapsed .user-actions{display:none}
 .collapsed .user-panel{justify-content:center;padding:10px}
@@ -208,6 +208,20 @@ a{color:inherit;text-decoration:none}
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
+
+// ─── Reduced motion hook (F-RP-012 / WCAG 2.2.2) ─────────────────
+const useReducedMotion = () => {
+  const [reduced, setReduced] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handler = (e) => setReduced(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return reduced;
+};
 
 // ─── Icons ────────────────────────────────────────────────────────
 const ic = (d) => ({ size = 16, ...p } = {}) => (
@@ -409,6 +423,7 @@ const COLOR_PRESETS = {
     "--primary":"220 90% 55%","--accent":"280 70% 65%",
     "--background":"222 20% 10%","--foreground":"220 15% 92%",
     "--card":"222 20% 14%","--border":"222 20% 20%",
+    "--muted-foreground":"220 15% 65%",
     "--sidebar-background":"222 20% 7%","--sidebar-accent":"222 20% 15%","--sidebar-indicator":"220 90% 65%",
     "--success":"152 70% 45%","--warning":"38 90% 55%","--destructive":"0 85% 55%",
   },
@@ -550,6 +565,7 @@ function LoginScreen({ onLogin }) {
 
 // ─── Sidebar ──────────────────────────────────────────────────────
 function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
+  const reducedMotion = useReducedMotion(); // F-RP-012
   // Auto-collapse mobile (<= 768px)
   const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
   useEffect(() => {
@@ -563,10 +579,12 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
   const tpl = TEMPLATES[templateKey];
   const initials = tpl.user.name.split(" ").slice(0,2).map(w=>w[0]).join("");
 
+  const noMotionStyle = reducedMotion ? { transition: "none" } : {};
+
   return (
     <aside className={`sidebar${collapsed ? " collapsed":""}`} style={{ gridColumn:1 }}>
       {/* Toggle bolinha */}
-      <button className="sidebar-toggle" onClick={() => setCollapsed(c=>!c)} title={collapsed?"Expandir":"Recolher"}>
+      <button className="sidebar-toggle" onClick={() => setCollapsed(c=>!c)} title={collapsed?"Expandir":"Recolher"} style={noMotionStyle}>
         {collapsed ? <I.ChevronRight size={14} /> : <I.ChevronLeft size={14} />}
       </button>
 
@@ -2022,6 +2040,8 @@ function SettingsScreen() {
 
 // ─── App ──────────────────────────────────────────────────────────
 function App() {
+  const reducedMotion = useReducedMotion(); // F-RP-012
+
   // Demo mode: ?demo=ops|crm|wiki bypassa login (usado pelo showcase em iframe)
   const initDemo = (() => {
     try {
@@ -2073,7 +2093,7 @@ function App() {
   };
 
   return (
-    <div className="app-shell" style={{ gridTemplateColumns: undefined }}>
+    <div className="app-shell" style={{ gridTemplateColumns: undefined, transition: reducedMotion ? "none" : undefined }}>
       <AppSidebar
         templateKey={session}
         activePage={activePage}

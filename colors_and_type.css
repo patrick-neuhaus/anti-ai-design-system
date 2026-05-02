@@ -75,6 +75,9 @@
   --border:            30 20% 87%;
   --input:             30 33% 96%;
   --ring:             184 100% 18%;
+  /* Ring offset — white gap between element and focus ring (F-UI-007 / F-CA-008)
+     Gives contrast even when ring color == element background (e.g. Button primary). */
+  --ring-offset:      0 0% 100%;
 
   /* Brand */
   --primary:          184 100% 18%;  /* teal petroleum #00585c */
@@ -155,6 +158,48 @@
 }
 .animate-accordion-down { animation: accordion-down 0.2s ease-out; }
 .animate-accordion-up   { animation: accordion-up   0.2s ease-out; }
+
+/* ============================================================
+   FOCUS RING — cross-cutting a11y (WCAG 2.4.7 / F-UI-007 / F-CA-003 / F-CA-008)
+   Two-layer ring: 2px white offset + 3px primary halo.
+   Ensures visibility even on primary-colored elements (Button primary).
+   ============================================================ */
+:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px hsl(var(--ring-offset, 0 0% 100%)),
+    0 0 0 5px hsl(var(--ring) / .55);
+}
+/* Inputs keep their border-focus pattern; only add ring on top */
+.field-input:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow:
+    0 0 0 2px hsl(var(--ring-offset, 0 0% 100%)),
+    0 0 0 5px hsl(var(--ring) / .25);
+}
+
+/* ============================================================
+   REDUCED MOTION — global a11y (WCAG 2.2.2 + 2.3.3)
+   F-UX-001 / F-MO-001 / cross-cutting
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Loops infinitos do login-brand: desligar completamente */
+  .login-brand-orbs::before,
+  .login-brand-orbs::after,
+  .brand-float {
+    animation: none !important;
+  }
+}
 
 /* ============================================================
    BASE RESET (opt-in)

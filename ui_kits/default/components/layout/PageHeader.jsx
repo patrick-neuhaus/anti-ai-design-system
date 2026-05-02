@@ -9,7 +9,7 @@ const PageHeader = ({ title, subtitle, actions }) => (
       <h2 style={{ fontSize: 20, fontWeight: 600, color: "hsl(var(--foreground))", letterSpacing: "-.005em" }}>{title}</h2>
       {subtitle && <p style={{ fontSize: 14, color: "hsl(var(--muted-foreground))", marginTop: 2 }}>{subtitle}</p>}
     </div>
-    {actions && <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>{actions}</div>}
+    {actions && <div style={{ display: "flex", gap: 8, flexShrink: 0, flexWrap: "wrap", justifyContent: "flex-end" }}>{actions}</div>}
   </div>
 );
 

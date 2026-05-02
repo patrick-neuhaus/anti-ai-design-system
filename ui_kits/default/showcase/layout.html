@@ -265,13 +265,19 @@
         <p className="lead">Estruturas de página. PageHeader + PageShell pra screens; Section pra marketing.</p>
 
         <ShowcaseSection title="PageHeader — com e sem actions">
-          <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: 16, background: "hsl(var(--background))", borderRadius: 8 }}>
-            <PageHeader title="Romaneios" subtitle="Lista das últimas 72h" />
-            <PageHeader
-              title="Dashboard"
-              subtitle="Visão geral"
-              actions={<><Button variant="outline" size="sm" iconLeft={Icon.Calendar}>26/04 – 28/04</Button><Button size="sm" iconLeft={Icon.Plus}>Novo</Button></>}
-            />
+          {/* F-UX-003 fix: dois exemplos separados em cards independentes */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ padding: 16, background: "hsl(var(--background))", borderRadius: 8, border: "1px solid hsl(var(--border))" }}>
+              <PageHeader title="Romaneios" subtitle="Lista das últimas 72h" />
+            </div>
+            <div style={{ padding: 16, background: "hsl(var(--background))", borderRadius: 8, border: "1px solid hsl(var(--border))" }}>
+              {/* F-UX-004 fix: actions com flexWrap pra evitar overflow do botão "+ Novo" */}
+              <PageHeader
+                title="Dashboard"
+                subtitle="Visão geral"
+                actions={<><Button variant="outline" size="sm" iconLeft={Icon.Calendar}>26/04 – 28/04</Button><Button size="sm" iconLeft={Icon.Plus}>Novo</Button></>}
+              />
+            </div>
           </div>
         </ShowcaseSection>
 
