@@ -551,20 +551,28 @@
       gap: 10px;
       flex-wrap: wrap;
     }
+    /* anchor variant of Button accent — mirrors Button.jsx BTN_VARIANTS.accent + BTN_SIZES.md */
     .slide-btn-primary {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 10px 20px;
+      justify-content: center;
+      gap: var(--space-2, 8px);
+      padding: 0 var(--space-4, 16px);
+      height: 40px;
       background: hsl(var(--accent));
       color: #fff;
-      border-radius: var(--radius-md, 10px);
-      font-size: 13px;
-      font-weight: 600;
+      border: 1px solid hsl(var(--accent));
+      border-radius: var(--radius-md, 8px);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
       text-decoration: none;
-      transition: background 150ms;
-      border: none;
+      white-space: nowrap;
       cursor: pointer;
+      user-select: none;
+      transition: background-color var(--motion-fast, 150ms) var(--ease, cubic-bezier(.4,0,.2,1)),
+                  opacity var(--motion-fast, 150ms) var(--ease, cubic-bezier(.4,0,.2,1)),
+                  transform var(--motion-instant, 80ms) var(--ease-out, cubic-bezier(0,0,.2,1));
     }
     .slide-btn-primary:hover { background: hsl(var(--accent) / .88); }
     .slide-btn-ghost {

@@ -73,6 +73,12 @@ const BTN_VARIANTS = {
     color: "hsl(var(--destructive-foreground))",
     borderColor: "hsl(var(--destructive))",
   },
+  /* accent — terracotta CTA. Use for primary call-to-action outside primary teal context. */
+  accent: {
+    background: "hsl(var(--accent))",
+    color: "#fff",
+    borderColor: "hsl(var(--accent))",
+  },
 };
 
 const Button = ({
