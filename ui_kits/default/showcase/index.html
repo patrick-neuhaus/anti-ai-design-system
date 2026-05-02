@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../../colors_and_type.css" />
   <link rel="stylesheet" href="./_nav.css" />
   <link rel="stylesheet" href="./_token-editor.css" />
+  <link rel="stylesheet" href="./_footer.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -855,87 +856,7 @@
     .code-attr { color: hsl(var(--sidebar-indicator)); }
     .code-string { color: hsl(174 60% 65%); }
 
-    /* Footer 3-col funcional */
-    footer {
-      position: relative;
-      overflow: hidden;
-      background: hsl(var(--muted) / .3);
-    }
-    .footer-body {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 32px 48px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 48px;
-    }
-    .footer-col h4 {
-      font-size: 12px;
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: hsl(var(--foreground));
-      font-weight: 600;
-      margin: 0 0 16px;
-    }
-    .footer-col ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .footer-col ul li a {
-      font-size: 13px;
-      color: hsl(var(--muted-foreground));
-      text-decoration: none;
-      transition: color 150ms;
-    }
-    .footer-col ul li a:hover { color: hsl(var(--foreground)); }
-    .footer-status-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: hsl(var(--muted-foreground));
-    }
-    .footer-status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: hsl(var(--success));
-      flex-shrink: 0;
-    }
-    .footer-bottom {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px 32px;
-      border-top: 1px solid hsl(var(--border));
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .footer-bottom-brand {
-      font-size: 12px;
-      color: hsl(var(--muted-foreground));
-      font-family: var(--font-mono);
-    }
-    .footer-bottom-links {
-      display: flex;
-      gap: 16px;
-    }
-    .footer-bottom-links a {
-      font-size: 12px;
-      color: hsl(var(--muted-foreground));
-      text-decoration: none;
-      transition: color 150ms;
-    }
-    .footer-bottom-links a:hover { color: hsl(var(--foreground)); }
-    @media (max-width: 700px) {
-      .footer-body { grid-template-columns: 1fr; gap: 32px; padding: 40px 20px 32px; }
-      .footer-bottom { flex-direction: column; align-items: flex-start; padding: 16px 20px; }
-    }
+    /* Footer — Wave 6.3: estilos migrados para _footer.css */
 
     @media (max-width: 640px) {
       .section-wrap { padding: 48px 20px; }
@@ -1141,6 +1062,7 @@
 
   <script type="text/babel" src="../components/layout/NavHeader.jsx"></script>
   <script type="text/babel" src="../components/showcase/TokenEditorPreview.jsx"></script>
+  <script type="text/babel" src="../components/showcase/FooterShowcase.jsx"></script>
     // ── helpers ──────────────────────────────────────────────
     const getCssVar = (name) => {
       if (typeof window === "undefined") return "";
@@ -2011,114 +1933,9 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
       );
     };
 
-    // Constellation SVG animada no footer
-    const CONSTELLATION_DOTS = [
-      { cx: "8%",  cy: "30%" },
-      { cx: "22%", cy: "65%" },
-      { cx: "45%", cy: "20%" },
-      { cx: "68%", cy: "55%" },
-      { cx: "88%", cy: "35%" },
-    ];
-    // linhas entre dots adjacentes
-    const CONSTELLATION_LINES = [
-      [0, 1], [1, 2], [2, 3], [3, 4], [0, 2],
-    ];
-
-    const ConstellationSvg = () => {
-      const prefersReduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      return (
-        <svg
-          className="footer-constellation"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
-        >
-          {CONSTELLATION_LINES.map(([a, b], i) => {
-            const da = CONSTELLATION_DOTS[a];
-            const db = CONSTELLATION_DOTS[b];
-            return (
-              <line
-                key={i}
-                x1={da.cx} y1={da.cy}
-                x2={db.cx} y2={db.cy}
-                stroke="hsl(var(--foreground))"
-                strokeOpacity="0.06"
-                strokeWidth="0.3"
-                style={prefersReduced ? {} : {
-                  strokeDasharray: 30,
-                  strokeDashoffset: 30,
-                  animation: `constellation-draw 2s ${i * 0.3}s ease forwards`,
-                }}
-              />
-            );
-          })}
-          {CONSTELLATION_DOTS.map((d, i) => (
-            <circle
-              key={i}
-              cx={d.cx} cy={d.cy} r="0.7"
-              fill="hsl(var(--foreground))"
-              fillOpacity="0.12"
-              style={prefersReduced ? {} : {
-                animation: `constellation-pop 0.4s ${i * 0.25}s ease both`,
-              }}
-            />
-          ))}
-        </svg>
-      );
-    };
-
-    // ── Footer 3-col funcional (2.7) ─────────────────────────
+    // ── Footer editorial — Wave 6.3 (FooterShowcase reusable) ──
     const Footer = () => (
-      <footer>
-        <ConstellationSvg />
-        <svg className="footer-wave" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 30 Q 250 0 500 30 T 1000 30 V 60 H 0 Z" fill="hsl(var(--muted) / .5)" />
-        </svg>
-        <div className="footer-body">
-          <div className="footer-col">
-            <h4>Recursos</h4>
-            <ul>
-              <li><a href="./base.html">Showcase técnico</a></li>
-              <li><a href="../index.html">Templates demo</a></li>
-              <li><a href="#tokens">Tokens</a></li>
-              <li><a href="#como-usar">Como usar</a></li>
-            </ul>
-          </div>
-          <div className="footer-col">
-            <h4>Repositório</h4>
-            <ul>
-              <li><a href="https://github.com/patrick-neuhaus/anti-ai-design-system" target="_blank" rel="noopener">GitHub</a></li>
-              <li><a href="https://github.com/patrick-neuhaus/anti-ai-design-system/blob/main/LICENSE" target="_blank" rel="noopener">License MIT</a></li>
-              <li><a href="https://github.com/patrick-neuhaus/anti-ai-design-system/issues" target="_blank" rel="noopener">Issues</a></li>
-            </ul>
-          </div>
-          <div className="footer-col">
-            <h4>Status</h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div className="footer-status-item">
-                <div className="footer-status-dot" />
-                <span>v6.5 · stable</span>
-              </div>
-              <div className="footer-status-item" style={{ gap: 0, flexDirection: "column", alignItems: "flex-start" }}>
-                <span style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>Último update</span>
-                <span style={{ fontSize: 13, fontFamily: "var(--font-mono)", color: "hsl(var(--foreground))" }}>2026-05-01</span>
-              </div>
-              <div className="footer-status-item" style={{ gap: 0, flexDirection: "column", alignItems: "flex-start" }}>
-                <span style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>Build</span>
-                <span style={{ fontSize: 13, color: "hsl(var(--success))", fontWeight: 500 }}>✓ stable</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <span className="footer-bottom-brand">Anti-AI Design System · v6.5 · MIT · Artemis Studio</span>
-          <div className="footer-bottom-links">
-            <a href="#">Política de Privacidade</a>
-            <a href="#">Termos de Uso</a>
-          </div>
-        </div>
-      </footer>
+      <FooterShowcase version="v6.3" lastUpdate="2026" />
     );
 
     // ── Token Editor (Wave 5.2) ───────────────────────────────

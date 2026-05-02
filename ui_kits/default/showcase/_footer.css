@@ -1,0 +1,274 @@
+/* _footer.css — Anti-AI DS Editorial Footer
+   Wave 6.3: extraído como shared CSS. Replicável em qualquer showcase page.
+   Direção: editorial / kinetic typography, assimétrico, terracotta accents.
+   NÃO hardcodar cores — usar tokens CSS.
+*/
+
+/* ── Constellation animation ────────────────────────────── */
+@keyframes constellation-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes constellation-pop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* ── Footer wrapper ─────────────────────────────────────── */
+.footer-editorial {
+  position: relative;
+  overflow: hidden;
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+/* ── Kinetic title ──────────────────────────────────────── */
+.footer-kinetic-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: hsl(var(--background));
+  margin: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.footer-kinetic-title .word {
+  display: inline-block;
+  will-change: transform;
+  transition: color var(--motion-normal, 200ms) var(--ease-standard, cubic-bezier(.4,0,.2,1));
+}
+.footer-kinetic-title .word-accent {
+  color: hsl(var(--accent));
+}
+.footer-kinetic-title .word:hover {
+  color: hsl(var(--accent));
+}
+
+/* Letter-by-letter reveal on scroll */
+@keyframes letter-in {
+  from { opacity: 0; transform: translateY(24px) rotateX(-30deg); }
+  to   { opacity: 1; transform: translateY(0)    rotateX(0deg); }
+}
+.footer-letter {
+  display: inline-block;
+  opacity: 0;
+  transform-origin: bottom;
+}
+.footer-editorial.in .footer-letter {
+  animation: letter-in 500ms cubic-bezier(.2,.8,.2,1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-letter { opacity: 1; transform: none; animation: none; }
+}
+
+/* ── Upper section: title + nav asymmetric grid ─────────── */
+.footer-upper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 32px 48px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.footer-upper-left {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.footer-tagline {
+  font-size: 15px;
+  color: hsl(var(--background) / .55);
+  font-family: var(--font-body);
+  max-width: 340px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.footer-signature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-sig-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: hsl(var(--background) / .4);
+}
+.footer-sig-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: hsl(var(--background) / .7);
+}
+.footer-sig-divider {
+  width: 1px;
+  height: 18px;
+  background: hsl(var(--background) / .2);
+}
+
+/* ── Nav columns ────────────────────────────────────────── */
+.footer-nav-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.footer-nav-col h4 {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: hsl(var(--background) / .4);
+  font-weight: 500;
+  margin: 0 0 16px;
+}
+
+.footer-nav-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-nav-col ul li a {
+  font-size: 14px;
+  color: hsl(var(--background) / .65);
+  text-decoration: none;
+  transition: color var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1));
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.footer-nav-col ul li a:hover {
+  color: hsl(var(--background));
+}
+
+/* ── Status section ─────────────────────────────────────── */
+.footer-status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: hsl(var(--background) / .55);
+}
+.footer-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--success));
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 hsl(var(--success) / .5);
+  animation: status-pulse 2.4s ease-in-out infinite;
+}
+@keyframes status-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--success) / .5); }
+  50%       { box-shadow: 0 0 0 5px hsl(var(--success) / 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-status-dot { animation: none; }
+}
+
+/* ── Terracotta accent stripe ───────────────────────────── */
+.footer-accent-stripe {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.footer-accent-line {
+  height: 1px;
+  background: linear-gradient(90deg,
+    hsl(var(--accent) / .6) 0%,
+    hsl(var(--accent) / .2) 60%,
+    transparent 100%);
+}
+
+/* ── SVG wave divider ───────────────────────────────────── */
+.footer-wave-svg {
+  display: block;
+  width: 100%;
+  height: 40px;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/* ── Bottom bar ─────────────────────────────────────────── */
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 32px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-bottom-brand {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: hsl(var(--background) / .3);
+  letter-spacing: .04em;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 20px;
+}
+.footer-bottom-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: hsl(var(--background) / .3);
+  text-decoration: none;
+  letter-spacing: .04em;
+  transition: color var(--motion-fast, 150ms);
+}
+.footer-bottom-links a:hover {
+  color: hsl(var(--background) / .7);
+}
+
+/* ── Constellation SVG absolute ─────────────────────────── */
+.footer-constellation {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .footer-upper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 48px 20px 32px;
+  }
+  .footer-kinetic-title {
+    font-size: clamp(36px, 10vw, 64px);
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 20px 28px;
+  }
+  .footer-accent-stripe { padding: 0 20px; }
+}
+
+@media (max-width: 480px) {
+  .footer-nav-cols { grid-template-columns: 1fr; gap: 24px; }
+}
