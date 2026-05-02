@@ -1,0 +1,224 @@
+/* ==========================================================
+   Footer editorial — Wave 6.3
+   Dark bg (foreground token) + terracotta accent stripe
+   Kinetic typography via IntersectionObserver
+   ========================================================== */
+
+.footer-editorial {
+  position: relative;
+  overflow: hidden;
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+}
+
+/* Accent stripe topo */
+.footer-editorial::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    hsl(var(--accent)) 0%,
+    hsl(var(--accent) / .4) 60%,
+    transparent 100%
+  );
+}
+
+/* SVG constelacao decorativa */
+.footer-constellation-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Container principal */
+.footer-ed-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 32px 48px;
+}
+
+/* Grid 4 colunas: assinatura | recursos | repo | status */
+.footer-ed-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 900px) {
+  .footer-ed-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+@media (max-width: 540px) {
+  .footer-ed-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .footer-ed-inner {
+    padding: 48px 20px 36px;
+  }
+}
+
+/* Coluna assinatura */
+.footer-ed-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Kinetic: nome do DS — letra por letra */
+.footer-ed-ds-name {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: hsl(var(--background));
+  margin: 0 0 4px;
+}
+
+.footer-ed-ds-name .kinetic-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em);
+  transition: opacity 350ms ease, transform 350ms cubic-bezier(.2,.8,.2,1);
+}
+
+.footer-ed-ds-name.kinetic-visible .kinetic-letter {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion: sem animacao */
+@media (prefers-reduced-motion: reduce) {
+  .footer-ed-ds-name .kinetic-letter {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.footer-ed-tagline {
+  font-size: 13px;
+  color: hsl(var(--background) / .55);
+  line-height: 1.6;
+  max-width: 260px;
+  margin: 0;
+}
+
+.footer-ed-by {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--accent));
+  margin: 0;
+}
+
+/* Colunas de links */
+.footer-ed-col h4 {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: hsl(var(--background) / .45);
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+
+.footer-ed-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-ed-col ul li a {
+  font-size: 13px;
+  color: hsl(var(--background) / .7);
+  text-decoration: none;
+  transition: color 150ms;
+}
+
+.footer-ed-col ul li a:hover {
+  color: hsl(var(--background));
+}
+
+/* Status items */
+.footer-ed-status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-ed-status-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.footer-ed-status-label {
+  font-size: 11px;
+  color: hsl(var(--background) / .4);
+}
+
+.footer-ed-status-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: hsl(var(--background) / .85);
+}
+
+.footer-ed-status-value.ok {
+  color: hsl(var(--success));
+}
+
+.footer-ed-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--success));
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Bottom bar */
+.footer-ed-bottom {
+  border-top: 1px solid hsl(var(--background) / .12);
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-ed-copyright {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: hsl(var(--background) / .35);
+}
+
+.footer-ed-bottom-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-ed-bottom-links a {
+  font-size: 11px;
+  color: hsl(var(--background) / .4);
+  text-decoration: none;
+  transition: color 150ms;
+}
+
+.footer-ed-bottom-links a:hover {
+  color: hsl(var(--background) / .75);
+}
