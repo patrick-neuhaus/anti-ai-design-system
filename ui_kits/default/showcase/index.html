@@ -570,7 +570,7 @@
       padding: 0 var(--space-4, 16px);
       height: 40px;
       background: hsl(var(--accent));
-      color: #fff;
+      color: hsl(var(--accent-foreground)); /* W6.8: dark cocoa 4.62:1 WCAG AA (was #fff 3.74 FAIL) */
       border: 1px solid hsl(var(--accent));
       border-radius: var(--radius-md, 8px);
       font-size: 14px;
@@ -1764,27 +1764,22 @@
       );
     };
 
-    const CategoriasSection = () => {
-      const revealRef = useReveal({ threshold: 0.08, rootMargin: "-20px 0px" });
-      const staggerRef = useReveal({ threshold: 0.05, rootMargin: "0px 0px" });
-      return (
-        <section className="alt-bg" id="categorias">
-          <div className="section-wrap reveal" ref={revealRef}>
-            <p className="eyebrow">Catálogo técnico</p>
-            <h2 className="section-title">Categorias de componentes</h2>
-            <p className="section-sub">
-              56+ componentes e telas organizados por função. Cada categoria tem showcase técnico próprio.
-            </p>
-            {/* F-MO-014: stagger each toc-row on scroll */}
-            <div className="categories-toc reveal-stagger" ref={staggerRef}>
-              {CATEGORIES.map((cat) => (
-                <TocRow key={cat.key} cat={cat} />
-              ))}
-            </div>
+    const CategoriasSection = () => (
+      <section className="alt-bg" id="categorias">
+        <div className="section-wrap reveal" ref={useReveal()}>
+          <p className="eyebrow">Catálogo técnico</p>
+          <h2 className="section-title">Categorias de componentes</h2>
+          <p className="section-sub">
+            56+ componentes e telas organizados por função. Cada categoria tem showcase técnico próprio.
+          </p>
+          <div className="categories-toc">
+            {CATEGORIES.map((cat) => (
+              <TocRow key={cat.key} cat={cat} />
+            ))}
           </div>
-        </section>
-      );
-    };
+        </div>
+      </section>
+    );
 
     // ── Templates Cases Section — scroll-snap carousel (Wave 6.4 / 9.2 real DS components) ──
 
