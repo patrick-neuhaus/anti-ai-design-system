@@ -107,7 +107,37 @@ a{color:inherit;text-decoration:none}
 .nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
 .nav-item .nav-label{flex:1;overflow:hidden;text-overflow:ellipsis}
 .nav-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:hsl(var(--sidebar-indicator));font-weight:600}
-.collapsed .nav-label,.collapsed .nav-badge,.collapsed .nav-section-label,.collapsed .sidebar-brand-text{display:none}
+/* Sidebar collapse stagger — Wave 4 P3 F-MO-007
+   Labels/badges fade-out + slide left before hiding.
+   Each nav item staggers 40ms via nth-child delays.
+   Reduced-motion: instant (transition overridden by global block). */
+.nav-label,.nav-badge,.nav-section-label,.sidebar-brand-text{
+  opacity:1;
+  max-width:200px;
+  transform:translateX(0);
+  transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;
+  visibility:visible;
+  white-space:nowrap;
+  overflow:hidden;
+}
+.collapsed .nav-label,.collapsed .nav-badge,.collapsed .nav-section-label,.collapsed .sidebar-brand-text{
+  opacity:0;
+  max-width:0;
+  transform:translateX(-8px);
+  visibility:hidden;
+  transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms;
+}
+/* Stagger: each nav-item delays its children by 40ms increments */
+.sidebar-nav > *:nth-child(1)  .nav-label, .sidebar-nav > *:nth-child(1)  .nav-badge { transition-delay: 0ms,   0ms,   0ms,   200ms; }
+.sidebar-nav > *:nth-child(2)  .nav-label, .sidebar-nav > *:nth-child(2)  .nav-badge { transition-delay: 20ms,  20ms,  20ms,  220ms; }
+.sidebar-nav > *:nth-child(3)  .nav-label, .sidebar-nav > *:nth-child(3)  .nav-badge { transition-delay: 40ms,  40ms,  40ms,  240ms; }
+.sidebar-nav > *:nth-child(4)  .nav-label, .sidebar-nav > *:nth-child(4)  .nav-badge { transition-delay: 60ms,  60ms,  60ms,  260ms; }
+.sidebar-nav > *:nth-child(5)  .nav-label, .sidebar-nav > *:nth-child(5)  .nav-badge { transition-delay: 80ms,  80ms,  80ms,  280ms; }
+.sidebar-nav > *:nth-child(6)  .nav-label, .sidebar-nav > *:nth-child(6)  .nav-badge { transition-delay: 100ms, 100ms, 100ms, 300ms; }
+.sidebar-nav > *:nth-child(7)  .nav-label, .sidebar-nav > *:nth-child(7)  .nav-badge { transition-delay: 120ms, 120ms, 120ms, 320ms; }
+.sidebar-nav > *:nth-child(8)  .nav-label, .sidebar-nav > *:nth-child(8)  .nav-badge { transition-delay: 140ms, 140ms, 140ms, 340ms; }
+.sidebar-nav > *:nth-child(9)  .nav-label, .sidebar-nav > *:nth-child(9)  .nav-badge { transition-delay: 160ms, 160ms, 160ms, 360ms; }
+.sidebar-nav > *:nth-child(10) .nav-label, .sidebar-nav > *:nth-child(10) .nav-badge { transition-delay: 180ms, 180ms, 180ms, 380ms; }
 .collapsed .nav-item{justify-content:center;padding:9px}
 .collapsed .sidebar-brand{padding:6px 8px 16px;justify-content:center}
 .collapsed .sidebar-logo-tag{font-size:7px;top:-4px;right:-6px}
@@ -122,7 +152,8 @@ a{color:inherit;text-decoration:none}
 .user-actions{display:flex;gap:2px;flex-shrink:0}
 .user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer}
 .user-action-btn:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-foreground))}
-.collapsed .user-info,.collapsed .user-actions{display:none}
+.user-info,.user-actions{opacity:1;max-width:200px;transform:translateX(0);transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;visibility:visible;overflow:hidden}
+.collapsed .user-info,.collapsed .user-actions{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms}
 .collapsed .user-panel{justify-content:center;padding:10px}
 
 /* ===== MAIN ===== */

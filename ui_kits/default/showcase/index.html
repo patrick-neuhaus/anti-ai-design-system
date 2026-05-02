@@ -95,6 +95,26 @@
       margin: 0 0 20px;
       color: hsl(var(--foreground));
     }
+    /* ==================================================
+       KINETIC TYPOGRAPHY — hero title word-by-word reveal
+       Wave 4 P3 · F-MO-010
+       Each .hero-word slides up + fades in sequentially.
+       Reduced-motion: all words visible immediately (no anim).
+       ================================================== */
+    .hero-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(0.4em);
+      animation: hero-word-in 520ms cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    @keyframes hero-word-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Line break between "Anti-AI" and "Design System" preserved via .hero-title-break */
+    .hero-title-break { display: block; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-word { animation: none; opacity: 1; transform: none; }
+    }
     h2.section-title {
       font-family: var(--font-display);
       font-size: clamp(24px, 3vw, 36px);
@@ -279,7 +299,41 @@
       border-radius: 8px;
       background: hsl(var(--card));
       border: 1px solid hsl(var(--border));
+      cursor: pointer;
+      position: relative;
+      transition: border-color 150ms, background 150ms;
+      outline: none;
     }
+    .token-swatch-row:hover { border-color: hsl(var(--primary) / .4); background: hsl(var(--muted) / .6); }
+    .token-swatch-row:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 2px; }
+    /* Click-to-copy tooltip — Wave 4 P3 */
+    .token-swatch-row .copy-tip {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: .04em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: hsl(var(--success));
+      color: hsl(var(--card));
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      white-space: nowrap;
+    }
+    .token-swatch-row.copied .copy-tip { opacity: 1; }
+    .token-swatch-row .copy-icon {
+      margin-left: auto;
+      opacity: 0;
+      color: hsl(var(--muted-foreground));
+      transition: opacity 150ms;
+      flex-shrink: 0;
+    }
+    .token-swatch-row:hover .copy-icon,
+    .token-swatch-row:focus-visible .copy-icon { opacity: 1; }
     .token-swatch-color {
       width: 32px;
       height: 32px;
@@ -1811,6 +1865,56 @@
       return count;
     };
 
+    // ── Click-to-copy token swatch — Wave 4 P3 ───────────────
+    // TokenSwatchRow: mostra swatch de cor + nome do token.
+    // Click (ou Enter) copia o valor CSS var pra clipboard.
+    // Tooltip "Copiado!" aparece 1.5s. Acessível via tabIndex + onKeyDown.
+    const TokenSwatchRow = ({ name, label, colorVal }) => {
+      const [copied, setCopied] = React.useState(false);
+      const copyToken = () => {
+        const text = colorVal ? `hsl(${colorVal})` : `var(${name})`;
+        navigator.clipboard.writeText(text).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        }).catch(() => {
+          // Fallback para browsers sem clipboard API
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.cssText = "position:fixed;top:-9999px;left:-9999px";
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+          try { document.execCommand("copy"); } catch(e) {}
+          document.body.removeChild(ta);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1500);
+        });
+      };
+      return (
+        <div
+          className={`token-swatch-row${copied ? " copied" : ""}`}
+          onClick={copyToken}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); copyToken(); } }}
+          tabIndex={0}
+          role="button"
+          aria-label={`Copiar token ${name}`}
+          title={`Clique para copiar ${name}`}
+        >
+          <div
+            className="token-swatch-color"
+            style={{ background: colorVal ? `hsl(${colorVal})` : "transparent" }}
+          />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="token-swatch-label">{label}</div>
+            <div className="token-swatch-var">{name}</div>
+          </div>
+          <svg className="copy-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+          </svg>
+          <span className="copy-tip" aria-live="polite">{copied ? "Copiado!" : ""}</span>
+        </div>
+      );
+    };
+
     // ── Hero Section ──────────────────────────────────────────
     const PALETTE_CHIPS = [
       { label: "--primary", name: "Petroleum" },
@@ -1838,8 +1942,18 @@
               {/* Texto — F-MO-013 hero entry */}
               <div className="hero-entry-text">
                 <p className="eyebrow">Sistema editorial · 56+ componentes</p>
-                <h1 className="hero-title">
-                  Anti-AI<br />Design System
+                <h1 className="hero-title" aria-label="Anti-AI Design System">
+                  {/* Kinetic typography: word-by-word reveal — Wave 4 P3 F-MO-010 */}
+                  {[
+                    { word: "Anti-AI", delay: "100ms" },
+                    { word: "\n", delay: null },
+                    { word: "Design", delay: "260ms" },
+                    { word: "System", delay: "400ms" },
+                  ].map((item, i) =>
+                    item.word === "\n"
+                      ? <span key="br" className="hero-title-break" aria-hidden="true" />
+                      : <span key={i} className="hero-word" style={{ animationDelay: item.delay }}>{item.word}{" "}</span>
+                  )}
                 </h1>
                 <p className="hero-sub">
                   Componentes com personalidade. Sem sombras genéricas, sem azul shadcn padrão,
@@ -2098,16 +2212,12 @@
                   <h4>{grp.label}</h4>
                   <div className="token-swatches">
                     {grp.tokens.map((t) => (
-                      <div key={t.name} className="token-swatch-row">
-                        <div
-                          className="token-swatch-color"
-                          style={{ background: colors[t.name] ? `hsl(${colors[t.name]})` : "transparent" }}
-                        />
-                        <div>
-                          <div className="token-swatch-label">{t.label}</div>
-                          <div className="token-swatch-var">{t.name}</div>
-                        </div>
-                      </div>
+                      <TokenSwatchRow
+                        key={t.name}
+                        name={t.name}
+                        label={t.label}
+                        colorVal={colors[t.name]}
+                      />
                     ))}
                   </div>
                 </div>
