@@ -264,3 +264,24 @@ Net +150 linhas pra um DS substancialmente mais rico (DRY nav, 7 components novo
 ### Recomendação
 
 DS está **production-quality estética**. Próximo passo natural NÃO é Wave 7 — é **uso real** (demo pra prospect, integração em projeto Lovable, dogfood interno). Anti-loop CLAUDE.md: polir sem feedback de uso real é especulação. Tech debt acima fica registrado pra quando aparecer caso de uso que pressione mudança.
+
+---
+
+## 10. Wave 6.6 (2026-05-02) — Unificação de botões CTA
+
+### Mudanças
+
+- `Button.jsx` ganha variant `accent` (terracotta + white text, `hsl(var(--accent))`) — replicável pelo DS como qualquer outro variant declarativo
+- `slide-btn-primary` (showcase index.html) alinhado pixel-perfect com Button accent — mesmos valores: height 40px, padding `var(--space-4, 16px)`, font-size 14px, font-weight 500, border-radius `var(--radius-md, 8px)`, transition tokens `--motion-fast` + `--ease` + `--motion-instant`. Comentário inline documenta que é "anchor variant of Button accent"
+
+### Tech debt documentado (mantido custom, justificado)
+
+- `nav-cta-mini`: pill responsivo com requirements estruturais de nav — custom OK
+- `editor-btn` (Reset/Salvar tema/Exportar CSS): escopo restrito de painel editor — custom OK
+- `slide-btn-ghost`: ghost outlined, contexto visual diferente de Button ghost — custom OK
+- `tab-btn`, `token-editor-tab`: tabs, não botões — semântica diferente, custom correto
+
+### Status final Wave 6 — completo
+
+Total commits Wave 6: 11 (W6.1..W6.6) + 3 fixes (Babel, C1 iframe, visual)
+DS pronto pra demo real. Anti-loop: usa antes de polir mais.
