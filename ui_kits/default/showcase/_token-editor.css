@@ -1,0 +1,262 @@
+/*
+  _token-editor.css — Wave 6.2
+  Estilos do TokenEditorPreview (compartilhado entre index.html e screens.html).
+  Inclui fix D1 (.token-editor-tab) e D2 (.tab-btn) para fonte consistente com DS.
+*/
+
+/* ── D2 fix: .tab-btn — Como Usar section tabs ─────────────────────────── */
+.tab-btn {
+  padding: 10px 18px;
+  border-radius: 8px 8px 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: hsl(var(--muted-foreground));
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 150ms;
+}
+.tab-btn.active {
+  color: hsl(var(--foreground));
+  border-bottom-color: hsl(var(--accent));
+}
+.tab-btn:hover:not(.active) { color: hsl(var(--foreground)); }
+
+/* ── Token Editor wrap ──────────────────────────────────────────────────── */
+.token-editor-wrap {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.token-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 0;
+  border-bottom: 1px solid hsl(var(--border));
+  gap: 12px;
+}
+
+.token-editor-title {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin: 0 0 12px;
+}
+
+.token-editor-tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: -1px;
+}
+
+/* ── D1 fix: .token-editor-tab — Básico/Avançado tabs ──────────────────── */
+.token-editor-tab {
+  padding: 8px 16px;
+  border-radius: 6px 6px 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  color: hsl(var(--muted-foreground));
+  transition: color 150ms;
+  margin-bottom: -1px;
+}
+.token-editor-tab.active {
+  color: hsl(var(--foreground));
+  border-bottom-color: hsl(var(--accent));
+}
+.token-editor-tab:hover:not(.active) { color: hsl(var(--foreground)); }
+
+.token-editor-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* compact mode */
+.token-editor-wrap.compact .token-editor-body { padding: 14px 16px; gap: 12px; }
+.token-editor-wrap.compact .token-editor-header { padding: 12px 16px 0; }
+.token-editor-wrap.compact .token-editor-title { font-size: 13px; margin-bottom: 8px; }
+
+/* ── Basic mode ─────────────────────────────────────────────────────────── */
+.editor-basic-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.editor-color-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.editor-color-input {
+  width: 40px;
+  height: 40px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 2px;
+  cursor: pointer;
+  background: none;
+}
+.editor-color-hex {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  width: 80px;
+  padding: 6px 8px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  background: hsl(var(--muted) / .4);
+  color: hsl(var(--foreground));
+  outline: none;
+}
+.editor-color-hex:focus { border-color: hsl(var(--accent)); }
+
+.editor-derived-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.editor-derived-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: hsl(var(--muted) / .3);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.editor-derived-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid hsl(var(--border));
+  flex-shrink: 0;
+}
+.editor-derived-info { min-width: 0; }
+.editor-derived-name {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+}
+.editor-derived-var {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ── Advanced mode ──────────────────────────────────────────────────────── */
+.editor-advanced-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.editor-advanced-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: hsl(var(--muted) / .3);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.editor-advanced-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid hsl(var(--border));
+  flex-shrink: 0;
+}
+.editor-advanced-info { flex: 1; min-width: 0; }
+.editor-advanced-name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.editor-advanced-var {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: hsl(var(--muted-foreground));
+}
+.editor-advanced-input {
+  width: 28px;
+  height: 28px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 4px;
+  padding: 1px;
+  cursor: pointer;
+  background: none;
+  flex-shrink: 0;
+}
+
+/* ── WCAG panel ─────────────────────────────────────────────────────────── */
+.wcag-panel {
+  background: hsl(var(--muted) / .3);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wcag-panel-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 4px;
+}
+.wcag-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.wcag-badge.aaa    { background: hsl(var(--success) / .2); color: hsl(var(--success)); }
+.wcag-badge.aa     { background: hsl(var(--info) / .2);    color: hsl(var(--info)); }
+.wcag-badge.aa-low { background: hsl(var(--warning) / .2); color: hsl(var(--warning)); }
+.wcag-badge.fail   { background: hsl(var(--destructive) / .15); color: hsl(var(--destructive)); }
+
+/* ── Actions ────────────────────────────────────────────────────────────── */
+.editor-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.editor-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / .4);
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  transition: background 150ms, border-color 150ms;
+}
+.editor-btn:hover { background: hsl(var(--muted) / .7); }
+.editor-btn.primary {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-color: hsl(var(--accent));
+}
+.editor-btn.primary:hover { filter: brightness(1.08); }
