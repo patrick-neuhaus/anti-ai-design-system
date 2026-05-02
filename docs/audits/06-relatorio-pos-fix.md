@@ -193,3 +193,74 @@ Nenhuma regressão detectada. Identidade visual (paleta cream/teal/terracotta, t
 **F-RP-014 note:** Dialog e Drawer tinham focus trap completo desde Wave 2 (Tab cycle first↔last, Shift+Tab, Escape, restore focus). Validado por code review — nenhuma mudança necessária. Marcado ✅.
 
 **Contagem final P1:** ✅ 14/14 (100%)
+
+---
+
+## 9. Wave 6 — DRY refactor + visual polish (2026-05-02)
+
+**Trigger:** feedback Patrick em screenshots reais — duplicação de nav, contraste de buttons, fontes inconsistentes, footer feio, falta de gráficos/accordion, picker tabs largura, DS preview editor legado.
+
+**Commits Wave 6:** `77edf0b` (W6.1) · `a91d797` (W6.2) · `e890f24` (fix Babel script tag) · `3cc11cd` (W6.3 Accordion+Separator+ToggleGroup) · `181de5a` (W6.3 Chart) · `d6457b8` (W6.3 Footer) · `f6a4ec1` (W6.4 Badge) · `0a7ff5c` (W6.4 Avatar)
+
+### Mudanças estruturais
+
+| Tema | O quê |
+|---|---|
+| **DRY nav header** | 11 HTML duplicavam ~207 linhas CSS + ~30 linhas markup. Extraído `NavHeader.jsx` (props mode/currentCategory) + `_nav.css` shared. Net: -2481 / +399 linhas (massive cleanup, 1 fonte de verdade) |
+| **Token Editor unificado** | Home tinha editor novo (Básico/Avançado + accent derive), DS preview screens.html tinha legacy. Extraído `TokenEditorPreview.jsx` (310 linhas, helpers `_te_*` prefixados) + `_token-editor.css` shared. Ambos usam mesmo componente |
+| **Tabs tipografia** | `.tab-btn` + `.token-editor-tab` agora `font-family: var(--font-body)`. Padronizado |
+| **Components novos (Wave 6.3)** | `Accordion.jsx` (CSS grid-rows height anim, ARIA completo), `Separator.jsx` (h/v decorative/semantic), `ToggleGroup.jsx` (single/multi), `Chart.jsx` (LineChart/AreaChart/BarChart/SparklineChart SVG inline + ResizeObserver + reduced-motion), `FooterShowcase.jsx` (kinetic typography, dark bg, IntersectionObserver) |
+| **Avatar refactor** | Prop `intent` declarativo (primary default + accent/neutral/success variants). Replicável, declarativo |
+| **Badge intents** | Grid 3x2 (era auto-fill 6 desorganizado). Removido showcase-row condensed duplicado + bloco "sem dot opt-out" (tech debt em doc) |
+
+### 12 issues Patrick — status pós-Wave 6
+
+| # | Issue | Status |
+|---|---|---|
+| 1 | Nav DRY violation (11 HTML duplicados) | ✅ Resolvido (NavHeader.jsx + _nav.css) |
+| 2 | nav-brand-dot cor inconsistente (verde home, laranja categorias) | ✅ Resolvido (1 fonte) |
+| 3 | nav-brand href errado (categoria → ../index.html = login) | ✅ Resolvido |
+| 4 | nav-cta-mini "Ver exemplos" texto preto em laranja | ✅ Resolvido |
+| 5 | Templates carousel iframe não preenche div | ✅ Resolvido |
+| 6 | DS preview editor legacy ≠ Token Editor home | ✅ Resolvido (TokenEditorPreview unificado) |
+| 7 | Tabs fonte inconsistente | ✅ Resolvido |
+| 8 | Footer "horrível, mudar inteiro" | ✅ Resolvido (FooterShowcase editorial) |
+| 9 | Picker tabs largura ~60% | ✅ Resolvido (Tabs.jsx grid 1fr) |
+| 10 | Button Destructive texto preto (override silencioso) | ✅ Resolvido |
+| 11 | Avatar contraste laranja+cocoa | ✅ Resolvido (intent prop, default primary) |
+| 12 | Badge duplicação top+bottom + grid desorganizado | ✅ Resolvido (3x2 + cleanup) |
+
+### Componentes adicionados ao DS
+
+| Component | Categoria | Replicável? | Replica padrão? |
+|---|---|---|---|
+| Accordion | display | sim | single/multiple selection, smooth height |
+| Separator | display | sim | horizontal/vertical, decorative/semantic ARIA |
+| ToggleGroup | base | sim | single/multi state stateless controlled |
+| Chart (Line/Bar/Spark/Area) | dashboard | sim | SVG inline puro, sem dep externa |
+| FooterShowcase | showcase | sim | replicável em outras páginas técnicas |
+| NavHeader | layout | sim | mode home/category + props |
+| TokenEditorPreview | showcase | sim | compact prop |
+
+### Tech debt restante Wave 6
+
+- `TokenEditorSection` inline em `showcase/index.html` (linhas ~2215-2429, ~215 linhas) — dead code mas helpers (hexToHsl, etc) ainda usados no escopo. Cleanup futuro requer decoupling helpers + delete bloco.
+- CSS legacy footer inline `.footer-*` em `index.html` ainda presente (FooterShowcase tem próprio CSS, mas styles antigos não removidos pra evitar quebra acidental).
+- `font-display` token não auditado neste sprint.
+
+### Incidentes Wave 6
+
+- **Babel parse explosion (a4f140f → revert):** primeiro footer commit injetou char SOH (`\x01`) + removeu acidentalmente `<script type="text/babel">` opening tag em index.html. Page renderizou source code como texto. Diagnose via Chrome console + bytecode inspection. Revert + recriar manual com PowerShell verifying control chars pré-commit. Lição: edits massivos em arquivos com mistura HTML+inline JSX requerem byte-level validation.
+
+### Métricas cumulativas pós-Wave 6 (vs baseline d50d5a7)
+
+```
+git diff --stat d50d5a7..HEAD | tail -3
+41 files changed, 3462 insertions(+), 3312 deletions(-)
+```
+
+Net +150 linhas pra um DS substancialmente mais rico (DRY nav, 7 components novos, 5 CSS shared files, 12 issues Patrick resolvidos, identidade intacta).
+
+### Recomendação
+
+DS está **production-quality estética**. Próximo passo natural NÃO é Wave 7 — é **uso real** (demo pra prospect, integração em projeto Lovable, dogfood interno). Anti-loop CLAUDE.md: polir sem feedback de uso real é especulação. Tech debt acima fica registrado pra quando aparecer caso de uso que pressione mudança.
