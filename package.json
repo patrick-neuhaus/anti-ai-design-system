@@ -1,0 +1,12 @@
+{
+  "name": "anti-ai-design-system",
+  "version": "0.1.0",
+  "description": "Anti-AI Design System — warm-editorial flavor, tokens-first, no shadcn defaults.",
+  "private": true,
+  "browserslist": [
+    "last 2 years > 0.5%, not dead",
+    "Safari iOS >= 15",
+    "Edge >= 110",
+    "Firefox >= 110"
+  ]
+}

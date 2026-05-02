@@ -12,7 +12,7 @@ const BADGE_INTENTS = {
   destructive: { bg: "hsl(var(--destructive) / .10)", fg: "hsl(var(--destructive))" },
 };
 
-const Badge = ({ children, intent = "neutral", strong = false, dot = intent !== "neutral" }) => {
+const Badge = ({ children, intent = "neutral", strong = false, dot = intent !== "neutral", style: extraStyle }) => {
   const c = BADGE_INTENTS[intent] ?? BADGE_INTENTS.neutral;
   const isStrong = strong;
   return (
@@ -27,6 +27,7 @@ const Badge = ({ children, intent = "neutral", strong = false, dot = intent !== 
       lineHeight: 1.4,
       background: isStrong ? c.fg : c.bg,
       color: isStrong ? "hsl(var(--card))" : c.fg,
+      ...extraStyle,
     }}>
       {dot && (
         <span aria-hidden="true" style={{

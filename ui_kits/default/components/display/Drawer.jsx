@@ -4,11 +4,50 @@
 // When NOT to use: blocking confirmation (Dialog). Persistent nav (Sidebar).
 
 const Drawer = ({ open, onClose, side = "right", title, children, footer, width = 420 }) => {
+  const drawerRef = React.useRef(null);
+  const triggerRef = React.useRef(null);
+
   React.useEffect(() => {
     if (!open) return;
-    const onKey = (e) => { if (e.key === "Escape") onClose?.(); };
+    /* Store trigger for focus restore — F-RP-014 */
+    triggerRef.current = document.activeElement;
+
+    /* Move focus into drawer */
+    const rafId = requestAnimationFrame(() => {
+      if (drawerRef.current) {
+        const first = drawerRef.current.querySelectorAll(
+          'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+        )[0];
+        if (first) first.focus();
+      }
+    });
+
+    const onKey = (e) => {
+      if (e.key === "Escape") { onClose?.(); return; }
+      /* Focus trap */
+      if (e.key === "Tab" && drawerRef.current) {
+        const focusable = Array.from(drawerRef.current.querySelectorAll(
+          'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+        ));
+        if (!focusable.length) { e.preventDefault(); return; }
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("keydown", onKey);
+      /* Restore focus to trigger */
+      if (triggerRef.current && typeof triggerRef.current.focus === "function") {
+        triggerRef.current.focus();
+      }
+    };
   }, [open, onClose]);
 
   if (!open) return null;
@@ -18,7 +57,8 @@ const Drawer = ({ open, onClose, side = "right", title, children, footer, width 
     <div role="dialog" aria-modal="true" onClick={onClose}
       style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgb(0 0 0 / .35)", animation: "dialog-fade .15s ease-out" }}
     >
-      <aside onClick={(e) => e.stopPropagation()}
+      <aside ref={drawerRef} onClick={(e) => e.stopPropagation()}
+        role="dialog" aria-modal="true" aria-label={title || "Painel lateral"}
         style={{
           position: "absolute", top: 0, bottom: 0,
           [isRight ? "right" : "left"]: 0,
@@ -33,7 +73,7 @@ const Drawer = ({ open, onClose, side = "right", title, children, footer, width 
         {title && (
           <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "16px 20px", borderBottom: "1px solid hsl(var(--border))" }}>
             <div style={{ fontSize: 16, fontWeight: 600 }}>{title}</div>
-            <button onClick={onClose} aria-label="Close" style={{ background: "transparent", border: 0, color: "hsl(var(--muted-foreground))", cursor: "pointer", padding: 4, display: "flex" }}>
+            <button onClick={onClose} aria-label="Fechar painel" style={{ background: "transparent", border: 0, color: "hsl(var(--muted-foreground))", cursor: "pointer", padding: 4, display: "flex" }}>
               <Icon.X size={14} />
             </button>
           </header>

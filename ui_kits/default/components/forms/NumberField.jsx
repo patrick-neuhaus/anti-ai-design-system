@@ -3,14 +3,18 @@
 // When to use: integers/decimals with bounded range (qty, age, threshold).
 // When NOT to use: free numeric strings (CPF, phone — use Input with mask). Currency (use NumberField + unit prop).
 
+/* F-UX-020: stepper buttons target size bumped 24 → 32px width min */
 const stepperBtn = (isUp) => ({
-  flex: 1, padding: "0 8px",
+  flex: 1,
+  minWidth: 32,  /* WCAG 2.5.8 target size */
+  padding: "0 10px",
   background: "hsl(var(--muted))",
   color: "hsl(var(--muted-foreground))",
   border: 0,
   borderBottom: isUp ? "1px solid hsl(var(--border))" : "0",
   cursor: "pointer",
   display: "flex", alignItems: "center", justifyContent: "center",
+  transition: "background var(--motion-fast, 150ms)",
 });
 
 const NumberField = ({
@@ -72,11 +76,12 @@ const NumberField = ({
       )}
       {showStepper && (
         <div style={{ display: "flex", flexDirection: "column", borderLeft: "1px solid hsl(var(--border))" }}>
-          <button type="button" onClick={() => bump(step)} disabled={disabled} style={stepperBtn(true)}>
-            <Icon.ChevronUp size={10} />
+          {/* aria-label required on icon-only buttons — F-RP-013 */}
+          <button type="button" aria-label="Aumentar" onClick={() => bump(step)} disabled={disabled} style={stepperBtn(true)}>
+            <Icon.ChevronUp size={12} />
           </button>
-          <button type="button" onClick={() => bump(-step)} disabled={disabled} style={stepperBtn(false)}>
-            <Icon.ChevronDown size={10} />
+          <button type="button" aria-label="Diminuir" onClick={() => bump(-step)} disabled={disabled} style={stepperBtn(false)}>
+            <Icon.ChevronDown size={12} />
           </button>
         </div>
       )}

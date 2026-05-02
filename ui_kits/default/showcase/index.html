@@ -1966,15 +1966,16 @@
               <div key={comp.label} className="split-subsection">
                 <div className="split-subsection-label">{comp.label}</div>
                 <div className="split-cols">
+                  {/* F-UX-013: desc moved above content so it frames the example */}
                   <div className="split-card ai-default">
                     <div className="split-legend bad">❌ AI-default — o padrão genérico</div>
-                    {comp.aiContent}
                     <p className="split-desc">{comp.desc}</p>
+                    {comp.aiContent}
                   </div>
                   <div className="split-card anti-ai">
                     <div className="split-legend good">✅ Anti-AI — DS aplicado</div>
-                    {comp.dsContent}
                     <p className="split-desc" style={{ color: "hsl(var(--foreground) / .7)" }}>Escolha deliberada com tokens do sistema.</p>
+                    {comp.dsContent}
                   </div>
                 </div>
               </div>

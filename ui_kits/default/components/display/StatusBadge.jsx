@@ -6,14 +6,20 @@
 const STATUS_MAP = {
   conferido:      { intent: "success",     label: "Conferido" },
   pendente:       { intent: "warning",     label: "Pendente" },
-  em_conferencia: { intent: "info",        label: "Em conferência" },
+  /* em_conferencia: semibold=true increases weight for legibility — F-UX-010 */
+  em_conferencia: { intent: "info",        label: "Em conferência", semibold: true },
   divergente:     { intent: "destructive", label: "Divergente" },
   finalizado:     { intent: "success",     label: "Finalizado", strong: true },
 };
 
 const StatusBadge = ({ value, map }) => {
   const m = (map ?? STATUS_MAP)[value] ?? { intent: "neutral", label: String(value ?? "") };
-  return <Badge intent={m.intent} strong={!!m.strong} dot>{m.label}</Badge>;
+  return (
+    <Badge intent={m.intent} strong={!!m.strong} dot
+      style={m.semibold ? { fontWeight: 600 } : undefined}>
+      {m.label}
+    </Badge>
+  );
 };
 
 window.StatusBadge = StatusBadge;
