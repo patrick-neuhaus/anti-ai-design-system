@@ -97,6 +97,8 @@
   font-weight: 600;
   text-decoration: none;
   margin-left: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
   transition: transform 150ms, box-shadow 150ms;
 }
 
@@ -108,7 +110,7 @@
 /* ── CTA responsive ───────────────────────────────────── */
 .nav-cta-mini .nav-cta-text { display: inline; }
 .nav-cta-mini .nav-cta-icon { display: none; }
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .nav-cta-mini {
     width: 36px; height: 36px; padding: 0;
     border-radius: 50%; display: inline-flex;
