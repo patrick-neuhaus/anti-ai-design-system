@@ -570,7 +570,7 @@
       padding: 0 var(--space-4, 16px);
       height: 40px;
       background: hsl(var(--accent));
-      color: hsl(var(--accent-foreground)); /* W6.8: dark cocoa 4.62:1 WCAG AA (was #fff 3.74 FAIL) */
+      color: #fff; /* W6.9: alinha Button.jsx accent (DRY). Trade: 3.74:1 AA fail (decisao estetica Patrick — branco em terracotta tem mais legibilidade visual percebida que cocoa-escuro 4.62). Tech debt: ajustar token --accent escurecer 5pp pra ratio AA passar com branco */
       border: 1px solid hsl(var(--accent));
       border-radius: var(--radius-md, 8px);
       font-size: 14px;
