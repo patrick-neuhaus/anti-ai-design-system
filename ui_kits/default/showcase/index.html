@@ -898,12 +898,46 @@
     /* Stagger children (.reveal-stagger > *) */
     .reveal-stagger > * { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 600ms cubic-bezier(.2,.8,.2,1); }
     .reveal-stagger.in > *  { opacity: 1; transform: translateY(0); }
-    .reveal-stagger.in > *:nth-child(1) { transition-delay: 0ms; }
-    .reveal-stagger.in > *:nth-child(2) { transition-delay: 80ms; }
-    .reveal-stagger.in > *:nth-child(3) { transition-delay: 160ms; }
-    .reveal-stagger.in > *:nth-child(4) { transition-delay: 240ms; }
-    .reveal-stagger.in > *:nth-child(5) { transition-delay: 320ms; }
-    .reveal-stagger.in > *:nth-child(6) { transition-delay: 400ms; }
+    .reveal-stagger.in > *:nth-child(1)  { transition-delay:   0ms; }
+    .reveal-stagger.in > *:nth-child(2)  { transition-delay:  80ms; }
+    .reveal-stagger.in > *:nth-child(3)  { transition-delay: 160ms; }
+    .reveal-stagger.in > *:nth-child(4)  { transition-delay: 240ms; }
+    .reveal-stagger.in > *:nth-child(5)  { transition-delay: 320ms; }
+    .reveal-stagger.in > *:nth-child(6)  { transition-delay: 400ms; }
+    .reveal-stagger.in > *:nth-child(7)  { transition-delay: 480ms; }
+    .reveal-stagger.in > *:nth-child(8)  { transition-delay: 560ms; }
+    .reveal-stagger.in > *:nth-child(9)  { transition-delay: 640ms; }
+    .reveal-stagger.in > *:nth-child(10) { transition-delay: 720ms; }
+
+    /* ==================================================
+       HERO ENTRY — F-MO-013
+       Text block + floating cards animate in on page load.
+       Cards stagger 80ms apart. Reduced-motion: covered by
+       global block (opacity/transform skipped).
+       ================================================== */
+    @keyframes hero-fade-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes hero-card-in {
+      from { opacity: 0; transform: translateY(20px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+    .hero-entry-text {
+      animation: hero-fade-up var(--duration-normal, 500ms) cubic-bezier(.2,.8,.2,1) both;
+      animation-delay: 80ms;
+    }
+    .hero-entry-card {
+      animation: hero-card-in var(--duration-normal, 500ms) cubic-bezier(.2,.8,.2,1) both;
+    }
+    .hero-entry-card:nth-of-type(1) { animation-delay: 200ms; }
+    .hero-entry-card:nth-of-type(2) { animation-delay: 280ms; }
+    .hero-entry-card:nth-of-type(3) { animation-delay: 360ms; }
+    .hero-entry-card:nth-of-type(4) { animation-delay: 440ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-entry-text,
+      .hero-entry-card { animation: none; opacity: 1; transform: none; }
+    }
 
     /* Section progress bar (top of viewport) */
     .progress-bar {
@@ -1801,8 +1835,8 @@
         <section>
           <div className="section-wrap" style={{ paddingBottom: 64 }}>
             <div className="hero-canvas-wrap">
-              {/* Texto */}
-              <div>
+              {/* Texto — F-MO-013 hero entry */}
+              <div className="hero-entry-text">
                 <p className="eyebrow">Sistema editorial · 56+ componentes</p>
                 <h1 className="hero-title">
                   Anti-AI<br />Design System
@@ -1827,7 +1861,7 @@
               {/* Canvas: floating component cards animados */}
               <div className="hero-canvas" ref={canvasRef} aria-hidden="true">
                 {/* StatCard mock */}
-                <div className="float-card fc-stat" data-parallax="1.4">
+                <div className="float-card fc-stat hero-entry-card" data-parallax="1.4">
                   <div className="fc-stat-row">
                     <div className="fc-stat-icon">↗</div>
                     <div className="fc-stat-label">Pedidos hoje</div>
@@ -1837,7 +1871,7 @@
                 </div>
 
                 {/* Sidebar mini mock */}
-                <div className="float-card fc-side" data-parallax="0.8">
+                <div className="float-card fc-side hero-entry-card" data-parallax="0.8">
                   <div className="fc-side-mini">
                     <div className="fc-side-brand">Artemis</div>
                     <div className="fc-side-row active"><span className="fc-side-dot" /> Dashboard</div>
@@ -1848,7 +1882,7 @@
                 </div>
 
                 {/* Palette mock — chips morfam HSL */}
-                <div className="float-card fc-pal" data-parallax="1.1">
+                <div className="float-card fc-pal hero-entry-card" data-parallax="1.1">
                   <div className="fc-pal-title">Tokens vivos</div>
                   <div className="fc-pal-row">
                     <div className="fc-pal-chip" />
@@ -1860,7 +1894,7 @@
                 </div>
 
                 {/* Status badge animado */}
-                <div className="float-card fc-badge" data-parallax="1.6">
+                <div className="float-card fc-badge hero-entry-card" data-parallax="1.6">
                   <div className="fc-badge-row">
                     <div className="fc-badge-dot" />
                     <span>Build verde · 0 axes-violations</span>
@@ -2156,22 +2190,27 @@
       );
     };
 
-    const CategoriasSection = () => (
-      <section className="alt-bg" id="categorias">
-        <div className="section-wrap reveal" ref={useReveal()}>
-          <p className="eyebrow">Catálogo técnico</p>
-          <h2 className="section-title">Categorias de componentes</h2>
-          <p className="section-sub">
-            56+ componentes e telas organizados por função. Cada categoria tem showcase técnico próprio.
-          </p>
-          <div className="categories-toc">
-            {CATEGORIES.map((cat) => (
-              <TocRow key={cat.key} cat={cat} />
-            ))}
+    const CategoriasSection = () => {
+      const revealRef = useReveal({ threshold: 0.08, rootMargin: "-20px 0px" });
+      const staggerRef = useReveal({ threshold: 0.05, rootMargin: "0px 0px" });
+      return (
+        <section className="alt-bg" id="categorias">
+          <div className="section-wrap reveal" ref={revealRef}>
+            <p className="eyebrow">Catálogo técnico</p>
+            <h2 className="section-title">Categorias de componentes</h2>
+            <p className="section-sub">
+              56+ componentes e telas organizados por função. Cada categoria tem showcase técnico próprio.
+            </p>
+            {/* F-MO-014: stagger each toc-row on scroll */}
+            <div className="categories-toc reveal-stagger" ref={staggerRef}>
+              {CATEGORIES.map((cat) => (
+                <TocRow key={cat.key} cat={cat} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-    );
+        </section>
+      );
+    };
 
     // ── Templates Cases Section — scroll-snap carousel (Wave 6.4 / 9.2 real DS components) ──
 
