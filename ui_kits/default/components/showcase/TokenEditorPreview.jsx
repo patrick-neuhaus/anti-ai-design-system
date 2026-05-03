@@ -40,7 +40,7 @@ const _te_getWcagBadge = (ratio) => {
 const _te_ADVANCED_TOKENS = [
   { group: "Marca",       tokens: ["--primary","--accent","--ring"] },
   { group: "Status",      tokens: ["--success","--warning","--info","--destructive"] },
-  { group: "Sidebar",     tokens: ["--sidebar-background","--sidebar-accent","--sidebar-indicator"] },
+  { group: "Sidebar",     tokens: ["--sidebar-background","--sidebar-accent","--sidebar-indicator","--sidebar-border"] },
   { group: "Superfícies", tokens: ["--background","--card","--muted","--border"] },
 ];
 const _te_ALL_TOKENS = _te_ADVANCED_TOKENS.flatMap(g => g.tokens);
@@ -224,6 +224,17 @@ const TokenEditorPreview = ({ compact = false }) => {
         decorative = _te_clampForContrast(decorative.hex(), surface, 7.0);
       }
 
+      // 7. Sidebar harmonizado com primary (era fixo = pagina nao mudava inteira):
+      //    - sidebar-background = primary darkened (painel dark coerente)
+      //    - sidebar-accent     = primary lighter (hover state na sidebar dark)
+      //    - sidebar-indicator  = accent (linha esquerda do item ativo)
+      //    - sidebar-border     = primary darker
+      let sidebarBg = chroma(primary).darken(0.6);
+      // Garante L baixo (sidebar = painel escuro). Se primary ja escuro demais, mantem.
+      if (sidebarBg.get("hsl.l") > 0.25) sidebarBg = sidebarBg.set("hsl.l", 0.20);
+      const sidebarAccent = chroma(primary).set("hsl.l", Math.max(0.25, primary.get("hsl.l") + 0.07));
+      const sidebarBorder = chroma(primary).set("hsl.l", Math.max(0.18, primary.get("hsl.l") - 0.04));
+
       const d = {
         "--accent":              _te_hslOf(accentFinal),
         "--accent-foreground":   _te_hexToHsl(accentFg.fg),
@@ -231,6 +242,10 @@ const TokenEditorPreview = ({ compact = false }) => {
         "--primary-foreground":  _te_hexToHsl(primaryFg),
         "--ring":                _te_hslOf(ring),
         "--accent-decorative":   _te_hslOf(decorative),
+        "--sidebar-background":  _te_hslOf(sidebarBg),
+        "--sidebar-accent":      _te_hslOf(sidebarAccent),
+        "--sidebar-indicator":   _te_hslOf(accentFinal),
+        "--sidebar-border":      _te_hslOf(sidebarBorder),
       };
       Object.entries(d).forEach(([k, v]) => _te_applyToken(k, v));
       const cur = _te_readCurrentTokens();

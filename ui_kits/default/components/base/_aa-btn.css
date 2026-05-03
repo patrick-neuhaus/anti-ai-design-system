@@ -68,7 +68,7 @@
 
 .aa-btn--accent {
   background: hsl(var(--accent));
-  color: #fff;
+  color: hsl(var(--accent-foreground));
   border-color: hsl(var(--accent));
 }
 .aa-btn--accent:hover:not(:disabled):not([aria-disabled="true"]) {

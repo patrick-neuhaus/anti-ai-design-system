@@ -92,14 +92,14 @@
   background: hsl(var(--muted) / .6);
 }
 
-/* ── CTA mini — B1 fix: white text on accent bg ───────── */
+/* ── CTA mini — B1 fix: token-based fg pra acompanhar Token Editor ───────── */
 .nav-cta-mini {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 7px 14px;
   background: hsl(var(--accent));
-  color: #fff;
+  color: hsl(var(--accent-foreground));
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
