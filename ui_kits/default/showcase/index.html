@@ -1001,17 +1001,7 @@
       .hero-entry-card { animation: none; opacity: 1; transform: none; }
     }
 
-    /* Section progress bar (top of viewport) */
-    .progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 3px;
-      width: 0%;
-      background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
-      z-index: 200;
-      transition: width 80ms linear;
-      pointer-events: none;
-    }
+    /* V5/V6: .progress-bar movido pra _nav.css (era duplicado em 12 HTMLs). */
 
     /* ==================================================
        HERO CANVAS — floating component cards + parallax

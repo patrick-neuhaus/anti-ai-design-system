@@ -876,7 +876,7 @@ function Pagination({ page, total, perPage, onChange }) {
   );
 }
 
-/* W4.1 / F-INT-003 + D6: primitivos locais (Checkbox, Drawer, Dialog, Skeleton, EmptyState, Slider, Toast)
+/* W4.1 / F-INT-003 + D6 + A1: primitivos locais (Checkbox, Drawer, Dialog, Skeleton, EmptyState, Slider, Toast, Breadcrumb, Pagination, ProgressBar)
    compartilham finalidade com components/{base,display,forms}/*.jsx mas vivem aqui pra manter
    este file como single-bundle standalone (executado direto via Babel inline, sem import).
    Justificativa: app demo precisa rodar isolado. Trade conhecido: token/component change
