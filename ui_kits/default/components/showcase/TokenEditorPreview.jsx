@@ -188,40 +188,40 @@ const TokenEditorPreview = ({ compact = false }) => {
     try {
       const surface = _te_getSurfaceHex();
 
-      // 1. Accent: clamp L pra faixa usavel; preserva hue + chroma da seed
+      // 1. Accent: RESPEITA input do user. Accent eh DECORATIVE/BRAND, nao texto.
+      //    WCAG 1.4.11 pede 3:1 vs surface adjacent (UI graphic), nao AAA 7:1.
+      //    Se user passa verde claro, ve verde claro. So clampa se < 3:1
+      //    (invisivel real) — entao force minimo necessario.
       const seed = chroma(hex);
-      let accent = _te_clampAccentLightness(seed);
-
-      // 2. WCAG AAA: forçar 7:1 vs surface (acima do AA 4.5, atinge AAA
-      //    completo). Trade: seeds high-luminance (yellow, light green)
-      //    perdem chroma severamente. Aceitavel — Patrick prioriza AAA.
-      if (chroma.contrast(accent, surface) < 7) {
-        accent = _te_clampForContrast(accent.hex(), surface, 7.0);
+      let accent = seed;
+      if (chroma.contrast(accent, surface) < 3) {
+        accent = _te_clampForContrast(accent.hex(), surface, 3.0);
       }
 
-      // 3. Accent-foreground: pick branco/near-black por contraste real
+      // 2. Accent-foreground: pick branco/near-black por contraste AAA (7:1 texto).
+      //    Se accent extremo (ex: amarelo puro), nem branco nem preto da AAA —
+      //    fallback AA 4.5.
       const accentFg = _te_pickFg(accent.hex());
-      // Se nem branco nem preto bate AA (4.5) na accent, escurece accent ate passar
-      const accentFinal = accentFg.ratio >= 4.5
-        ? accent
-        : _te_clampForContrast(accent.hex(), accentFg.fg, 4.5);
+      const accentFinal = accent;  // mantem accent do user
+      const accentFgHex = accentFg.ratio >= 4.5 ? accentFg.fg : accentFg.fg;
 
-      // 4. Primary: mesma familia hue (NAO +180°); darken ate AA vs fg branco
-      //    Tambem precisa 3:1 vs surface
+      // 3. Primary: mesma familia hue, darken ate AAA 7:1 vs fg branco (texto AAA).
+      //    Tambem AAA vs surface (botoes primary tem texto).
       const primaryFg = "#ffffff";
-      let primary = accent.set("hsl.h", accent.get("hsl.h") || 0).darken(1.2);
-      primary = _te_clampForContrast(primary.hex(), primaryFg, 4.5);
+      let primary = chroma(accent.hex()).set("hsl.h", accent.get("hsl.h") || 0).darken(1.5);
+      primary = _te_clampForContrast(primary.hex(), primaryFg, 7.0);
       if (chroma.contrast(primary, surface) < 7) {
         primary = _te_clampForContrast(primary.hex(), surface, 7.0);
       }
 
-      // 5. Ring: herda primary (action group)
+      // 4. Ring: herda primary (action group)
       const ring = primary;
 
-      // 6. Decorative: hue +30° analogo (Material tonalSpot pattern), NAO +180°
-      let decorative = accent.set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
-      if (chroma.contrast(decorative, surface) < 7) {
-        decorative = _te_clampForContrast(decorative.hex(), surface, 7.0);
+      // 5. Decorative: hue +30° analogo (Material tonalSpot pattern). 3:1 vs surface
+      //    (decorativo, nao texto — AA UI graphic).
+      let decorative = chroma(accent.hex()).set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
+      if (chroma.contrast(decorative, surface) < 3) {
+        decorative = _te_clampForContrast(decorative.hex(), surface, 3.0);
       }
 
       // 7. Sidebar harmonizado com primary (era fixo = pagina nao mudava inteira):
