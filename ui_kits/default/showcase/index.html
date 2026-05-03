@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Anti-AI Design System</title>
   <link rel="stylesheet" href="../../../colors_and_type.css" />
   <link rel="stylesheet" href="../components/base/_aa-btn.css" />
@@ -839,7 +842,7 @@
     }
     .tab-btn.active {
       color: hsl(var(--foreground));
-      border-bottom-color: hsl(var(--accent));
+      border-bottom-color: hsl(var(--ring));
     }
     .tab-btn:hover:not(.active) { color: hsl(var(--foreground)); }
     .code-block {
@@ -1089,7 +1092,7 @@
     .fc-pal-chip:nth-child(1) { background: hsl(var(--primary)); animation-delay: 0s; }
     .fc-pal-chip:nth-child(2) { background: hsl(var(--accent)); animation-delay: .8s; }
     .fc-pal-chip:nth-child(3) { background: hsl(var(--success)); animation-delay: 1.6s; }
-    .fc-pal-chip:nth-child(4) { background: hsl(var(--info)); animation-delay: 2.4s; }
+    .fc-pal-chip:nth-child(4) { background: hsl(var(--accent-decorative)); animation-delay: 2.4s; }
     .fc-pal-chip:nth-child(5) { background: hsl(var(--destructive)); animation-delay: 3.2s; }
     @keyframes pal-morph {
       0%, 100% { filter: hue-rotate(0deg) saturate(1); }
@@ -1139,6 +1142,7 @@
   <script type="text/babel" src="../components/dashboard/KpiGrid.jsx"></script>
 
   <script type="text/babel" src="../components/layout/NavHeader.jsx"></script>
+  <script type="text/babel" src="../components/base/ToggleGroup.jsx"></script>
   <script type="text/babel" src="../components/showcase/TokenEditorPreview.jsx"></script>
   <script type="text/babel" src="../components/showcase/FooterShowcase.jsx"></script>
 
@@ -1364,6 +1368,7 @@
     const PALETTE_CHIPS = [
       { label: "--primary", name: "Petroleum" },
       { label: "--accent", name: "Terracotta" },
+      { label: "--accent-decorative", name: "Decorativo" },
       { label: "--background", name: "Cream" },
       { label: "--sidebar-background", name: "Sidebar" },
       { label: "--success", name: "Success" },

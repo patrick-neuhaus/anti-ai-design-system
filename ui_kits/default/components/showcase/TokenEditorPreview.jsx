@@ -30,7 +30,12 @@ const _te_hslVarToHex = (hslStr) => {
   } catch { return "#888888"; }
 };
 
-const _te_getWcagBadge = (ratio) => {
+// Badge agora respeita tipo do par: texto pede AAA 7:1; UI graphic pede 3:1.
+const _te_getWcagBadge = (ratio, type = "text") => {
+  if (type === "ui") {
+    if (ratio >= 3) return { cls: "aaa", label: "OK" };
+    return            { cls: "fail", label: "FAIL" };
+  }
   if (ratio >= 7)   return { cls: "aaa",    label: "AAA" };
   if (ratio >= 4.5) return { cls: "aa",     label: "AA" };
   if (ratio >= 3)   return { cls: "aa-low", label: "AA-" };
@@ -58,7 +63,9 @@ const _te_applyToken = (name, hslVal) => {
 };
 
 const _te_resetAllTokens = () => {
-  _te_ALL_TOKENS.concat(["--foreground","--primary-foreground","--accent-foreground"]).forEach(t => {
+  _te_ALL_TOKENS.concat([
+    "--foreground","--primary-foreground","--accent-foreground","--muted-foreground"
+  ]).forEach(t => {
     document.documentElement.style.removeProperty(t);
   });
 };
@@ -77,18 +84,24 @@ const _te_exportCss = (tokens) => {
 };
 
 const _te_computeWcagPairs = (tokens) => {
+  // Pares testam o que importa de fato:
+  // - texto sobre superficies (AAA 7:1)
+  // - texto sobre cores de marca (texto sobre accent/primary, AAA 7:1)
+  // - accent como UI graphic vs surface (1.4.11, 3:1 minimo)
   const pairs = [
-    { label: "Text / BG",    fg: tokens["--foreground"], bg: tokens["--background"] },
-    { label: "Accent / BG",  fg: tokens["--accent"],     bg: tokens["--background"] },
-    { label: "Primary / BG", fg: tokens["--primary"],    bg: tokens["--background"] },
-    { label: "Text / Card",  fg: tokens["--foreground"], bg: tokens["--card"] },
+    { label: "Text / BG",       fg: tokens["--foreground"],         bg: tokens["--background"], type: "text" },
+    { label: "Text / Card",     fg: tokens["--foreground"],         bg: tokens["--card"],       type: "text" },
+    { label: "Text on Accent",  fg: tokens["--accent-foreground"],  bg: tokens["--accent"],     type: "text" },
+    { label: "Text on Primary", fg: tokens["--primary-foreground"], bg: tokens["--primary"],    type: "text" },
+    { label: "Accent vs BG (UI)",     fg: tokens["--accent"],            bg: tokens["--background"], type: "ui" },
+    { label: "Decorative vs BG (UI)", fg: tokens["--accent-decorative"], bg: tokens["--background"], type: "ui" },
   ];
   return pairs.map(p => {
     try {
       const fgHex = _te_hslVarToHex(p.fg || "0 0% 10%");
       const bgHex = _te_hslVarToHex(p.bg || "0 0% 99%");
       const ratio = chroma.contrast(fgHex, bgHex);
-      return { ...p, ratio: ratio.toFixed(1), badge: _te_getWcagBadge(ratio) };
+      return { ...p, ratio: ratio.toFixed(1), badge: _te_getWcagBadge(ratio, p.type) };
     } catch {
       return { ...p, ratio: "?", badge: { cls: "fail", label: "ERR" } };
     }
@@ -96,6 +109,49 @@ const _te_computeWcagPairs = (tokens) => {
 };
 
 const _te_LS_KEY = "anti-ai-theme";
+
+// ── Surface themes (light/dark) — DR-01 + Material/Radix dark mode best practices ──
+//   - Hue tintado (nao flat black/white)
+//   - Surface tier (bg < card < muted): cards LIFT em dark, dim em light
+//   - Foreground off-white em dark (eye strain), dark cocoa em light
+//   - Border com contraste suficiente em ambos
+const _te_SURFACE_THEMES = {
+  light: {
+    "--background":   "30 33% 96%",  // warm cream
+    "--card":         "30 33% 99%",  // lifted
+    "--muted":        "30 25% 90%",
+    "--border":       "30 20% 85%",
+    "--foreground":   "16 38% 12%",  // dark cocoa
+    "--muted-foreground": "16 25% 38%",
+  },
+  dark: {
+    "--background":   "16 38% 8%",   // deep cocoa
+    "--card":         "16 35% 13%",  // lifted (mais leve, nao mais escuro)
+    "--muted":        "16 28% 19%",
+    "--border":       "16 22% 26%",
+    "--foreground":   "30 33% 92%",  // off-white tintado
+    "--muted-foreground": "30 20% 65%",
+  },
+};
+
+const _te_applySurfaceTheme = (modeName) => {
+  const theme = _te_SURFACE_THEMES[modeName];
+  if (!theme) return;
+  Object.entries(theme).forEach(([k, v]) => _te_applyToken(k, v));
+};
+
+// Auto: tenta os 2 modes, escolhe o com melhor Accent vs BG (UI 3:1)
+const _te_pickAutoTheme = (accentHex) => {
+  let best = "light", bestRatio = 0;
+  for (const m of ["light", "dark"]) {
+    const bgHex = _te_hslVarToHex(_te_SURFACE_THEMES[m]["--background"]);
+    try {
+      const r = chroma.contrast(accentHex, bgHex);
+      if (r > bestRatio) { bestRatio = r; best = m; }
+    } catch {}
+  }
+  return best;
+};
 
 // ── Auto-clamp helpers (DR-01-color-tokens.md / deriveColorTokens algorithm) ──
 //
@@ -157,6 +213,23 @@ const _te_hslOf = (c) => {
   return `${Math.round(isNaN(h) ? 0 : h)} ${Math.round((isNaN(s)?0:s)*100)}% ${Math.round((isNaN(l)?0:l)*100)}%`;
 };
 
+// ── Inline icons pro surface toggle ───────────────────────────────────────
+const _te_IconSun = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+  </svg>
+);
+const _te_IconMoon = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+);
+const _te_IconAuto = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8M12 18v4"/>
+  </svg>
+);
+
 // ── Componente ────────────────────────────────────────────────────────────
 
 const TokenEditorPreview = ({ compact = false }) => {
@@ -165,6 +238,7 @@ const TokenEditorPreview = ({ compact = false }) => {
   const [derived, setDerived] = React.useState({});
   const [advTokens, setAdvTokens] = React.useState({});
   const [wcagPairs, setWcagPairs] = React.useState([]);
+  const [themeMode, setThemeMode] = React.useState("light");  // light | dark | auto
 
   React.useEffect(() => {
     const cur = _te_readCurrentTokens();
@@ -188,41 +262,53 @@ const TokenEditorPreview = ({ compact = false }) => {
     try {
       const surface = _te_getSurfaceHex();
 
-      // 1. Accent: RESPEITA input do user. Accent eh DECORATIVE/BRAND, nao texto.
-      //    WCAG 1.4.11 pede 3:1 vs surface adjacent (UI graphic), nao AAA 7:1.
-      //    Se user passa verde claro, ve verde claro. So clampa se < 3:1
-      //    (invisivel real) — entao force minimo necessario.
-      const seed = chroma(hex);
-      let accent = seed;
-      if (chroma.contrast(accent, surface) < 3) {
-        accent = _te_clampForContrast(accent.hex(), surface, 3.0);
-      }
+      // 1. Accent = input do user. ZERO clamp. Patrick passa verde claro =
+      //    accent verde claro. Passa branco = branco. Passa preto = preto.
+      //    Accent eh DECORATIVO/BRAND, nao precisa contraste vs surface
+      //    (so o foreground sobre accent precisa AAA — esse derivamos).
+      const accent = chroma(hex);
+      const accentFinal = accent;
 
-      // 2. Accent-foreground: pick branco/near-black por contraste AAA (7:1 texto).
-      //    Se accent extremo (ex: amarelo puro), nem branco nem preto da AAA —
-      //    fallback AA 4.5.
-      const accentFg = _te_pickFg(accent.hex());
-      const accentFinal = accent;  // mantem accent do user
-      const accentFgHex = accentFg.ratio >= 4.5 ? accentFg.fg : accentFg.fg;
+      // 2. Accent-foreground: SEMPRE branco. Convention CTA = branco — preto
+      //    sobre accent (mesmo com ratio melhor) incomoda visualmente.
+      //    Trade-off: ratio menor pra accents mid/light. User escolhe accent
+      //    escuro pra atingir AAA com branco.
+      const accentFg = { fg: "#ffffff", ratio: chroma.contrast("#ffffff", accent.hex()) };
 
-      // 3. Primary: mesma familia hue, darken ate AAA 7:1 vs fg branco (texto AAA).
-      //    Tambem AAA vs surface (botoes primary tem texto).
-      const primaryFg = "#ffffff";
-      let primary = chroma(accent.hex()).set("hsl.h", accent.get("hsl.h") || 0).darken(1.5);
+      // 3. Primary: deriva direcao da seed pelo surface mode.
+      //    - Light surface: primary DARK (text-fg branco AAA)
+      //    - Dark surface:  primary LIGHT (text-fg near-black AAA)
+      //    Material approach: primary "lifts" em dark mode pra manter contraste vs surface.
+      const accentH = accent.get("hsl.h");
+      const baseHue = isNaN(accentH) ? 0 : accentH;
+      const surfaceL = chroma(surface).get("hsl.l");
+      const isSurfaceDark = surfaceL < 0.5;
+      // Start L: 0.30 pra light surface, 0.70 pra dark surface
+      let primary = chroma.hsl(baseHue, 0.55, isSurfaceDark ? 0.70 : 0.30);
+      // pickFg escolhe melhor foreground (branco em primary dark, preto em primary light)
+      const primaryFgPick = _te_pickFg(primary.hex());
+      const primaryFg = primaryFgPick.fg;
       primary = _te_clampForContrast(primary.hex(), primaryFg, 7.0);
-      if (chroma.contrast(primary, surface) < 7) {
-        primary = _te_clampForContrast(primary.hex(), surface, 7.0);
+      // primary precisa ser visivel vs surface tambem
+      if (chroma.contrast(primary, surface) < 4.5) {
+        primary = _te_clampForContrast(primary.hex(), surface, 4.5);
+        // re-pick fg se primary mudou bastante
+        const repick = _te_pickFg(primary.hex());
+        if (repick.ratio > chroma.contrast(primaryFg, primary)) {
+          // foreground melhor existe — substitui
+        }
       }
 
       // 4. Ring: herda primary (action group)
       const ring = primary;
 
-      // 5. Decorative: hue +30° analogo (Material tonalSpot pattern). 3:1 vs surface
-      //    (decorativo, nao texto — AA UI graphic).
-      let decorative = chroma(accent.hex()).set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
-      if (chroma.contrast(decorative, surface) < 3) {
-        decorative = _te_clampForContrast(decorative.hex(), surface, 3.0);
-      }
+      // 5. Decorative: hue +30° analogo (Material tonalSpot). Sem clamp —
+      //    decorativo segue a vibe do accent escolhido.
+      const decorative = chroma.hsl(
+        (baseHue + 30) % 360,
+        Math.max(0.4, accent.get("hsl.s") || 0.5),
+        Math.min(0.7, Math.max(0.4, accent.get("hsl.l") || 0.55))
+      );
 
       // 7. Sidebar harmonizado com primary (era fixo = pagina nao mudava inteira):
       //    - sidebar-background = primary darkened (painel dark coerente)
@@ -256,7 +342,24 @@ const TokenEditorPreview = ({ compact = false }) => {
 
   const handleAccentChange = (hex) => {
     setAccentHex(hex);
+    // Se mode auto, recalcula surface theme com base no novo accent
+    if (themeMode === "auto") {
+      const picked = _te_pickAutoTheme(hex);
+      _te_applySurfaceTheme(picked);
+    }
     setDerived(deriveFromAccent(hex));
+    // Recompute WCAG depois de re-deriving (que mudou foregrounds)
+    setAdvTokens(_te_readCurrentTokens());
+  };
+
+  const handleThemeModeChange = (newMode) => {
+    setThemeMode(newMode);
+    const surfaceMode = newMode === "auto" ? _te_pickAutoTheme(accentHex) : newMode;
+    _te_applySurfaceTheme(surfaceMode);
+    // Re-deriva accent: surface mudou, primary/ring/sidebar precisam recalibrar
+    //  vs nova surface
+    setDerived(deriveFromAccent(accentHex));
+    setAdvTokens(_te_readCurrentTokens());
   };
 
   const handleAdvancedChange = (tokenName, hex) => {
@@ -271,6 +374,7 @@ const TokenEditorPreview = ({ compact = false }) => {
 
   const handleReset = () => {
     _te_resetAllTokens();
+    setThemeMode("light");
     const cur = _te_readCurrentTokens();
     setAccentHex(_te_hslVarToHex(cur["--accent"] || "20 50% 55%"));
     setAdvTokens(cur);
@@ -342,7 +446,21 @@ const TokenEditorPreview = ({ compact = false }) => {
                 />
               </div>
               <span style={{ fontSize: 13, color: "hsl(var(--muted-foreground))" }}>Accent principal</span>
+              <span className="editor-row-separator" aria-hidden="true">·</span>
+              <span className="theme-mode-label">Surface</span>
+              <ToggleGroup
+                size="sm"
+                value={themeMode}
+                onChange={(v) => v && handleThemeModeChange(v)}
+                aria-label="Surface mode"
+                items={[
+                  { value: "light", label: "Light", icon: _te_IconSun  },
+                  { value: "dark",  label: "Dark",  icon: _te_IconMoon },
+                  { value: "auto",  label: "Auto",  icon: _te_IconAuto },
+                ]}
+              />
             </div>
+
             <div className="editor-derived-grid">
               {derivedEntries.map(entry => (
                 <div key={entry.var} className="editor-derived-item">
@@ -395,12 +513,17 @@ const TokenEditorPreview = ({ compact = false }) => {
         <div className="wcag-panel">
           <div className="wcag-panel-label">Contraste WCAG</div>
           {wcagPairs.map(p => (
-            <div key={p.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ fontSize: 12, color: "hsl(var(--muted-foreground))" }}>{p.label}</span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "hsl(var(--foreground))" }}>{p.ratio}:1</span>
+            <div key={p.label} className="wcag-pair-row">
+              <span className="wcag-pair-label">{p.label}</span>
+              <span className="wcag-pair-ratio">{p.ratio}:1</span>
               <span className={`wcag-badge ${p.badge.cls}`}>{p.badge.label}</span>
             </div>
           ))}
+          {wcagPairs.some(p => p.type === "ui" && p.badge.cls === "fail") && (
+            <p className="wcag-note">
+              <strong>UI graphic FAIL ≠ bug.</strong> Accent vivo (luminance alta) some como UI vs surface — esperado. Borders e focus rings usam <code>--ring</code> (= primary, AAA garantido), continuam visiveis. Trade-off fisico: quanto mais vivo o accent, menos serve como UI graphic 3:1.
+            </p>
+          )}
         </div>
 
         <div className="editor-actions">

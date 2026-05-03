@@ -137,7 +137,7 @@
   --secondary:         30 33% 93%;
   --secondary-foreground:16 38% 12%;
   --accent:            12 65% 55%;   /* terracotta             */
-  --accent-foreground: 16 38% 11%;   /* dark cocoa — AA pass (>=4.5:1 vs ~3.74:1 c/ white) */
+  --accent-foreground:  0 0% 100%;   /* branco sempre — convention CTA. Trade-off: ~3.7:1 vs terracotta default (AA-). Pra atingir AAA c/ branco, escolher accent mais escuro. Black > white em luminance contrast aqui mas vira preto em CTA = visualmente ruim. */
 
   /* Status — same warm temperature */
   --destructive:        0 100% 43%;  /* escurecido p/ AA c/ white FG (~5:1 vs ~4.0:1 anterior) */

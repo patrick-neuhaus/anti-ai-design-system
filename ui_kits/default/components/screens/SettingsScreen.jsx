@@ -476,7 +476,7 @@ const SettingsScreen = ({ onSave }) => {
             padding: "10px 16px", fontSize: 13, fontWeight: activeTab === k ? 500 : 400,
             color: activeTab === k ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
             border: "none", background: "none", cursor: "pointer",
-            borderBottom: `2px solid ${activeTab === k ? "hsl(var(--accent))" : "transparent"}`,
+            borderBottom: `2px solid ${activeTab === k ? "hsl(var(--ring))" : "transparent"}`,
             marginBottom: -1, transition: "color 150ms",
           }}>{l}</button>
         ))}
