@@ -134,12 +134,22 @@ const _te_clampForContrast = (bgHex, fgHex, minRatio = 4.5, maxIter = 40) => {
   return cur;
 };
 
+// Light-mode accent: cap L em 0.55 — acima disso surface (~0.95) viola
+// WCAG 1.4.11 (3:1 UI graphic adjacent contrast). Floor 0.20 evita preto puro.
 const _te_clampAccentLightness = (color) => {
   const l = color.get("hsl.l");
-  if (isNaN(l)) return color;
-  if (l > 0.70) return color.set("hsl.l", 0.65);
-  if (l < 0.25) return color.set("hsl.l", 0.30);
+  if (isNaN(l)) return color.set("hsl.l", 0.45);
+  if (l > 0.55) return color.set("hsl.l", 0.45);
+  if (l < 0.20) return color.set("hsl.l", 0.30);
   return color;
+};
+
+// Le --background vivo do :root pra clampar accent contra surface real
+const _te_getSurfaceHex = () => {
+  try {
+    const bgHsl = getComputedStyle(document.documentElement).getPropertyValue("--background").trim();
+    return _te_hslVarToHex(bgHsl) || "#ffffff";
+  } catch { return "#ffffff"; }
 };
 
 const _te_hslOf = (c) => {
@@ -176,27 +186,41 @@ const TokenEditorPreview = ({ compact = false }) => {
 
   const deriveFromAccent = (hex) => {
     try {
+      const surface = _te_getSurfaceHex();
+
       // 1. Accent: clamp L pra faixa usavel; preserva hue + chroma da seed
       const seed = chroma(hex);
-      const accent = _te_clampAccentLightness(seed);
+      let accent = _te_clampAccentLightness(seed);
 
-      // 2. Accent-foreground: pick branco/near-black por contraste real
+      // 2. WCAG 1.4.11: accent precisa 3:1 vs surface (UI graphic adjacent)
+      if (chroma.contrast(accent, surface) < 3) {
+        accent = _te_clampForContrast(accent.hex(), surface, 3.0);
+      }
+
+      // 3. Accent-foreground: pick branco/near-black por contraste real
       const accentFg = _te_pickFg(accent.hex());
-      // Se nem branco nem preto bate AA na accent, escurece accent
+      // Se nem branco nem preto bate AA (4.5) na accent, escurece accent ate passar
       const accentFinal = accentFg.ratio >= 4.5
         ? accent
         : _te_clampForContrast(accent.hex(), accentFg.fg, 4.5);
 
-      // 3. Primary: mesma familia hue (NAO +180°); darken ate AA vs fg branco
+      // 4. Primary: mesma familia hue (NAO +180°); darken ate AA vs fg branco
+      //    Tambem precisa 3:1 vs surface
       const primaryFg = "#ffffff";
       let primary = accent.set("hsl.h", accent.get("hsl.h") || 0).darken(1.2);
       primary = _te_clampForContrast(primary.hex(), primaryFg, 4.5);
+      if (chroma.contrast(primary, surface) < 3) {
+        primary = _te_clampForContrast(primary.hex(), surface, 3.0);
+      }
 
-      // 4. Ring: herda primary (action group)
+      // 5. Ring: herda primary (action group)
       const ring = primary;
 
-      // 5. Decorative: hue +30° analogo (Material tonalSpot pattern), NAO +180°
-      const decorative = accent.set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
+      // 6. Decorative: hue +30° analogo (Material tonalSpot pattern), NAO +180°
+      let decorative = accent.set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
+      if (chroma.contrast(decorative, surface) < 3) {
+        decorative = _te_clampForContrast(decorative.hex(), surface, 3.0);
+      }
 
       const d = {
         "--accent":              _te_hslOf(accentFinal),
