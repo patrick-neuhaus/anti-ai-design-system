@@ -72,7 +72,7 @@
         </ShowcaseSection>
 
         <ShowcaseSection title="Card — elevated (shadow)">
-          <Card style={{ boxShadow: "0 4px 16px hsl(var(--foreground) / .08)", border: "none" }}>
+          <Card style={{ boxShadow: "var(--shadow-popover)", border: "none" }}>
             <CardHeader title="Card elevated" subtitle="Sem borda, com sombra" />
             <p style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", margin: 0 }}>
               Ideal pra elementos flutuantes acima do background (modal-like, dropdowns, popovers).
@@ -87,14 +87,14 @@
               <Card key={i} style={{
                 cursor: "pointer",
                 transition: "box-shadow 200ms, transform 200ms",
-                boxShadow: "0 1px 4px hsl(var(--foreground) / .05)",
+                boxShadow: "var(--shadow-control)",
               }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.boxShadow = "0 8px 24px hsl(var(--foreground) / .12)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-popover)";
                   e.currentTarget.style.transform = "translateY(-2px)";
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.boxShadow = "0 1px 4px hsl(var(--foreground) / .05)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-control)";
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >

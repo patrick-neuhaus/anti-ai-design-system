@@ -15,7 +15,7 @@ const ConferenciaScreen = () => {
       <PageHeader
         title="Conferência de Expedição"
         subtitle="Escolha o romaneio para conferir e bipe os códigos."
-        actions={<button className="btn btn-outline btn-sm"><Icon.ChevronLeft size={14} /> Voltar</button>}
+        actions={<button className="aa-btn aa-btn--outline aa-btn--sm"><Icon.ChevronLeft size={14} /> Voltar</button>}
       />
 
       {/* Romaneio context */}
@@ -42,7 +42,7 @@ const ConferenciaScreen = () => {
           <form onSubmit={handleSubmit} style={{ display: "flex", gap: 8, marginBottom: 16 }}>
             <input className="field mono" autoFocus placeholder="Código EAN ou SKU"
               value={code} onChange={(e) => setCode(e.target.value)} />
-            <button type="submit" className="btn btn-primary">Bipar</button>
+            <button type="submit" className="aa-btn aa-btn--primary aa-btn--md">Bipar</button>
           </form>
 
           <div style={{ marginBottom: 8, display: "flex", justifyContent: "space-between", fontSize: 13 }}>
@@ -100,8 +100,8 @@ const ConferenciaScreen = () => {
             </tbody>
           </table>
           <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, padding: 16, borderTop: "1px solid var(--border)" }}>
-            <button className="btn btn-outline btn-sm">Adicionar volume extra</button>
-            <button className="btn btn-primary btn-sm">Finalizar conferência</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm">Adicionar volume extra</button>
+            <button className="aa-btn aa-btn--primary aa-btn--sm">Finalizar conferência</button>
           </div>
         </div>
       </div>

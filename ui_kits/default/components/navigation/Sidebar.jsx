@@ -78,26 +78,7 @@ const SidebarGroup = ({ label, children, collapsed }) => (
   </div>
 );
 
-const DEFAULT_GROUPS = [
-  { label: "Operação", items: [
-    { key: "dashboard", icon: Icon.LayoutDashboard, label: "Dashboard" },
-    { key: "deliveries", icon: Icon.Package, label: "Deliveries" },
-    { key: "romaneios", icon: Icon.FileText, label: "Romaneios" },
-    { key: "conferencia", icon: Icon.ScanBarcode, label: "Conferência" },
-    { key: "carregamento", icon: Icon.ClipboardCheck, label: "Carregamento" },
-    { key: "import", icon: Icon.Upload, label: "Importação" },
-  ]},
-  { label: "Cadastros", items: [
-    { key: "transportadoras", icon: Icon.Truck, label: "Transportadoras" },
-    { key: "rotas", icon: Icon.Route, label: "Rotas" },
-    { key: "skus", icon: Icon.Box, label: "SKUs" },
-  ]},
-  { label: "Administração", items: [
-    { key: "usuarios", icon: Icon.Users, label: "Usuários" },
-    { key: "motivos", icon: Icon.AlertCircle, label: "Motivos" },
-    { key: "config", icon: Icon.Settings, label: "Config. Sistema" },
-  ]},
-];
+/* DEFAULT_GROUPS movido para _sidebar-data.jsx (source of truth shared com MiniSidebar mock). */
 
 const Sidebar = ({
   active, onNavigate, collapsed, onToggleCollapse, onLogout, onConfig,
@@ -127,7 +108,7 @@ const Sidebar = ({
     return () => { document.body.style.overflow = prev; };
   }, [mobileOpen]);
 
-  const navGroups = groups ?? DEFAULT_GROUPS;
+  const navGroups = groups ?? window.DEFAULT_SIDEBAR_GROUPS;
   const userName = user?.name ?? "Nome Sobrenome";
   const userEmail = user?.email ?? "email@exemplo.com";
   const userInitials = initialsFrom(userName);
@@ -296,4 +277,3 @@ const Sidebar = ({
 };
 
 window.Sidebar = Sidebar;
-window.DEFAULT_SIDEBAR_GROUPS = DEFAULT_GROUPS;

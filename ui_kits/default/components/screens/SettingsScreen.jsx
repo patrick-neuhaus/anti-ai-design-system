@@ -858,7 +858,7 @@ const OptionToggle = ({ on, onChange }) => (
     <div style={{
       position: "absolute", top: 3, left: on ? 18 : 3,
       width: 16, height: 16, borderRadius: 50, background: "#fff",
-      transition: "left 150ms", boxShadow: "0 1px 3px rgba(0,0,0,.18)",
+      transition: "left 150ms", boxShadow: "var(--shadow-control)",
     }} />
   </div>
 );

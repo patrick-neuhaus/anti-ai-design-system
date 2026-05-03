@@ -528,7 +528,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 24px 64px -16px hsl(0 0% 0% / .35);
+      box-shadow: 0 24px 64px -16px hsl(var(--foreground) / .35);
     }
     .slide-header-row {
       display: flex;
@@ -600,7 +600,7 @@
       display: flex;
       flex-direction: column;
       border: 1px solid hsl(var(--border));
-      box-shadow: 0 8px 24px -8px hsl(0 0% 0% / .2);
+      box-shadow: 0 8px 24px -8px hsl(var(--foreground) / .2);
       position: relative;
     }
     .slide-mockup iframe {
@@ -794,7 +794,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 12px hsl(0 0% 0% / .18);
+      box-shadow: 0 2px 12px hsl(var(--foreground) / .18);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       transition: background 150ms, opacity 150ms, transform 150ms;
@@ -1077,12 +1077,13 @@
     /* W1.7 / F-INT-015: fc-side derivado do contrato real do Sidebar.
        Mesma escala de cor (--sidebar-*), eyebrow de grupo, indicator 3px no active,
        gap/padding/radius proporcionalmente reduzidos pra hero. */
+    /* W1.7 / F-INT-015 / D1: contrato visual mirrors Sidebar.jsx (eyebrow 10px/.08em/color .4, indicator 3px width / 18px height / radius 0 4px 4px 0, active bg sidebar-accent + color full). Items vem de window.DEFAULT_SIDEBAR_GROUPS. */
     .fc-side-mini { background: hsl(var(--sidebar-background)); padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }
     .fc-side-brand { font-family: var(--font-display); font-size: 13px; color: hsl(var(--sidebar-foreground)); font-weight: 600; padding: 0 6px 4px; }
-    .fc-side-eyebrow { font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--sidebar-foreground) / .4); padding: 6px 6px 2px; }
+    .fc-side-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--sidebar-foreground) / .4); padding: 6px 6px 2px; }
     .fc-side-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; font-size: 11px; color: hsl(var(--sidebar-foreground) / .7); position: relative; }
     .fc-side-row.active { background: hsl(var(--sidebar-accent)); color: hsl(var(--sidebar-foreground)); font-weight: 500; }
-    .fc-side-row.active::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 14px; background: hsl(var(--sidebar-indicator)); border-radius: 0 3px 3px 0; }
+    .fc-side-row.active::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 18px; background: hsl(var(--sidebar-indicator)); border-radius: 0 4px 4px 0; }
     .fc-side-dot { width: 10px; height: 10px; border-radius: 3px; background: currentColor; opacity: .7; flex-shrink: 0; }
 
     .fc-pal-title { font-size: 11px; font-family: var(--font-mono); color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
@@ -1104,11 +1105,8 @@
     }
 
     .fc-badge-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-    .fc-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--success)); animation: pulse 1.6s ease-in-out infinite; }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 hsl(var(--success) / .5); }
-      50%      { box-shadow: 0 0 0 6px hsl(var(--success) / 0); }
-    }
+    /* D7: usa @keyframes aa-pulse-glow de _nav.css (shared) parametrizado via --pulse-hue */
+    .fc-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--success)); --pulse-hue: var(--success); animation: aa-pulse-glow 1.6s ease-in-out infinite; }
 
     /* Subtle background grid in hero canvas (anti-AI: deliberate, not random) */
     .hero-canvas::before {
@@ -1143,6 +1141,7 @@
 
   <!-- Wave 9.2 — DS components for real template mockups -->
   <script type="text/babel" src="../components/Icon.jsx"></script>
+  <script type="text/babel" src="../components/navigation/_sidebar-data.jsx"></script>
   <script type="text/babel" src="../components/display/Badge.jsx"></script>
   <script type="text/babel" src="../components/dashboard/StatCard.jsx"></script>
   <script type="text/babel" src="../components/dashboard/KpiGrid.jsx"></script>
@@ -1448,17 +1447,25 @@
                   <div className="fc-stat-trend">+12.4% vs ontem</div>
                 </div>
 
-                {/* Sidebar mini mock */}
-                {/* W1.7 / F-INT-015: derivado do Sidebar real (eyebrow group + indicator + tokens) */}
+                {/* Sidebar mini mock — D1: items vem de window.DEFAULT_SIDEBAR_GROUPS
+                    (mesma source-of-truth que Sidebar.jsx). Drift impossivel. */}
                 <div className="float-card fc-side hero-entry-card" data-parallax="0.8" aria-hidden="true">
-                  <div className="fc-side-mini">
-                    <div className="fc-side-brand">Artemis</div>
-                    <div className="fc-side-eyebrow">Operação</div>
-                    <div className="fc-side-row active"><span className="fc-side-dot" /> Dashboard</div>
-                    <div className="fc-side-row"><span className="fc-side-dot" /> Romaneios</div>
-                    <div className="fc-side-row"><span className="fc-side-dot" /> Conferência</div>
-                    <div className="fc-side-row"><span className="fc-side-dot" /> Importação</div>
-                  </div>
+                  {(() => {
+                    const grp = (window.DEFAULT_SIDEBAR_GROUPS || [])[0];
+                    if (!grp) return null;
+                    const items = grp.items.slice(0, 4);
+                    return (
+                      <div className="fc-side-mini">
+                        <div className="fc-side-brand">Artemis</div>
+                        <div className="fc-side-eyebrow">{grp.label}</div>
+                        {items.map((it, i) => (
+                          <div key={it.key} className={"fc-side-row" + (i === 0 ? " active" : "")}>
+                            <span className="fc-side-dot" /> {it.label}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* Palette mock — chips morfam HSL */}

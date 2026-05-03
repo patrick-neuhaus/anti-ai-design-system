@@ -315,7 +315,7 @@ const PrefsToggle = ({ defaultOn = false }) => {
       <div style={{
         position: "absolute", top: 2, left: on ? 16 : 2,
         width: 16, height: 16, borderRadius: 50, background: "#fff",
-        transition: "left 150ms", boxShadow: "0 1px 3px rgba(0,0,0,.15)",
+        transition: "left 150ms", boxShadow: "var(--shadow-control)",
       }} />
     </div>
   );

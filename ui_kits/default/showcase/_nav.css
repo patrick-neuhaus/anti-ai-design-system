@@ -3,10 +3,10 @@
    NÃO editar CSS nav nos HTMLs individuais — edite aqui.
 */
 
-/* ── Pulse animation ──────────────────────────────────── */
-@keyframes nav-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / .5); }
-  50%       { box-shadow: 0 0 0 6px hsl(var(--accent) / 0); }
+/* ── Pulse animation (D7: shared, parametrico via --pulse-hue) ── */
+@keyframes aa-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--pulse-hue, var(--accent)) / .5); }
+  50%       { box-shadow: 0 0 0 6px hsl(var(--pulse-hue, var(--accent)) / 0); }
 }
 
 /* ── Floating header ──────────────────────────────────── */
@@ -54,7 +54,7 @@
   margin-right: 6px;
   vertical-align: middle;
   flex-shrink: 0;
-  animation: nav-pulse 1.6s ease-in-out infinite;
+  animation: aa-pulse-glow 1.6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

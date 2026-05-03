@@ -225,8 +225,7 @@ a{color:inherit;text-decoration:none}
 
 /* Danger zone */
 .danger-zone{border-top:1px solid hsl(var(--destructive)/.3);padding-top:20px;margin-top:4px}
-/* F-CA-011 / F-CA-004: shared spinner keyframe — used by btn-login + Button component */
-@keyframes btn-spin{to{transform:rotate(360deg)}}
+/* D2: @keyframes btn-spin removido — login spinner agora usa aa-btn-spin de _aa-btn.css. */
 </style>
 </head>
 <body class="preset-base">
@@ -591,7 +590,7 @@ function LoginScreen({ onLogin }) {
                     width: 16, height: 16, borderRadius: "50%",
                     border: "2px solid currentColor", borderTopColor: "transparent",
                     display: "inline-block",
-                    animation: "btn-spin 0.6s linear infinite",
+                    animation: "aa-btn-spin 0.6s linear infinite",
                     flexShrink: 0,
                   }} aria-hidden="true" />
                   Entrando...
@@ -877,7 +876,7 @@ function Pagination({ page, total, perPage, onChange }) {
   );
 }
 
-/* W4.1 / F-INT-003: primitivos locais (Checkbox, Drawer, Dialog, Skeleton, EmptyState, Slider)
+/* W4.1 / F-INT-003 + D6: primitivos locais (Checkbox, Drawer, Dialog, Skeleton, EmptyState, Slider, Toast)
    compartilham finalidade com components/{base,display,forms}/*.jsx mas vivem aqui pra manter
    este file como single-bundle standalone (executado direto via Babel inline, sem import).
    Justificativa: app demo precisa rodar isolado. Trade conhecido: token/component change
@@ -1737,7 +1736,7 @@ function ToggleSwitch({ defaultOn=false }) {
     }}>
       <div style={{
         position:"absolute",top:2,left:on?16:2,width:16,height:16,borderRadius:50,
-        background:"#fff",transition:"left 150ms",boxShadow:"0 1px 3px rgba(0,0,0,.15)"
+        background:"#fff",transition:"left 150ms",boxShadow:"var(--shadow-control)"
       }}/>
     </div>
   );
