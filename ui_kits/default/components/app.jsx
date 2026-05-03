@@ -41,7 +41,7 @@ const App = () => {
   const Screen = SCREENS[route] || SCREENS.dashboard;
   return (
     <>
-    <div style={{ display: "flex", minHeight: "100vh", background: "hsl(var(--background))" }}>
+    <div style={{ display: "flex", minHeight: "100dvh", background: "hsl(var(--background))" }}>
       <Sidebar
         active={route}
         onNavigate={setRoute}

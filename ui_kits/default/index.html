@@ -15,7 +15,7 @@ a{color:inherit;text-decoration:none}
 #root{height:100%}
 
 /* ===== LOGIN ===== */
-.login-root{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.login-root{display:grid;grid-template-columns:1fr 1fr;min-height:100dvh}
 @media(max-width:768px){.login-root{grid-template-columns:1fr}}
 .login-brand{position:relative;background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;gap:32px;overflow:hidden;isolation:isolate}
 @media(max-width:768px){.login-brand{display:none}}
@@ -75,12 +75,12 @@ a{color:inherit;text-decoration:none}
 .err-msg{font-size:12px;color:hsl(var(--destructive));text-align:center;padding:8px 12px;background:hsl(var(--destructive)/.08);border-radius:8px}
 
 /* ===== APP SHELL ===== */
-.app-shell{display:grid;grid-template-columns:272px 1fr;height:100vh;overflow:hidden;transition:grid-template-columns 250ms}
+.app-shell{display:grid;grid-template-columns:272px 1fr;height:100dvh;overflow:hidden;transition:grid-template-columns 250ms}
 .app-shell.collapsed{grid-template-columns:68px 1fr}
 
 /* ===== SIDEBAR ===== */
 /* overflow:visible no root pra toggle bolinha nao ser cortado, scroll interno fica no .sidebar-nav */
-.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px 14px;gap:2px;position:relative;overflow:visible;min-width:0;height:100vh}
+.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px 14px;gap:2px;position:relative;overflow:visible;min-width:0;height:100dvh}
 .sidebar-nav{flex:1 1 auto;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden;min-height:0;margin:0 -14px;padding:0 14px;scrollbar-width:thin;scrollbar-color:hsl(var(--sidebar-foreground)/.15) transparent}
 .sidebar-nav::-webkit-scrollbar{width:4px}
 .sidebar-nav::-webkit-scrollbar-thumb{background:hsl(var(--sidebar-foreground)/.18);border-radius:4px}

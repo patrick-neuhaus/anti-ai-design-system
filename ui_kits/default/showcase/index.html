@@ -509,7 +509,7 @@
       scroll-behavior: smooth;
       gap: 24px;
       padding: 8px 0 24px;
-      -webkit-overflow-scrolling: touch;
+      /* X5: -webkit-overflow-scrolling:touch removido — iOS 13+ ja faz auto, era dead code */
     }
     .templates-carousel::-webkit-scrollbar { height: 6px; }
     .templates-carousel::-webkit-scrollbar-thumb { background: hsl(var(--border) / .3); border-radius: 3px; }

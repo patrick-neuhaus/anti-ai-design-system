@@ -6,7 +6,7 @@
 const AppLayout = ({ sidebar, children }) => (
   <div style={{
     display: "flex",
-    minHeight: "100vh",
+    minHeight: "100dvh",
     background: "hsl(var(--background))",
     color: "hsl(var(--foreground))",
   }}>

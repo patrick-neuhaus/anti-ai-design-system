@@ -226,7 +226,8 @@ const Sidebar = ({
       width, flexShrink: 0,
       background: "hsl(var(--sidebar-background))",
       color: "hsl(var(--sidebar-foreground))",
-      height: "100vh",
+      /* X2: 100dvh evita iOS Safari address-bar viewport bug (sidebar clip) */
+      height: "100dvh",
       position: "sticky", top: 0,
       padding: "14px 12px",
       display: "flex", flexDirection: "column",
