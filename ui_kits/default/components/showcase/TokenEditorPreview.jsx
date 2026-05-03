@@ -97,6 +97,56 @@ const _te_computeWcagPairs = (tokens) => {
 
 const _te_LS_KEY = "anti-ai-theme";
 
+// ── Auto-clamp helpers (DR-01-color-tokens.md / deriveColorTokens algorithm) ──
+//
+// Filosofia: nunca produz token "feio". Ao invés de gerar accent=#ffffff e deixar
+// passar com contraste 1.1:1, normalizamos lightness/chroma ate cada par AA real
+// (4.5:1 texto). Se nao da pra alcancar AA, retorna best-effort + flag.
+//
+// Algoritmo per DR-01:
+//   1. Accent: clamp L pra faixa usavel (0.35-0.70 light mode), preservando hue
+//   2. Primary: mesma familia de hue (NAO +180°), darken ate contraste(primary,
+//      primary-fg) >= 4.5
+//   3. Decorative: hue +30° (analogo, padrão Material tonalSpot)
+//   4. Ring: herda primary (pertence ao grupo acao)
+//   5. Foregrounds: pick branco vs near-black por contraste real
+
+const _te_pickFg = (bg) => {
+  try {
+    const cBg = chroma(bg);
+    const candidates = ["#ffffff", "#0a0a0a"];
+    let best = candidates[0], bestR = chroma.contrast(candidates[0], cBg);
+    for (const c of candidates) {
+      const r = chroma.contrast(c, cBg);
+      if (r > bestR) { best = c; bestR = r; }
+    }
+    return { fg: best, ratio: bestR };
+  } catch { return { fg: "#ffffff", ratio: 1 }; }
+};
+
+const _te_clampForContrast = (bgHex, fgHex, minRatio = 4.5, maxIter = 40) => {
+  let cur = chroma(bgHex);
+  for (let i = 0; i < maxIter; i++) {
+    if (chroma.contrast(cur, fgHex) >= minRatio) return cur;
+    const fgL = chroma(fgHex).get("hsl.l");
+    cur = (isNaN(fgL) || fgL > 0.5) ? cur.darken(0.15) : cur.brighten(0.15);
+  }
+  return cur;
+};
+
+const _te_clampAccentLightness = (color) => {
+  const l = color.get("hsl.l");
+  if (isNaN(l)) return color;
+  if (l > 0.70) return color.set("hsl.l", 0.65);
+  if (l < 0.25) return color.set("hsl.l", 0.30);
+  return color;
+};
+
+const _te_hslOf = (c) => {
+  const [h, s, l] = c.hsl();
+  return `${Math.round(isNaN(h) ? 0 : h)} ${Math.round((isNaN(s)?0:s)*100)}% ${Math.round((isNaN(l)?0:l)*100)}%`;
+};
+
 // ── Componente ────────────────────────────────────────────────────────────
 
 const TokenEditorPreview = ({ compact = false }) => {
@@ -126,19 +176,35 @@ const TokenEditorPreview = ({ compact = false }) => {
 
   const deriveFromAccent = (hex) => {
     try {
-      const accent = chroma(hex);
-      const primary = accent.set("hsl.h", `+${180}`).darken(0.5);
+      // 1. Accent: clamp L pra faixa usavel; preserva hue + chroma da seed
+      const seed = chroma(hex);
+      const accent = _te_clampAccentLightness(seed);
+
+      // 2. Accent-foreground: pick branco/near-black por contraste real
+      const accentFg = _te_pickFg(accent.hex());
+      // Se nem branco nem preto bate AA na accent, escurece accent
+      const accentFinal = accentFg.ratio >= 4.5
+        ? accent
+        : _te_clampForContrast(accent.hex(), accentFg.fg, 4.5);
+
+      // 3. Primary: mesma familia hue (NAO +180°); darken ate AA vs fg branco
+      const primaryFg = "#ffffff";
+      let primary = accent.set("hsl.h", accent.get("hsl.h") || 0).darken(1.2);
+      primary = _te_clampForContrast(primary.hex(), primaryFg, 4.5);
+
+      // 4. Ring: herda primary (action group)
       const ring = primary;
-      const accentDecorative = accent.brighten(0.2);
-      const hslOf = (c) => {
-        const [h, s, l] = c.hsl();
-        return `${Math.round(isNaN(h) ? 0 : h)} ${Math.round((isNaN(s)?0:s)*100)}% ${Math.round((isNaN(l)?0:l)*100)}%`;
-      };
+
+      // 5. Decorative: hue +30° analogo (Material tonalSpot pattern), NAO +180°
+      const decorative = accent.set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
+
       const d = {
-        "--accent":            hslOf(accent),
-        "--primary":           hslOf(primary),
-        "--ring":              hslOf(ring),
-        "--accent-decorative": hslOf(accentDecorative),
+        "--accent":              _te_hslOf(accentFinal),
+        "--accent-foreground":   _te_hexToHsl(accentFg.fg),
+        "--primary":             _te_hslOf(primary),
+        "--primary-foreground":  _te_hexToHsl(primaryFg),
+        "--ring":                _te_hslOf(ring),
+        "--accent-decorative":   _te_hslOf(decorative),
       };
       Object.entries(d).forEach(([k, v]) => _te_applyToken(k, v));
       const cur = _te_readCurrentTokens();
