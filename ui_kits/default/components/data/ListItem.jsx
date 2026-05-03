@@ -13,7 +13,7 @@ const ListItem = ({ leading, title, subtitle, trailing, onClick, divider = true 
       padding: "12px 16px",
       borderBottom: divider ? "1px solid hsl(var(--border))" : "none",
       cursor: onClick ? "pointer" : "default",
-      transition: "background-color .12s",
+      transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
     }}
     onMouseEnter={(e) => { if (onClick) e.currentTarget.style.background = "hsl(var(--muted) / .4)"; }}
     onMouseLeave={(e) => { if (onClick) e.currentTarget.style.background = "transparent"; }}

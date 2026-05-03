@@ -30,7 +30,7 @@ const ConferenciaScreen = () => {
         {/* Bipagem */}
         <div className="card" style={{ padding: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-            <div style={{ width: 40, height: 40, borderRadius: 12, background: "hsla(33 47% 53% / .1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 40, height: 40, borderRadius: "var(--radius-lg, 12px)", background: "hsla(33 47% 53% / .1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon.ScanBarcode size={20} color="hsl(33 47% 53%)" />
             </div>
             <div>
@@ -50,11 +50,11 @@ const ConferenciaScreen = () => {
             <span className="mono">{scanned}/{total} caixas</span>
           </div>
           <div style={{ height: 8, background: "var(--muted)", borderRadius: 999, overflow: "hidden" }}>
-            <div style={{ width: `${pct}%`, height: "100%", background: "hsl(338 55% 23%)", transition: "width .25s ease-out" }}/>
+            <div style={{ width: `${pct}%`, height: "100%", background: "hsl(338 55% 23%)", transition: "width var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))" }}/>
           </div>
           <div style={{ fontSize: 11, color: "var(--muted-foreground)", marginTop: 6 }}>{pct}% concluído</div>
 
-          <div style={{ marginTop: 16, padding: 12, background: "hsla(0 100% 50% / .06)", border: "1px solid hsla(0 100% 50% / .2)", borderRadius: 12, display: "flex", gap: 10, alignItems: "flex-start" }}>
+          <div style={{ marginTop: 16, padding: 12, background: "hsla(0 100% 50% / .06)", border: "1px solid hsla(0 100% 50% / .2)", borderRadius: "var(--radius-lg, 12px)", display: "flex", gap: 10, alignItems: "flex-start" }}>
             <Icon.AlertCircle size={16} color="hsl(0 100% 50%)" />
             <div style={{ fontSize: 12 }}>
               <strong style={{ color: "hsl(0 100% 50%)" }}>1 divergência</strong>

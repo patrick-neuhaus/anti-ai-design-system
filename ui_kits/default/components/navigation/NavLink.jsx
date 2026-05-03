@@ -22,7 +22,7 @@ const NavLink = ({ href, active, onClick, children, leading, trailing, dense = f
         background: active ? "hsl(var(--accent-decorative) / .12)" : "transparent",
         color: active ? "hsl(var(--accent))" : "hsl(var(--foreground))",
         fontSize: 14, fontWeight: active ? 500 : 400,
-        transition: "background-color .15s, color .15s",
+        transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
       }}
       onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "hsl(var(--muted))"; }}
       onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "transparent"; }}

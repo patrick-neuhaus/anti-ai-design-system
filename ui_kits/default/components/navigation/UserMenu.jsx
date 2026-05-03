@@ -84,7 +84,7 @@ const UserMenu = ({ user, onConfig, onLogout, collapsed = false, align = "top" }
           background: open ? "hsl(var(--sidebar-accent) / .5)" : "transparent",
           color: "inherit", border: 0, cursor: "pointer",
           fontFamily: "inherit", textAlign: "left",
-          transition: "background-color .15s",
+          transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
         }}
         onMouseEnter={(e) => { if (!open) e.currentTarget.style.background = "hsl(var(--sidebar-accent) / .35)"; }}
         onMouseLeave={(e) => { if (!open) e.currentTarget.style.background = "transparent"; }}
@@ -104,7 +104,7 @@ const UserMenu = ({ user, onConfig, onLogout, collapsed = false, align = "top" }
         }}>{name}</span>
         <Icon.ChevronUp size={14} style={{
           transform: open ? "rotate(0deg)" : "rotate(180deg)",
-          transition: "transform .15s",
+          transition: "transform var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
           opacity: 0.6,
         }} />
       </button>
@@ -138,7 +138,7 @@ const DropdownItem = ({ icon: I, label, onClick }) => (
       background: "transparent", color: "hsl(var(--foreground))",
       border: 0, borderRadius: 6,
       textAlign: "left", cursor: "pointer",
-      transition: "background-color .15s",
+      transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
     }}
     onMouseEnter={(e) => { e.currentTarget.style.background = "hsl(var(--muted))"; }}
     onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}

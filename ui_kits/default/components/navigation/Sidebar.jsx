@@ -29,7 +29,7 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
       alignItems: "center",
       justifyContent: collapsed ? "center" : "flex-start",
       padding: collapsed ? "10px 0" : "8px 12px",
-      borderRadius: 10,
+      borderRadius: "var(--radius-md, 8px)",
       background: active ? "hsl(var(--sidebar-accent))" : "transparent",
       color: active ? "hsl(var(--sidebar-foreground))" : "hsl(var(--sidebar-foreground) / .7)",
       fontSize: 14,
@@ -137,7 +137,7 @@ const Sidebar = ({
           aria-label="Abrir menu"
           style={{
             position: "fixed", top: 14, left: 14, zIndex: 100,
-            width: 40, height: 40, borderRadius: 10,
+            width: 40, height: 40, borderRadius: "var(--radius-md, 8px)",
             background: "hsl(var(--card))",
             border: "1px solid hsl(var(--border))",
             display: mobileOpen ? "none" : "flex",
@@ -169,7 +169,7 @@ const Sidebar = ({
             position: "fixed", top: 0, left: 0, bottom: 0,
             width: 280, zIndex: 95,
             transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
-            transition: "transform .25s ease-out",
+            transition: "transform var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
             background: "hsl(var(--sidebar-background))",
             color: "hsl(var(--sidebar-foreground))",
             padding: "14px 12px",
@@ -231,7 +231,7 @@ const Sidebar = ({
       padding: "14px 12px",
       display: "flex", flexDirection: "column",
       borderRight: "1px solid hsl(var(--sidebar-border))",
-      transition: "width .25s ease-in-out",
+      transition: "width var(--motion-normal,200ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
     }}>
       {/* Collapse toggle — centrado na divisória vertical */}
       <button

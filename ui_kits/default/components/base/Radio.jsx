@@ -29,7 +29,7 @@ const Radio = ({ checked, onChange, label, name, value, disabled = false, ...res
           background: "hsl(var(--card))",
           border: `1px solid hsl(var(--${checked ? "primary" : "border"}))`,
           display: "flex", alignItems: "center", justifyContent: "center",
-          transition: "border-color .15s",
+          transition: "border-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
         }}>
           {checked && (
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "hsl(var(--primary))" }} />

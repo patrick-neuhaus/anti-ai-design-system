@@ -67,7 +67,7 @@ const Drawer = ({ open, onClose, side = "right", title, children, footer, width 
           borderLeft: isRight ? "1px solid hsl(var(--border))" : 0,
           borderRight: isRight ? 0 : "1px solid hsl(var(--border))",
           display: "flex", flexDirection: "column",
-          animation: `drawer-${side} .2s ease-out`,
+          animation: `drawer-${side} var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))`,
         }}
       >
         {title && (

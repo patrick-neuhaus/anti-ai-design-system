@@ -75,7 +75,16 @@
   /* Backdrop overlay — Dialog/Drawer use neutral black em propósito (sombra de cena, nao de UI) */
   --overlay-backdrop: hsl(0 0% 0% / .45);
 
-  /* Motion tokens — F-UI-003 / F-MO-008 */
+  /* Motion tokens — F-UI-003 / F-MO-008
+     Wave C reserved: --motion-slow, --motion-page, --ease-in, --ease-spring
+     definidos pra completude de escala mas zero consumidores hoje.
+     NÃO remover sem ADR — próximos consumers esperados:
+       --motion-slow (300ms): modal open/close grande, sheet expand
+       --motion-page (400ms): page transitions com router
+       --ease-spring: micro-interactions overshoot (toggle bounce)
+       --ease-in: entry animations (drawer slide-in)
+     Last reviewed: 2026-05-03. Re-revisar em 6 meses; se ainda zero
+     consumers, escalar pra remoção. */
   --motion-instant:  80ms;
   --motion-fast:    150ms;
   --motion-normal:  200ms;

@@ -32,7 +32,7 @@ const Popover = ({ trigger, children, side = "bottom", align = "start" }) => {
           border: "1px solid hsl(var(--border))", borderRadius: 10,
           boxShadow: "var(--shadow-popover)",
           padding: 6,
-          animation: "dialog-pop .14s ease-out",
+          animation: "dialog-pop var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
         }}>
           {typeof children === "function" ? children({ close: () => setOpen(false) }) : children}
         </div>

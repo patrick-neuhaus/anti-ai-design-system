@@ -19,7 +19,7 @@ const Alert = ({ children, title, intent = "info", icon: IconOverride, onClose }
       padding: 12,
       background: c.bg,
       border: `1px solid ${c.border}`,
-      borderRadius: 10,
+      borderRadius: "var(--radius-md, 8px)",
       color: "hsl(var(--foreground))",
     }}>
       {I && (

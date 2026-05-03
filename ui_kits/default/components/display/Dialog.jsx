@@ -69,10 +69,10 @@ const Dialog = ({ open, onClose, title, description, children, footer, size = "m
       <div ref={dialogRef} onClick={(e) => e.stopPropagation()} style={{
         width: "100%", maxWidth: widths[size] ?? widths.md,
         background: "hsl(var(--card))", color: "hsl(var(--card-foreground))",
-        border: "1px solid hsl(var(--border))", borderRadius: 14,
+        border: "1px solid hsl(var(--border))", borderRadius: "var(--radius-xl, 16px)",
         boxShadow: "var(--shadow-dialog)",
         overflow: "hidden",
-        animation: "dialog-pop .18s ease-out",
+        animation: "dialog-pop var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
       }}>
         {(title || dismissable) && (
           <header style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "20px 20px 0" }}>
