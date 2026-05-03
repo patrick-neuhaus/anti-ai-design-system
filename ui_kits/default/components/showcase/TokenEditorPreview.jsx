@@ -192,10 +192,11 @@ const TokenEditorPreview = ({ compact = false }) => {
       const seed = chroma(hex);
       let accent = _te_clampAccentLightness(seed);
 
-      // 2. WCAG 1.4.11+: forçar 6:1 vs surface (acima do AA 3:1, mira AAA-ish
-      //    pra accent ser confortavel inclusive como fundo de elemento com texto)
-      if (chroma.contrast(accent, surface) < 6) {
-        accent = _te_clampForContrast(accent.hex(), surface, 6.0);
+      // 2. WCAG AAA: forçar 7:1 vs surface (acima do AA 4.5, atinge AAA
+      //    completo). Trade: seeds high-luminance (yellow, light green)
+      //    perdem chroma severamente. Aceitavel — Patrick prioriza AAA.
+      if (chroma.contrast(accent, surface) < 7) {
+        accent = _te_clampForContrast(accent.hex(), surface, 7.0);
       }
 
       // 3. Accent-foreground: pick branco/near-black por contraste real
@@ -210,8 +211,8 @@ const TokenEditorPreview = ({ compact = false }) => {
       const primaryFg = "#ffffff";
       let primary = accent.set("hsl.h", accent.get("hsl.h") || 0).darken(1.2);
       primary = _te_clampForContrast(primary.hex(), primaryFg, 4.5);
-      if (chroma.contrast(primary, surface) < 6) {
-        primary = _te_clampForContrast(primary.hex(), surface, 6.0);
+      if (chroma.contrast(primary, surface) < 7) {
+        primary = _te_clampForContrast(primary.hex(), surface, 7.0);
       }
 
       // 5. Ring: herda primary (action group)
@@ -219,8 +220,8 @@ const TokenEditorPreview = ({ compact = false }) => {
 
       // 6. Decorative: hue +30° analogo (Material tonalSpot pattern), NAO +180°
       let decorative = accent.set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
-      if (chroma.contrast(decorative, surface) < 6) {
-        decorative = _te_clampForContrast(decorative.hex(), surface, 6.0);
+      if (chroma.contrast(decorative, surface) < 7) {
+        decorative = _te_clampForContrast(decorative.hex(), surface, 7.0);
       }
 
       const d = {
