@@ -21,7 +21,7 @@ const ToastItem = ({ toast, onDismiss }) => {
       border: "1px solid hsl(var(--border))",
       borderLeft: `3px solid ${c.color}`,
       borderRadius: 10,
-      boxShadow: "0 6px 20px -4px rgb(0 0 0 / .15)",
+      boxShadow: "var(--shadow-toast)",
       minWidth: 280, maxWidth: 420,
       color: "hsl(var(--foreground))",
       fontSize: 13,

@@ -83,7 +83,7 @@ const ProfileScreen = ({ user, onSave, onChangePassword, onDeleteAccount, onUplo
                 width: 30, height: 30, borderRadius: "50%",
                 background: "hsl(var(--card))", border: "1.5px solid hsl(var(--border))",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                cursor: "pointer", boxShadow: "0 1px 4px rgb(0 0 0 / .1)",
+                cursor: "pointer", boxShadow: "var(--shadow-control)",
                 color: "hsl(var(--foreground))",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = "hsl(var(--muted))"; }}

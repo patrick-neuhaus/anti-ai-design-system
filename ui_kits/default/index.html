@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Anti-AI Design System · Templates</title>
 <link rel="stylesheet" href="../../colors_and_type.css" />
+<link rel="stylesheet" href="./components/base/_aa-btn.css" />
 <style>
 html,body{margin:0;padding:0;height:100%;background:hsl(var(--background));color:hsl(var(--foreground));font-family:var(--font-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
@@ -70,8 +71,7 @@ a{color:inherit;text-decoration:none}
 .forgot-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:-2px}
 .forgot-link{font-size:12px;color:hsl(var(--accent));font-weight:500;cursor:pointer}
 .forgot-link:hover{opacity:.8}
-.btn-login{width:100%;padding:11px;border-radius:12px;background:hsl(var(--primary));color:hsl(var(--primary-foreground));font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 150ms}
-.btn-login:hover{background:hsl(var(--primary)/.9)}
+/* W1.2: .btn-login removida — substituida por aa-btn aa-btn--primary aa-btn--md aa-btn--full (canonical, F-INT-001) */
 .err-msg{font-size:12px;color:hsl(var(--destructive));text-align:center;padding:8px 12px;background:hsl(var(--destructive)/.08);border-radius:8px}
 
 /* ===== APP SHELL ===== */
@@ -103,7 +103,8 @@ a{color:inherit;text-decoration:none}
 .nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms}
 .nav-item:hover{background:hsl(var(--sidebar-accent)/.6);color:hsl(var(--sidebar-foreground))}
 .nav-item.active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground));font-weight:500}
-.nav-item.active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
+/* W1.6 followup / F-INT-019: indicator agora dentro do nav-item (left:0) pra nao ser cortado por overflow-x:hidden da sidebar-nav quando colapsada */
+.nav-item.active::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
 .nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
 .nav-item .nav-label{flex:1;overflow:hidden;text-overflow:ellipsis}
 .nav-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:hsl(var(--sidebar-indicator));font-weight:600}
@@ -155,6 +156,8 @@ a{color:inherit;text-decoration:none}
 .user-info,.user-actions{opacity:1;max-width:200px;transform:translateX(0);transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;visibility:visible;overflow:hidden}
 .collapsed .user-info,.collapsed .user-actions{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms}
 .collapsed .user-panel{justify-content:center;padding:10px}
+/* W1.6 followup / F-INT-019: avatar centralizado no estado colapsado (clickable era flex-start por padrao) */
+.collapsed .user-panel-clickable{justify-content:center;flex:0 0 auto}
 
 /* ===== MAIN ===== */
 .main-area{display:flex;flex-direction:column;min-width:0;background:hsl(var(--background));overflow:auto}
@@ -197,16 +200,8 @@ a{color:inherit;text-decoration:none}
 .pill.neutral{background:hsl(var(--muted));color:hsl(var(--muted-foreground))}
 .pill.info{background:hsl(var(--info)/.12);color:hsl(var(--info))}
 
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;transition:all 150ms;white-space:nowrap;cursor:pointer;border:none}
-.btn-primary{background:hsl(var(--primary));color:hsl(var(--primary-foreground))}
-.btn-primary:hover{background:hsl(var(--primary)/.9)}
-.btn-outline{background:hsl(var(--card));color:hsl(var(--foreground));border:1px solid hsl(var(--border))}
-.btn-outline:hover{background:hsl(var(--muted))}
-.btn-sm{padding:6px 10px;font-size:12px;border-radius:8px}
-.btn-ghost{color:hsl(var(--muted-foreground));padding:6px 10px}
-.btn-ghost:hover{background:hsl(var(--muted));color:hsl(var(--foreground))}
-.btn-destructive{background:hsl(var(--destructive)/.1);color:hsl(0 70% 40%)}
-.btn-destructive:hover{background:hsl(var(--destructive)/.18)}
+/* W1.2: .btn / .btn-primary / .btn-outline / .btn-sm / .btn-ghost / .btn-destructive removidas — substituidas por aa-btn (canonical, F-INT-001).
+   App demo agora consome a mesma camada do showcase (F-INT-003). */
 
 /* Settings color editor */
 .token-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid hsl(var(--border));background:hsl(var(--card))}
@@ -589,7 +584,7 @@ function LoginScreen({ onLogin }) {
               <div className="err-msg" role="alert" aria-live="polite">{error}</div>
             )}
             {/* F-CA-011: loading state + aria-busy on submit button */}
-            <button type="submit" className="btn-login" disabled={loading} aria-busy={loading}>
+            <button type="submit" className="aa-btn aa-btn--primary aa-btn--md aa-btn--full" disabled={loading} aria-busy={loading}>
               {loading ? (
                 <>
                   <span style={{
@@ -639,14 +634,15 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
         {collapsed ? <I.ChevronRight size={14} /> : <I.ChevronLeft size={14} />}
       </button>
 
-      {/* Brand — logo Artemis com label diagonal sobre canto */}
+      {/* W1.6 followup / F-INT-019: usa placeholders do worktree (artemis-* nao versionados),
+          colapsado esconde tag diagonal pra nao ficar torto. */}
       <div className="sidebar-brand">
         <div className="sidebar-logo-wrap">
           {collapsed
-            ? <img src="../../assets/artemis-icon.png" alt="Artemis" className="sidebar-logo-icon" />
-            : <img src="../../assets/artemis-logo.svg" alt="Artemis" className="sidebar-logo-full" />
+            ? <img src="../../assets/placeholder-mark.svg" alt="Artemis" className="sidebar-logo-icon" />
+            : <img src="../../assets/placeholder-logo.svg" alt="Artemis" className="sidebar-logo-full" />
           }
-          <span className="sidebar-logo-tag">{tpl.label}</span>
+          {!collapsed && <span className="sidebar-logo-tag">{tpl.label}</span>}
         </div>
         {/* Back to showcase — F-UX-016 */}
         {!collapsed && (
@@ -741,7 +737,7 @@ function OpsDashboard({ onNav }) {
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Romaneios recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas 72 horas</p></div>
-          <button className="btn btn-outline btn-sm" onClick={()=>onNav("romaneios")}>Ver todos</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("romaneios")}>Ver todos</button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Data</th><th>Transportadora</th><th>Status</th></tr></thead>
@@ -781,7 +777,7 @@ function CrmDashboard({ onNav }) {
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Oportunidades ativas</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Ordenado por valor</p></div>
-          <button className="btn btn-outline btn-sm" onClick={()=>onNav("pipeline")}>Ver pipeline</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("pipeline")}>Ver pipeline</button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Cliente</th><th>Valor</th><th>Fase</th><th>Status</th></tr></thead>
@@ -822,7 +818,7 @@ function WikiDashboard({ onNav }) {
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Artigos recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas publicações</p></div>
-          <button className="btn btn-outline btn-sm" onClick={()=>onNav("artigos")}>Ver todos</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("artigos")}>Ver todos</button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Título</th><th>Autor</th><th>Views</th><th>Status</th></tr></thead>
@@ -861,18 +857,18 @@ function Pagination({ page, total, perPage, onChange }) {
   const totalPages = Math.ceil(total / perPage);
   return (
     <div style={{ display:"flex", alignItems:"center", gap:4, justifyContent:"flex-end", marginTop:4 }}>
-      <button className="btn btn-outline btn-sm" onClick={() => onChange(page-1)} disabled={page <= 1}
+      <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => onChange(page-1)} disabled={page <= 1}
         style={{ padding:"5px 10px" }}>←</button>
       {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
         const p = i + 1;
         return (
-          <button key={p} className="btn btn-sm" onClick={() => onChange(p)}
+          <button key={p} className="aa-btn aa-btn--sm" onClick={() => onChange(p)}
             style={{ padding:"5px 10px", background: page===p ? "hsl(var(--primary))" : "hsl(var(--card))", color: page===p ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))", border:"1px solid hsl(var(--border))", borderRadius:8 }}>
             {p}
           </button>
         );
       })}
-      <button className="btn btn-outline btn-sm" onClick={() => onChange(page+1)} disabled={page >= totalPages}
+      <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => onChange(page+1)} disabled={page >= totalPages}
         style={{ padding:"5px 10px" }}>→</button>
       <span style={{ fontSize:11, color:"hsl(var(--muted-foreground))", marginLeft:6, fontFamily:"var(--font-mono)" }}>
         {(page-1)*perPage+1}–{Math.min(page*perPage,total)} de {total}
@@ -881,15 +877,23 @@ function Pagination({ page, total, perPage, onChange }) {
   );
 }
 
+/* W4.1 / F-INT-003: primitivos locais (Checkbox, Drawer, Dialog, Skeleton, EmptyState, Slider)
+   compartilham finalidade com components/{base,display,forms}/*.jsx mas vivem aqui pra manter
+   este file como single-bundle standalone (executado direto via Babel inline, sem import).
+   Justificativa: app demo precisa rodar isolado. Trade conhecido: token/component change
+   no shared NAO propaga aqui automaticamente — refactor planejado pra Wave futura
+   (gerar bundle a partir de fonte modular). Until then: keep visual contract aligned via
+   tokens (--primary, --border, --card etc) e classes canônicas (aa-btn). */
 function Checkbox({ checked, onChange, label, id }) {
   return (
     <label htmlFor={id} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", fontSize:13, userSelect:"none" }}>
       <div onClick={() => onChange(!checked)} style={{
         width:16, height:16, borderRadius:4, border:`1.5px solid ${checked?"hsl(var(--primary))":"hsl(var(--border))"}`,
         background: checked ? "hsl(var(--primary))" : "hsl(var(--card))",
-        display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, cursor:"pointer", transition:"all 150ms"
+        display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, cursor:"pointer",
+        transition:"background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), border-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))"
       }}>
-        {checked && <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="hsl(var(--primary-foreground))" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+        {checked && <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l3 3 5-6" stroke="hsl(var(--primary-foreground))" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
       </div>
       {label && <span>{label}</span>}
     </label>
@@ -923,7 +927,7 @@ function Drawer({ open, onClose, title, children }) {
       <div style={{ position:"fixed", top:0, right:0, bottom:0, width:400, maxWidth:"90vw", background:"hsl(var(--card))", borderLeft:"1px solid hsl(var(--border))", zIndex:51, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px hsl(var(--foreground)/.1)", animation:"slideIn 200ms ease" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
           <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
-          <button onClick={onClose} className="btn btn-ghost btn-sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
+          <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
         </div>
         <div style={{ flex:1, overflow:"auto", padding:"20px" }}>{children}</div>
       </div>
@@ -940,7 +944,7 @@ function Dialog({ open, onClose, title, children }) {
       <div style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:480, maxWidth:"90vw", background:"hsl(var(--card))", border:"1px solid hsl(var(--border))", borderRadius:20, zIndex:61, boxShadow:"0 24px 64px hsl(var(--foreground)/.2)", animation:"dialogIn 200ms ease" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
           <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
-          <button onClick={onClose} className="btn btn-ghost btn-sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
+          <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
         </div>
         <div style={{ padding:"20px" }}>{children}</div>
       </div>
@@ -967,7 +971,7 @@ function EmptyState({ icon, title, desc, action, onAction }) {
       <div style={{ fontSize:40, marginBottom:12 }}>{icon || "📭"}</div>
       <h3 style={{ fontSize:16, fontWeight:600, color:"hsl(var(--foreground))", margin:"0 0 8px" }}>{title}</h3>
       {desc && <p style={{ fontSize:13, margin:"0 0 20px", lineHeight:1.6 }}>{desc}</p>}
-      {action && <button className="btn btn-primary btn-sm" onClick={onAction}>{action}</button>}
+      {action && <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={onAction}>{action}</button>}
     </div>
   );
 }
@@ -987,10 +991,10 @@ function NumberStepper({ value, onChange, min=0, max=999, step=1, label }) {
     <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
       {label && <span style={{ fontSize:12, fontWeight:500 }}>{label}</span>}
       <div style={{ display:"flex", alignItems:"center", border:"1.5px solid hsl(var(--border))", borderRadius:8, overflow:"hidden", width:"fit-content" }}>
-        <button className="btn btn-ghost" onClick={() => onChange(Math.max(min, value-step))}
+        <button className="aa-btn aa-btn--ghost aa-btn--md" onClick={() => onChange(Math.max(min, value-step))}
           style={{ padding:"6px 10px", borderRadius:0, borderRight:"1px solid hsl(var(--border))" }}>−</button>
         <span style={{ padding:"6px 14px", fontFamily:"var(--font-mono)", fontSize:13, minWidth:40, textAlign:"center" }}>{value}</span>
-        <button className="btn btn-ghost" onClick={() => onChange(Math.min(max, value+step))}
+        <button className="aa-btn aa-btn--ghost aa-btn--md" onClick={() => onChange(Math.min(max, value+step))}
           style={{ padding:"6px 10px", borderRadius:0, borderLeft:"1px solid hsl(var(--border))" }}>+</button>
       </div>
     </div>
@@ -1097,12 +1101,12 @@ function RomaneiosPage() {
         </div>
         <div className="page-actions">
           {selected.size > 0 && (
-            <button className="btn btn-destructive btn-sm" onClick={() => setConfirmDialog(true)}>
+            <button className="aa-btn aa-btn--destructive aa-btn--sm" onClick={() => setConfirmDialog(true)}>
               <I.Trash2 size={13}/> Excluir {selected.size} selecionados
             </button>
           )}
-          <button className="btn btn-outline btn-sm" onClick={simulateReload}><I.RotateCcw size={13}/> Atualizar</button>
-          <button className="btn btn-primary btn-sm"><I.Plus size={13}/> Novo romaneio</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={simulateReload}><I.RotateCcw size={13}/> Atualizar</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Novo romaneio</button>
         </div>
       </div>
 
@@ -1119,7 +1123,7 @@ function RomaneiosPage() {
             placeholder="Todas transportadoras"
             options={transportadoras.map(t => ({ value:t, label:t }))} />
           {(search||statusFilter||transFilter) && (
-            <button className="btn btn-ghost btn-sm" onClick={() => { setSearch(""); setStatusFilter(""); setTransFilter(""); setPage(1); }}>
+            <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => { setSearch(""); setStatusFilter(""); setTransFilter(""); setPage(1); }}>
               Limpar filtros
             </button>
           )}
@@ -1170,7 +1174,7 @@ function RomaneiosPage() {
                   <td className="mono">{r.valor}</td>
                   <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
                   <td>
-                    <button className="btn btn-ghost btn-sm" onClick={() => setDrawer(r)} style={{ padding:"4px 8px" }}>
+                    <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => setDrawer(r)} style={{ padding:"4px 8px" }}>
                       <I.Info size={13}/> Detalhes
                     </button>
                   </td>
@@ -1207,8 +1211,8 @@ function RomaneiosPage() {
             </div>
             <TextareaField label="Observações" placeholder="Adicione uma observação…" value="" onChange={() => {}} />
             <div style={{ display:"flex", gap:8 }}>
-              <button className="btn btn-primary btn-sm" style={{ flex:1 }} onClick={() => setDrawer(null)}>Salvar observações</button>
-              <button className="btn btn-outline btn-sm" onClick={() => setDrawer(null)}>Fechar</button>
+              <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }} onClick={() => setDrawer(null)}>Salvar observações</button>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setDrawer(null)}>Fechar</button>
             </div>
           </div>
         )}
@@ -1220,8 +1224,8 @@ function RomaneiosPage() {
           Você está prestes a excluir <strong style={{ color:"hsl(var(--foreground))" }}>{selected.size} romaneios</strong>. Esta ação é irreversível.
         </p>
         <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
-          <button className="btn btn-outline btn-sm" onClick={() => setConfirmDialog(false)}>Cancelar</button>
-          <button className="btn btn-destructive btn-sm" onClick={() => { setSelected(new Set()); setConfirmDialog(false); }}>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setConfirmDialog(false)}>Cancelar</button>
+          <button className="aa-btn aa-btn--destructive aa-btn--sm" onClick={() => { setSelected(new Set()); setConfirmDialog(false); }}>
             <I.Trash2 size={13}/> Confirmar exclusão
           </button>
         </div>
@@ -1261,7 +1265,7 @@ function PipelinePage() {
           <p className="page-sub">Gerencie oportunidades por fase. Clique num card para ver detalhes.</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-primary btn-sm"><I.Plus size={13}/> Nova oportunidade</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Nova oportunidade</button>
         </div>
       </div>
 
@@ -1292,7 +1296,13 @@ function PipelinePage() {
               </div>
               <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                 {stageCards(stage).map(card => (
-                  <div key={card.id} onClick={() => setDrawerCard(card)}
+                  /* W1.10 / F-INT-002: card clicavel teclado-acessivel (role/tabIndex/onKeyDown) */
+                  <div key={card.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Abrir ${card.cliente} — R$ ${card.valor.toLocaleString("pt-BR")}`}
+                    onClick={() => setDrawerCard(card)}
+                    onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setDrawerCard(card); } }}
                     className="card" style={{ cursor:"pointer", padding:"12px 14px", borderRadius:14, transition:"box-shadow 150ms, transform 150ms" }}
                     onMouseEnter={e => { e.currentTarget.style.boxShadow="0 4px 16px hsl(var(--foreground)/.1)"; e.currentTarget.style.transform="translateY(-1px)"; }}
                     onMouseLeave={e => { e.currentTarget.style.boxShadow=""; e.currentTarget.style.transform=""; }}>
@@ -1320,7 +1330,13 @@ function PipelinePage() {
             <thead><tr><th>ID</th><th>Cliente</th><th>Valor</th><th>Fase</th><th>Resp.</th><th>Prob.</th><th>Status</th></tr></thead>
             <tbody>
               {PIPELINE_CARDS.map(c => (
-                <tr key={c.id} onClick={() => setDrawerCard(c)} style={{ cursor:"pointer" }}>
+                /* W1.10 / F-INT-002: table row clicavel — tabIndex + onKeyDown pra teclado */
+                <tr key={c.id}
+                  tabIndex={0}
+                  aria-label={`Abrir ${c.cliente}`}
+                  onClick={() => setDrawerCard(c)}
+                  onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setDrawerCard(c); } }}
+                  style={{ cursor:"pointer" }}>
                   <td className="mono">{c.id}</td>
                   <td style={{ fontWeight:500 }}>{c.cliente}</td>
                   <td className="mono">R$ {c.valor.toLocaleString("pt-BR")}</td>
@@ -1360,8 +1376,8 @@ function PipelinePage() {
               <TextareaField label="Descrição da oportunidade" placeholder="Contexto, histórico, próximos passos…" value={nota} onChange={setNota} rows={3} />
             </div>
             <div style={{ gridColumn:"1/-1", display:"flex", gap:8 }}>
-              <button className="btn btn-primary btn-sm">Salvar configuração</button>
-              <button className="btn btn-outline btn-sm">Descartar</button>
+              <button className="aa-btn aa-btn--primary aa-btn--sm">Salvar configuração</button>
+              <button className="aa-btn aa-btn--outline aa-btn--sm">Descartar</button>
             </div>
           </div>
         </div>
@@ -1392,8 +1408,8 @@ function PipelinePage() {
             </div>
             <TextareaField label="Notas internas" placeholder="Observações sobre a oportunidade…" value={nota} onChange={setNota} rows={3} />
             <div style={{ display:"flex", gap:8 }}>
-              <button className="btn btn-primary btn-sm" style={{ flex:1 }}>Salvar</button>
-              <button className="btn btn-outline btn-sm" onClick={() => setDrawerCard(null)}>Fechar</button>
+              <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }}>Salvar</button>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setDrawerCard(null)}>Fechar</button>
             </div>
           </div>
         )}
@@ -1457,7 +1473,7 @@ function ArticlesPage() {
           <p className="page-sub">Encontre artigos, guias e políticas internas. {ARTICLES_ALL.length} documentos publicados.</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-primary btn-sm"><I.Plus size={13}/> Novo artigo</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Novo artigo</button>
         </div>
       </div>
 
@@ -1493,7 +1509,7 @@ function ArticlesPage() {
               <input className="field-input" placeholder="Buscar artigos, tags…" value={search}
                 onChange={e => simulateSearch(e.target.value)}
                 style={{ flex:1, padding:"6px 10px", border:"none", background:"transparent", outline:"none", fontSize:13, color:"hsl(var(--foreground))" }} />
-              {search && <button className="btn btn-ghost btn-sm" onClick={() => simulateSearch("")} style={{ padding:"4px 8px" }}>×</button>}
+              {search && <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => simulateSearch("")} style={{ padding:"4px 8px" }}>×</button>}
             </div>
           </div>
 
@@ -1503,7 +1519,7 @@ function ArticlesPage() {
               {filtered.length} {filtered.length === 1 ? "artigo" : "artigos"} encontrados
             </span>
             {(selectedCats.size > 0 || statusFilter || search) && (
-              <button className="btn btn-ghost btn-sm" onClick={() => { setSelectedCats(new Set()); setStatusFilter(""); setSearch(""); setPage(1); }}>
+              <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => { setSelectedCats(new Set()); setStatusFilter(""); setSearch(""); setPage(1); }}>
                 Limpar filtros
               </button>
             )}
@@ -1647,15 +1663,15 @@ function ProfileScreen({ user }) {
                   <input className="field-input" value={user.email || `${user.name.toLowerCase().replace(" ",".")}@exemplo.com`} disabled style={{ opacity:.6 }} />
                 </div>
                 <div style={{ display:"flex",gap:8 }}>
-                  <button className="btn btn-primary btn-sm" onClick={handleSave}>Salvar</button>
-                  <button className="btn btn-outline btn-sm" onClick={()=>setEditing(false)}>Cancelar</button>
+                  <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSave}>Salvar</button>
+                  <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>setEditing(false)}>Cancelar</button>
                 </div>
               </div>
             ) : (
               <>
                 <div style={{ fontSize:20,fontWeight:600,marginBottom:4 }}>{name}</div>
                 <div style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>{user.role}</div>
-                <button className="btn btn-outline btn-sm" style={{ marginTop:14 }} onClick={()=>setEditing(true)}>
+                <button className="aa-btn aa-btn--outline aa-btn--sm" style={{ marginTop:14 }} onClick={()=>setEditing(true)}>
                   <I.Edit size={13}/> Editar perfil
                 </button>
               </>
@@ -1692,7 +1708,7 @@ function ProfileScreen({ user }) {
         {[["Senha","Última alteração há 14 dias","Alterar senha"],["2FA","Não configurado","Configurar 2FA"]].map(([l,d,btn])=>(
           <div key={l} style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid hsl(var(--border)/.6)" }}>
             <div><div style={{ fontSize:13,fontWeight:500 }}>{l}</div><div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>{d}</div></div>
-            <button className="btn btn-outline btn-sm">{btn}</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm">{btn}</button>
           </div>
         ))}
       </div>
@@ -1705,7 +1721,7 @@ function ProfileScreen({ user }) {
             <div style={{ fontSize:13,fontWeight:500 }}>Excluir conta</div>
             <div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>Remove todos os dados permanentemente</div>
           </div>
-          <button className="btn btn-destructive btn-sm"><I.Trash2 size={13}/> Excluir conta</button>
+          <button className="aa-btn aa-btn--destructive aa-btn--sm"><I.Trash2 size={13}/> Excluir conta</button>
         </div>
       </div>
     </div>
@@ -1904,14 +1920,14 @@ function SettingsScreen() {
           <p className="page-sub">Editor de tokens de cor + histórico + presets + export/import</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-outline btn-sm" onClick={handleUndo} disabled={histIdx<=0} title="Desfazer">
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleUndo} disabled={histIdx<=0} title="Desfazer">
             <I.Undo size={13}/> Undo
           </button>
-          <button className="btn btn-outline btn-sm" onClick={handleRedo} disabled={histIdx>=history.length-1} title="Refazer">
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleRedo} disabled={histIdx>=history.length-1} title="Refazer">
             <I.Redo size={13}/> Redo
           </button>
-          <button className="btn btn-outline btn-sm" onClick={handleResetAll}><I.RotateCcw size={13}/> Restaurar</button>
-          <button className="btn btn-primary btn-sm" onClick={handleSave}
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleResetAll}><I.RotateCcw size={13}/> Restaurar</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSave}
             style={{ opacity: minContrast<3?0.5:1 }}><I.Save size={13}/> Salvar</button>
         </div>
       </div>
@@ -2010,10 +2026,10 @@ function SettingsScreen() {
         <div className="card">
           <div className="card-header"><h3>Export / Import</h3><p>JSON e URL compartilhável</p></div>
           <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
-            <button className="btn btn-outline" onClick={handleExportJson}><I.Copy size={14}/> Exportar JSON</button>
-            <button className="btn btn-outline" onClick={()=>importRef.current?.click()}><I.Upload size={14}/> Importar JSON</button>
+            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={handleExportJson}><I.Copy size={14}/> Exportar JSON</button>
+            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={()=>importRef.current?.click()}><I.Upload size={14}/> Importar JSON</button>
             <input ref={importRef} type="file" accept=".json" style={{ display:"none" }} onChange={handleImportJson} />
-            <button className="btn btn-outline" onClick={handleShareUrl}><I.Link size={14}/> Copiar link de tema</button>
+            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={handleShareUrl}><I.Link size={14}/> Copiar link de tema</button>
           </div>
           <div style={{ marginTop:16,padding:16,borderRadius:10,background:"hsl(var(--muted)/.5)",fontFamily:"var(--font-mono)",fontSize:12,maxHeight:200,overflow:"auto",whiteSpace:"pre" }}>
             {JSON.stringify(overrides,null,2)||"// nenhum override ativo"}
@@ -2041,8 +2057,8 @@ function SettingsScreen() {
             })}
           </div>
           <div style={{ display:"flex",gap:8,marginTop:12 }}>
-            <button className="btn btn-outline btn-sm" onClick={handleUndo} disabled={histIdx<=0}><I.Undo size={13}/> Undo</button>
-            <button className="btn btn-outline btn-sm" onClick={handleRedo} disabled={histIdx>=history.length-1}><I.Redo size={13}/> Redo</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleUndo} disabled={histIdx<=0}><I.Undo size={13}/> Undo</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleRedo} disabled={histIdx>=history.length-1}><I.Redo size={13}/> Redo</button>
           </div>
         </div>
       )}
@@ -2054,7 +2070,7 @@ function SettingsScreen() {
           <div style={{ display:"flex",gap:8,marginBottom:16 }}>
             <input className="field-input" style={{ maxWidth:240 }} placeholder="Nome do tema (ex: verão 2026)"
               value={themeName} onChange={e=>setThemeName(e.target.value)} />
-            <button className="btn btn-primary btn-sm" onClick={handleSaveNamed}><I.Save size={13}/> Salvar tema atual</button>
+            <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSaveNamed}><I.Save size={13}/> Salvar tema atual</button>
           </div>
           {Object.keys(namedThemes).length===0
             ? <p style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>Nenhum tema salvo ainda.</p>
@@ -2063,8 +2079,8 @@ function SettingsScreen() {
                 {Object.keys(namedThemes).map(name=>(
                   <div key={name} style={{ display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,border:"1px solid hsl(var(--border))",background:"hsl(var(--card))" }}>
                     <span style={{ flex:1,fontSize:13,fontWeight:500 }}>{name}</span>
-                    <button className="btn btn-outline btn-sm" onClick={()=>handleLoadNamed(name)}>Carregar</button>
-                    <button className="btn btn-ghost btn-sm" onClick={()=>{const n={...namedThemes};delete n[name];setNamedThemes(n);localStorage.setItem(STORAGE_KEY+"-named",JSON.stringify(n));}}><I.Trash2 size={13}/></button>
+                    <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>handleLoadNamed(name)}>Carregar</button>
+                    <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={()=>{const n={...namedThemes};delete n[name];setNamedThemes(n);localStorage.setItem(STORAGE_KEY+"-named",JSON.stringify(n));}}><I.Trash2 size={13}/></button>
                   </div>
                 ))}
               </div>

@@ -238,25 +238,4 @@
   gap: 8px;
   flex-wrap: wrap;
 }
-.editor-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 500;
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--muted) / .4);
-  color: hsl(var(--foreground));
-  cursor: pointer;
-  transition: background 150ms, border-color 150ms;
-}
-.editor-btn:hover { background: hsl(var(--muted) / .7); }
-.editor-btn.primary {
-  background: hsl(var(--accent));
-  color: hsl(var(--accent-foreground));
-  border-color: hsl(var(--accent));
-}
-.editor-btn.primary:hover { filter: brightness(1.08); }
+/* W1.2: .editor-btn / .editor-btn.primary removidas — substituidas por aa-btn (canonical, F-INT-001) */

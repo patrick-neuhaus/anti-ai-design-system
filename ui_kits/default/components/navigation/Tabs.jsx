@@ -36,7 +36,7 @@ const Tabs = ({ items = [], value, onChange, variant = "underline" }) => {
               cursor: "pointer",
               display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
               transition: "color .15s, background-color .15s",
-              boxShadow: !isUnderline && active ? "0 1px 2px rgb(0 0 0 / .05)" : "none",
+              boxShadow: !isUnderline && active ? "var(--shadow-control)" : "none",
               flex: isUnderline ? "1" : undefined,
             }}
           >

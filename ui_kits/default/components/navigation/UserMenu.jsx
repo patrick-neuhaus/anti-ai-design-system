@@ -58,7 +58,7 @@ const UserMenu = ({ user, onConfig, onLogout, collapsed = false, align = "top" }
             position: "absolute", left: "calc(100% + 8px)", bottom: 0,
             background: "hsl(var(--card))", color: "hsl(var(--foreground))",
             border: "1px solid hsl(var(--border))", borderRadius: 10,
-            boxShadow: "0 8px 24px -4px rgb(0 0 0 / .15)",
+            boxShadow: "var(--shadow-popover)",
             minWidth: 180, padding: 4, zIndex: 50,
           }}>
             <DropdownItem icon={Icon.Settings} label="Config." onClick={handleConfig} />
@@ -116,7 +116,7 @@ const UserMenu = ({ user, onConfig, onLogout, collapsed = false, align = "top" }
           [align === "top" ? "bottom" : "top"]: "calc(100% + 6px)",
           background: "hsl(var(--card))", color: "hsl(var(--foreground))",
           border: "1px solid hsl(var(--border))", borderRadius: 10,
-          boxShadow: "0 8px 24px -4px rgb(0 0 0 / .15)",
+          boxShadow: "var(--shadow-popover)",
           padding: 4, zIndex: 50,
         }}>
           <DropdownItem icon={Icon.Settings} label="Config." onClick={handleConfig} />

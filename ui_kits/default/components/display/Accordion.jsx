@@ -42,9 +42,12 @@ if (typeof document !== "undefined" && !document.getElementById("accordion-css")
     .accordion-trigger:hover {
       background: hsl(var(--muted) / .5);
     }
+    /* W1.9 / F-INT-020: focus inset (parent .accordion tem overflow:hidden,
+       o box-shadow ring global ficaria cortado). Anula box-shadow global
+       e desenha ring interno limpo, sem caixa dupla. */
     .accordion-trigger:focus-visible {
-      outline: 2px solid hsl(var(--ring));
-      outline-offset: -2px;
+      outline: none;
+      box-shadow: inset 0 0 0 2px hsl(var(--ring));
     }
 
     .accordion-icon {

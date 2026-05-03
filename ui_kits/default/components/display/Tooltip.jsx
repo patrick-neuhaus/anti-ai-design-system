@@ -23,7 +23,7 @@ const Tooltip = ({ content, side = "top", children }) => {
           fontSize: 11, fontWeight: 500, lineHeight: 1.4,
           padding: "4px 8px", borderRadius: 6,
           whiteSpace: "nowrap", pointerEvents: "none", zIndex: 100,
-          boxShadow: "0 2px 8px rgb(0 0 0 / .2)",
+          boxShadow: "var(--shadow-tooltip)",
         }}>{content}</span>
       )}
     </span>

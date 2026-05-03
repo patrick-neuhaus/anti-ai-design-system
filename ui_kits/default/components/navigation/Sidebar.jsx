@@ -16,6 +16,10 @@ const initialsFrom = (name) =>
 const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
   <button
     onClick={onClick}
+    /* W1.6 / F-INT-016: aria-label sempre presente; quando collapsed e o unico nome */
+    aria-label={label}
+    aria-current={active ? "page" : undefined}
+    title={collapsed ? label : undefined}
     style={{
       position: "relative",
       display: "flex",
@@ -23,7 +27,7 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
       alignItems: "center",
       justifyContent: collapsed ? "center" : "flex-start",
       padding: collapsed ? "10px 0" : "8px 12px",
-      borderRadius: 12,
+      borderRadius: 10,
       background: active ? "hsl(var(--sidebar-accent))" : "transparent",
       color: active ? "hsl(var(--sidebar-foreground))" : "hsl(var(--sidebar-foreground) / .7)",
       fontSize: 14,
@@ -32,7 +36,7 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
       width: "100%",
       textAlign: "left",
       cursor: "pointer",
-      transition: "background-color .15s, color .15s",
+      transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
     }}
     onMouseEnter={(e) => {
       if (!active) {
@@ -48,14 +52,14 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
     }}
   >
     {active && (
-      <span style={{
+      <span aria-hidden="true" style={{
         position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)",
         width: 3, height: 20,
-        background: "hsl(var(--accent-decorative))",
+        background: "hsl(var(--sidebar-indicator))",
         borderRadius: "0 4px 4px 0",
       }}/>
     )}
-    <I size={18} />
+    <I size={18} aria-hidden="true" />
     {!collapsed && <span style={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{label}</span>}
   </button>
 );
@@ -157,7 +161,7 @@ const Sidebar = ({
             alignItems: "center", justifyContent: "center",
             color: "hsl(var(--foreground))",
             cursor: "pointer",
-            boxShadow: "0 1px 3px rgb(0 0 0 / .08)",
+            boxShadow: "var(--shadow-sidebar)",
             padding: 0,
           }}
         >
@@ -170,7 +174,7 @@ const Sidebar = ({
             aria-hidden="true"
             style={{
               position: "fixed", inset: 0,
-              background: "rgb(0 0 0 / .4)",
+              background: "var(--overlay-backdrop)",
               zIndex: 90,
             }}
           />
@@ -187,7 +191,7 @@ const Sidebar = ({
             color: "hsl(var(--sidebar-foreground))",
             padding: "14px 12px",
             display: "flex", flexDirection: "column",
-            boxShadow: mobileOpen ? "0 0 24px rgb(0 0 0 / .15)" : "none",
+            boxShadow: mobileOpen ? "var(--shadow-drawer)" : "none",
           }}
         >
           <div style={{ position: "relative", padding: "8px 4px", height: 44, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -255,7 +259,7 @@ const Sidebar = ({
           color: "hsl(var(--sidebar-background))",
           border: "1px solid hsl(var(--border))",
           display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 1px 2px 0 rgb(0 0 0 / .05)",
+          boxShadow: "var(--shadow-control)",
           cursor: "pointer",
           zIndex: 10,
         }}
@@ -263,16 +267,11 @@ const Sidebar = ({
         {collapsed ? <Icon.ChevronRight size={14} /> : <Icon.ChevronLeft size={14} />}
       </button>
 
-      <div style={{ padding: "8px 4px", height: 88, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* W1.6 / F-INT-019: collapsed brand mais limpo — height proporcional, mark sem box,
+          alinhamento centralizado pra nao ficar torto. */}
+      <div style={{ padding: collapsed ? "8px 0" : "8px 4px", height: collapsed ? 56 : 88, display: "flex", alignItems: "center", justifyContent: "center", transition: "height var(--motion-normal,200ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))" }}>
         {collapsed ? (
-          <div style={{
-            width: 40, height: 40, borderRadius: 10,
-            background: "hsl(var(--sidebar-foreground))",
-            color: "hsl(var(--sidebar-background))",
-            display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
-          }}>
-            <img src={markSrc} alt={brandAlt} style={{ width: 32, height: 32, objectFit: "contain" }} />
-          </div>
+          <img src={markSrc} alt={brandAlt} style={{ width: 32, height: 32, objectFit: "contain", display: "block" }} />
         ) : (
           <img src={logoSrc} alt={brandAlt} style={{ height: 28 }} />
         )}

@@ -33,7 +33,7 @@ const Switch = ({ checked, onChange, label, disabled = false, ...rest }) => {
           position: "absolute", top: 2, left: checked ? 18 : 2,
           width: 16, height: 16, borderRadius: "50%",
           background: "hsl(var(--card))",
-          boxShadow: "0 1px 2px rgb(0 0 0 / .2)",
+          boxShadow: "var(--shadow-control)",
           transition: "left .15s",
         }}/>
       </span>

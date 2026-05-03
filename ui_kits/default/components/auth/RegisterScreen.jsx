@@ -14,11 +14,12 @@ const RegisterScreen = ({ onRegister, onGoLogin, brand, appName, tagline }) => {
 
   return (
     <div style={{ minHeight: "100%", display: "flex" }}>
+      {/* W1.5 followup: padding normalizado pra bater com LoginScreen/ResetPasswordScreen (consistencia split-panel). */}
       <div style={{
         flex: 1, background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))",
-        display: "flex", alignItems: "center", justifyContent: "center",
+        display: "flex", alignItems: "center", justifyContent: "center", padding: 32,
       }}>
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", maxWidth: 360 }}>
           <img src={logoSrc} alt={brandAlt} style={{ height: 40, margin: "0 auto 24px" }}/>
           <h1 style={{ fontSize: 30, fontWeight: 600, marginBottom: 8 }}>{appName ?? "App Name"}</h1>
           <p style={{ color: "hsl(var(--primary-foreground) / .6)", fontSize: 18 }}>{tagline ?? "Tagline"}</p>

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anti-AI Design System</title>
   <link rel="stylesheet" href="../../../colors_and_type.css" />
+  <link rel="stylesheet" href="../components/base/_aa-btn.css" />
   <link rel="stylesheet" href="./_nav.css" />
   <link rel="stylesheet" href="./_token-editor.css" />
   <link rel="stylesheet" href="./_footer.css" />
@@ -138,7 +139,25 @@
       color: hsl(var(--muted-foreground));
       line-height: 1.6;
       max-width: 560px;
-      margin: 0 0 32px;
+      margin: 0 0 28px;
+    }
+    /* W1.3 / F-INT-018: CTA primario primeira dobra */
+    .hero-cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 0 0 36px;
+    }
+    .hero-cta-row .aa-btn {
+      box-shadow: 0 4px 16px hsl(var(--accent) / .18);
+    }
+    .hero-cta-row .aa-btn--outline {
+      box-shadow: none;
+    }
+    @media (max-width: 600px) {
+      .hero-cta-row { gap: 8px; }
+      .hero-cta-row .aa-btn { width: 100%; justify-content: center; }
     }
     .palette-chips {
       display: flex;
@@ -242,14 +261,7 @@
       font-size: 12px; color: #6b7280; font-family: sans-serif;
       box-shadow: 0 4px 6px rgba(0,0,0,.1);
     }
-    .mock-btn-ds {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 18px; border-radius: var(--radius-md, 10px);
-      border: none; background: hsl(var(--accent));
-      font-size: 13px; color: hsl(var(--accent-foreground));
-      font-family: var(--font-body); font-weight: 500;
-      cursor: default;
-    }
+    /* W1.2: .mock-btn-ds removida — substituida por aa-btn aa-btn--accent (canonical) */
     .mock-badge-ds {
       display: inline-flex; align-items: center;
       padding: 3px 10px; border-radius: 999px;
@@ -527,7 +539,7 @@
       margin-bottom: 12px;
     }
     .slide-header-row .slide-title { margin: 0; flex: 1 1 auto; min-width: 0; }
-    .slide-header-row .slide-btn-primary { flex-shrink: 0; }
+    .slide-header-row .aa-btn { flex-shrink: 0; }
     .slide-text {
       padding: 32px 40px 24px;
       display: flex;
@@ -561,46 +573,18 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-    /* anchor variant of Button accent — mirrors Button.jsx BTN_VARIANTS.accent + BTN_SIZES.md */
-    .slide-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--space-2, 8px);
-      padding: 0 var(--space-4, 16px);
-      height: 40px;
-      background: hsl(var(--accent));
-      color: #fff; /* W6.9: alinha Button.jsx accent (DRY). Trade: 3.74:1 AA fail (decisao estetica Patrick — branco em terracotta tem mais legibilidade visual percebida que cocoa-escuro 4.62). Tech debt: ajustar token --accent escurecer 5pp pra ratio AA passar com branco */
-      border: 1px solid hsl(var(--accent));
-      border-radius: var(--radius-md, 8px);
-      font-size: 14px;
-      font-weight: 500;
-      font-family: inherit;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color var(--motion-fast, 150ms) var(--ease, cubic-bezier(.4,0,.2,1)),
-                  opacity var(--motion-fast, 150ms) var(--ease, cubic-bezier(.4,0,.2,1)),
-                  transform var(--motion-instant, 80ms) var(--ease-out, cubic-bezier(0,0,.2,1));
-    }
-    .slide-btn-primary:hover { background: hsl(var(--accent) / .88); }
-    .slide-btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 20px;
+    /* W1.2: .slide-btn-primary / .slide-btn-ghost removidas — substituidas por aa-btn (canonical, F-INT-001).
+       Variantes: aa-btn--accent (slide CTA primario), aa-btn--ghost-on-dark (slide ghost no painel escuro). */
+    .aa-btn--ghost-on-dark {
       background: transparent;
       color: hsl(var(--sidebar-foreground) / .75);
-      border-radius: var(--radius-md, 10px);
-      font-size: 13px;
-      font-weight: 500;
-      text-decoration: none;
-      border: 1px solid hsl(var(--sidebar-foreground) / .2);
-      cursor: pointer;
-      transition: background 150ms, border-color 150ms;
+      border-color: hsl(var(--sidebar-foreground) / .2);
     }
-    .slide-btn-ghost:hover { background: hsl(var(--sidebar-foreground) / .08); border-color: hsl(var(--sidebar-foreground) / .35); }
+    .aa-btn--ghost-on-dark:hover:not(:disabled):not([aria-disabled="true"]) {
+      background: hsl(var(--sidebar-foreground) / .08);
+      border-color: hsl(var(--sidebar-foreground) / .35);
+      color: hsl(var(--sidebar-foreground));
+    }
     .slide-visual {
       display: flex;
       align-items: stretch;
@@ -1076,8 +1060,10 @@
     .float-card.fc-pal    { bottom: 14%; left: 8%; width: 240px; animation: float-c 8s ease-in-out infinite; }
     .float-card.fc-badge  { bottom: 6%; right: 10%; width: auto; animation: float-d 5.5s ease-in-out infinite; padding: 8px 14px; border-radius: 999px; }
 
+    /* W1.7 / F-INT-015: fc-side sem rotate (era "torto"). fc-stat e fc-pal mantem leve tilt
+       de personalidade; fc-side fica reto pra parecer um sidebar real derivado do contrato. */
     @keyframes float-a { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(-1deg); } }
-    @keyframes float-b { 0%,100% { transform: translateY(0) rotate(1deg); } 50% { transform: translateY(-14px) rotate(2deg); } }
+    @keyframes float-b { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
     @keyframes float-c { 0%,100% { transform: translateY(0) rotate(2deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
     @keyframes float-d { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
@@ -1088,12 +1074,16 @@
     .fc-stat-value { font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1; animation: kpi-pulse 8s ease-in-out infinite; }
     .fc-stat-trend { font-size: 11px; color: hsl(var(--success)); margin-top: 4px; font-family: var(--font-mono); }
 
-    .fc-side-mini { background: hsl(var(--sidebar-background)); padding: 12px 10px; }
-    .fc-side-brand { font-family: var(--font-display); font-size: 13px; color: hsl(var(--sidebar-foreground)); font-weight: 600; margin-bottom: 10px; padding-left: 6px; }
-    .fc-side-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; font-size: 11px; color: hsl(var(--sidebar-foreground) / .8); }
-    .fc-side-row.active { background: hsl(var(--sidebar-accent)); color: hsl(var(--sidebar-accent-foreground)); position: relative; }
-    .fc-side-row.active::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 14px; background: hsl(var(--sidebar-indicator)); border-radius: 2px; }
-    .fc-side-dot { width: 10px; height: 10px; border-radius: 3px; background: currentColor; opacity: .7; }
+    /* W1.7 / F-INT-015: fc-side derivado do contrato real do Sidebar.
+       Mesma escala de cor (--sidebar-*), eyebrow de grupo, indicator 3px no active,
+       gap/padding/radius proporcionalmente reduzidos pra hero. */
+    .fc-side-mini { background: hsl(var(--sidebar-background)); padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }
+    .fc-side-brand { font-family: var(--font-display); font-size: 13px; color: hsl(var(--sidebar-foreground)); font-weight: 600; padding: 0 6px 4px; }
+    .fc-side-eyebrow { font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: hsl(var(--sidebar-foreground) / .4); padding: 6px 6px 2px; }
+    .fc-side-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; font-size: 11px; color: hsl(var(--sidebar-foreground) / .7); position: relative; }
+    .fc-side-row.active { background: hsl(var(--sidebar-accent)); color: hsl(var(--sidebar-foreground)); font-weight: 500; }
+    .fc-side-row.active::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 14px; background: hsl(var(--sidebar-indicator)); border-radius: 0 3px 3px 0; }
+    .fc-side-dot { width: 10px; height: 10px; border-radius: 3px; background: currentColor; opacity: .7; flex-shrink: 0; }
 
     .fc-pal-title { font-size: 11px; font-family: var(--font-mono); color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
     .fc-pal-row { display: flex; gap: 6px; }
@@ -1423,6 +1413,16 @@
                   Componentes com personalidade. Sem sombras genéricas, sem azul shadcn padrão,
                   sem a cara de IA que todo mundo usa. Um sistema que demonstra a si mesmo.
                 </p>
+                {/* W1.3 / F-INT-018: CTA primario primeira dobra (canonical aa-btn) */}
+                <div className="hero-cta-row">
+                  <a href="#templates" className="aa-btn aa-btn--accent aa-btn--lg">
+                    Ver templates
+                    <span aria-hidden="true">→</span>
+                  </a>
+                  <a href="#categorias" className="aa-btn aa-btn--outline aa-btn--lg">
+                    Explorar componentes
+                  </a>
+                </div>
                 <div className="palette-chips">
                   {PALETTE_CHIPS.map(({ label, name }) => (
                     <div key={label} className="chip-swatch">
@@ -1449,9 +1449,11 @@
                 </div>
 
                 {/* Sidebar mini mock */}
-                <div className="float-card fc-side hero-entry-card" data-parallax="0.8">
+                {/* W1.7 / F-INT-015: derivado do Sidebar real (eyebrow group + indicator + tokens) */}
+                <div className="float-card fc-side hero-entry-card" data-parallax="0.8" aria-hidden="true">
                   <div className="fc-side-mini">
                     <div className="fc-side-brand">Artemis</div>
+                    <div className="fc-side-eyebrow">Operação</div>
                     <div className="fc-side-row active"><span className="fc-side-dot" /> Dashboard</div>
                     <div className="fc-side-row"><span className="fc-side-dot" /> Romaneios</div>
                     <div className="fc-side-row"><span className="fc-side-dot" /> Conferência</div>
@@ -1500,7 +1502,7 @@
         ),
         dsContent: (
           <div>
-            <div className="mock-btn-ds">Salvar alterações</div>
+            <div className="aa-btn aa-btn--accent aa-btn--md" style={{ cursor: "default" }}>Salvar alterações</div>
             <div className="mock-card-ds">
               Sombra hue-aware ou ausente — proposital, não acidental.
             </div>
@@ -1559,7 +1561,7 @@
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
             <div className="mock-badge-ds">terracotta</div>
             <div className="mock-badge-ds" style={{ background: "hsl(var(--primary) / .12)", color: "hsl(var(--primary))", borderColor: "hsl(var(--primary) / .25)" }}>petroleum</div>
-            <div className="mock-btn-ds" style={{ fontSize: 12, padding: "6px 14px" }}>Ação</div>
+            <div className="aa-btn aa-btn--accent aa-btn--sm" style={{ cursor: "default" }}>Ação</div>
           </div>
         ),
       },
@@ -1895,7 +1897,7 @@
                         <p className="slide-eyebrow">{eyebrow}</p>
                         <div className="slide-header-row">
                           <h3 className="slide-title">{title}</h3>
-                          <a href={`../index.html?demo=${key}`} className="slide-btn-primary">Ver template completo →</a>
+                          <a href={`../index.html?demo=${key}`} className="aa-btn aa-btn--accent aa-btn--md">Ver template completo →</a>
                         </div>
                         <p className="slide-body">{body}</p>
                       </div>
@@ -2428,15 +2430,15 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
             </div>
 
             <div className="editor-actions">
-              <button className="editor-btn" onClick={handleReset}>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleReset}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
                 Reset
               </button>
-              <button className="editor-btn" onClick={handleSave}>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleSave}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                 Salvar tema
               </button>
-              <button className="editor-btn primary" onClick={handleExport}>
+              <button className="aa-btn aa-btn--accent aa-btn--sm" onClick={handleExport}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Exportar CSS
               </button>
