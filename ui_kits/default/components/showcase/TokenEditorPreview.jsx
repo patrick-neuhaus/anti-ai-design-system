@@ -192,9 +192,10 @@ const TokenEditorPreview = ({ compact = false }) => {
       const seed = chroma(hex);
       let accent = _te_clampAccentLightness(seed);
 
-      // 2. WCAG 1.4.11: accent precisa 3:1 vs surface (UI graphic adjacent)
-      if (chroma.contrast(accent, surface) < 3) {
-        accent = _te_clampForContrast(accent.hex(), surface, 3.0);
+      // 2. WCAG 1.4.11+: forçar 6:1 vs surface (acima do AA 3:1, mira AAA-ish
+      //    pra accent ser confortavel inclusive como fundo de elemento com texto)
+      if (chroma.contrast(accent, surface) < 6) {
+        accent = _te_clampForContrast(accent.hex(), surface, 6.0);
       }
 
       // 3. Accent-foreground: pick branco/near-black por contraste real
@@ -209,8 +210,8 @@ const TokenEditorPreview = ({ compact = false }) => {
       const primaryFg = "#ffffff";
       let primary = accent.set("hsl.h", accent.get("hsl.h") || 0).darken(1.2);
       primary = _te_clampForContrast(primary.hex(), primaryFg, 4.5);
-      if (chroma.contrast(primary, surface) < 3) {
-        primary = _te_clampForContrast(primary.hex(), surface, 3.0);
+      if (chroma.contrast(primary, surface) < 6) {
+        primary = _te_clampForContrast(primary.hex(), surface, 6.0);
       }
 
       // 5. Ring: herda primary (action group)
@@ -218,8 +219,8 @@ const TokenEditorPreview = ({ compact = false }) => {
 
       // 6. Decorative: hue +30° analogo (Material tonalSpot pattern), NAO +180°
       let decorative = accent.set("hsl.h", (accent.get("hsl.h") || 0) + 30).brighten(0.3);
-      if (chroma.contrast(decorative, surface) < 3) {
-        decorative = _te_clampForContrast(decorative.hex(), surface, 3.0);
+      if (chroma.contrast(decorative, surface) < 6) {
+        decorative = _te_clampForContrast(decorative.hex(), surface, 6.0);
       }
 
       const d = {
@@ -311,9 +312,15 @@ const TokenEditorPreview = ({ compact = false }) => {
                   className="editor-color-hex"
                   value={accentHex}
                   onChange={e => {
-                    if (/^#[0-9a-fA-F]{0,6}$/.test(e.target.value)) {
-                      setAccentHex(e.target.value);
-                      if (e.target.value.length === 7) handleAccentChange(e.target.value);
+                    const v = e.target.value;
+                    if (/^#[0-9a-fA-F]{0,6}$/.test(v)) {
+                      setAccentHex(v);
+                      if (v.length === 7) handleAccentChange(v);
+                      else if (v.length === 4) {
+                        // expande #abc → #aabbcc
+                        const expanded = "#" + v[1]+v[1] + v[2]+v[2] + v[3]+v[3];
+                        handleAccentChange(expanded);
+                      }
                     }
                   }}
                 />
