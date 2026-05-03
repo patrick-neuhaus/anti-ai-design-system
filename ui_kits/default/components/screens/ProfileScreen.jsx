@@ -298,27 +298,10 @@ const ProfileScreen = ({ user, onSave, onChangePassword, onDeleteAccount, onUplo
   );
 };
 
-// Small inline toggle (used only in this screen — no global dep)
+// N2: PrefsToggle delega pro Switch primitive (era inline duplicado).
 const PrefsToggle = ({ defaultOn = false }) => {
   const [on, setOn] = React.useState(defaultOn);
-  return (
-    <div
-      role="switch"
-      aria-checked={on}
-      onClick={() => setOn((o) => !o)}
-      style={{
-        width: 36, height: 20, borderRadius: 999, flexShrink: 0,
-        background: on ? "hsl(var(--primary))" : "hsl(var(--muted))",
-        position: "relative", cursor: "pointer", transition: "background 150ms",
-      }}
-    >
-      <div style={{
-        position: "absolute", top: 2, left: on ? 16 : 2,
-        width: 16, height: 16, borderRadius: 50, background: "#fff",
-        transition: "left 150ms", boxShadow: "var(--shadow-control)",
-      }} />
-    </div>
-  );
+  return <Switch checked={on} onChange={(e) => setOn(e.target.checked)} />;
 };
 
 window.ProfileScreen = ProfileScreen;

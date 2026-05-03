@@ -20,6 +20,8 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
     aria-label={label}
     aria-current={active ? "page" : undefined}
     title={collapsed ? label : undefined}
+    /* N1 / WCAG 2.4.7: class needed pra :focus-visible CSS rule */
+    className="aa-sidebar-item"
     style={{
       position: "relative",
       display: "flex",
@@ -218,6 +220,9 @@ const Sidebar = ({
   const width = collapsed ? 72 : 272;
   return (
     <aside style={{
+      /* N3: position era duplicado (sticky + relative); JS object literal segunda key
+         vencia, sticky silenciosamente quebrava. Mantemos sticky — establishes containing
+         block pro toggle absolute child sem precisar de relative explicito. */
       width, flexShrink: 0,
       background: "hsl(var(--sidebar-background))",
       color: "hsl(var(--sidebar-foreground))",
@@ -227,7 +232,6 @@ const Sidebar = ({
       display: "flex", flexDirection: "column",
       borderRight: "1px solid hsl(var(--sidebar-border))",
       transition: "width .25s ease-in-out",
-      position: "relative",
     }}>
       {/* Collapse toggle — centrado na divisória vertical */}
       <button
@@ -275,5 +279,20 @@ const Sidebar = ({
     </aside>
   );
 };
+
+/* N1 / WCAG 2.4.7: focus-visible explicito pra SidebarItem (keyboard nav).
+   Pattern autocontido (F-INT-007) — injeta uma vez via id check. */
+if (typeof document !== "undefined" && !document.getElementById("aa-sidebar-item-css")) {
+  const s = document.createElement("style");
+  s.id = "aa-sidebar-item-css";
+  s.textContent = `
+    .aa-sidebar-item:focus-visible {
+      outline: 2px solid hsl(var(--ring));
+      outline-offset: -2px;
+    }
+    .aa-sidebar-item:focus:not(:focus-visible) { outline: none; }
+  `;
+  document.head.appendChild(s);
+}
 
 window.Sidebar = Sidebar;

@@ -843,24 +843,9 @@ const TokenRow = ({ token, value, overridden, onChange, onReset, contrastValue }
   );
 };
 
-// Small inline toggle for options
+// N2: OptionToggle delega pro Switch primitive (era inline duplicado).
 const OptionToggle = ({ on, onChange }) => (
-  <div
-    role="switch"
-    aria-checked={on}
-    onClick={() => onChange(!on)}
-    style={{
-      width: 40, height: 22, borderRadius: 999, flexShrink: 0,
-      background: on ? "hsl(var(--primary))" : "hsl(var(--muted))",
-      position: "relative", cursor: "pointer", transition: "background 150ms",
-    }}
-  >
-    <div style={{
-      position: "absolute", top: 3, left: on ? 18 : 3,
-      width: 16, height: 16, borderRadius: 50, background: "#fff",
-      transition: "left 150ms", boxShadow: "var(--shadow-control)",
-    }} />
-  </div>
+  <Switch checked={on} onChange={(e) => onChange(e.target.checked)} />
 );
 
 window.SettingsScreen = SettingsScreen;

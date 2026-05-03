@@ -122,7 +122,8 @@ const Button = ({
         ...iconOnlyPad,
         opacity: isDisabled ? 0.5 : 1,
         pointerEvents: isDisabled ? "none" : "auto",
-        width: fullWidth ? "100%" : iconOnlyPad.width,
+        /* N5: iconOnly precedence — square shape vence fullWidth (combo semanticamente nonsense) */
+        width: iconOnly ? sz.height : (fullWidth ? "100%" : undefined),
       }}
       {...rest}
     >
