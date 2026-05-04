@@ -152,7 +152,9 @@ a{color:inherit;text-decoration:none}
 
 /* User panel — flex-shrink:0 pra nao ser comprimido + cursor pointer no clickable area */
 .user-panel{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:8px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0;transition:border-color 150ms,box-shadow 150ms}
-.user-panel.account-active{border-color:hsl(var(--sidebar-indicator)/.6);box-shadow:inset 2px 0 0 hsl(var(--sidebar-indicator))}
+.user-panel{position:relative}
+.user-panel.account-active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground))}
+.user-panel.account-active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
 .user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left}
 .user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-foreground))}
 .avatar{width:34px;height:34px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}

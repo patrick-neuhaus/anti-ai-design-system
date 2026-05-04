@@ -30,14 +30,14 @@
   --space-12:  48px;
   --space-16:  64px;
 
-  /* Type scale */
-  --text-xs:     12px;
-  --text-sm:     14px;
-  --text-base:   16px;
-  --text-lg:     18px;
-  --text-xl:     20px;  /* page title (h2) */
-  --text-2xl:    24px;
-  --text-3xl:    30px;  /* landing only */
+  /* Type scale (bumped Wave 8 2026-05-04: legibility improvement +1px) */
+  --text-xs:     13px;
+  --text-sm:     15px;
+  --text-base:   17px;
+  --text-lg:     19px;
+  --text-xl:     22px;  /* page title (h2) */
+  --text-2xl:    26px;
+  --text-3xl:    32px;  /* landing only */
 
   /* Weights — never 700 */
   --weight-normal:    400;

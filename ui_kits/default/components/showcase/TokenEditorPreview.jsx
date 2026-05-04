@@ -269,11 +269,10 @@ const TokenEditorPreview = ({ compact = false }) => {
       const accent = chroma(hex);
       const accentFinal = accent;
 
-      // 2. Accent-foreground: SEMPRE branco. Convention CTA = branco — preto
-      //    sobre accent (mesmo com ratio melhor) incomoda visualmente.
-      //    Trade-off: ratio menor pra accents mid/light. User escolhe accent
-      //    escuro pra atingir AAA com branco.
-      const accentFg = { fg: "#ffffff", ratio: chroma.contrast("#ffffff", accent.hex()) };
+      // 2. Accent-foreground: pickFg auto (white OU black baseado em luminance).
+      //    Wave 8 fix: forçar white quebrava em accent muito claro (ex: #00ff2a → 1.4:1 FAIL).
+      //    Agora: pickFg automaticamente escolhe melhor contraste. Tudo ligado.
+      const accentFg = _te_pickFg(accent.hex());
 
       // 3. Primary: deriva direcao da seed pelo surface mode.
       //    - Light surface: primary DARK (text-fg branco AAA)
@@ -320,6 +319,9 @@ const TokenEditorPreview = ({ compact = false }) => {
       if (sidebarBg.get("hsl.l") > 0.25) sidebarBg = sidebarBg.set("hsl.l", 0.20);
       const sidebarAccent = chroma(primary).set("hsl.l", Math.max(0.25, primary.get("hsl.l") + 0.07));
       const sidebarBorder = chroma(primary).set("hsl.l", Math.max(0.18, primary.get("hsl.l") - 0.04));
+      // Wave 8 fix: sidebar-foreground auto-pick (white OU black) via pickFg(sidebarBg).
+      // Antes default white sempre — quebrava se sidebar-bg ficasse claro.
+      const sidebarFg = _te_pickFg(sidebarBg.hex());
 
       const d = {
         "--accent":              _te_hslOf(accentFinal),
@@ -329,6 +331,7 @@ const TokenEditorPreview = ({ compact = false }) => {
         "--ring":                _te_hslOf(ring),
         "--accent-decorative":   _te_hslOf(decorative),
         "--sidebar-background":  _te_hslOf(sidebarBg),
+        "--sidebar-foreground":  _te_hexToHsl(sidebarFg.fg),
         "--sidebar-accent":      _te_hslOf(sidebarAccent),
         "--sidebar-indicator":   _te_hslOf(accentFinal),
         "--sidebar-border":      _te_hslOf(sidebarBorder),
