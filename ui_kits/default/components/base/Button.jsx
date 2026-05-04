@@ -27,7 +27,8 @@ const BTN_SIZES = {
   lg: { height: 48, padding: "0 var(--space-5, 20px)", fontSize: 15, borderRadius: "var(--radius-lg, 12px)" },
 };
 
-/* Inject :active + loading styles once — F-CA-004 / F-MO-003 */
+/* Inject :active + loading styles once — F-CA-004 / F-MO-003.
+   W3.4 / F-INT-007: reduced-motion local autocontido (nao depende de colors_and_type.css). */
 if (typeof document !== "undefined" && !document.getElementById("btn-states-css")) {
   const s = document.createElement("style");
   s.id = "btn-states-css";
@@ -43,6 +44,10 @@ if (typeof document !== "undefined" && !document.getElementById("btn-states-css"
       flex-shrink: 0;
     }
     @keyframes btn-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      button:not([disabled]):active { transform: none; }
+      .btn-spinner { animation-duration: 1.5s; }
+    }
   `;
   document.head.appendChild(s);
 }
@@ -117,7 +122,8 @@ const Button = ({
         ...iconOnlyPad,
         opacity: isDisabled ? 0.5 : 1,
         pointerEvents: isDisabled ? "none" : "auto",
-        width: fullWidth ? "100%" : iconOnlyPad.width,
+        /* N5: iconOnly precedence — square shape vence fullWidth (combo semanticamente nonsense) */
+        width: iconOnly ? sz.height : (fullWidth ? "100%" : undefined),
       }}
       {...rest}
     >

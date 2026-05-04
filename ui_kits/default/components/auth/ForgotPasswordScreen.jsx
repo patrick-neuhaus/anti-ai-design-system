@@ -10,9 +10,10 @@ const ForgotPasswordScreen = ({ onSubmit, onGoLogin, brand, appName, tagline }) 
 
   return (
     <div style={{ minHeight: "100%", display: "flex" }}>
-      <div style={{ flex: 1, background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ textAlign: "center" }}>
-          <img src={logoSrc} alt={brand?.name ?? "App"} style={{ height: 40, margin: "0 auto 24px" }}/>
+      {/* W1.5 followup: padding + maxWidth normalizados pra bater com LoginScreen (consistencia split-panel). */}
+      <div style={{ flex: 1, background: "hsl(var(--primary))", color: "hsl(var(--primary-foreground))", display: "flex", alignItems: "center", justifyContent: "center", padding: 32 }}>
+        <div style={{ textAlign: "center", maxWidth: 360 }}>
+          <img src={logoSrc} alt={brand?.name ?? appName ?? "App"} style={{ height: 40, margin: "0 auto 24px" }}/>
           <h1 style={{ fontSize: 30, fontWeight: 600, marginBottom: 8 }}>{appName ?? "App Name"}</h1>
           <p style={{ color: "hsl(var(--primary-foreground) / .6)", fontSize: 18 }}>{tagline ?? "Tagline"}</p>
         </div>

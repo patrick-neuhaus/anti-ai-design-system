@@ -15,7 +15,7 @@ const ConferenciaScreen = () => {
       <PageHeader
         title="Conferência de Expedição"
         subtitle="Escolha o romaneio para conferir e bipe os códigos."
-        actions={<button className="btn btn-outline btn-sm"><Icon.ChevronLeft size={14} /> Voltar</button>}
+        actions={<button className="aa-btn aa-btn--outline aa-btn--sm"><Icon.ChevronLeft size={14} /> Voltar</button>}
       />
 
       {/* Romaneio context */}
@@ -30,7 +30,7 @@ const ConferenciaScreen = () => {
         {/* Bipagem */}
         <div className="card" style={{ padding: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-            <div style={{ width: 40, height: 40, borderRadius: 12, background: "hsla(33 47% 53% / .1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 40, height: 40, borderRadius: "var(--radius-lg, 12px)", background: "hsla(33 47% 53% / .1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon.ScanBarcode size={20} color="hsl(33 47% 53%)" />
             </div>
             <div>
@@ -42,7 +42,7 @@ const ConferenciaScreen = () => {
           <form onSubmit={handleSubmit} style={{ display: "flex", gap: 8, marginBottom: 16 }}>
             <input className="field mono" autoFocus placeholder="Código EAN ou SKU"
               value={code} onChange={(e) => setCode(e.target.value)} />
-            <button type="submit" className="btn btn-primary">Bipar</button>
+            <button type="submit" className="aa-btn aa-btn--primary aa-btn--md">Bipar</button>
           </form>
 
           <div style={{ marginBottom: 8, display: "flex", justifyContent: "space-between", fontSize: 13 }}>
@@ -50,11 +50,11 @@ const ConferenciaScreen = () => {
             <span className="mono">{scanned}/{total} caixas</span>
           </div>
           <div style={{ height: 8, background: "var(--muted)", borderRadius: 999, overflow: "hidden" }}>
-            <div style={{ width: `${pct}%`, height: "100%", background: "hsl(338 55% 23%)", transition: "width .25s ease-out" }}/>
+            <div style={{ width: `${pct}%`, height: "100%", background: "hsl(338 55% 23%)", transition: "width var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))" }}/>
           </div>
           <div style={{ fontSize: 11, color: "var(--muted-foreground)", marginTop: 6 }}>{pct}% concluído</div>
 
-          <div style={{ marginTop: 16, padding: 12, background: "hsla(0 100% 50% / .06)", border: "1px solid hsla(0 100% 50% / .2)", borderRadius: 12, display: "flex", gap: 10, alignItems: "flex-start" }}>
+          <div style={{ marginTop: 16, padding: 12, background: "hsla(0 100% 50% / .06)", border: "1px solid hsla(0 100% 50% / .2)", borderRadius: "var(--radius-lg, 12px)", display: "flex", gap: 10, alignItems: "flex-start" }}>
             <Icon.AlertCircle size={16} color="hsl(0 100% 50%)" />
             <div style={{ fontSize: 12 }}>
               <strong style={{ color: "hsl(0 100% 50%)" }}>1 divergência</strong>
@@ -100,8 +100,8 @@ const ConferenciaScreen = () => {
             </tbody>
           </table>
           <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, padding: 16, borderTop: "1px solid var(--border)" }}>
-            <button className="btn btn-outline btn-sm">Adicionar volume extra</button>
-            <button className="btn btn-primary btn-sm">Finalizar conferência</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm">Adicionar volume extra</button>
+            <button className="aa-btn aa-btn--primary aa-btn--sm">Finalizar conferência</button>
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ if (typeof document !== "undefined" && !document.getElementById("slider-keyframe
       -webkit-appearance: none; appearance: none;
       width: 16px; height: 16px; border-radius: 50%;
       background: hsl(var(--card)); border: 2px solid hsl(var(--primary));
-      cursor: pointer; box-shadow: 0 1px 3px rgb(0 0 0 / .2);
+      cursor: pointer; box-shadow: var(--shadow-control);
     }
     input[type="range"]::-moz-range-thumb {
       width: 16px; height: 16px; border-radius: 50%;

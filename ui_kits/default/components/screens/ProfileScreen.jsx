@@ -83,7 +83,7 @@ const ProfileScreen = ({ user, onSave, onChangePassword, onDeleteAccount, onUplo
                 width: 30, height: 30, borderRadius: "50%",
                 background: "hsl(var(--card))", border: "1.5px solid hsl(var(--border))",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                cursor: "pointer", boxShadow: "0 1px 4px rgb(0 0 0 / .1)",
+                cursor: "pointer", boxShadow: "var(--shadow-control)",
                 color: "hsl(var(--foreground))",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = "hsl(var(--muted))"; }}
@@ -298,27 +298,10 @@ const ProfileScreen = ({ user, onSave, onChangePassword, onDeleteAccount, onUplo
   );
 };
 
-// Small inline toggle (used only in this screen — no global dep)
+// N2: PrefsToggle delega pro Switch primitive (era inline duplicado).
 const PrefsToggle = ({ defaultOn = false }) => {
   const [on, setOn] = React.useState(defaultOn);
-  return (
-    <div
-      role="switch"
-      aria-checked={on}
-      onClick={() => setOn((o) => !o)}
-      style={{
-        width: 36, height: 20, borderRadius: 999, flexShrink: 0,
-        background: on ? "hsl(var(--primary))" : "hsl(var(--muted))",
-        position: "relative", cursor: "pointer", transition: "background 150ms",
-      }}
-    >
-      <div style={{
-        position: "absolute", top: 2, left: on ? 16 : 2,
-        width: 16, height: 16, borderRadius: 50, background: "#fff",
-        transition: "left 150ms", boxShadow: "0 1px 3px rgba(0,0,0,.15)",
-      }} />
-    </div>
-  );
+  return <Switch checked={on} onChange={(e) => setOn(e.target.checked)} />;
 };
 
 window.ProfileScreen = ProfileScreen;

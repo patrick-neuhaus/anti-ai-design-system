@@ -61,18 +61,18 @@ const Dialog = ({ open, onClose, title, description, children, footer, size = "m
       onClick={dismissable ? onClose : undefined}
       style={{
         position: "fixed", inset: 0, zIndex: 1000,
-        background: "rgb(0 0 0 / .45)",
+        background: "var(--overlay-backdrop)",
         display: "flex", alignItems: "center", justifyContent: "center",
-        padding: 24, animation: "dialog-fade .15s ease-out",
+        padding: 24, animation: "dialog-fade var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
       }}
     >
       <div ref={dialogRef} onClick={(e) => e.stopPropagation()} style={{
         width: "100%", maxWidth: widths[size] ?? widths.md,
         background: "hsl(var(--card))", color: "hsl(var(--card-foreground))",
-        border: "1px solid hsl(var(--border))", borderRadius: 14,
-        boxShadow: "0 24px 48px -12px rgb(0 0 0 / .35)",
+        border: "1px solid hsl(var(--border))", borderRadius: "var(--radius-xl, 16px)",
+        boxShadow: "var(--shadow-dialog)",
         overflow: "hidden",
-        animation: "dialog-pop .18s ease-out",
+        animation: "dialog-pop var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
       }}>
         {(title || dismissable) && (
           <header style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "20px 20px 0" }}>
@@ -99,12 +99,17 @@ const Dialog = ({ open, onClose, title, description, children, footer, size = "m
   );
 };
 
+/* W3.4 / F-INT-007: reduced-motion local autocontido — Dialog/Drawer compartilham keyframes. */
 if (typeof document !== "undefined" && !document.getElementById("dialog-keyframes")) {
   const s = document.createElement("style");
   s.id = "dialog-keyframes";
   s.textContent = `
     @keyframes dialog-fade { from { opacity: 0; } to { opacity: 1; } }
     @keyframes dialog-pop  { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      @keyframes dialog-fade { from { opacity: 1; } to { opacity: 1; } }
+      @keyframes dialog-pop  { from { opacity: 1; transform: none; } to { opacity: 1; transform: none; } }
+    }
   `;
   document.head.appendChild(s);
 }

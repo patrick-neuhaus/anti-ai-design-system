@@ -28,7 +28,7 @@ const Select = ({ value, onChange, options = [], placeholder, size = "md", disab
           appearance: "none",
           cursor: disabled ? "not-allowed" : "pointer",
           opacity: disabled ? 0.5 : 1,
-          transition: "border-color .15s, box-shadow .15s",
+          transition: "border-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), box-shadow var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
         }}
         onFocus={(e) => {
           if (!invalid) e.currentTarget.style.borderColor = "hsl(var(--ring))";

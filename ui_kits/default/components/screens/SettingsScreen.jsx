@@ -476,7 +476,7 @@ const SettingsScreen = ({ onSave }) => {
             padding: "10px 16px", fontSize: 13, fontWeight: activeTab === k ? 500 : 400,
             color: activeTab === k ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
             border: "none", background: "none", cursor: "pointer",
-            borderBottom: `2px solid ${activeTab === k ? "hsl(var(--accent))" : "transparent"}`,
+            borderBottom: `2px solid ${activeTab === k ? "hsl(var(--ring))" : "transparent"}`,
             marginBottom: -1, transition: "color 150ms",
           }}>{l}</button>
         ))}
@@ -843,24 +843,9 @@ const TokenRow = ({ token, value, overridden, onChange, onReset, contrastValue }
   );
 };
 
-// Small inline toggle for options
+// N2: OptionToggle delega pro Switch primitive (era inline duplicado).
 const OptionToggle = ({ on, onChange }) => (
-  <div
-    role="switch"
-    aria-checked={on}
-    onClick={() => onChange(!on)}
-    style={{
-      width: 40, height: 22, borderRadius: 999, flexShrink: 0,
-      background: on ? "hsl(var(--primary))" : "hsl(var(--muted))",
-      position: "relative", cursor: "pointer", transition: "background 150ms",
-    }}
-  >
-    <div style={{
-      position: "absolute", top: 3, left: on ? 18 : 3,
-      width: 16, height: 16, borderRadius: 50, background: "#fff",
-      transition: "left 150ms", boxShadow: "0 1px 3px rgba(0,0,0,.18)",
-    }} />
-  </div>
+  <Switch checked={on} onChange={(e) => onChange(e.target.checked)} />
 );
 
 window.SettingsScreen = SettingsScreen;

@@ -30,9 +30,9 @@ const Popover = ({ trigger, children, side = "bottom", align = "start" }) => {
           minWidth: 200, zIndex: 100,
           background: "hsl(var(--card))", color: "hsl(var(--card-foreground))",
           border: "1px solid hsl(var(--border))", borderRadius: 10,
-          boxShadow: "0 8px 24px -4px rgb(0 0 0 / .2)",
+          boxShadow: "var(--shadow-popover)",
           padding: 6,
-          animation: "dialog-pop .14s ease-out",
+          animation: "dialog-pop var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
         }}>
           {typeof children === "function" ? children({ close: () => setOpen(false) }) : children}
         </div>

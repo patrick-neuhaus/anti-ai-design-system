@@ -24,10 +24,16 @@ const Spinner = ({ size = 16, color = "currentColor", thickness = 2, label = "Ca
   </span>
 );
 
+/* W3.4 / F-INT-007: reduced-motion local autocontido (slow rotate em vez de parar — usuario precisa saber que esta carregando). */
 if (typeof document !== "undefined" && !document.getElementById("spinner-keyframes")) {
   const style = document.createElement("style");
   style.id = "spinner-keyframes";
-  style.textContent = `@keyframes spinner-rotate { to { transform: rotate(360deg); } }`;
+  style.textContent = `
+    @keyframes spinner-rotate { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      [aria-busy="true"] > [aria-hidden="true"] { animation-duration: 2s !important; }
+    }
+  `;
   document.head.appendChild(style);
 }
 

@@ -28,7 +28,7 @@ const Checkbox = ({ checked, onChange, label, disabled = false, ...rest }) => {
           border: `1px solid hsl(var(--${checked ? "primary" : "border"}))`,
           display: "flex", alignItems: "center", justifyContent: "center",
           color: "hsl(var(--primary-foreground))",
-          transition: "background-color .15s, border-color .15s",
+          transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), border-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
         }}>
           {checked && <Icon.Check size={12} />}
         </span>

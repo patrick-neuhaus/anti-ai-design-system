@@ -30,14 +30,14 @@
   --space-12:  48px;
   --space-16:  64px;
 
-  /* Type scale */
-  --text-xs:     12px;
-  --text-sm:     14px;
-  --text-base:   16px;
-  --text-lg:     18px;
-  --text-xl:     20px;  /* page title (h2) */
-  --text-2xl:    24px;
-  --text-3xl:    30px;  /* landing only */
+  /* Type scale (bumped Wave 8 2026-05-04: legibility improvement +1px) */
+  --text-xs:     13px;
+  --text-sm:     15px;
+  --text-base:   17px;
+  --text-lg:     19px;
+  --text-xl:     22px;  /* page title (h2) */
+  --text-2xl:    26px;
+  --text-3xl:    32px;  /* landing only */
 
   /* Weights — never 700 */
   --weight-normal:    400;
@@ -60,7 +60,31 @@
   --shadow-lg: 0 4px 16px hsl(var(--foreground, 16 38% 12%) / .16);
   --shadow-xl: 0 8px 32px hsl(var(--foreground, 16 38% 12%) / .20);
 
-  /* Motion tokens — F-UI-003 / F-MO-008 */
+  /* Semantic shadow tokens — Wave 3.2 / F-INT-008.
+     Substitui rgb(0 0 0 / X) hardcoded espalhado pelos componentes.
+     Tinted pelo --foreground pra continuar respeitando hue do preset. */
+  --shadow-card:    0 1px 2px hsl(var(--foreground, 16 38% 12%) / .04);
+  --shadow-popover: 0 8px 24px -4px hsl(var(--foreground, 16 38% 12%) / .15);
+  --shadow-dialog:  0 24px 48px -12px hsl(var(--foreground, 16 38% 12%) / .30);
+  --shadow-drawer:  0 0 24px hsl(var(--foreground, 16 38% 12%) / .15);
+  --shadow-sidebar: 0 1px 3px hsl(var(--foreground, 16 38% 12%) / .08);
+  --shadow-toast:   0 6px 20px -4px hsl(var(--foreground, 16 38% 12%) / .15);
+  --shadow-tooltip: 0 2px 8px hsl(var(--foreground, 16 38% 12%) / .20);
+  --shadow-control: 0 1px 2px 0 hsl(var(--foreground, 16 38% 12%) / .05);
+
+  /* Backdrop overlay — Dialog/Drawer use neutral black em propósito (sombra de cena, nao de UI) */
+  --overlay-backdrop: hsl(0 0% 0% / .45);
+
+  /* Motion tokens — F-UI-003 / F-MO-008
+     Wave C reserved: --motion-slow, --motion-page, --ease-in, --ease-spring
+     definidos pra completude de escala mas zero consumidores hoje.
+     NÃO remover sem ADR — próximos consumers esperados:
+       --motion-slow (300ms): modal open/close grande, sheet expand
+       --motion-page (400ms): page transitions com router
+       --ease-spring: micro-interactions overshoot (toggle bounce)
+       --ease-in: entry animations (drawer slide-in)
+     Last reviewed: 2026-05-03. Re-revisar em 6 meses; se ainda zero
+     consumers, escalar pra remoção. */
   --motion-instant:  80ms;
   --motion-fast:    150ms;
   --motion-normal:  200ms;
@@ -113,7 +137,7 @@
   --secondary:         30 33% 93%;
   --secondary-foreground:16 38% 12%;
   --accent:            12 65% 55%;   /* terracotta             */
-  --accent-foreground: 16 38% 11%;   /* dark cocoa — AA pass (>=4.5:1 vs ~3.74:1 c/ white) */
+  --accent-foreground: 16 38% 11%;   /* cocoa escuro — pickFg(terracota) retorna near-black (5.28:1 AA). Branco = 3.75:1 AA- FAIL. Token Editor sobrescreve via pickFg quando user troca seed. Coerente com presets/default/tokens.css. */
 
   /* Status — same warm temperature */
   --destructive:        0 100% 43%;  /* escurecido p/ AA c/ white FG (~5:1 vs ~4.0:1 anterior) */

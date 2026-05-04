@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Anti-AI Design System · Templates</title>
 <link rel="stylesheet" href="../../colors_and_type.css" />
+<link rel="stylesheet" href="./components/base/_aa-btn.css" />
+<link rel="stylesheet" href="./showcase/_token-editor.css" />
 <style>
 html,body{margin:0;padding:0;height:100%;background:hsl(var(--background));color:hsl(var(--foreground));font-family:var(--font-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
@@ -14,7 +16,7 @@ a{color:inherit;text-decoration:none}
 #root{height:100%}
 
 /* ===== LOGIN ===== */
-.login-root{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.login-root{display:grid;grid-template-columns:1fr 1fr;min-height:100dvh}
 @media(max-width:768px){.login-root{grid-template-columns:1fr}}
 .login-brand{position:relative;background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 40px;gap:32px;overflow:hidden;isolation:isolate}
 @media(max-width:768px){.login-brand{display:none}}
@@ -70,27 +72,27 @@ a{color:inherit;text-decoration:none}
 .forgot-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:-2px}
 .forgot-link{font-size:12px;color:hsl(var(--accent));font-weight:500;cursor:pointer}
 .forgot-link:hover{opacity:.8}
-.btn-login{width:100%;padding:11px;border-radius:12px;background:hsl(var(--primary));color:hsl(var(--primary-foreground));font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 150ms}
-.btn-login:hover{background:hsl(var(--primary)/.9)}
+/* W1.2: .btn-login removida — substituida por aa-btn aa-btn--primary aa-btn--md aa-btn--full (canonical, F-INT-001) */
 .err-msg{font-size:12px;color:hsl(var(--destructive));text-align:center;padding:8px 12px;background:hsl(var(--destructive)/.08);border-radius:8px}
 
 /* ===== APP SHELL ===== */
-.app-shell{display:grid;grid-template-columns:272px 1fr;height:100vh;overflow:hidden;transition:grid-template-columns 250ms}
+.app-shell{display:grid;grid-template-columns:272px 1fr;height:100dvh;overflow:hidden;transition:grid-template-columns var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))}
 .app-shell.collapsed{grid-template-columns:68px 1fr}
 
 /* ===== SIDEBAR ===== */
 /* overflow:visible no root pra toggle bolinha nao ser cortado, scroll interno fica no .sidebar-nav */
-.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px 14px;gap:2px;position:relative;overflow:visible;min-width:0;height:100vh}
+.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px 14px;gap:2px;position:relative;overflow:visible;min-width:0;height:100dvh}
 .sidebar-nav{flex:1 1 auto;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden;min-height:0;margin:0 -14px;padding:0 14px;scrollbar-width:thin;scrollbar-color:hsl(var(--sidebar-foreground)/.15) transparent}
 .sidebar-nav::-webkit-scrollbar{width:4px}
 .sidebar-nav::-webkit-scrollbar-thumb{background:hsl(var(--sidebar-foreground)/.18);border-radius:4px}
 
 /* Toggle bolinha — fica fora do clip da sidebar */
-.sidebar-toggle{position:absolute;right:-14px;top:60px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms,transform 150ms;box-shadow:0 2px 8px hsl(var(--foreground)/.18)}
+.sidebar-toggle{position:absolute;right:-14px;top:60px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms,transform 150ms,right 220ms ease;box-shadow:0 2px 8px hsl(var(--foreground)/.18)}
+.collapsed .sidebar-toggle{right:-14px;top:78px}
 .sidebar-toggle:hover{background:hsl(var(--muted));box-shadow:0 3px 12px hsl(var(--foreground)/.25);transform:scale(1.08)}
 
 /* Brand logo + label diagonal sobre logo */
-.sidebar-brand{display:flex;align-items:center;gap:10px;padding:6px 10px 16px;min-width:0;flex-shrink:0}
+.sidebar-brand{display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 10px 16px;min-width:0;flex-shrink:0}
 .sidebar-logo-wrap{position:relative;flex-shrink:0;display:inline-block}
 .sidebar-logo-full{height:30px;width:auto;display:block}
 .sidebar-logo-icon{width:30px;height:30px;border-radius:7px;display:block;object-fit:contain}
@@ -100,9 +102,13 @@ a{color:inherit;text-decoration:none}
 
 /* Nav items */
 .nav-section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.45);padding:12px 10px 4px;white-space:nowrap;overflow:hidden}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;min-width:0;transition:background 120ms,color 120ms,transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1));background:none;border:none;font-family:inherit;text-align:left;width:100%}
+.nav-label{overflow:hidden;text-overflow:ellipsis}
+.nav-item:active{transform:scale(0.98)}
+.user-action-btn:active{transform:scale(0.92)}
 .nav-item:hover{background:hsl(var(--sidebar-accent)/.6);color:hsl(var(--sidebar-foreground))}
 .nav-item.active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground));font-weight:500}
+/* W1.6 followup / F-INT-019: indicator agora dentro do nav-item (left:0) pra nao ser cortado por overflow-x:hidden da sidebar-nav quando colapsada */
 .nav-item.active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
 .nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
 .nav-item .nav-label{flex:1;overflow:hidden;text-overflow:ellipsis}
@@ -138,23 +144,35 @@ a{color:inherit;text-decoration:none}
 .sidebar-nav > *:nth-child(8)  .nav-label, .sidebar-nav > *:nth-child(8)  .nav-badge { transition-delay: 140ms, 140ms, 140ms, 340ms; }
 .sidebar-nav > *:nth-child(9)  .nav-label, .sidebar-nav > *:nth-child(9)  .nav-badge { transition-delay: 160ms, 160ms, 160ms, 360ms; }
 .sidebar-nav > *:nth-child(10) .nav-label, .sidebar-nav > *:nth-child(10) .nav-badge { transition-delay: 180ms, 180ms, 180ms, 380ms; }
-.collapsed .nav-item{justify-content:center;padding:9px}
+/* Zero gap quando collapsed senao label hidden ainda 'empurra' icon do center.
+   gap:0 + justify-content:center = icon centralizado no rail 68px. */
+.collapsed .nav-item{justify-content:center;padding:9px;gap:0}
+.collapsed .user-panel-clickable{justify-content:center;flex:0 0 auto;gap:0}
 .collapsed .sidebar-brand{padding:6px 8px 16px;justify-content:center}
 .collapsed .sidebar-logo-tag{font-size:7px;top:-4px;right:-6px}
 
 /* User panel — flex-shrink:0 pra nao ser comprimido + cursor pointer no clickable area */
-.user-panel{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:8px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0}
+.user-panel{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:8px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0;transition:border-color 150ms,box-shadow 150ms}
+.user-panel{position:relative}
+.user-panel.account-active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground))}
+.user-panel.account-active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
 .user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left}
 .user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-foreground))}
 .avatar{width:34px;height:34px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}
+/* Avatar menor em collapsed pra caber no rail 68px sem estourar */
+.collapsed .avatar{width:28px;height:28px;font-size:10px}
 .user-info{flex:1;min-width:0;overflow:hidden}
 .user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-actions{display:flex;gap:2px;flex-shrink:0}
-.user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer}
+.user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer;background:none;border:none;padding:0;font-family:inherit}
 .user-action-btn:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-foreground))}
 .user-info,.user-actions{opacity:1;max-width:200px;transform:translateX(0);transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;visibility:visible;overflow:hidden}
-.collapsed .user-info,.collapsed .user-actions{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms}
-.collapsed .user-panel{justify-content:center;padding:10px}
+/* Collapsed: user-info esconde (so name), MAS user-actions ficam visiveis em column.
+   Patrick: 'devia ficar vertical quando colapsa nao? perdia config e logout antes'. */
+.collapsed .user-info{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms}
+.collapsed .user-panel{flex-direction:column;justify-content:center;align-items:center;padding:10px 6px;gap:8px;border-radius:12px}
+.collapsed .user-actions{flex-direction:column;gap:4px;max-width:none;opacity:1;visibility:visible;transform:none}
+/* (regra `.collapsed .user-panel-clickable` movida pra cima junto com .nav-item; mantemos so esta) */
 
 /* ===== MAIN ===== */
 .main-area{display:flex;flex-direction:column;min-width:0;background:hsl(var(--background));overflow:auto}
@@ -197,16 +215,8 @@ a{color:inherit;text-decoration:none}
 .pill.neutral{background:hsl(var(--muted));color:hsl(var(--muted-foreground))}
 .pill.info{background:hsl(var(--info)/.12);color:hsl(var(--info))}
 
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;transition:all 150ms;white-space:nowrap;cursor:pointer;border:none}
-.btn-primary{background:hsl(var(--primary));color:hsl(var(--primary-foreground))}
-.btn-primary:hover{background:hsl(var(--primary)/.9)}
-.btn-outline{background:hsl(var(--card));color:hsl(var(--foreground));border:1px solid hsl(var(--border))}
-.btn-outline:hover{background:hsl(var(--muted))}
-.btn-sm{padding:6px 10px;font-size:12px;border-radius:8px}
-.btn-ghost{color:hsl(var(--muted-foreground));padding:6px 10px}
-.btn-ghost:hover{background:hsl(var(--muted));color:hsl(var(--foreground))}
-.btn-destructive{background:hsl(var(--destructive)/.1);color:hsl(0 70% 40%)}
-.btn-destructive:hover{background:hsl(var(--destructive)/.18)}
+/* W1.2: .btn / .btn-primary / .btn-outline / .btn-sm / .btn-ghost / .btn-destructive removidas — substituidas por aa-btn (canonical, F-INT-001).
+   App demo agora consome a mesma camada do showcase (F-INT-003). */
 
 /* Settings color editor */
 .token-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid hsl(var(--border));background:hsl(var(--card))}
@@ -222,24 +232,97 @@ a{color:inherit;text-decoration:none}
 .avatar-edit-btn:hover{background:hsl(var(--muted))}
 .avatar-upload-input{display:none}
 
-/* Tabs */
+/* Tabs (iter2 fix: indicator outside pattern + press anim — pega user-panel ::before vibe) */
 .tabs-nav{display:flex;gap:2px;border-bottom:1px solid hsl(var(--border));margin-bottom:20px}
-.tab-item{padding:10px 16px;font-size:13px;color:hsl(var(--muted-foreground));border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:color 150ms}
-.tab-item.active{color:hsl(var(--foreground));border-bottom-color:hsl(var(--accent));font-weight:500}
+.tab-item{padding:10px 16px;font-size:13px;color:hsl(var(--muted-foreground));margin-bottom:-1px;cursor:pointer;transition:color 150ms,transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1));position:relative;background:none;border:none;font-family:inherit}
 .tab-item:hover:not(.active){color:hsl(var(--foreground))}
+.tab-item:active{transform:scale(0.97)}
+.tab-item.active{color:hsl(var(--foreground));font-weight:500}
+.tab-item.active::after{content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:3px;background:hsl(var(--ring));border-radius:3px 3px 0 0}
+
+/* Custom scrollbar (iter2 fix — substitui scroll padrão feio) */
+*::-webkit-scrollbar{height:8px;width:8px}
+*::-webkit-scrollbar-track{background:hsl(var(--muted) / .3);border-radius:4px}
+*::-webkit-scrollbar-thumb{background:hsl(var(--muted-foreground) / .35);border-radius:4px;transition:background 150ms}
+*::-webkit-scrollbar-thumb:hover{background:hsl(var(--muted-foreground) / .55)}
+* {scrollbar-width:thin;scrollbar-color:hsl(var(--muted-foreground) / .35) hsl(var(--muted) / .3)}
+
+/* Kanban scroll combo (Wave 12.1): scrollbar fina + gradient mask + arrows + indicator */
+.kanban-wrap{position:relative}
+.kanban-scroll::-webkit-scrollbar{height:4px}
+.kanban-scroll::-webkit-scrollbar-track{background:transparent}
+.kanban-scroll::-webkit-scrollbar-thumb{background:hsl(var(--muted-foreground) / .2);border-radius:2px;transition:background 150ms}
+.kanban-wrap:hover .kanban-scroll::-webkit-scrollbar-thumb{background:hsl(var(--muted-foreground) / .4)}
+.kanban-scroll::-webkit-scrollbar-thumb:hover{background:hsl(var(--muted-foreground) / .6)}
+.kanban-scroll{scrollbar-width:thin;scrollbar-color:hsl(var(--muted-foreground) / .2) transparent;scroll-behavior:smooth}
+.kanban-fade{position:absolute;top:0;bottom:14px;width:32px;pointer-events:none;z-index:2;opacity:0;transition:opacity 200ms var(--ease-out, cubic-bezier(0,0,.2,1))}
+.kanban-fade.visible{opacity:1}
+.kanban-fade-l{left:0;background:linear-gradient(to right, hsl(var(--background)) 0%, hsl(var(--background) / 0) 100%)}
+.kanban-fade-r{right:0;background:linear-gradient(to left, hsl(var(--background)) 0%, hsl(var(--background) / 0) 100%)}
+.kanban-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:32px;height:32px;border-radius:999px;background:hsl(var(--card));border:1px solid hsl(var(--border));color:hsl(var(--foreground));display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px hsl(var(--foreground) / .08);transition:opacity 200ms,transform 150ms,background 150ms;opacity:0;pointer-events:none}
+.kanban-arrow.visible{opacity:1;pointer-events:auto}
+.kanban-arrow:hover{background:hsl(var(--muted));transform:translateY(-50%) scale(1.06)}
+.kanban-arrow:active{transform:translateY(-50%) scale(.94)}
+.kanban-arrow-l{left:-6px}
+.kanban-arrow-r{right:-6px}
+.kanban-indicator{position:absolute;bottom:-2px;right:0;display:flex;align-items:center;gap:4px;font-size:10px;font-family:var(--font-mono);color:hsl(var(--muted-foreground));padding:2px 6px;border-radius:999px;background:hsl(var(--card));border:1px solid hsl(var(--border));z-index:2}
+.kanban-indicator-dot{width:4px;height:4px;border-radius:999px;background:hsl(var(--muted-foreground) / .3);transition:background 200ms,transform 200ms}
+.kanban-indicator-dot.active{background:hsl(var(--primary));transform:scale(1.4)}
 
 /* Danger zone */
 .danger-zone{border-top:1px solid hsl(var(--destructive)/.3);padding-top:20px;margin-top:4px}
-/* F-CA-011 / F-CA-004: shared spinner keyframe — used by btn-login + Button component */
-@keyframes btn-spin{to{transform:rotate(360deg)}}
+/* D2: @keyframes btn-spin removido — login spinner agora usa aa-btn-spin de _aa-btn.css. */
+
+/* PromptEditor preview — markdown rendered (iter3) */
+.prompt-preview h1,.prompt-preview h2,.prompt-preview h3{font-weight:600;margin:8px 0 4px;line-height:1.2}
+.prompt-preview h1{font-size:18px}
+.prompt-preview h2{font-size:16px}
+.prompt-preview h3{font-size:14px}
+.prompt-preview p{margin:6px 0}
+.prompt-preview strong{font-weight:600;color:hsl(var(--foreground))}
+.prompt-preview em{font-style:italic}
+.prompt-preview code{font-family:var(--font-mono);font-size:12px;background:hsl(var(--muted));padding:1px 5px;border-radius:4px}
+.prompt-preview pre{background:hsl(var(--card));padding:10px 12px;border-radius:8px;border:1px solid hsl(var(--border));overflow-x:auto;font-size:12px;line-height:1.5}
+.prompt-preview a{color:hsl(var(--primary));text-decoration:underline}
+.prompt-preview ul,.prompt-preview ol{padding-left:20px;margin:6px 0}
+.prompt-preview li{margin:2px 0}
+.prompt-preview blockquote{border-left:3px solid hsl(var(--accent));padding-left:10px;color:hsl(var(--muted-foreground));margin:8px 0}
+
+
+/* ===== REFLOW (Skill #1 audit A3 — WCAG 1.4.10 320 CSS px) ===== */
+@media (max-width:640px){
+  .page-content{padding:16px 14px 32px;gap:14px}
+  .page-header{flex-direction:column;align-items:flex-start;gap:8px}
+  .page-header-stack{min-width:0;width:100%}
+  .page-title{font-size:24px;line-height:1.2;word-break:break-word}
+  .page-sub{word-break:break-word}
+  .kpis{grid-template-columns:1fr;gap:10px}
+  .kpi{padding:14px 16px}
+  .kpi-value{font-size:22px}
+  /* Grids inline 1fr 1fr quebram em 1col */
+  .page-content > div[style*="grid-template-columns"]{grid-template-columns:1fr !important}
+}
+@media (max-width:380px){
+  .page-content{padding:12px 10px 24px}
+  .card{padding:14px 16px;border-radius:14px}
+}
 </style>
 </head>
 <body class="preset-base">
 <div id="root"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/chroma-js@2.4.2/chroma.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="components/Icon.jsx"></script>
+<script type="text/babel" src="components/brand/Logo.jsx"></script>
+<script type="text/babel" src="components/base/ToggleGroup.jsx"></script>
+<script type="text/babel" src="components/display/Drawer.jsx"></script>
+<script type="text/babel" src="components/display/Dialog.jsx"></script>
+<script type="text/babel" src="components/showcase/TokenEditorPreview.jsx"></script>
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
@@ -271,7 +354,7 @@ const I = {
   ChevronRight:ic(["m9 18 6-6-6-6"]),
   Package:     ic(["M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z","m3.3 7 8.7 5 8.7-5","M12 22V12"]),
   Truck:       ic(["M5 18H3V6h13v12h-2","M14 9h4l3 3v6h-2","M7.5 17a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z","M17.5 17a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"]),
-  Users:       ic(["M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2","M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8z","M22 21v-2a4 4 0 0 0-3-3.87","M16 3.13a4 4 0 0 1 0 7.75"]),
+  Users:       ic(["M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2","M9 11a4 4 0 1 0 0-8 4 4 0 1 0 0 8z","M22 21v-2a4 4 0 0 0-3-3.87","M16 3.13a4 4 0 0 1 0 7.75"]),
   Settings:    ic(["M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z","M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"]),
   LogOut:      ic(["M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4","M16 17l5-5-5-5","M21 12H9"]),
   FileText:    ic(["M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z","M14 2v4a2 2 0 0 0 2 2h4","M10 9H8","M16 13H8","M16 17H8"]),
@@ -295,6 +378,10 @@ const I = {
   Link:        ic(["M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71","M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"]),
   Undo:        ic(["M3 7v6h6","M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"]),
   Redo:        ic(["M21 7v6h-6","M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"]),
+  Sun:         ic(["M12 3v2","M12 19v2","M5 12H3","M21 12h-2","M5.6 5.6l1.4 1.4","M17 17l1.4 1.4","M5.6 18.4 7 17","M17 7l1.4-1.4","M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"]),
+  Moon:        ic(["M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"]),
+  MessageSquare:ic(["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"]),
+  Sparkles:    ic(["M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z","M19 14l.5 1.5L21 16l-1.5.5L19 18l-.5-1.5L17 16l1.5-.5L19 14z","M5 16l.5 1.5L7 18l-1.5.5L5 20l-.5-1.5L3 18l1.5-.5L5 16z"]),
 };
 
 // ─── Color utils ─────────────────────────────────────────────────
@@ -370,7 +457,11 @@ const TEMPLATES = {
       { label: "Vendas", items: [
         { k:"dashboard", lbl:"Dashboard",  Icon:I.BarChart,    badge:null },
         { k:"pipeline",  lbl:"Pipeline",   Icon:I.Pipelines,   badge:"14" },
-        { k:"contatos",  lbl:"Contatos",   Icon:I.Users,       badge:"89" },
+        { k:"leads",     lbl:"Leads",      Icon:I.Users,       badge:"89" },
+        { k:"conversas", lbl:"Conversas",  Icon:I.MessageSquare, badge:"12" },
+      ]},
+      { label: "IA", items: [
+        { k:"prompts",   lbl:"Prompts",    Icon:I.Sparkles,    badge:null },
       ]},
       { label: "Análise", items: [
         { k:"relatorios", lbl:"Relatórios", Icon:I.TrendingUp, badge:null },
@@ -454,15 +545,37 @@ const COLOR_PRESETS = {
     "--success":"152 85% 30%","--warning":"38 92% 50%","--destructive":"0 100% 43%",
   },
   "CRM Dark": {
-    "--primary":"220 90% 55%","--accent":"280 70% 65%",
+    /* accent darkened p/ AA white-on-accent (Skill #3 audit U1: 3.40 → 5.7+ ratio) */
+    "--primary":"220 90% 55%","--accent":"280 60% 50%",
     "--background":"222 20% 10%","--foreground":"220 15% 92%",
-    "--card":"222 20% 14%","--border":"222 20% 20%",
+    "--card":"222 20% 14%","--card-foreground":"220 15% 92%",
+    "--popover":"222 20% 14%","--popover-foreground":"220 15% 92%",
+    "--secondary":"222 20% 18%","--secondary-foreground":"220 15% 92%",
+    "--border":"222 20% 22%",
+    /* muted: dark variant pra evitar fallback claro do default (Skill #1 audit F1 — fix "bars brancas" em pill/badges) */
+    "--muted":"222 20% 20%",
     /* muted-foreground: bumped from 65% → 72% for WCAG AA 4.5:1 vs dark bg (F-UX-002 / F-UI-008) */
     "--muted-foreground":"220 15% 72%",
+    "--input":"222 20% 14%",
     /* ring-offset matches card surface so focus ring is visible on dark bg (Wave 1 TODO) */
     "--ring-offset":"222 20% 14%",
-    "--sidebar-background":"222 20% 7%","--sidebar-accent":"222 20% 15%","--sidebar-indicator":"220 90% 65%",
+    "--sidebar-background":"222 20% 7%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 20% 15%","--sidebar-border":"222 20% 14%","--sidebar-indicator":"220 90% 65%",
     "--success":"152 70% 45%","--warning":"38 90% 55%","--destructive":"0 85% 55%",
+    "--accent-decorative":"310 70% 65%",
+  },
+  "CRM Light": {
+    "--primary":"220 85% 45%","--accent":"280 65% 55%",
+    "--background":"220 20% 98%","--foreground":"222 25% 14%",
+    "--card":"0 0% 100%","--card-foreground":"222 25% 14%",
+    "--popover":"0 0% 100%","--popover-foreground":"222 25% 14%",
+    "--secondary":"220 15% 94%","--secondary-foreground":"222 25% 14%",
+    "--border":"220 15% 88%",
+    "--muted":"220 15% 92%","--muted-foreground":"222 15% 38%",
+    "--input":"0 0% 100%",
+    "--ring-offset":"0 0% 100%",
+    "--sidebar-background":"222 25% 14%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 22% 22%","--sidebar-border":"222 22% 19%","--sidebar-indicator":"280 65% 60%",
+    "--success":"152 70% 35%","--warning":"38 88% 45%","--destructive":"0 80% 48%",
+    "--accent-decorative":"310 65% 55%",
   },
   "Wiki Sage": {
     "--primary":"145 40% 35%","--accent":"38 80% 55%",
@@ -589,14 +702,14 @@ function LoginScreen({ onLogin }) {
               <div className="err-msg" role="alert" aria-live="polite">{error}</div>
             )}
             {/* F-CA-011: loading state + aria-busy on submit button */}
-            <button type="submit" className="btn-login" disabled={loading} aria-busy={loading}>
+            <button type="submit" className="aa-btn aa-btn--primary aa-btn--md aa-btn--full" disabled={loading} aria-busy={loading}>
               {loading ? (
                 <>
                   <span style={{
                     width: 16, height: 16, borderRadius: "50%",
                     border: "2px solid currentColor", borderTopColor: "transparent",
                     display: "inline-block",
-                    animation: "btn-spin 0.6s linear infinite",
+                    animation: "aa-btn-spin 0.6s linear infinite",
                     flexShrink: 0,
                   }} aria-hidden="true" />
                   Entrando...
@@ -615,17 +728,8 @@ function LoginScreen({ onLogin }) {
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────
-function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
+function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCollapsed, themeMode, onToggleTheme }) {
   const reducedMotion = useReducedMotion(); // F-RP-012
-  // Auto-collapse mobile (<= 768px)
-  const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth <= 768) setCollapsed(true);
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
 
   const tpl = TEMPLATES[templateKey];
   const initials = tpl.user.name.split(" ").slice(0,2).map(w=>w[0]).join("");
@@ -639,18 +743,25 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
         {collapsed ? <I.ChevronRight size={14} /> : <I.ChevronLeft size={14} />}
       </button>
 
-      {/* Brand — logo Artemis com label diagonal sobre canto */}
+      {/* W1.6 followup / F-INT-019: usa placeholders do worktree (artemis-* nao versionados),
+          colapsado esconde tag diagonal pra nao ficar torto. */}
       <div className="sidebar-brand">
         <div className="sidebar-logo-wrap">
-          {collapsed
-            ? <img src="../../assets/artemis-icon.png" alt="Artemis" className="sidebar-logo-icon" />
-            : <img src="../../assets/artemis-logo.svg" alt="Artemis" className="sidebar-logo-full" />
+          {/* Wave 11: Logo Artemis (currentColor herda --sidebar-foreground via Token Editor pickFg).
+             variant="icon" colapsado, "full" expandido. Brand mark fixo (#005EFF accent).
+             className NAO setada — old .sidebar-logo-full/-icon CSS forcava height 30px e quebrava ratio. */}
+          {window.Logo
+            ? <window.Logo variant={collapsed ? "icon" : "full"} height={collapsed ? 28 : 22}
+                style={{ color: "hsl(var(--sidebar-foreground))", display: "block" }} />
+            : <div style={{height: collapsed ? 28 : 22}} aria-label="Artemis" />
           }
-          <span className="sidebar-logo-tag">{tpl.label}</span>
+          {!collapsed && <span className="sidebar-logo-tag">{tpl.label}</span>}
         </div>
-        {/* Back to showcase — F-UX-016 */}
-        {!collapsed && (
+        {/* Back to showcase — F-UX-016. So aparece em iframe (template embedded
+            via showcase template-card). Standalone (aberto direto) esconde. */}
+        {!collapsed && typeof window !== "undefined" && window.parent !== window && (
           <a href="../showcase/index.html"
+            target="_top"
             title="Voltar para o showcase"
             style={{
               marginLeft: "auto",
@@ -676,43 +787,47 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
       <nav className="sidebar-nav">
         {tpl.navGroups.map((grp) => (
           <React.Fragment key={grp.label}>
-            {!collapsed && <div className="nav-section-label">{grp.label}</div>}
+            {/* Label sempre renderizado pra manter spacing vertical entre groups quando collapsed.
+                CSS .collapsed .nav-section-label esconde texto (opacity 0) mas padding mantem altura. */}
+            <div className="nav-section-label">{grp.label}</div>
             {grp.items.map(({ k, lbl, Icon, badge }) => (
-              <div key={k}
+              <button key={k} type="button"
                 className={`nav-item${activePage === k ? " active" : ""}`}
                 onClick={() => onNav(k)}
+                aria-current={activePage === k ? "page" : undefined}
                 title={collapsed ? lbl : undefined}>
                 <Icon size={16} />
                 <span className="nav-label">{lbl}</span>
                 {badge && !collapsed && <span className="nav-badge">{badge}</span>}
-              </div>
+              </button>
             ))}
           </React.Fragment>
         ))}
       </nav>
 
       {/* User panel — clique no avatar/nome abre Perfil; botoes Config/Sair separados */}
-      <div className="user-panel">
-        <button className="user-panel-clickable" onClick={() => onNav("profile")} title="Meu perfil">
+      <div className={`user-panel${activePage === "profile" || activePage === "settings" ? " account-active" : ""}`}>
+        <button className="user-panel-clickable" onClick={() => onNav("profile")} title="Meu perfil" aria-current={activePage === "profile" ? "page" : undefined}>
           <div className="avatar">{initials}</div>
-          {!collapsed && (
-            <div className="user-info">
-              <div className="user-name">{tpl.user.name}</div>
-            </div>
-          )}
+          <div className="user-info">
+            <div className="user-name">{tpl.user.name}</div>
+          </div>
         </button>
-        {!collapsed && (
-          <>
-            <div className="user-actions">
-              <div className="user-action-btn" title="Configurações" onClick={() => onNav("settings")}>
-                <I.Settings size={14} />
-              </div>
-              <div className="user-action-btn" title="Sair" onClick={onLogout}>
-                <I.LogOut size={14} />
-              </div>
-            </div>
-          </>
-        )}
+        {/* Actions sempre renderizadas — em collapsed CSS empilha vertical pra
+            nao perder config + logout (Patrick: 'devia ficar vertical quando colapsa') */}
+        <div className="user-actions">
+          {templateKey === "crm" && onToggleTheme && (
+            <button type="button" className="user-action-btn" title={themeMode === "light" ? "Modo escuro" : "Modo claro"} onClick={onToggleTheme}>
+              {themeMode === "light" ? <I.Moon size={14} /> : <I.Sun size={14} />}
+            </button>
+          )}
+          <button type="button" className="user-action-btn" title="Configurações" onClick={() => onNav("settings")} aria-current={activePage === "settings" ? "page" : undefined}>
+            <I.Settings size={14} />
+          </button>
+          <button type="button" className="user-action-btn" title="Sair" onClick={onLogout}>
+            <I.LogOut size={14} />
+          </button>
+        </div>
       </div>
     </aside>
   );
@@ -741,7 +856,7 @@ function OpsDashboard({ onNav }) {
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Romaneios recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas 72 horas</p></div>
-          <button className="btn btn-outline btn-sm" onClick={()=>onNav("romaneios")}>Ver todos</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("romaneios")}>Ver todos</button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Data</th><th>Transportadora</th><th>Status</th></tr></thead>
@@ -764,7 +879,7 @@ function CrmDashboard({ onNav }) {
     <div className="page-content">
       <div className="page-header">
         <div className="page-header-stack">
-          <span className="page-crumb">crm · dashboard</span>
+          <span className="page-crumb">crm · vendas · dashboard</span>
           <h2 className="page-title">Dashboard</h2>
           <p className="page-sub">Pipeline de vendas e conversão</p>
         </div>
@@ -773,28 +888,165 @@ function CrmDashboard({ onNav }) {
         {[["R$ 352k","Volume pipeline","up","+23%"],["14","Oportunidades","up","+4"],["68%","Taxa conversão","dn","-2pt"],["R$ 95k","Fechamentos mês","up","+11%"]].map(([v,l,d,pct])=>(
           <div key={l} className="kpi">
             <div className="kpi-label">{l}</div>
-            <div className="kpi-value" style={{ fontSize:22 }}>{v}</div>
+            <div className="kpi-value" style={{ fontSize:"var(--text-xl)" }}>{v}</div>
             {d && <span className={`kpi-delta ${d}`}>{pct}</span>}
           </div>
         ))}
       </div>
-      <div className="card" style={{ padding:0 }}>
-        <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-          <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Oportunidades ativas</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Ordenado por valor</p></div>
-          <button className="btn btn-outline btn-sm" onClick={()=>onNav("pipeline")}>Ver pipeline</button>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+        <FunnelStagesChart onSeeAll={() => onNav("pipeline")} />
+        <PipelineTrendChart />
+      </div>
+      <TelemetriaIACard />
+    </div>
+  );
+}
+
+/* Telemetria IA — observability panel pra CRMs c/ IA conversacional (inspirado ia-da-plus).
+   Count-up animation entry (iter3 fix). */
+function CountUpNumber({ value, prefix = "", suffix = "", duration = 1000 }) {
+  const [displayed, setDisplayed] = useState(0);
+  useEffect(() => {
+    let raf, start;
+    const animate = (ts) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayed(value * eased);
+      if (progress < 1) raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [value, duration]);
+  // Format: integer pra valores >= 100, 1 decimal pra < 100
+  const fmt = displayed >= 100 ? Math.round(displayed) : displayed.toFixed(1);
+  return <>{prefix}{fmt}{suffix}</>;
+}
+function TelemetriaIACard() {
+  const metrics = [
+    { lbl:"Custo / mês",       num:384,  prefix:"R$ ",     suffix:"",   delta:"-12%",   deltaDir:"dn", hint:"economia vs gpt-4 puro" },
+    { lbl:"Latência média",    num:1.4,  prefix:"",        suffix:"s",  delta:"-0.2s",  deltaDir:"dn", hint:"p95 resposta IA" },
+    { lbl:"Taxa de resposta",  num:87,   prefix:"",        suffix:"%",  delta:"+4pt",   deltaDir:"up", hint:"leads c/ pelo menos 1 reply" },
+    { lbl:"Tokens / conversa", num:2.1,  prefix:"",        suffix:"k",  delta:"+8%",    deltaDir:"up", hint:"tendência subir = melhorar prompt" },
+  ];
+  return (
+    <div className="card" style={{ padding:0 }}>
+      <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div>
+          <h3 style={{ fontSize:"var(--text-sm)",fontWeight:600,margin:0, display:"flex", alignItems:"center", gap:6 }}>
+            <span style={{ display:"inline-block", width:8, height:8, borderRadius:"50%", background:"hsl(var(--success))", boxShadow:"0 0 8px hsl(var(--success)/.5)" }} />
+            Telemetria IA
+          </h3>
+          <p style={{ fontSize:"var(--text-xs)",color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Observabilidade do agente conversacional · últimos 30d</p>
         </div>
-        <table className="tbl">
-          <thead><tr><th>ID</th><th>Cliente</th><th>Valor</th><th>Fase</th><th>Status</th></tr></thead>
-          <tbody>{CRM_ROWS.map(r=>(
-            <tr key={r.id}>
-              <td className="mono">{r.id}</td>
-              <td>{r.cliente}</td>
-              <td className="mono">{r.valor}</td>
-              <td className="muted">{r.fase}</td>
-              <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
-            </tr>
-          ))}</tbody>
-        </table>
+        <span style={{ fontSize:11, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)" }}>v1.4 · gpt-4o-mini</span>
+      </div>
+      <div style={{ padding:"4px 20px 20px", display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14 }}>
+        {metrics.map(m => (
+          <div key={m.lbl}>
+            <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", textTransform:"uppercase", letterSpacing:".04em", marginBottom:4 }}>{m.lbl}</div>
+            <div style={{ fontFamily:"var(--font-display)", fontSize:22, fontWeight:600, lineHeight:1, marginBottom:4 }}>
+              <CountUpNumber value={m.num} prefix={m.prefix} suffix={m.suffix} />
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+              <span style={{ fontSize:11, fontFamily:"var(--font-mono)", color: m.deltaDir==="up"?"hsl(var(--success))":"hsl(var(--info))" }}>{m.delta}</span>
+              <span style={{ fontSize:10, color:"hsl(var(--muted-foreground))" }}>{m.hint}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Charts inline SVG (substituem tabela CRM por visual relevante pra dash) ── */
+function FunnelStagesChart({ onSeeAll }) {
+  // Estagios do funil c/ count + valor agregado
+  const stages = [
+    { lbl:"Qualificação", count:24, valor:480, color:"hsl(var(--info))" },
+    { lbl:"Proposta",     count:14, valor:320, color:"hsl(var(--accent))" },
+    { lbl:"Negociação",   count: 8, valor:185, color:"hsl(var(--warning))" },
+    { lbl:"Fechamento",   count: 4, valor: 95, color:"hsl(var(--success))" },
+  ];
+  const max = Math.max(...stages.map(s => s.valor));
+  // Skill #4 audit F1: entry animation — width 0 → target on mount
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const r = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(r); }, []);
+  return (
+    <div className="card" style={{ padding:0 }}>
+      <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div>
+          <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Funil por fase</h3>
+          <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Volume R$ por estágio</p>
+        </div>
+        <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={onSeeAll}>Ver pipeline</button>
+      </div>
+      <div style={{ padding:"4px 20px 20px", display:"flex", flexDirection:"column", gap:14 }}>
+        {stages.map(s => {
+          const pct = (s.valor / max) * 100;
+          return (
+            <div key={s.lbl}>
+              <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:6 }}>
+                <span style={{ color:"hsl(var(--foreground))", fontWeight:500 }}>{s.lbl}</span>
+                <span style={{ fontFamily:"var(--font-mono)", color:"hsl(var(--muted-foreground))" }}>{s.count} · R$ {s.valor}k</span>
+              </div>
+              <div style={{ height:8, background:"hsl(var(--muted) / .5)", borderRadius:4, overflow:"hidden" }}>
+                <div style={{ height:"100%", width: mounted ? `${pct}%` : "0%", background:s.color, borderRadius:4, transition:"width var(--motion-slow,300ms) var(--ease-out, cubic-bezier(0,0,.2,1))" }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PipelineTrendChart() {
+  // 12 meses de volume (R$k)
+  const data = [180, 215, 205, 240, 260, 275, 245, 290, 310, 305, 340, 352];
+  const labels = ["J","F","M","A","M","J","J","A","S","O","N","D"];
+  const W = 360, H = 140, P = 24;
+  const max = Math.max(...data), min = Math.min(...data);
+  const xStep = (W - P*2) / (data.length - 1);
+  const points = data.map((v, i) => {
+    const x = P + i * xStep;
+    const y = H - P - ((v - min) / (max - min)) * (H - P*2);
+    return [x, y];
+  });
+  const path = points.map(([x,y], i) => `${i===0?"M":"L"} ${x} ${y}`).join(" ");
+  // Area fill
+  const area = `${path} L ${points[points.length-1][0]} ${H - P} L ${P} ${H - P} Z`;
+  return (
+    <div className="card" style={{ padding:0 }}>
+      <div style={{ padding:"16px 20px" }}>
+        <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Volume mensal</h3>
+        <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Pipeline R$k últimos 12 meses</p>
+      </div>
+      <div style={{ padding:"4px 20px 20px" }}>
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display:"block" }} aria-label="Tendência mensal">
+          <defs>
+            <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%"   stopColor="hsl(var(--accent))" stopOpacity="0.35"/>
+              <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0"/>
+            </linearGradient>
+          </defs>
+          {/* gridlines horizontais */}
+          {[0, 0.5, 1].map(t => {
+            const y = P + t * (H - P*2);
+            return <line key={t} x1={P} x2={W-P} y1={y} y2={y} stroke="hsl(var(--border))" strokeDasharray="2 3" strokeWidth="1"/>;
+          })}
+          <path d={area} fill="url(#trendFill)" />
+          <path d={path} fill="none" stroke="hsl(var(--accent))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          {points.map(([x,y], i) => (
+            <circle key={i} cx={x} cy={y} r={i === points.length-1 ? 4 : 2.5}
+              fill="hsl(var(--background))" stroke="hsl(var(--accent))" strokeWidth="2"/>
+          ))}
+          {labels.map((l, i) => (
+            <text key={i} x={P + i * xStep} y={H - 6} fontSize="9" textAnchor="middle"
+              fill="hsl(var(--muted-foreground))" fontFamily="var(--font-mono)">{l}</text>
+          ))}
+        </svg>
       </div>
     </div>
   );
@@ -822,7 +1074,7 @@ function WikiDashboard({ onNav }) {
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Artigos recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas publicações</p></div>
-          <button className="btn btn-outline btn-sm" onClick={()=>onNav("artigos")}>Ver todos</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("artigos")}>Ver todos</button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Título</th><th>Autor</th><th>Views</th><th>Status</th></tr></thead>
@@ -861,18 +1113,18 @@ function Pagination({ page, total, perPage, onChange }) {
   const totalPages = Math.ceil(total / perPage);
   return (
     <div style={{ display:"flex", alignItems:"center", gap:4, justifyContent:"flex-end", marginTop:4 }}>
-      <button className="btn btn-outline btn-sm" onClick={() => onChange(page-1)} disabled={page <= 1}
+      <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => onChange(page-1)} disabled={page <= 1}
         style={{ padding:"5px 10px" }}>←</button>
       {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
         const p = i + 1;
         return (
-          <button key={p} className="btn btn-sm" onClick={() => onChange(p)}
+          <button key={p} className="aa-btn aa-btn--sm" onClick={() => onChange(p)}
             style={{ padding:"5px 10px", background: page===p ? "hsl(var(--primary))" : "hsl(var(--card))", color: page===p ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))", border:"1px solid hsl(var(--border))", borderRadius:8 }}>
             {p}
           </button>
         );
       })}
-      <button className="btn btn-outline btn-sm" onClick={() => onChange(page+1)} disabled={page >= totalPages}
+      <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => onChange(page+1)} disabled={page >= totalPages}
         style={{ padding:"5px 10px" }}>→</button>
       <span style={{ fontSize:11, color:"hsl(var(--muted-foreground))", marginLeft:6, fontFamily:"var(--font-mono)" }}>
         {(page-1)*perPage+1}–{Math.min(page*perPage,total)} de {total}
@@ -881,15 +1133,23 @@ function Pagination({ page, total, perPage, onChange }) {
   );
 }
 
+/* W4.1 / F-INT-003 + D6 + A1: primitivos locais (Checkbox, Drawer, Dialog, Skeleton, EmptyState, Slider, Toast, Breadcrumb, Pagination, ProgressBar)
+   compartilham finalidade com components/{base,display,forms}/*.jsx mas vivem aqui pra manter
+   este file como single-bundle standalone (executado direto via Babel inline, sem import).
+   Justificativa: app demo precisa rodar isolado. Trade conhecido: token/component change
+   no shared NAO propaga aqui automaticamente — refactor planejado pra Wave futura
+   (gerar bundle a partir de fonte modular). Until then: keep visual contract aligned via
+   tokens (--primary, --border, --card etc) e classes canônicas (aa-btn). */
 function Checkbox({ checked, onChange, label, id }) {
   return (
     <label htmlFor={id} style={{ display:"flex", alignItems:"center", gap:8, cursor:"pointer", fontSize:13, userSelect:"none" }}>
       <div onClick={() => onChange(!checked)} style={{
         width:16, height:16, borderRadius:4, border:`1.5px solid ${checked?"hsl(var(--primary))":"hsl(var(--border))"}`,
         background: checked ? "hsl(var(--primary))" : "hsl(var(--card))",
-        display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, cursor:"pointer", transition:"all 150ms"
+        display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, cursor:"pointer",
+        transition:"background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), border-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))"
       }}>
-        {checked && <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="hsl(var(--primary-foreground))" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+        {checked && <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l3 3 5-6" stroke="hsl(var(--primary-foreground))" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}
       </div>
       {label && <span>{label}</span>}
     </label>
@@ -915,39 +1175,9 @@ function ProgressBar({ value, max=100, color }) {
   );
 }
 
-function Drawer({ open, onClose, title, children }) {
-  if (!open) return null;
-  return (
-    <>
-      <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.3)", zIndex:50, backdropFilter:"blur(2px)" }} />
-      <div style={{ position:"fixed", top:0, right:0, bottom:0, width:400, maxWidth:"90vw", background:"hsl(var(--card))", borderLeft:"1px solid hsl(var(--border))", zIndex:51, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px hsl(var(--foreground)/.1)", animation:"slideIn 200ms ease" }}>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
-          <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
-          <button onClick={onClose} className="btn btn-ghost btn-sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
-        </div>
-        <div style={{ flex:1, overflow:"auto", padding:"20px" }}>{children}</div>
-      </div>
-      <style>{`@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}`}</style>
-    </>
-  );
-}
-
-function Dialog({ open, onClose, title, children }) {
-  if (!open) return null;
-  return (
-    <>
-      <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.4)", zIndex:60, backdropFilter:"blur(4px)" }} />
-      <div style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:480, maxWidth:"90vw", background:"hsl(var(--card))", border:"1px solid hsl(var(--border))", borderRadius:20, zIndex:61, boxShadow:"0 24px 64px hsl(var(--foreground)/.2)", animation:"dialogIn 200ms ease" }}>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
-          <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
-          <button onClick={onClose} className="btn btn-ghost btn-sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
-        </div>
-        <div style={{ padding:"20px" }}>{children}</div>
-      </div>
-      <style>{`@keyframes dialogIn{from{transform:translate(-50%,-54%);opacity:0}to{transform:translate(-50%,-50%);opacity:1}}`}</style>
-    </>
-  );
-}
+/* iter3 phase2: Drawer + Dialog inline removidos.
+   Canonical via window.Drawer / window.Dialog (carregado em components/display/Drawer.jsx + Dialog.jsx).
+   Canonical implementa focus trap + return focus + animation tokens + ESC nativos. */
 
 function Skeleton({ width, height = 16, rounded = false }) {
   return (
@@ -967,7 +1197,7 @@ function EmptyState({ icon, title, desc, action, onAction }) {
       <div style={{ fontSize:40, marginBottom:12 }}>{icon || "📭"}</div>
       <h3 style={{ fontSize:16, fontWeight:600, color:"hsl(var(--foreground))", margin:"0 0 8px" }}>{title}</h3>
       {desc && <p style={{ fontSize:13, margin:"0 0 20px", lineHeight:1.6 }}>{desc}</p>}
-      {action && <button className="btn btn-primary btn-sm" onClick={onAction}>{action}</button>}
+      {action && <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={onAction}>{action}</button>}
     </div>
   );
 }
@@ -987,10 +1217,10 @@ function NumberStepper({ value, onChange, min=0, max=999, step=1, label }) {
     <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
       {label && <span style={{ fontSize:12, fontWeight:500 }}>{label}</span>}
       <div style={{ display:"flex", alignItems:"center", border:"1.5px solid hsl(var(--border))", borderRadius:8, overflow:"hidden", width:"fit-content" }}>
-        <button className="btn btn-ghost" onClick={() => onChange(Math.max(min, value-step))}
+        <button className="aa-btn aa-btn--ghost aa-btn--md" onClick={() => onChange(Math.max(min, value-step))}
           style={{ padding:"6px 10px", borderRadius:0, borderRight:"1px solid hsl(var(--border))" }}>−</button>
         <span style={{ padding:"6px 14px", fontFamily:"var(--font-mono)", fontSize:13, minWidth:40, textAlign:"center" }}>{value}</span>
-        <button className="btn btn-ghost" onClick={() => onChange(Math.min(max, value+step))}
+        <button className="aa-btn aa-btn--ghost aa-btn--md" onClick={() => onChange(Math.min(max, value+step))}
           style={{ padding:"6px 10px", borderRadius:0, borderLeft:"1px solid hsl(var(--border))" }}>+</button>
       </div>
     </div>
@@ -1097,12 +1327,12 @@ function RomaneiosPage() {
         </div>
         <div className="page-actions">
           {selected.size > 0 && (
-            <button className="btn btn-destructive btn-sm" onClick={() => setConfirmDialog(true)}>
+            <button className="aa-btn aa-btn--destructive aa-btn--sm" onClick={() => setConfirmDialog(true)}>
               <I.Trash2 size={13}/> Excluir {selected.size} selecionados
             </button>
           )}
-          <button className="btn btn-outline btn-sm" onClick={simulateReload}><I.RotateCcw size={13}/> Atualizar</button>
-          <button className="btn btn-primary btn-sm"><I.Plus size={13}/> Novo romaneio</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={simulateReload}><I.RotateCcw size={13}/> Atualizar</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Novo romaneio</button>
         </div>
       </div>
 
@@ -1119,7 +1349,7 @@ function RomaneiosPage() {
             placeholder="Todas transportadoras"
             options={transportadoras.map(t => ({ value:t, label:t }))} />
           {(search||statusFilter||transFilter) && (
-            <button className="btn btn-ghost btn-sm" onClick={() => { setSearch(""); setStatusFilter(""); setTransFilter(""); setPage(1); }}>
+            <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => { setSearch(""); setStatusFilter(""); setTransFilter(""); setPage(1); }}>
               Limpar filtros
             </button>
           )}
@@ -1170,7 +1400,7 @@ function RomaneiosPage() {
                   <td className="mono">{r.valor}</td>
                   <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
                   <td>
-                    <button className="btn btn-ghost btn-sm" onClick={() => setDrawer(r)} style={{ padding:"4px 8px" }}>
+                    <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => setDrawer(r)} style={{ padding:"4px 8px" }}>
                       <I.Info size={13}/> Detalhes
                     </button>
                   </td>
@@ -1207,8 +1437,8 @@ function RomaneiosPage() {
             </div>
             <TextareaField label="Observações" placeholder="Adicione uma observação…" value="" onChange={() => {}} />
             <div style={{ display:"flex", gap:8 }}>
-              <button className="btn btn-primary btn-sm" style={{ flex:1 }} onClick={() => setDrawer(null)}>Salvar observações</button>
-              <button className="btn btn-outline btn-sm" onClick={() => setDrawer(null)}>Fechar</button>
+              <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }} onClick={() => setDrawer(null)}>Salvar observações</button>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setDrawer(null)}>Fechar</button>
             </div>
           </div>
         )}
@@ -1220,8 +1450,8 @@ function RomaneiosPage() {
           Você está prestes a excluir <strong style={{ color:"hsl(var(--foreground))" }}>{selected.size} romaneios</strong>. Esta ação é irreversível.
         </p>
         <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
-          <button className="btn btn-outline btn-sm" onClick={() => setConfirmDialog(false)}>Cancelar</button>
-          <button className="btn btn-destructive btn-sm" onClick={() => { setSelected(new Set()); setConfirmDialog(false); }}>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setConfirmDialog(false)}>Cancelar</button>
+          <button className="aa-btn aa-btn--destructive aa-btn--sm" onClick={() => { setSelected(new Set()); setConfirmDialog(false); }}>
             <I.Trash2 size={13}/> Confirmar exclusão
           </button>
         </div>
@@ -1231,43 +1461,259 @@ function RomaneiosPage() {
 }
 
 // ─── PipelinePage (CRM) ───────────────────────────────────────────
-const PIPELINE_STAGES = ["Qualificação", "Proposta", "Negociação", "Fechamento", "Ganho"];
-const PIPELINE_CARDS = [
-  { id:"OP-4921", cliente:"Tech Solutions SA",  valor:48000,  fase:"Proposta",     resp:"Ana Lima",    prob:60, status:"info",  label:"Em andamento" },
-  { id:"OP-4920", cliente:"Grupo Meridional",   valor:120000, fase:"Negociação",   resp:"Carlos R.",   prob:75, status:"warn",  label:"Em risco" },
-  { id:"OP-4919", cliente:"Agro Norte Ltda",    valor:22500,  fase:"Fechamento",   resp:"Mariana C.",  prob:90, status:"ok",    label:"Quente" },
-  { id:"OP-4918", cliente:"Retail Prime",       valor:67000,  fase:"Qualificação", resp:"Jonas F.",    prob:30, status:"neutral",label:"Novo" },
-  { id:"OP-4917", cliente:"MegaComm Brasil",    valor:95000,  fase:"Fechamento",   resp:"Ana Lima",    prob:85, status:"ok",    label:"Quente" },
-  { id:"OP-4916", cliente:"StartUp Fintech",    valor:15000,  fase:"Proposta",     resp:"Carlos R.",   prob:45, status:"info",  label:"Em andamento" },
-  { id:"OP-4915", cliente:"Indústria Omega",    valor:210000, fase:"Negociação",   resp:"Mariana C.",  prob:55, status:"warn",  label:"Em risco" },
-];
+// Funis multi-pipeline (Patrick: "tem que colocar mais de uma opção de funil"). Inspirado HubSpot/Pipedrive.
+const FUNNELS = {
+  vendas: {
+    label:"Vendas SDR → Closer",
+    desc:"Funil completo aquisição",
+    stages:["Qualificação","Proposta","Negociação","Fechamento","Ganho"],
+    cards:[
+      { id:"OP-4921", cliente:"Tech Solutions SA",  valor:48000,  fase:"Proposta",     resp:"Ana Lima",    prob:60, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"OP-4920", cliente:"Grupo Meridional",   valor:120000, fase:"Negociação",   resp:"Carlos R.",   prob:75, cenario:"B", status:"warn",  label:"Em risco" },
+      { id:"OP-4919", cliente:"Agro Norte Ltda",    valor:22500,  fase:"Fechamento",   resp:"Mariana C.",  prob:90, cenario:"B", status:"ok",    label:"Quente" },
+      { id:"OP-4918", cliente:"Retail Prime",       valor:67000,  fase:"Qualificação", resp:"Jonas F.",    prob:30, cenario:"D", status:"neutral",label:"Novo" },
+      { id:"OP-4917", cliente:"MegaComm Brasil",    valor:95000,  fase:"Fechamento",   resp:"Ana Lima",    prob:85, cenario:"E", status:"ok",    label:"Quente" },
+      { id:"OP-4916", cliente:"StartUp Fintech",    valor:15000,  fase:"Proposta",     resp:"Carlos R.",   prob:45, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"OP-4915", cliente:"Indústria Omega",    valor:210000, fase:"Negociação",   resp:"Mariana C.",  prob:55, cenario:"E", status:"warn",  label:"Em risco" },
+    ],
+  },
+  inbound: {
+    label:"Inbound (MQL → SQL)",
+    desc:"Leads qualificados marketing",
+    stages:["MQL","SQL","Discovery","Demo","Decisão"],
+    cards:[
+      { id:"IB-2104", cliente:"Padaria Real",      valor:8000,   fase:"MQL",       resp:"Ana Lima",   prob:15, cenario:"D", status:"neutral",label:"Novo" },
+      { id:"IB-2103", cliente:"FoodTech Brasil",   valor:35000,  fase:"SQL",       resp:"Ana Lima",   prob:35, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"IB-2102", cliente:"Lobsterk SA",       valor:62000,  fase:"Discovery", resp:"Carlos R.",  prob:50, cenario:"B", status:"info",  label:"Em andamento" },
+      { id:"IB-2101", cliente:"Vivere Hotéis",     valor:78000,  fase:"Demo",      resp:"Mariana C.", prob:65, cenario:"B", status:"ok",    label:"Quente" },
+      { id:"IB-2100", cliente:"NovaPay",           valor:45000,  fase:"Decisão",   resp:"Jonas F.",   prob:80, cenario:"B", status:"ok",    label:"Quente" },
+    ],
+  },
+  outbound: {
+    label:"Outbound (Cold → Warm)",
+    desc:"Prospecção ativa",
+    stages:["Lista fria","1º contato","Reunião","Proposta","Fechamento"],
+    cards:[
+      { id:"OB-3050", cliente:"Construtora Atlas", valor:180000, fase:"Lista fria",  resp:"Carlos R.",  prob:5,  cenario:"C", status:"neutral",label:"Frio" },
+      { id:"OB-3049", cliente:"Distribuidora MK",  valor:52000,  fase:"1º contato", resp:"Carlos R.",  prob:10, cenario:"C", status:"neutral",label:"Frio" },
+      { id:"OB-3048", cliente:"Logmix Cargas",     valor:88000,  fase:"Reunião",    resp:"Ana Lima",   prob:35, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"OB-3047", cliente:"AgroVale",          valor:135000, fase:"Proposta",   resp:"Mariana C.", prob:55, cenario:"B", status:"ok",    label:"Quente" },
+      { id:"OB-3046", cliente:"InsurePro",         valor:42000,  fase:"Fechamento", resp:"Jonas F.",   prob:75, cenario:"B", status:"ok",    label:"Quente" },
+    ],
+  },
+  renovacao: {
+    label:"Renovação",
+    desc:"Contratos próximos do fim",
+    stages:["Aviso 90d","Reunião","Proposta","Assinada"],
+    cards:[
+      { id:"RN-1208", cliente:"Tech Solutions SA",  valor:48000,  fase:"Aviso 90d",  resp:"Ana Lima",   prob:70, cenario:"A", status:"info",  label:"Em andamento" },
+      { id:"RN-1207", cliente:"Retail Prime",       valor:67000,  fase:"Reunião",    resp:"Mariana C.", prob:80, cenario:"A", status:"ok",    label:"Quente" },
+      { id:"RN-1206", cliente:"MegaComm Brasil",    valor:95000,  fase:"Proposta",   resp:"Ana Lima",   prob:85, cenario:"A", status:"ok",    label:"Quente" },
+      { id:"RN-1205", cliente:"Distribuidora Sul",  valor:55000,  fase:"Assinada",   resp:"Carlos R.",  prob:100,cenario:"A", status:"ok",    label:"Ganho" },
+    ],
+  },
+};
+const PIPELINE_STAGES = FUNNELS.vendas.stages; // backward-compat (default)
+// Cenário A-F qualification (inspirado ia-da-plus). Atributo lead/conta secundário ao fase pipeline.
+const CENARIO_LABEL = {
+  A: "Já tem, satisfeito",
+  B: "Já tem, com dor",
+  C: "Não tem, sem interesse",
+  D: "Não tem, curioso",
+  E: "Multi-fornecedor",
+  F: "Não qualificado",
+};
+const CENARIO_COLOR = {
+  A: "muted-foreground", // já satisfeito = neutro
+  B: "warning",          // dor = oportunidade quente
+  C: "destructive",      // sem interesse = ruim
+  D: "info",             // curioso = potencial
+  E: "accent",           // multi = competitivo
+  F: "muted-foreground", // não qualificado = neutro escuro
+};
+/* FilterBar — pattern CRM completo: active chips + popover trigger + saved views + quick toggles.
+   Inspirado HubSpot + Salesforce + Pipedrive. Reusable inline. */
+function FilterChip({ label, value, onRemove, color = "primary" }) {
+  return (
+    <span style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"4px 4px 4px 10px", borderRadius:999,
+      background:`hsl(var(--${color}) / .12)`, color:`hsl(var(--${color}))`, border:`1px solid hsl(var(--${color}) / .25)`,
+      fontSize:12, fontWeight:500 }}>
+      <span style={{ fontFamily:"var(--font-mono)", opacity:.7, fontSize:11 }}>{label}:</span>
+      <span>{value}</span>
+      {onRemove && (
+        <button type="button" onClick={onRemove} aria-label={`Remover filtro ${label}`}
+          style={{ width:18, height:18, borderRadius:"50%", border:"none", background:"transparent", cursor:"pointer",
+            color:`hsl(var(--${color}))`, display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:13, lineHeight:1, padding:0 }}>×</button>
+      )}
+    </span>
+  );
+}
+
+function FilterBar({ search, setSearch, filters, setFilters, savedViews, activeView, setActiveView, options, placeholder = "Buscar…" }) {
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const activeFilters = Object.entries(filters || {}).filter(([_, v]) => v && (Array.isArray(v) ? v.length > 0 : true));
+  const removeFilter = (key) => setFilters({ ...filters, [key]: Array.isArray(filters[key]) ? [] : "" });
+  const clearAll = () => { setFilters(Object.fromEntries(Object.keys(filters).map(k => [k, Array.isArray(filters[k]) ? [] : ""]))); setSearch(""); };
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+      <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+        {/* Saved views tabs */}
+        {savedViews && savedViews.length > 0 && (
+          <div style={{ display:"flex", gap:2, padding:2, background:"hsl(var(--muted) / .5)", borderRadius:8, border:"1px solid hsl(var(--border))" }}>
+            {savedViews.map(v => (
+              <button key={v.value} type="button" onClick={() => setActiveView(v.value)}
+                style={{ padding:"5px 10px", borderRadius:6, fontSize:11, fontWeight:500, border:"none", cursor:"pointer", fontFamily:"inherit",
+                  background: activeView===v.value ? "hsl(var(--card))" : "transparent",
+                  color: activeView===v.value ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                  boxShadow: activeView===v.value ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>{v.label} <span style={{ opacity:.6, fontFamily:"var(--font-mono)", fontSize:10 }}>{v.count}</span></button>
+            ))}
+          </div>
+        )}
+        {/* Search */}
+        <input type="search" placeholder={placeholder} aria-label="Buscar" value={search} onChange={e => setSearch(e.target.value)}
+          style={{ flex:"1 1 240px", minWidth:0, padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+        {/* Filter button */}
+        <button type="button" onClick={() => setPopoverOpen(!popoverOpen)}
+          style={{ padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background: popoverOpen ? "hsl(var(--muted))" : "hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:12, fontWeight:500, cursor:"pointer", display:"inline-flex", alignItems:"center", gap:6, fontFamily:"inherit" }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+          Filtros{activeFilters.length > 0 && <span style={{ padding:"1px 6px", borderRadius:999, background:"hsl(var(--primary))", color:"hsl(var(--primary-foreground))", fontSize:10, fontFamily:"var(--font-mono)" }}>{activeFilters.length}</span>}
+        </button>
+      </div>
+      {/* Active chips */}
+      {activeFilters.length > 0 && (
+        <div style={{ display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
+          {activeFilters.map(([key, val]) => (
+            <FilterChip key={key} label={options?.[key]?.label || key} value={Array.isArray(val) ? val.join(", ") : val} onRemove={() => removeFilter(key)} />
+          ))}
+          <button type="button" onClick={clearAll} style={{ background:"none", border:"none", color:"hsl(var(--muted-foreground))", cursor:"pointer", fontSize:11, textDecoration:"underline", fontFamily:"inherit" }}>Limpar tudo</button>
+        </div>
+      )}
+      {/* Filter popover (drawer pra mobile) */}
+      {popoverOpen && (
+        <div role="dialog" aria-label="Filtros avançados" style={{ position:"absolute", marginTop:48, right:0, zIndex:30, width:320, padding:16, borderRadius:12, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", boxShadow:"0 8px 24px hsl(var(--foreground)/.15)" }}>
+          <div style={{ fontSize:12, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", color:"hsl(var(--muted-foreground))", marginBottom:10 }}>Filtros avançados</div>
+          {Object.entries(options || {}).map(([key, opt]) => (
+            <div key={key} style={{ marginBottom:14 }}>
+              <div style={{ fontSize:12, fontWeight:500, marginBottom:6 }}>{opt.label}</div>
+              {opt.type === "checkbox" ? (
+                <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+                  {opt.values.map(v => {
+                    const arr = Array.isArray(filters[key]) ? filters[key] : [];
+                    const checked = arr.includes(v);
+                    return (
+                      <label key={v} style={{ display:"flex", alignItems:"center", gap:8, fontSize:12, cursor:"pointer", padding:"4px 6px", borderRadius:6 }}>
+                        <input type="checkbox" checked={checked} onChange={() => setFilters({ ...filters, [key]: checked ? arr.filter(x=>x!==v) : [...arr, v] })} />
+                        {v}
+                      </label>
+                    );
+                  })}
+                </div>
+              ) : (
+                <select value={filters[key] || ""} onChange={e => setFilters({ ...filters, [key]: e.target.value })}
+                  style={{ width:"100%", padding:"6px 10px", borderRadius:6, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:12 }}>
+                  <option value="">Todos</option>
+                  {opt.values.map(v => <option key={v} value={v}>{v}</option>)}
+                </select>
+              )}
+            </div>
+          ))}
+          <div style={{ display:"flex", gap:6, marginTop:12, paddingTop:10, borderTop:"1px solid hsl(var(--border))" }}>
+            <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={clearAll}>Limpar</button>
+            <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }} onClick={() => setPopoverOpen(false)}>Aplicar</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CenarioPill({ letter }) {
+  if (!letter) return null;
+  const color = CENARIO_COLOR[letter] || "muted-foreground";
+  return (
+    <span title={`Cenário ${letter} — ${CENARIO_LABEL[letter] || ""}`}
+      style={{ fontFamily:"var(--font-mono)", fontSize:11, fontWeight:600, padding:"2px 7px", borderRadius:6,
+        background:`hsl(var(--${color}) / .15)`, color:`hsl(var(--${color}))`, border:`1px solid hsl(var(--${color}) / .3)` }}>
+      {letter}
+    </span>
+  );
+}
+// PIPELINE_CARDS now uses FUNNELS — backward-compat
+const PIPELINE_CARDS = FUNNELS.vendas.cards;
 
 function PipelinePage() {
   const [drawerCard, setDrawerCard] = useState(null);
   const [activeTab, setActiveTab] = useState("kanban");
   const [priority, setPriority] = useState("alta");
+  const [funnel, setFunnel] = useState("vendas");
+  const currentFunnel = FUNNELS[funnel];
+  const stages = currentFunnel.stages;
+  const cards = currentFunnel.cards;
   const [prazo, setPrazo] = useState(30);
   const [nota, setNota] = useState("");
 
-  const stageCards = (stage) => PIPELINE_CARDS.filter(c => c.fase === stage);
-  const totalVal = PIPELINE_CARDS.reduce((s,c) => s+c.valor, 0);
+  const stageCards = (stage) => cards.filter(c => c.fase === stage);
+  const totalVal = cards.reduce((s,c) => s+c.valor, 0);
+
+  // Wave 12.1: kanban scroll combo (arrows + fade + indicator)
+  const kanbanRef = useRef(null);
+  const [scrollState, setScrollState] = useState({ left:0, max:0, viewW:0, contentW:0 });
+  const updateScroll = useCallback(() => {
+    const el = kanbanRef.current; if (!el) return;
+    setScrollState({ left: el.scrollLeft, max: el.scrollWidth - el.clientWidth, viewW: el.clientWidth, contentW: el.scrollWidth });
+  }, []);
+  useEffect(() => {
+    if (activeTab !== "kanban") return;
+    updateScroll();
+    const el = kanbanRef.current; if (!el) return;
+    el.addEventListener("scroll", updateScroll, { passive:true });
+    window.addEventListener("resize", updateScroll);
+    return () => { el.removeEventListener("scroll", updateScroll); window.removeEventListener("resize", updateScroll); };
+  }, [activeTab, funnel, updateScroll]);
+  const canScrollL = scrollState.left > 4;
+  const canScrollR = scrollState.left < scrollState.max - 4;
+  const scrollByCol = (dir) => {
+    const el = kanbanRef.current; if (!el) return;
+    const colW = (el.scrollWidth / Math.max(stages.length, 1));
+    el.scrollBy({ left: dir * colW, behavior: "smooth" });
+  };
+  const totalPages = scrollState.max > 0 ? Math.ceil(scrollState.contentW / scrollState.viewW) : 1;
+  const currentPage = scrollState.max > 0 ? Math.round((scrollState.left / scrollState.max) * (totalPages - 1)) : 0;
 
   return (
     <div className="page-content">
-      <Breadcrumb items={["CRM", "Vendas", "Pipeline"]} />
       <div className="page-header">
         <div className="page-header-stack">
-          <h2 className="page-title">Pipeline de Vendas</h2>
-          <p className="page-sub">Gerencie oportunidades por fase. Clique num card para ver detalhes.</p>
+          <span className="page-crumb">crm · vendas · pipeline</span>
+          <h2 className="page-title">Pipeline</h2>
+          <p className="page-sub">{currentFunnel.desc} · {cards.length} oportunidades</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-primary btn-sm"><I.Plus size={13}/> Nova oportunidade</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Nova oportunidade</button>
         </div>
+      </div>
+
+      {/* Funnel selector — múltiplos funis (Vendas/Inbound/Outbound/Renovação) */}
+      <div style={{ display:"flex", gap:6, alignItems:"center", flexWrap:"wrap", marginTop:-4 }}>
+        <span style={{ fontSize:11, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", color:"hsl(var(--muted-foreground))", marginRight:4 }}>Funil:</span>
+        {Object.entries(FUNNELS).map(([key, f]) => (
+          <button key={key} type="button" onClick={() => setFunnel(key)}
+            style={{ padding:"6px 12px", borderRadius:999, fontSize:12, fontWeight:500, cursor:"pointer", fontFamily:"inherit", transition:"all 150ms",
+              border: funnel===key ? "1px solid hsl(var(--primary))" : "1px solid hsl(var(--border))",
+              background: funnel===key ? "hsl(var(--primary) / .12)" : "hsl(var(--card))",
+              color: funnel===key ? "hsl(var(--primary))" : "hsl(var(--foreground))" }}>
+            {f.label} <span style={{ opacity:.6, fontFamily:"var(--font-mono)", fontSize:10, marginLeft:4 }}>{f.cards.length}</span>
+          </button>
+        ))}
+        <button type="button" style={{ padding:"6px 10px", borderRadius:999, fontSize:11, cursor:"pointer", fontFamily:"inherit",
+          border:"1px dashed hsl(var(--border))", background:"transparent", color:"hsl(var(--muted-foreground))" }}>
+          + Novo funil
+        </button>
       </div>
 
       {/* KPIs resumo */}
       <div className="kpis" style={{ gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))" }}>
-        {[["7","Oportunidades","up",null],["R$ "+totalVal.toLocaleString("pt-BR"),"Volume total","up",null],["68%","Taxa média","up",null],["R$ 95k","Maior opp.",null,null]].map(([v,l,d])=>(
+        {[[String(cards.length),"Oportunidades","up",null],["R$ "+totalVal.toLocaleString("pt-BR"),"Volume total","up",null],[Math.round(cards.reduce((s,c)=>s+c.prob,0)/cards.length)+"%","Taxa média","up",null],["R$ "+Math.max(...cards.map(c=>c.valor/1000))+"k","Maior opp.",null,null]].map(([v,l,d])=>(
           <div key={l} className="kpi">
             <div className="kpi-label">{l}</div>
             <div className="kpi-value" style={{ fontSize:20 }}>{v}</div>
@@ -1278,13 +1724,30 @@ function PipelinePage() {
       {/* Tabs kanban / lista */}
       <div className="tabs-nav">
         {[["kanban","Kanban"],["lista","Lista"],["config","Configurar opp."]].map(([k,l]) => (
-          <div key={k} className={`tab-item${activeTab===k?" active":""}`} onClick={() => setActiveTab(k)}>{l}</div>
+          <button key={k} type="button" className={`tab-item${activeTab===k?" active":""}`} onClick={() => setActiveTab(k)}>{l}</button>
         ))}
       </div>
 
       {activeTab === "kanban" && (
-        <div style={{ display:"grid", gridTemplateColumns:`repeat(${PIPELINE_STAGES.length},1fr)`, gap:12, overflowX:"auto" }}>
-          {PIPELINE_STAGES.map(stage => (
+        <div className="kanban-wrap">
+        <div className={`kanban-fade kanban-fade-l${canScrollL ? " visible" : ""}`} aria-hidden="true"/>
+        <div className={`kanban-fade kanban-fade-r${canScrollR ? " visible" : ""}`} aria-hidden="true"/>
+        <button type="button" aria-label="Rolar para esquerda" className={`kanban-arrow kanban-arrow-l${canScrollL ? " visible" : ""}`} onClick={() => scrollByCol(-1)}>
+          <I.ChevronLeft size={16}/>
+        </button>
+        <button type="button" aria-label="Rolar para direita" className={`kanban-arrow kanban-arrow-r${canScrollR ? " visible" : ""}`} onClick={() => scrollByCol(1)}>
+          <I.ChevronRight size={16}/>
+        </button>
+        {totalPages > 1 && (
+          <div className="kanban-indicator" aria-hidden="true">
+            {Array.from({ length: totalPages }).map((_,i) => (
+              <span key={i} className={`kanban-indicator-dot${i === currentPage ? " active" : ""}`}/>
+            ))}
+            <span style={{ marginLeft:2 }}>{currentPage+1}/{totalPages}</span>
+          </div>
+        )}
+        <div ref={kanbanRef} className="kanban-scroll" style={{ display:"grid", gridTemplateColumns:`repeat(${stages.length},1fr)`, gap:12, overflowX:"auto", paddingBottom:14 }}>
+          {stages.map(stage => (
             <div key={stage} style={{ minWidth:160 }}>
               <div style={{ fontSize:11, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", color:"hsl(var(--muted-foreground))", padding:"0 4px 8px", display:"flex", justifyContent:"space-between" }}>
                 <span>{stage}</span>
@@ -1292,11 +1755,20 @@ function PipelinePage() {
               </div>
               <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                 {stageCards(stage).map(card => (
-                  <div key={card.id} onClick={() => setDrawerCard(card)}
+                  /* W1.10 / F-INT-002: card clicavel teclado-acessivel (role/tabIndex/onKeyDown) */
+                  <div key={card.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Abrir ${card.cliente} — R$ ${card.valor.toLocaleString("pt-BR")}`}
+                    onClick={() => setDrawerCard(card)}
+                    onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setDrawerCard(card); } }}
                     className="card" style={{ cursor:"pointer", padding:"12px 14px", borderRadius:14, transition:"box-shadow 150ms, transform 150ms" }}
                     onMouseEnter={e => { e.currentTarget.style.boxShadow="0 4px 16px hsl(var(--foreground)/.1)"; e.currentTarget.style.transform="translateY(-1px)"; }}
                     onMouseLeave={e => { e.currentTarget.style.boxShadow=""; e.currentTarget.style.transform=""; }}>
-                    <div style={{ fontSize:12, fontWeight:600, marginBottom:4 }}>{card.cliente}</div>
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginBottom:4 }}>
+                      <div style={{ fontSize:12, fontWeight:600, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{card.cliente}</div>
+                      <CenarioPill letter={card.cenario} />
+                    </div>
                     <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", marginBottom:8 }}>{card.resp}</div>
                     <div style={{ fontSize:13, fontWeight:700, fontFamily:"var(--font-display)", marginBottom:8 }}>
                       R$ {card.valor.toLocaleString("pt-BR")}
@@ -1312,17 +1784,25 @@ function PipelinePage() {
             </div>
           ))}
         </div>
+        </div>
       )}
 
       {activeTab === "lista" && (
         <div className="card" style={{ padding:0 }}>
           <table className="tbl">
-            <thead><tr><th>ID</th><th>Cliente</th><th>Valor</th><th>Fase</th><th>Resp.</th><th>Prob.</th><th>Status</th></tr></thead>
+            <thead><tr><th>ID</th><th>Cliente</th><th>Cen.</th><th>Valor</th><th>Fase</th><th>Resp.</th><th>Prob.</th><th>Status</th></tr></thead>
             <tbody>
-              {PIPELINE_CARDS.map(c => (
-                <tr key={c.id} onClick={() => setDrawerCard(c)} style={{ cursor:"pointer" }}>
+              {cards.map(c => (
+                /* W1.10 / F-INT-002: table row clicavel — tabIndex + onKeyDown pra teclado */
+                <tr key={c.id}
+                  tabIndex={0}
+                  aria-label={`Abrir ${c.cliente}`}
+                  onClick={() => setDrawerCard(c)}
+                  onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setDrawerCard(c); } }}
+                  style={{ cursor:"pointer" }}>
                   <td className="mono">{c.id}</td>
                   <td style={{ fontWeight:500 }}>{c.cliente}</td>
+                  <td><CenarioPill letter={c.cenario} /></td>
                   <td className="mono">R$ {c.valor.toLocaleString("pt-BR")}</td>
                   <td><span style={{ fontSize:12, padding:"2px 8px", borderRadius:6, background:"hsl(var(--muted))", fontWeight:500 }}>{c.fase}</span></td>
                   <td className="muted">{c.resp}</td>
@@ -1360,8 +1840,8 @@ function PipelinePage() {
               <TextareaField label="Descrição da oportunidade" placeholder="Contexto, histórico, próximos passos…" value={nota} onChange={setNota} rows={3} />
             </div>
             <div style={{ gridColumn:"1/-1", display:"flex", gap:8 }}>
-              <button className="btn btn-primary btn-sm">Salvar configuração</button>
-              <button className="btn btn-outline btn-sm">Descartar</button>
+              <button className="aa-btn aa-btn--primary aa-btn--sm">Salvar configuração</button>
+              <button className="aa-btn aa-btn--outline aa-btn--sm">Descartar</button>
             </div>
           </div>
         </div>
@@ -1392,13 +1872,573 @@ function PipelinePage() {
             </div>
             <TextareaField label="Notas internas" placeholder="Observações sobre a oportunidade…" value={nota} onChange={setNota} rows={3} />
             <div style={{ display:"flex", gap:8 }}>
-              <button className="btn btn-primary btn-sm" style={{ flex:1 }}>Salvar</button>
-              <button className="btn btn-outline btn-sm" onClick={() => setDrawerCard(null)}>Fechar</button>
+              <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }}>Salvar</button>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setDrawerCard(null)}>Fechar</button>
             </div>
           </div>
         )}
       </Drawer>
     </div>
+  );
+}
+
+// ─── ContatosPage (CRM) ───────────────────────────────────────────
+const CONTACTS_DATA = [
+  { id:"CT-0142", nome:"Ana Silveira",      empresa:"Tech Solutions SA",  cargo:"CTO",          fase:"Quente",       cenario:"D", valor:48,  email:"ana@techsolutions.com.br",  tel:"+55 11 9 8742-1100" },
+  { id:"CT-0141", nome:"Roberto Mendes",    empresa:"Grupo Meridional",   cargo:"Diretor TI",   fase:"Em andamento", cenario:"B", valor:120, email:"roberto@meridional.com",     tel:"+55 11 9 9851-2233" },
+  { id:"CT-0140", nome:"Carla Aguiar",      empresa:"Agro Norte Ltda",    cargo:"Compras",      fase:"Quente",       cenario:"B", valor:22,  email:"carla.a@agronorte.com.br",   tel:"+55 65 9 8400-7755" },
+  { id:"CT-0139", nome:"Bruno Tavares",     empresa:"Retail Prime",       cargo:"Procurement",  fase:"Novo",         cenario:"D", valor:67,  email:"bruno@retailprime.com",      tel:"+55 11 9 8700-1188" },
+  { id:"CT-0138", nome:"Felipe Castro",     empresa:"MegaComm Brasil",    cargo:"Diretor",      fase:"Quente",       cenario:"E", valor:95,  email:"felipe@megacomm.br",         tel:"+55 31 9 9234-5566" },
+  { id:"CT-0137", nome:"Juliana Pinheiro",  empresa:"NovaInd",            cargo:"Operações",    fase:"Em risco",     cenario:"A", valor:38,  email:"juliana@novaind.com",        tel:"+55 11 9 9100-2244" },
+  { id:"CT-0136", nome:"Marcos Leal",       empresa:"Distribuidora Sul",  cargo:"Logística",    fase:"Em andamento", cenario:"E", valor:55,  email:"marcos@distsul.com.br",      tel:"+55 51 9 8900-3322" },
+  { id:"CT-0135", nome:"Patricia Otero",    empresa:"BrandX",             cargo:"Marketing",    fase:"Novo",         cenario:"D", valor:18,  email:"p.otero@brandx.com.br",      tel:"+55 11 9 9655-1010" },
+];
+function LeadsPage({ onNav, setSelectedLeadId }) {
+  const [search, setSearch] = useState("");
+  const [activeView, setActiveView] = useState("all");
+  const [filters, setFilters] = useState({ fase:[], cenario:[], owner:"" });
+  // Saved views por filtro pre-set
+  const SAVED_VIEWS = [
+    { value:"all",   label:"Todos",        count:CONTACTS_DATA.length },
+    { value:"hot",   label:"Quentes",      count:CONTACTS_DATA.filter(c => c.fase==="Quente").length },
+    { value:"new",   label:"Novos hoje",   count:CONTACTS_DATA.filter(c => c.fase==="Novo").length },
+    { value:"mine",  label:"Meus leads",   count:Math.floor(CONTACTS_DATA.length/2) },
+    { value:"risk",  label:"Em risco",     count:CONTACTS_DATA.filter(c => c.fase==="Em risco").length },
+  ];
+  const FILTER_OPTIONS = {
+    fase:    { label:"Fase",    type:"checkbox", values:["Novo","Em andamento","Quente","Em risco"] },
+    cenario: { label:"Cenário", type:"checkbox", values:["A","B","C","D","E","F"] },
+    owner:   { label:"Responsável", type:"select",   values:["Ana Lima","Carlos R.","Mariana C.","Jonas F."] },
+  };
+  const filtered = CONTACTS_DATA.filter(c => {
+    if (search && !(c.nome.toLowerCase().includes(search.toLowerCase()) || c.empresa.toLowerCase().includes(search.toLowerCase()))) return false;
+    if (activeView === "hot" && c.fase !== "Quente") return false;
+    if (activeView === "new" && c.fase !== "Novo") return false;
+    if (activeView === "risk" && c.fase !== "Em risco") return false;
+    if (filters.fase?.length && !filters.fase.includes(c.fase)) return false;
+    if (filters.cenario?.length && !filters.cenario.includes(c.cenario)) return false;
+    return true;
+  });
+  const openConversa = (id) => { setSelectedLeadId?.(id); onNav?.("conversas"); };
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">crm · vendas · leads</span>
+          <h2 className="page-title">Leads</h2>
+          <p className="page-sub">Base comercial ativa · clique pra abrir conversa</p>
+        </div>
+      </div>
+      <div className="kpis">
+        {[["89","Total"],["28","Quentes"],["41","Em andamento"],["R$ 463k","Pipeline"]].map(([v,l]) => (
+          <div key={l} className="kpi">
+            <div className="kpi-label">{l}</div>
+            <div className="kpi-value" style={{ fontSize:"var(--text-xl)" }}>{v}</div>
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{ padding:0, position:"relative" }}>
+        <div style={{ padding:"14px 20px", borderBottom:"1px solid hsl(var(--border))", display:"flex", gap:10, alignItems:"flex-start", justifyContent:"space-between" }}>
+          <div style={{ flex:1, minWidth:0 }}>
+            <FilterBar
+              search={search} setSearch={setSearch}
+              filters={filters} setFilters={setFilters}
+              savedViews={SAVED_VIEWS} activeView={activeView} setActiveView={setActiveView}
+              options={FILTER_OPTIONS}
+              placeholder="Buscar lead, empresa ou contato…"
+            />
+          </div>
+          <button className="aa-btn aa-btn--accent aa-btn--sm" style={{ flexShrink:0 }}>+ Novo lead</button>
+        </div>
+        <table className="tbl">
+          <thead><tr><th>ID</th><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Cen.</th><th>Fase</th><th>Valor</th><th>Contato</th></tr></thead>
+          <tbody>{filtered.map(c => (
+            <tr key={c.id} tabIndex={0} aria-label={`Abrir conversa com ${c.nome}`} onClick={() => openConversa(c.id)}
+              onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversa(c.id); } }}
+              style={{ cursor:"pointer" }}>
+              <td className="mono">{c.id}</td>
+              <td style={{ fontWeight:500 }}>{c.nome}</td>
+              <td>{c.empresa}</td>
+              <td className="muted">{c.cargo}</td>
+              <td><CenarioPill letter={c.cenario} /></td>
+              <td><span className="pill" style={{ background:"hsl(var(--muted) / .5)" }}>{c.fase}</span></td>
+              <td className="mono">R$ {c.valor}k</td>
+              <td className="muted" style={{ fontSize:11 }}>
+                <div>{c.email}</div>
+                <div style={{ fontFamily:"var(--font-mono)" }}>{c.tel}</div>
+              </td>
+            </tr>
+          ))}</tbody>
+        </table>
+        {filtered.length === 0 && <div style={{ padding:32, textAlign:"center", color:"hsl(var(--muted-foreground))" }}>Nenhum contato encontrado</div>}
+      </div>
+    </div>
+  );
+}
+
+// ─── RelatoriosPage (CRM) ─────────────────────────────────────────
+function RelatoriosPage() {
+  const months = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  const cur = [180, 215, 205, 240, 260, 275, 245, 290, 310, 305, 340, 352];
+  const prev = [140, 165, 175, 195, 210, 220, 215, 245, 270, 265, 295, 305];
+  const W = 720, H = 240, P = 32;
+  const all = [...cur, ...prev];
+  const max = Math.max(...all), min = Math.min(...all);
+  const xStep = (W - P*2) / (cur.length - 1);
+  const lineFor = (data) => data.map((v, i) => {
+    const x = P + i * xStep;
+    const y = H - P - ((v - min) / (max - min)) * (H - P*2);
+    return [x, y];
+  });
+  const ptsCur = lineFor(cur);
+  const ptsPrev = lineFor(prev);
+  const path = (pts) => pts.map(([x,y], i) => `${i===0?"M":"L"} ${x} ${y}`).join(" ");
+  const winRate = [42, 48, 51, 56, 60, 64, 62, 67, 71, 68, 70, 68];
+  const conversionByOrigin = [
+    { lbl:"Inbound",   pct:68, color:"hsl(var(--success))" },
+    { lbl:"Outbound",  pct:42, color:"hsl(var(--accent))" },
+    { lbl:"Indicação", pct:75, color:"hsl(var(--info))" },
+    { lbl:"Evento",    pct:38, color:"hsl(var(--warning))" },
+  ];
+  // Skill #4 audit F1: entry animation
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const r = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(r); }, []);
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <div className="page-header-stack">
+          <span className="page-crumb">crm · análise · relatórios</span>
+          <h2 className="page-title">Relatórios</h2>
+          <p className="page-sub">Análise de performance comercial</p>
+        </div>
+      </div>
+      <div className="kpis">
+        {[["R$ 3.2M","Receita YTD","up","+18%"],["68%","Win rate médio","up","+6pt"],["18d","Ciclo médio","dn","-3d"],["R$ 84k","Ticket médio","up","+12%"]].map(([v,l,d,pct]) => (
+          <div key={l} className="kpi">
+            <div className="kpi-label">{l}</div>
+            <div className="kpi-value" style={{ fontSize:"var(--text-xl)" }}>{v}</div>
+            <span className={`kpi-delta ${d}`}>{pct}</span>
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{ padding:0 }}>
+        <div style={{ padding:"16px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
+          <div>
+            <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Receita: 2025 vs 2024</h3>
+            <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Volume mensal R$k</p>
+          </div>
+          <div style={{ display:"flex", gap:14, fontSize:11, fontFamily:"var(--font-mono)" }}>
+            <span style={{ display:"inline-flex", alignItems:"center", gap:6 }}><span style={{ width:12, height:2, background:"hsl(var(--accent))" }}/> 2025</span>
+            <span style={{ display:"inline-flex", alignItems:"center", gap:6 }}><span style={{ width:12, height:2, background:"hsl(var(--muted-foreground))", opacity:.5 }}/> 2024</span>
+          </div>
+        </div>
+        <div style={{ padding:"4px 20px 20px" }}>
+          <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display:"block" }} aria-label="Tendência receita">
+            {[0, 0.25, 0.5, 0.75, 1].map(t => {
+              const y = P + t * (H - P*2);
+              return <line key={t} x1={P} x2={W-P} y1={y} y2={y} stroke="hsl(var(--border))" strokeDasharray="2 3" strokeWidth="1"/>;
+            })}
+            <path d={path(ptsPrev)} fill="none" stroke="hsl(var(--muted-foreground))" strokeOpacity=".5" strokeWidth="2" strokeDasharray="4 3" strokeLinecap="round"/>
+            <path d={path(ptsCur)}  fill="none" stroke="hsl(var(--accent))" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            {ptsCur.map(([x,y], i) => (
+              <circle key={i} cx={x} cy={y} r={i === ptsCur.length-1 ? 5 : 3}
+                fill="hsl(var(--background))" stroke="hsl(var(--accent))" strokeWidth="2"/>
+            ))}
+            {months.map((l, i) => (
+              <text key={i} x={P + i * xStep} y={H - 8} fontSize="10" textAnchor="middle"
+                fill="hsl(var(--muted-foreground))" fontFamily="var(--font-mono)">{l}</text>
+            ))}
+          </svg>
+        </div>
+      </div>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+        <div className="card" style={{ padding:0 }}>
+          <div style={{ padding:"16px 20px" }}>
+            <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Win rate mensal</h3>
+            <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>% propostas convertidas</p>
+          </div>
+          <div style={{ padding:"4px 20px 20px" }}>
+            <svg viewBox="0 0 360 140" width="100%" height="140" style={{ display:"block" }}>
+              {winRate.map((v, i) => {
+                const bw = (360 - 48) / winRate.length;
+                const x = 24 + i * bw;
+                const h = (v / 100) * 100;
+                const y = 130 - h;
+                return (
+                  <g key={i}>
+                    <rect x={x+1} y={y} width={bw - 2} height={h} fill="hsl(var(--accent))" rx="2" opacity={i === winRate.length-1 ? 1 : 0.7}/>
+                    {i % 2 === 0 && <text x={x + bw/2} y="138" fontSize="9" textAnchor="middle" fill="hsl(var(--muted-foreground))" fontFamily="var(--font-mono)">{months[i]}</text>}
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+        </div>
+        <div className="card" style={{ padding:0 }}>
+          <div style={{ padding:"16px 20px" }}>
+            <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Conversão por origem</h3>
+            <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Last 90d</p>
+          </div>
+          <div style={{ padding:"4px 20px 20px", display:"flex", flexDirection:"column", gap:14 }}>
+            {conversionByOrigin.map(s => (
+              <div key={s.lbl}>
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:6 }}>
+                  <span style={{ color:"hsl(var(--foreground))", fontWeight:500 }}>{s.lbl}</span>
+                  <span style={{ fontFamily:"var(--font-mono)", color:"hsl(var(--muted-foreground))" }}>{s.pct}%</span>
+                </div>
+                <div style={{ height:8, background:"hsl(var(--muted) / .5)", borderRadius:4, overflow:"hidden" }}>
+                  <div style={{ height:"100%", width: mounted ? `${s.pct}%` : "0%", background:s.color, borderRadius:4, transition:"width var(--motion-slow,300ms) var(--ease-out, cubic-bezier(0,0,.2,1))" }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── ConversasPage (CRM) — chat threads lead × IA (inspirado ia-da-plus, mock data) ──
+// CT-XX maps to lead (CONTACTS_DATA), conversa.leadId aponta pra contato
+const CONVERSAS_DATA = [
+  { id:"CV-091", leadId:"CT-0142", lead:"Ana Silveira",      empresa:"Tech Solutions SA", cenario:"D", lastMsg:"Pode me mandar a proposta?",                lastTime:"agora", unread:2, status:"hot",  iaPaused:false },
+  { id:"CV-090", leadId:"CT-0141", lead:"Roberto Mendes",    empresa:"Grupo Meridional",  cenario:"B", lastMsg:"Vou alinhar com o time.",                  lastTime:"5min",  unread:0, status:"warm", iaPaused:false },
+  { id:"CV-089", leadId:"CT-0140", lead:"Carla Aguiar",      empresa:"Agro Norte Ltda",   cenario:"B", lastMsg:"Que valores vocês trabalham?",             lastTime:"12min", unread:1, status:"hot",  iaPaused:true  },
+  { id:"CV-088", leadId:"CT-0139", lead:"Bruno Tavares",     empresa:"Retail Prime",      cenario:"D", lastMsg:"Preciso ver com o financeiro.",            lastTime:"1h",    unread:0, status:"warm", iaPaused:false },
+  { id:"CV-087", leadId:"CT-0138", lead:"Felipe Castro",     empresa:"MegaComm Brasil",   cenario:"E", lastMsg:"Hoje trabalhamos com [concorrente].",      lastTime:"3h",    unread:0, status:"cool", iaPaused:false },
+  { id:"CV-086", leadId:"CT-0137", lead:"Juliana Pinheiro",  empresa:"NovaInd",           cenario:"A", lastMsg:"Por enquanto não estamos buscando.",       lastTime:"ontem", unread:0, status:"cold", iaPaused:false },
+];
+// Threads mockados — diferentes pra cada lead. msg type: text|audio|image
+const THREADS = {
+  "CV-091": [
+    { from:"ia",   ts:"hoje 09:14", text:"Oi Ana! Sou a assistente da Artemis. Vi que vocês baixaram material sobre automação de pipeline. Tem 2 min?" },
+    { from:"lead", ts:"hoje 09:18", text:"Tenho. Estamos avaliando soluções pro Q3." },
+    { from:"ia",   ts:"hoje 09:18", text:"Ótimo. Hoje a Tech Solutions usa algum CRM?" },
+    { from:"lead", ts:"hoje 09:21", text:"Hubspot. Mas o time tá reclamando que tá complicado e caro." },
+    { from:"ia",   ts:"hoje 09:23", text:"A Artemis costuma reduzir 40-60% custo CRM em times de 10-20 vendedores. Posso agendar demo 20min?" },
+    { from:"lead", ts:"hoje 09:30", text:"Pode me mandar a proposta?" },
+  ],
+  "CV-090": [
+    { from:"ia",   ts:"hoje 14:02", text:"Roberto, segue o resumo pós-call de ontem com pricing e escopo." },
+    { from:"lead", ts:"hoje 14:18", type:"audio", duration:"0:23", transcript:"Oi, recebi sim. Vou levar pro time de TI ainda hoje, mas a parte de integração ERP precisa ser revisada — temos Protheus." },
+    { from:"ia",   ts:"hoje 14:19", text:"Anotado. Já temos conector Protheus pronto desde abril. Posso te mandar a doc técnica?" },
+    { from:"lead", ts:"hoje 14:25", text:"Vou alinhar com o time." },
+  ],
+  "CV-089": [
+    { from:"ia",   ts:"hoje 11:45", text:"Carla, recebi seu interesse via formulário. Vocês buscam pra qual região agrícola?" },
+    { from:"lead", ts:"hoje 12:01", text:"Mato Grosso e MS. Operação de soja." },
+    { from:"lead", ts:"hoje 12:02", type:"image", caption:"Mapa atual da operação", text:"[imagem da fazenda]" },
+    { from:"ia",   ts:"hoje 12:05", text:"Perfeito. Já atendemos 14 fazendeiros na região. Quer ver case da Bom Futuro Agro?" },
+    { from:"lead", ts:"hoje 12:14", text:"Que valores vocês trabalham?" },
+  ],
+  "CV-088": [
+    { from:"ia",   ts:"hoje 08:30", text:"Oi Bruno! Conforme combinado, segue proposta v2 com desconto 15%." },
+    { from:"lead", ts:"hoje 09:45", text:"Recebi. Preciso ver com o financeiro." },
+  ],
+  "CV-087": [
+    { from:"ia",   ts:"ontem 16:12", text:"Felipe, vi que vocês são clientes Salesforce. O que tá funcionando bem?" },
+    { from:"lead", ts:"ontem 16:30", text:"Hoje trabalhamos com [concorrente]." },
+  ],
+  "CV-086": [
+    { from:"ia",   ts:"ontem 10:00", text:"Juliana, faz sentido conversar sobre automação comercial?" },
+    { from:"lead", ts:"ontem 11:22", text:"Por enquanto não estamos buscando." },
+  ],
+};
+function ConversasPage({ selectedLeadId }) {
+  // Sync conversa via leadId vindo de Leads page
+  const initial = (selectedLeadId && CONVERSAS_DATA.find(c => c.leadId === selectedLeadId)) || CONVERSAS_DATA[0];
+  const [selected, setSelected] = useState(initial);
+  const [draft, setDraft] = useState("");
+  const [iaPaused, setIaPaused] = useState(initial?.iaPaused || false);
+  useEffect(() => {
+    if (selectedLeadId) {
+      const found = CONVERSAS_DATA.find(c => c.leadId === selectedLeadId);
+      if (found) { setSelected(found); setIaPaused(found.iaPaused || false); }
+    }
+  }, [selectedLeadId]);
+  const thread = (selected && THREADS[selected.id]) || [];
+  return (
+    <div className="page-content">
+      <span className="page-crumb">crm · vendas · conversas</span>
+      <div className="page-header">
+        <div className="page-header-stack">
+          <h2 className="page-title">Conversas</h2>
+          <p className="page-sub">Threads ativos lead × IA · 12 não lidas</p>
+        </div>
+      </div>
+      <div className="card" style={{ padding:0, display:"grid", gridTemplateColumns:"320px 1fr", height:"calc(100dvh - 220px)", overflow:"hidden" }}>
+        {/* Coluna esquerda: lista threads */}
+        <div style={{ borderRight:"1px solid hsl(var(--border))", display:"flex", flexDirection:"column", overflow:"hidden" }}>
+          <div style={{ padding:"12px 16px", borderBottom:"1px solid hsl(var(--border))" }}>
+            <input type="search" placeholder="Buscar conversas…" aria-label="Buscar conversas"
+              style={{ width:"100%", padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--background))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+          </div>
+          <div style={{ flex:1, overflowY:"auto" }}>
+            {CONVERSAS_DATA.map(c => {
+              const isActive = selected?.id === c.id;
+              return (
+                <button key={c.id} type="button" onClick={() => setSelected(c)}
+                  style={{ display:"block", width:"100%", textAlign:"left", padding:"12px 16px", borderBottom:"1px solid hsl(var(--border))",
+                    background: isActive ? "hsl(var(--primary)/.08)" : "transparent",
+                    borderLeft: isActive ? "3px solid hsl(var(--primary))" : "3px solid transparent",
+                    cursor:"pointer", fontFamily:"inherit", color:"inherit", transition:"background 120ms" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8, marginBottom:4 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, minWidth:0 }}>
+                      <span style={{ fontWeight:600, fontSize:13, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{c.lead}</span>
+                      <CenarioPill letter={c.cenario} />
+                    </div>
+                    <span style={{ fontSize:10, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)", flexShrink:0 }}>{c.lastTime}</span>
+                  </div>
+                  <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{c.empresa}</div>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:8 }}>
+                    <span style={{ fontSize:12, color:"hsl(var(--foreground))", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", fontWeight: c.unread>0 ? 500 : 400 }}>{c.lastMsg}</span>
+                    {c.unread > 0 && <span style={{ fontSize:10, fontWeight:600, padding:"1px 6px", borderRadius:999, background:"hsl(var(--accent))", color:"hsl(var(--accent-foreground))", flexShrink:0 }}>{c.unread}</span>}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        {/* Coluna direita: chat thread */}
+        <div style={{ display:"flex", flexDirection:"column", overflow:"hidden" }}>
+          {selected ? (
+            <>
+              <div style={{ padding:"14px 20px", borderBottom:"1px solid hsl(var(--border))", display:"flex", justifyContent:"space-between", alignItems:"center", gap:12 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:10, minWidth:0 }}>
+                  <div className="avatar" style={{ width:36, height:36, fontSize:12 }}>{selected.lead.split(" ").slice(0,2).map(w=>w[0]).join("")}</div>
+                  <div style={{ minWidth:0 }}>
+                    <div style={{ fontSize:14, fontWeight:600, display:"flex", alignItems:"center", gap:6 }}>
+                      {selected.lead}
+                      <CenarioPill letter={selected.cenario} />
+                    </div>
+                    <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))" }}>{selected.empresa} · WhatsApp · {selected.leadId}</div>
+                  </div>
+                </div>
+                <div style={{ display:"flex", gap:6, alignItems:"center" }}>
+                  {/* IA toggle: IA respondendo automatic ↔ Manual (atendente assume) */}
+                  <div style={{ display:"flex", gap:2, padding:2, background:"hsl(var(--muted) / .5)", borderRadius:8, border:"1px solid hsl(var(--border))" }}>
+                    <button type="button" onClick={() => setIaPaused(false)} title="IA responde automaticamente"
+                      style={{ padding:"5px 10px", borderRadius:6, fontSize:11, fontWeight:500, border:"none", cursor:"pointer", fontFamily:"inherit", display:"inline-flex", alignItems:"center", gap:5,
+                        background: !iaPaused ? "hsl(var(--card))" : "transparent",
+                        color: !iaPaused ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                        boxShadow: !iaPaused ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>
+                      <span style={{ width:6, height:6, borderRadius:"50%", background: !iaPaused ? "hsl(var(--success))" : "hsl(var(--muted-foreground))" }} />
+                      IA
+                    </button>
+                    <button type="button" onClick={() => setIaPaused(true)} title="Atendente assume conversa"
+                      style={{ padding:"5px 10px", borderRadius:6, fontSize:11, fontWeight:500, border:"none", cursor:"pointer", fontFamily:"inherit",
+                        background: iaPaused ? "hsl(var(--card))" : "transparent",
+                        color: iaPaused ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                        boxShadow: iaPaused ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>Manual</button>
+                  </div>
+                  <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Mais opções">⋯</button>
+                </div>
+              </div>
+              <div style={{ flex:1, overflowY:"auto", padding:"20px", display:"flex", flexDirection:"column", gap:10, background:"hsl(var(--background))" }}>
+                {thread.map((m, i) => {
+                  const isLead = m.from === "lead";
+                  return (
+                    <div key={i} style={{ display:"flex", flexDirection:"column", alignItems: isLead ? "flex-end" : "flex-start", gap:2 }}>
+                      <div style={{ maxWidth:"75%", padding: m.type === "audio" || m.type === "image" ? "12px 14px" : "10px 14px", borderRadius:14,
+                        background: isLead ? "hsl(var(--card))" : "hsl(var(--primary))",
+                        color: isLead ? "hsl(var(--card-foreground))" : "hsl(var(--primary-foreground))",
+                        border: isLead ? "1px solid hsl(var(--border))" : "none",
+                        fontSize:13, lineHeight:1.5,
+                        borderBottomRightRadius: isLead ? 4 : 14,
+                        borderBottomLeftRadius: isLead ? 14 : 4 }}>
+                        {m.type === "audio" ? (
+                          <div style={{ display:"flex", flexDirection:"column", gap:8, minWidth:200 }}>
+                            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                              <button style={{ width:32, height:32, borderRadius:"50%", border:"none", background: isLead ? "hsl(var(--primary))" : "hsl(var(--primary-foreground)/.2)", color: isLead ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground))", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>▶</button>
+                              <div style={{ flex:1, height:18, display:"flex", alignItems:"center", gap:1.5, minWidth: 0 }}>
+                                {[2,5,8,4,12,7,15,10,6,14,9,11,5,8,4,7,3,6,2,9,13,6,11,8,4,14,10,5,12,7,15,9,6,11,3,8,5,13,7,10,4,9,12,6,8,5,11,7,4,10,8,6,13,9,5,7,11,4,9,6].map((h,idx) => (
+                                  <div key={idx} style={{ flex:1, minWidth:2, height:`${h*1.2}px`, background: isLead ? "hsl(var(--muted-foreground))" : "hsl(var(--primary-foreground)/.7)", borderRadius:1 }} />
+                                ))}
+                              </div>
+                              <span style={{ fontSize:10, fontFamily:"var(--font-mono)", opacity:.7 }}>{m.duration}</span>
+                            </div>
+                            {m.transcript && (
+                              <div style={{ fontSize:11, lineHeight:1.5, padding:"8px 10px", borderRadius:8, background: isLead ? "hsl(var(--muted) / .5)" : "hsl(var(--primary-foreground) / .12)", borderLeft:"2px solid hsl(var(--accent))" }}>
+                                <div style={{ fontSize:9, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", opacity:.6, marginBottom:3, fontFamily:"var(--font-mono)" }}>Transcrição</div>
+                                {m.transcript}
+                              </div>
+                            )}
+                          </div>
+                        ) : m.type === "image" ? (
+                          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                            <div style={{ width:240, height:160, borderRadius:8, background:`hsl(var(--muted))`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)" }}>📷 {m.caption || "imagem"}</div>
+                            <div style={{ fontSize:11, opacity:.85 }}>{m.text}</div>
+                          </div>
+                        ) : (
+                          m.text
+                        )}
+                      </div>
+                      <div style={{ fontSize:10, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)", padding:"0 4px" }}>
+                        {!isLead && <span style={{ color:"hsl(var(--accent))" }}>● IA · </span>}{m.ts}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {iaPaused ? (
+                <div style={{ padding:"14px 20px", borderTop:"1px solid hsl(var(--border))", display:"flex", gap:8, alignItems:"center" }}>
+                  <input type="text" placeholder="Modo manual ativo: digite resposta…" aria-label="Digite mensagem" value={draft} onChange={e=>setDraft(e.target.value)}
+                    style={{ flex:1, padding:"10px 14px", borderRadius:10, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+                  <button className="aa-btn aa-btn--primary aa-btn--sm" disabled={!draft.trim()}>Enviar</button>
+                </div>
+              ) : (
+                <div style={{ padding:"16px 20px", borderTop:"1px solid hsl(var(--border))", textAlign:"center", fontSize:12, color:"hsl(var(--muted-foreground))", display:"flex", justifyContent:"center", alignItems:"center", gap:8 }}>
+                  <span style={{ width:6, height:6, borderRadius:"50%", background:"hsl(var(--success))", boxShadow:"0 0 6px hsl(var(--success))" }} />
+                  IA respondendo automaticamente · clique <strong style={{ color:"hsl(var(--foreground))" }}>Manual</strong> pra assumir
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={{ padding:60, textAlign:"center", color:"hsl(var(--muted-foreground))" }}>Selecione uma conversa</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── PromptsPage (CRM) — biblioteca de templates de mensagem (inspirado ia-da-plus) ──
+const PROMPT_TIPOS = [
+  { value:"qualificacao", label:"Qualificação", desc:"Primeiro contato + descoberta" },
+  { value:"followup",     label:"Follow-up",    desc:"Reativação leads parados" },
+  { value:"cobranca",     label:"Cobrança",     desc:"Negociação de fechamento" },
+  { value:"posvenda",     label:"Pós-venda",    desc:"NPS + retenção" },
+];
+const PROMPT_DATA = {
+  qualificacao: [
+    { id:"PR-Q1", titulo:"Abertura inbound", versao:"v3", uso:142, taxa:67, body:"Oi {{nome}}! Vi que você baixou nosso material sobre {{tema}}. Tem 2 minutos pra eu entender melhor o que você procura?" },
+    { id:"PR-Q2", titulo:"Discovery rápido", versao:"v2", uso:98,  taxa:54, body:"Pra te ajudar melhor: hoje a {{empresa}} usa alguma ferramenta pra {{problema}}? Se sim, qual? E o que tem incomodado mais?" },
+    { id:"PR-Q3", titulo:"Cenário B detector", versao:"v1", uso:67,  taxa:71, body:"Entendi que vocês já têm. Qual a maior dor com {{ferramenta_atual}} hoje? Custo, complexidade, suporte ou outra coisa?" },
+  ],
+  followup: [
+    { id:"PR-F1", titulo:"Reativação 7d", versao:"v4", uso:230, taxa:42, body:"Oi {{nome}}, voltei aqui rapidinho. Faz uma semana que conversamos — quer que eu te mande um resumo dos próximos passos ou prefere agendar 15min?" },
+    { id:"PR-F2", titulo:"Reativação 30d", versao:"v2", uso:88,  taxa:18, body:"{{nome}}, sumiu :) — algo mudou aí? Continua avaliando ou faz mais sentido a gente pausar e retomar mês que vem?" },
+  ],
+  cobranca: [
+    { id:"PR-C1", titulo:"Resumo proposta", versao:"v5", uso:312, taxa:58, body:"{{nome}}, segue o resumo: {{escopo}} por R${{valor}}/mês, vigência {{vigencia}}. Pra fechar hoje a gente trava {{desconto}}% off. Posso preparar o contrato?" },
+    { id:"PR-C2", titulo:"Objeção preço",  versao:"v3", uso:155, taxa:39, body:"Faz sentido a preocupação com preço. Mas o ROI esperado em {{tempo}} é {{roi}}x — quer que eu te mande o case da {{cliente_similar}}?" },
+  ],
+  posvenda: [
+    { id:"PR-P1", titulo:"NPS 30d",        versao:"v2", uso:87,  taxa:74, body:"{{nome}}, faz 30 dias do go-live! De 0 a 10, quanto recomendaria a Artemis pra um amigo? E o que poderia melhorar?" },
+  ],
+};
+function PromptsPage() {
+  const [tipo, setTipo] = useState("qualificacao");
+  const [editing, setEditing] = useState(null);
+  const prompts = PROMPT_DATA[tipo] || [];
+  return (
+    <div className="page-content">
+      <span className="page-crumb">crm · ia · prompts</span>
+      <div className="page-header">
+        <div className="page-header-stack">
+          <h2 className="page-title">Prompts</h2>
+          <p className="page-sub">Biblioteca de templates de mensagem · {Object.values(PROMPT_DATA).flat().length} prompts</p>
+        </div>
+        <div className="page-actions">
+          <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={() => setEditing({ id:"NOVO", titulo:"", versao:"v1", uso:0, taxa:0, body:"# Novo prompt\n\nOlá {{nome}}!\n\n*Descreva aqui o objetivo* e o **call-to-action**." })}><I.Plus size={13}/> Novo prompt</button>
+        </div>
+      </div>
+      <div className="tabs-nav">
+        {PROMPT_TIPOS.map(t => (
+          <button key={t.value} type="button" className={`tab-item${tipo===t.value?" active":""}`} onClick={() => setTipo(t.value)}>{t.label}</button>
+        ))}
+      </div>
+      <div style={{ fontSize:12, color:"hsl(var(--muted-foreground))", marginTop:-12, marginBottom:4 }}>
+        {PROMPT_TIPOS.find(t=>t.value===tipo)?.desc}
+      </div>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(360px, 1fr))", gap:14 }}>
+        {prompts.map(p => (
+          <div key={p.id} className="card" style={{ display:"flex", flexDirection:"column", gap:10 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8 }}>
+              <div style={{ minWidth:0 }}>
+                <div style={{ fontSize:14, fontWeight:600 }}>{p.titulo}</div>
+                <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)" }}>{p.id} · {p.versao}</div>
+              </div>
+              <div style={{ display:"flex", gap:4 }}>
+                <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Editar" onClick={() => setEditing(p)}><I.Edit size={13} /></button>
+                <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Duplicar"><I.Copy size={13} /></button>
+              </div>
+            </div>
+            <div style={{ fontSize:12, lineHeight:1.5, color:"hsl(var(--foreground))", padding:12, background:"hsl(var(--muted) / .4)", borderRadius:10, border:"1px solid hsl(var(--border))", fontFamily:"var(--font-mono)" }}>
+              {p.body}
+            </div>
+            <div style={{ display:"flex", justifyContent:"space-between", fontSize:11, color:"hsl(var(--muted-foreground))" }}>
+              <span><strong style={{ color:"hsl(var(--foreground))" }}>{p.uso}</strong> usos</span>
+              <span>Taxa resposta: <strong style={{ color:p.taxa>=60?"hsl(var(--success))":p.taxa>=40?"hsl(var(--warning))":"hsl(var(--destructive))" }}>{p.taxa}%</strong></span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <PromptEditor prompt={editing} onClose={() => setEditing(null)} />
+    </div>
+  );
+}
+
+/* PromptEditor — drawer com editor markdown + preview switch (marked.js).
+   Inspirado ia-da-plus mas melhorado: split-view OR toggle, render real, atalhos. */
+function PromptEditor({ prompt, onClose }) {
+  const [view, setView] = useState("editor"); // "editor" | "preview" | "split"
+  const [body, setBody] = useState(prompt?.body || "");
+  const [titulo, setTitulo] = useState(prompt?.titulo || "");
+  useEffect(() => {
+    setBody(prompt?.body || "");
+    setTitulo(prompt?.titulo || "");
+  }, [prompt?.id]);
+  if (!prompt) return null;
+  const renderMd = (md) => {
+    try {
+      return window.marked ? window.marked.parse(md, { breaks:true }) : md.replace(/\n/g, "<br>");
+    } catch { return md; }
+  };
+  const renderedHtml = renderMd(body);
+  return (
+    <Drawer open={!!prompt} onClose={onClose} title={`Editar prompt — ${prompt.id}`} width={720}>
+      <div style={{ display:"flex", flexDirection:"column", gap:14, height:"100%" }}>
+        <div>
+          <label style={{ fontSize:11, fontWeight:600, textTransform:"uppercase", letterSpacing:".04em", color:"hsl(var(--muted-foreground))", display:"block", marginBottom:6 }}>Título</label>
+          <input type="text" value={titulo} onChange={e => setTitulo(e.target.value)} aria-label="Título do prompt"
+            style={{ width:"100%", padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+        </div>
+        <div>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:6 }}>
+            <label style={{ fontSize:11, fontWeight:600, textTransform:"uppercase", letterSpacing:".04em", color:"hsl(var(--muted-foreground))" }}>Body (Markdown)</label>
+            <div style={{ display:"flex", gap:2, padding:2, background:"hsl(var(--muted) / .5)", borderRadius:8, border:"1px solid hsl(var(--border))" }}>
+              {[["editor","Editor"],["preview","Preview"],["split","Split"]].map(([k,l]) => (
+                <button key={k} type="button" onClick={() => setView(k)}
+                  style={{ padding:"4px 10px", borderRadius:6, fontSize:11, fontWeight:500, border:"none", cursor:"pointer", fontFamily:"inherit", transition:"background 120ms",
+                    background: view===k ? "hsl(var(--card))" : "transparent",
+                    color: view===k ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                    boxShadow: view===k ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>{l}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns: view==="split" ? "1fr 1fr" : "1fr", gap:10, minHeight:280 }}>
+            {(view === "editor" || view === "split") && (
+              <textarea value={body} onChange={e => setBody(e.target.value)} aria-label="Body markdown"
+                style={{ width:"100%", minHeight:280, padding:"12px 14px", borderRadius:10, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, fontFamily:"var(--font-mono)", lineHeight:1.6, outline:"none", resize:"vertical" }} />
+            )}
+            {(view === "preview" || view === "split") && (
+              <div className="prompt-preview" dangerouslySetInnerHTML={{ __html: renderedHtml }}
+                style={{ minHeight:280, padding:"14px 16px", borderRadius:10, border:"1px solid hsl(var(--border))", background:"hsl(var(--muted) / .35)", color:"hsl(var(--foreground))", fontSize:13, lineHeight:1.6, overflow:"auto" }} />
+            )}
+          </div>
+          <div style={{ display:"flex", gap:6, marginTop:8, fontSize:11, color:"hsl(var(--muted-foreground))", flexWrap:"wrap" }}>
+            <span style={{ fontFamily:"var(--font-mono)" }}>Vars: {`{{nome}}`} {`{{empresa}}`} {`{{valor}}`}</span>
+            <span>·</span>
+            <span>Markdown: **bold**, *italic*, `code`, [link](url), # heading</span>
+          </div>
+        </div>
+        <div style={{ display:"flex", gap:8, marginTop:"auto", paddingTop:12, borderTop:"1px solid hsl(var(--border))" }}>
+          <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={onClose} style={{ flex:1 }}>Salvar</button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={onClose}>Cancelar</button>
+        </div>
+      </div>
+    </Drawer>
   );
 }
 
@@ -1457,7 +2497,7 @@ function ArticlesPage() {
           <p className="page-sub">Encontre artigos, guias e políticas internas. {ARTICLES_ALL.length} documentos publicados.</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-primary btn-sm"><I.Plus size={13}/> Novo artigo</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Novo artigo</button>
         </div>
       </div>
 
@@ -1493,7 +2533,7 @@ function ArticlesPage() {
               <input className="field-input" placeholder="Buscar artigos, tags…" value={search}
                 onChange={e => simulateSearch(e.target.value)}
                 style={{ flex:1, padding:"6px 10px", border:"none", background:"transparent", outline:"none", fontSize:13, color:"hsl(var(--foreground))" }} />
-              {search && <button className="btn btn-ghost btn-sm" onClick={() => simulateSearch("")} style={{ padding:"4px 8px" }}>×</button>}
+              {search && <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => simulateSearch("")} style={{ padding:"4px 8px" }}>×</button>}
             </div>
           </div>
 
@@ -1503,7 +2543,7 @@ function ArticlesPage() {
               {filtered.length} {filtered.length === 1 ? "artigo" : "artigos"} encontrados
             </span>
             {(selectedCats.size > 0 || statusFilter || search) && (
-              <button className="btn btn-ghost btn-sm" onClick={() => { setSelectedCats(new Set()); setStatusFilter(""); setSearch(""); setPage(1); }}>
+              <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => { setSelectedCats(new Set()); setStatusFilter(""); setSearch(""); setPage(1); }}>
                 Limpar filtros
               </button>
             )}
@@ -1647,15 +2687,15 @@ function ProfileScreen({ user }) {
                   <input className="field-input" value={user.email || `${user.name.toLowerCase().replace(" ",".")}@exemplo.com`} disabled style={{ opacity:.6 }} />
                 </div>
                 <div style={{ display:"flex",gap:8 }}>
-                  <button className="btn btn-primary btn-sm" onClick={handleSave}>Salvar</button>
-                  <button className="btn btn-outline btn-sm" onClick={()=>setEditing(false)}>Cancelar</button>
+                  <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSave}>Salvar</button>
+                  <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>setEditing(false)}>Cancelar</button>
                 </div>
               </div>
             ) : (
               <>
                 <div style={{ fontSize:20,fontWeight:600,marginBottom:4 }}>{name}</div>
                 <div style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>{user.role}</div>
-                <button className="btn btn-outline btn-sm" style={{ marginTop:14 }} onClick={()=>setEditing(true)}>
+                <button className="aa-btn aa-btn--outline aa-btn--sm" style={{ marginTop:14 }} onClick={()=>setEditing(true)}>
                   <I.Edit size={13}/> Editar perfil
                 </button>
               </>
@@ -1692,7 +2732,7 @@ function ProfileScreen({ user }) {
         {[["Senha","Última alteração há 14 dias","Alterar senha"],["2FA","Não configurado","Configurar 2FA"]].map(([l,d,btn])=>(
           <div key={l} style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid hsl(var(--border)/.6)" }}>
             <div><div style={{ fontSize:13,fontWeight:500 }}>{l}</div><div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>{d}</div></div>
-            <button className="btn btn-outline btn-sm">{btn}</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm">{btn}</button>
           </div>
         ))}
       </div>
@@ -1705,7 +2745,7 @@ function ProfileScreen({ user }) {
             <div style={{ fontSize:13,fontWeight:500 }}>Excluir conta</div>
             <div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>Remove todos os dados permanentemente</div>
           </div>
-          <button className="btn btn-destructive btn-sm"><I.Trash2 size={13}/> Excluir conta</button>
+          <button className="aa-btn aa-btn--destructive aa-btn--sm"><I.Trash2 size={13}/> Excluir conta</button>
         </div>
       </div>
     </div>
@@ -1721,7 +2761,7 @@ function ToggleSwitch({ defaultOn=false }) {
     }}>
       <div style={{
         position:"absolute",top:2,left:on?16:2,width:16,height:16,borderRadius:50,
-        background:"#fff",transition:"left 150ms",boxShadow:"0 1px 3px rgba(0,0,0,.15)"
+        background:"#fff",transition:"left 150ms",boxShadow:"var(--shadow-control)"
       }}/>
     </div>
   );
@@ -1904,14 +2944,14 @@ function SettingsScreen() {
           <p className="page-sub">Editor de tokens de cor + histórico + presets + export/import</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-outline btn-sm" onClick={handleUndo} disabled={histIdx<=0} title="Desfazer">
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleUndo} disabled={histIdx<=0} title="Desfazer">
             <I.Undo size={13}/> Undo
           </button>
-          <button className="btn btn-outline btn-sm" onClick={handleRedo} disabled={histIdx>=history.length-1} title="Refazer">
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleRedo} disabled={histIdx>=history.length-1} title="Refazer">
             <I.Redo size={13}/> Redo
           </button>
-          <button className="btn btn-outline btn-sm" onClick={handleResetAll}><I.RotateCcw size={13}/> Restaurar</button>
-          <button className="btn btn-primary btn-sm" onClick={handleSave}
+          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleResetAll}><I.RotateCcw size={13}/> Restaurar</button>
+          <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSave}
             style={{ opacity: minContrast<3?0.5:1 }}><I.Save size={13}/> Salvar</button>
         </div>
       </div>
@@ -2010,10 +3050,10 @@ function SettingsScreen() {
         <div className="card">
           <div className="card-header"><h3>Export / Import</h3><p>JSON e URL compartilhável</p></div>
           <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
-            <button className="btn btn-outline" onClick={handleExportJson}><I.Copy size={14}/> Exportar JSON</button>
-            <button className="btn btn-outline" onClick={()=>importRef.current?.click()}><I.Upload size={14}/> Importar JSON</button>
+            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={handleExportJson}><I.Copy size={14}/> Exportar JSON</button>
+            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={()=>importRef.current?.click()}><I.Upload size={14}/> Importar JSON</button>
             <input ref={importRef} type="file" accept=".json" style={{ display:"none" }} onChange={handleImportJson} />
-            <button className="btn btn-outline" onClick={handleShareUrl}><I.Link size={14}/> Copiar link de tema</button>
+            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={handleShareUrl}><I.Link size={14}/> Copiar link de tema</button>
           </div>
           <div style={{ marginTop:16,padding:16,borderRadius:10,background:"hsl(var(--muted)/.5)",fontFamily:"var(--font-mono)",fontSize:12,maxHeight:200,overflow:"auto",whiteSpace:"pre" }}>
             {JSON.stringify(overrides,null,2)||"// nenhum override ativo"}
@@ -2041,8 +3081,8 @@ function SettingsScreen() {
             })}
           </div>
           <div style={{ display:"flex",gap:8,marginTop:12 }}>
-            <button className="btn btn-outline btn-sm" onClick={handleUndo} disabled={histIdx<=0}><I.Undo size={13}/> Undo</button>
-            <button className="btn btn-outline btn-sm" onClick={handleRedo} disabled={histIdx>=history.length-1}><I.Redo size={13}/> Redo</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleUndo} disabled={histIdx<=0}><I.Undo size={13}/> Undo</button>
+            <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleRedo} disabled={histIdx>=history.length-1}><I.Redo size={13}/> Redo</button>
           </div>
         </div>
       )}
@@ -2054,7 +3094,7 @@ function SettingsScreen() {
           <div style={{ display:"flex",gap:8,marginBottom:16 }}>
             <input className="field-input" style={{ maxWidth:240 }} placeholder="Nome do tema (ex: verão 2026)"
               value={themeName} onChange={e=>setThemeName(e.target.value)} />
-            <button className="btn btn-primary btn-sm" onClick={handleSaveNamed}><I.Save size={13}/> Salvar tema atual</button>
+            <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSaveNamed}><I.Save size={13}/> Salvar tema atual</button>
           </div>
           {Object.keys(namedThemes).length===0
             ? <p style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>Nenhum tema salvo ainda.</p>
@@ -2063,8 +3103,8 @@ function SettingsScreen() {
                 {Object.keys(namedThemes).map(name=>(
                   <div key={name} style={{ display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,border:"1px solid hsl(var(--border))",background:"hsl(var(--card))" }}>
                     <span style={{ flex:1,fontSize:13,fontWeight:500 }}>{name}</span>
-                    <button className="btn btn-outline btn-sm" onClick={()=>handleLoadNamed(name)}>Carregar</button>
-                    <button className="btn btn-ghost btn-sm" onClick={()=>{const n={...namedThemes};delete n[name];setNamedThemes(n);localStorage.setItem(STORAGE_KEY+"-named",JSON.stringify(n));}}><I.Trash2 size={13}/></button>
+                    <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>handleLoadNamed(name)}>Carregar</button>
+                    <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={()=>{const n={...namedThemes};delete n[name];setNamedThemes(n);localStorage.setItem(STORAGE_KEY+"-named",JSON.stringify(n));}}><I.Trash2 size={13}/></button>
                   </div>
                 ))}
               </div>
@@ -2124,6 +3164,16 @@ function App() {
   })();
   const [session, setSession] = useState(initDemo);
   const [activePage, setActivePage] = useState("dashboard");
+  const [selectedLeadId, setSelectedLeadId] = useState(null);
+  // Sidebar collapsed estado (lifted pra parent — sincroniza com .app-shell.collapsed grid)
+  const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth <= 768) setCollapsed(true);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   // Apply theme from URL ?theme= on mount
   useEffect(() => {
@@ -2136,12 +3186,24 @@ function App() {
     } catch {}
   }, []);
 
-  // Aplica preset de cores do template ao logar
+  // Theme mode (CRM only): "dark" | "light". Persiste em localStorage.
+  const [themeMode, setThemeMode] = useState(() => {
+    try { return localStorage.getItem("crm-theme") || "dark"; } catch { return "dark"; }
+  });
+  const onToggleTheme = () => {
+    const next = themeMode === "light" ? "dark" : "light";
+    setThemeMode(next);
+    try { localStorage.setItem("crm-theme", next); } catch {}
+  };
+
+  // Aplica preset de cores do template ao logar (+ honra themeMode pra CRM — Skill #1 audit A2)
   useEffect(() => {
     if (!session) return;
-    const preset = COLOR_PRESETS[TEMPLATES[session]?.presetKey];
+    let presetKey = TEMPLATES[session]?.presetKey;
+    if (session === "crm") presetKey = themeMode === "light" ? "CRM Light" : "CRM Dark";
+    const preset = COLOR_PRESETS[presetKey];
     if (preset) Object.entries(preset).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
-  }, [session]);
+  }, [session, themeMode]);
 
   if (!session) return <LoginScreen onLogin={({ templateKey }) => { setSession(templateKey); setActivePage("dashboard"); }} />;
 
@@ -2149,16 +3211,31 @@ function App() {
 
   const renderPage = () => {
     if (activePage === "profile") return <ProfileScreen user={tpl.user} />;
-    if (activePage === "settings") return <SettingsScreen />;
+    if (activePage === "settings") return (
+      <div className="page-content">
+        <div className="page-header">
+          <div className="page-header-stack">
+            <span className="page-crumb">conta · configurações</span>
+            <h2 className="page-title">Design System</h2>
+            <p className="page-sub">Editor canônico de tokens — mesmo do showcase</p>
+          </div>
+        </div>
+        <TokenEditorPreview />
+      </div>
+    );;
     if (activePage === "dashboard") {
       if (session === "ops") return <OpsDashboard onNav={setActivePage} />;
       if (session === "crm") return <CrmDashboard onNav={setActivePage} />;
       if (session === "wiki") return <WikiDashboard onNav={setActivePage} />;
     }
     // Rich sub-pages
-    if (activePage === "romaneios") return <RomaneiosPage />;
-    if (activePage === "pipeline")  return <PipelinePage />;
-    if (activePage === "artigos")   return <ArticlesPage />;
+    if (activePage === "romaneios")  return <RomaneiosPage />;
+    if (activePage === "pipeline")   return <PipelinePage />;
+    if (activePage === "leads" || activePage === "contatos") return <LeadsPage onNav={setActivePage} setSelectedLeadId={setSelectedLeadId} />;
+    if (activePage === "conversas")  return <ConversasPage selectedLeadId={selectedLeadId} />;
+    if (activePage === "prompts")    return <PromptsPage />;
+    if (activePage === "relatorios") return <RelatoriosPage />;
+    if (activePage === "artigos")    return <ArticlesPage />;
     // Generic sub-pages
     const flat = tpl.navGroups.flatMap(g=>g.items).find(i=>i.k===activePage);
     const label = flat?.lbl ?? activePage;
@@ -2166,12 +3243,16 @@ function App() {
   };
 
   return (
-    <div className="app-shell" style={{ gridTemplateColumns: undefined, transition: reducedMotion ? "none" : undefined }}>
+    <div className={`app-shell${collapsed ? " collapsed" : ""}`} style={{ transition: reducedMotion ? "none" : undefined }}>
       <AppSidebar
         templateKey={session}
         activePage={activePage}
         onNav={setActivePage}
         onLogout={() => { setSession(null); setActivePage("dashboard"); }}
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+        themeMode={themeMode}
+        onToggleTheme={onToggleTheme}
       />
       <main className="main-area">
         {renderPage()}

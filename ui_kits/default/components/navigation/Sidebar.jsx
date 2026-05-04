@@ -16,6 +16,12 @@ const initialsFrom = (name) =>
 const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
   <button
     onClick={onClick}
+    /* W1.6 / F-INT-016: aria-label sempre presente; quando collapsed e o unico nome */
+    aria-label={label}
+    aria-current={active ? "page" : undefined}
+    title={collapsed ? label : undefined}
+    /* N1 / WCAG 2.4.7: class needed pra :focus-visible CSS rule */
+    className="aa-sidebar-item"
     style={{
       position: "relative",
       display: "flex",
@@ -23,7 +29,7 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
       alignItems: "center",
       justifyContent: collapsed ? "center" : "flex-start",
       padding: collapsed ? "10px 0" : "8px 12px",
-      borderRadius: 12,
+      borderRadius: "var(--radius-md, 8px)",
       background: active ? "hsl(var(--sidebar-accent))" : "transparent",
       color: active ? "hsl(var(--sidebar-foreground))" : "hsl(var(--sidebar-foreground) / .7)",
       fontSize: 14,
@@ -32,7 +38,7 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
       width: "100%",
       textAlign: "left",
       cursor: "pointer",
-      transition: "background-color .15s, color .15s",
+      transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
     }}
     onMouseEnter={(e) => {
       if (!active) {
@@ -48,14 +54,14 @@ const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
     }}
   >
     {active && (
-      <span style={{
+      <span aria-hidden="true" style={{
         position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)",
         width: 3, height: 20,
-        background: "hsl(var(--accent-decorative))",
+        background: "hsl(var(--sidebar-indicator))",
         borderRadius: "0 4px 4px 0",
       }}/>
     )}
-    <I size={18} />
+    <I size={18} aria-hidden="true" />
     {!collapsed && <span style={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{label}</span>}
   </button>
 );
@@ -74,26 +80,7 @@ const SidebarGroup = ({ label, children, collapsed }) => (
   </div>
 );
 
-const DEFAULT_GROUPS = [
-  { label: "Operação", items: [
-    { key: "dashboard", icon: Icon.LayoutDashboard, label: "Dashboard" },
-    { key: "deliveries", icon: Icon.Package, label: "Deliveries" },
-    { key: "romaneios", icon: Icon.FileText, label: "Romaneios" },
-    { key: "conferencia", icon: Icon.ScanBarcode, label: "Conferência" },
-    { key: "carregamento", icon: Icon.ClipboardCheck, label: "Carregamento" },
-    { key: "import", icon: Icon.Upload, label: "Importação" },
-  ]},
-  { label: "Cadastros", items: [
-    { key: "transportadoras", icon: Icon.Truck, label: "Transportadoras" },
-    { key: "rotas", icon: Icon.Route, label: "Rotas" },
-    { key: "skus", icon: Icon.Box, label: "SKUs" },
-  ]},
-  { label: "Administração", items: [
-    { key: "usuarios", icon: Icon.Users, label: "Usuários" },
-    { key: "motivos", icon: Icon.AlertCircle, label: "Motivos" },
-    { key: "config", icon: Icon.Settings, label: "Config. Sistema" },
-  ]},
-];
+/* DEFAULT_GROUPS movido para _sidebar-data.jsx (source of truth shared com MiniSidebar mock). */
 
 const Sidebar = ({
   active, onNavigate, collapsed, onToggleCollapse, onLogout, onConfig,
@@ -123,7 +110,7 @@ const Sidebar = ({
     return () => { document.body.style.overflow = prev; };
   }, [mobileOpen]);
 
-  const navGroups = groups ?? DEFAULT_GROUPS;
+  const navGroups = groups ?? window.DEFAULT_SIDEBAR_GROUPS;
   const userName = user?.name ?? "Nome Sobrenome";
   const userEmail = user?.email ?? "email@exemplo.com";
   const userInitials = initialsFrom(userName);
@@ -150,14 +137,14 @@ const Sidebar = ({
           aria-label="Abrir menu"
           style={{
             position: "fixed", top: 14, left: 14, zIndex: 100,
-            width: 40, height: 40, borderRadius: 10,
+            width: 40, height: 40, borderRadius: "var(--radius-md, 8px)",
             background: "hsl(var(--card))",
             border: "1px solid hsl(var(--border))",
             display: mobileOpen ? "none" : "flex",
             alignItems: "center", justifyContent: "center",
             color: "hsl(var(--foreground))",
             cursor: "pointer",
-            boxShadow: "0 1px 3px rgb(0 0 0 / .08)",
+            boxShadow: "var(--shadow-sidebar)",
             padding: 0,
           }}
         >
@@ -170,7 +157,7 @@ const Sidebar = ({
             aria-hidden="true"
             style={{
               position: "fixed", inset: 0,
-              background: "rgb(0 0 0 / .4)",
+              background: "var(--overlay-backdrop)",
               zIndex: 90,
             }}
           />
@@ -182,12 +169,12 @@ const Sidebar = ({
             position: "fixed", top: 0, left: 0, bottom: 0,
             width: 280, zIndex: 95,
             transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
-            transition: "transform .25s ease-out",
+            transition: "transform var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
             background: "hsl(var(--sidebar-background))",
             color: "hsl(var(--sidebar-foreground))",
             padding: "14px 12px",
             display: "flex", flexDirection: "column",
-            boxShadow: mobileOpen ? "0 0 24px rgb(0 0 0 / .15)" : "none",
+            boxShadow: mobileOpen ? "var(--shadow-drawer)" : "none",
           }}
         >
           <div style={{ position: "relative", padding: "8px 4px", height: 44, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -233,16 +220,19 @@ const Sidebar = ({
   const width = collapsed ? 72 : 272;
   return (
     <aside style={{
+      /* N3: position era duplicado (sticky + relative); JS object literal segunda key
+         vencia, sticky silenciosamente quebrava. Mantemos sticky — establishes containing
+         block pro toggle absolute child sem precisar de relative explicito. */
       width, flexShrink: 0,
       background: "hsl(var(--sidebar-background))",
       color: "hsl(var(--sidebar-foreground))",
-      height: "100vh",
+      /* X2: 100dvh evita iOS Safari address-bar viewport bug (sidebar clip) */
+      height: "100dvh",
       position: "sticky", top: 0,
       padding: "14px 12px",
       display: "flex", flexDirection: "column",
       borderRight: "1px solid hsl(var(--sidebar-border))",
-      transition: "width .25s ease-in-out",
-      position: "relative",
+      transition: "width var(--motion-normal,200ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
     }}>
       {/* Collapse toggle — centrado na divisória vertical */}
       <button
@@ -255,7 +245,7 @@ const Sidebar = ({
           color: "hsl(var(--sidebar-background))",
           border: "1px solid hsl(var(--border))",
           display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 1px 2px 0 rgb(0 0 0 / .05)",
+          boxShadow: "var(--shadow-control)",
           cursor: "pointer",
           zIndex: 10,
         }}
@@ -263,16 +253,11 @@ const Sidebar = ({
         {collapsed ? <Icon.ChevronRight size={14} /> : <Icon.ChevronLeft size={14} />}
       </button>
 
-      <div style={{ padding: "8px 4px", height: 88, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* W1.6 / F-INT-019: collapsed brand mais limpo — height proporcional, mark sem box,
+          alinhamento centralizado pra nao ficar torto. */}
+      <div style={{ padding: collapsed ? "8px 0" : "8px 4px", height: collapsed ? 56 : 88, display: "flex", alignItems: "center", justifyContent: "center", transition: "height var(--motion-normal,200ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))" }}>
         {collapsed ? (
-          <div style={{
-            width: 40, height: 40, borderRadius: 10,
-            background: "hsl(var(--sidebar-foreground))",
-            color: "hsl(var(--sidebar-background))",
-            display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
-          }}>
-            <img src={markSrc} alt={brandAlt} style={{ width: 32, height: 32, objectFit: "contain" }} />
-          </div>
+          <img src={markSrc} alt={brandAlt} style={{ width: 32, height: 32, objectFit: "contain", display: "block" }} />
         ) : (
           <img src={logoSrc} alt={brandAlt} style={{ height: 28 }} />
         )}
@@ -296,5 +281,19 @@ const Sidebar = ({
   );
 };
 
+/* N1 / WCAG 2.4.7: focus-visible explicito pra SidebarItem (keyboard nav).
+   Pattern autocontido (F-INT-007) — injeta uma vez via id check. */
+if (typeof document !== "undefined" && !document.getElementById("aa-sidebar-item-css")) {
+  const s = document.createElement("style");
+  s.id = "aa-sidebar-item-css";
+  s.textContent = `
+    .aa-sidebar-item:focus-visible {
+      outline: 2px solid hsl(var(--ring));
+      outline-offset: -2px;
+    }
+    .aa-sidebar-item:focus:not(:focus-visible) { outline: none; }
+  `;
+  document.head.appendChild(s);
+}
+
 window.Sidebar = Sidebar;
-window.DEFAULT_SIDEBAR_GROUPS = DEFAULT_GROUPS;

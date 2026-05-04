@@ -4,11 +4,14 @@
    Kinetic typography via IntersectionObserver
    ========================================================== */
 
+/* Footer mantem identidade dark em light + dark surface modes:
+   usa --sidebar-* (que ja deriva harmonizado com primary, sempre dark)
+   em vez de --foreground/--background (que invertem com surface mode). */
 .footer-editorial {
   position: relative;
   overflow: hidden;
-  background: hsl(var(--foreground));
-  color: hsl(var(--background));
+  background: hsl(var(--sidebar-background));
+  color: hsl(var(--sidebar-foreground));
 }
 
 /* Accent stripe topo */
@@ -79,8 +82,9 @@
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: hsl(var(--background));
+  color: hsl(var(--sidebar-foreground));
   margin: 0 0 4px;
+  text-wrap: balance;
 }
 
 .footer-ed-ds-name .kinetic-letter {
@@ -106,10 +110,11 @@
 
 .footer-ed-tagline {
   font-size: 13px;
-  color: hsl(var(--background) / .55);
+  color: hsl(var(--sidebar-foreground) / .55);
   line-height: 1.6;
   max-width: 260px;
   margin: 0;
+  text-wrap: pretty;
 }
 
 .footer-ed-by {
@@ -127,7 +132,7 @@
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: hsl(var(--background) / .45);
+  color: hsl(var(--sidebar-foreground) / .45);
   font-weight: 600;
   margin: 0 0 14px;
 }
@@ -143,13 +148,13 @@
 
 .footer-ed-col ul li a {
   font-size: 13px;
-  color: hsl(var(--background) / .7);
+  color: hsl(var(--sidebar-foreground) / .7);
   text-decoration: none;
   transition: color 150ms;
 }
 
 .footer-ed-col ul li a:hover {
-  color: hsl(var(--background));
+  color: hsl(var(--sidebar-foreground));
 }
 
 /* Status items */
@@ -167,13 +172,13 @@
 
 .footer-ed-status-label {
   font-size: 11px;
-  color: hsl(var(--background) / .4);
+  color: hsl(var(--sidebar-foreground) / .4);
 }
 
 .footer-ed-status-value {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: hsl(var(--background) / .85);
+  color: hsl(var(--sidebar-foreground) / .85);
 }
 
 .footer-ed-status-value.ok {
@@ -192,7 +197,7 @@
 
 /* Bottom bar */
 .footer-ed-bottom {
-  border-top: 1px solid hsl(var(--background) / .12);
+  border-top: 1px solid hsl(var(--sidebar-foreground) / .12);
   padding-top: 24px;
   display: flex;
   align-items: center;
@@ -204,7 +209,7 @@
 .footer-ed-copyright {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: hsl(var(--background) / .35);
+  color: hsl(var(--sidebar-foreground) / .35);
 }
 
 .footer-ed-bottom-links {
@@ -214,11 +219,11 @@
 
 .footer-ed-bottom-links a {
   font-size: 11px;
-  color: hsl(var(--background) / .4);
+  color: hsl(var(--sidebar-foreground) / .4);
   text-decoration: none;
   transition: color 150ms;
 }
 
 .footer-ed-bottom-links a:hover {
-  color: hsl(var(--background) / .75);
+  color: hsl(var(--sidebar-foreground) / .75);
 }

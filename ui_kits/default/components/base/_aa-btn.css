@@ -1,0 +1,152 @@
+/* ============================================================
+   aa-btn — canonical button-like layer (Wave 1.1 / F-INT-001)
+   ------------------------------------------------------------
+   Espelha o contrato visual de Button.jsx em CSS puro pra
+   elementos que nao podem (ou nao deveriam) usar o componente
+   React diretamente: anchors em MDX, mocks de showcase,
+   token editor actions, app demo standalone.
+
+   Single source of truth pra:
+     - sizes (sm/md/lg) batem com Button.jsx
+     - variants (primary/accent/secondary/outline/ghost/destructive)
+     - states (:hover, :active, :focus-visible, :disabled)
+     - reduced-motion
+     - tokens (--motion-*, --ease-*, --radius-*, --space-*)
+
+   When NOT to use: dentro de uma tela React onde Button.jsx
+   esta acessivel — prefira o componente.
+   ============================================================ */
+
+.aa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2, 8px);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md, 8px);
+  padding: 0 var(--space-4, 16px);
+  height: 40px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  background: transparent;
+  color: hsl(var(--foreground));
+  transition:
+    background-color var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)),
+    color           var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)),
+    border-color    var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)),
+    opacity         var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)),
+    transform       var(--motion-instant, 80ms) var(--ease-out, cubic-bezier(0,0,.2,1));
+}
+
+/* Sizes ------------------------------------------------------ */
+.aa-btn--sm { height: 32px; padding: 0 var(--space-3, 12px); font-size: 13px; border-radius: var(--radius-sm, 6px); }
+.aa-btn--md { height: 40px; padding: 0 var(--space-4, 16px); font-size: 14px; border-radius: var(--radius-md, 8px); }
+.aa-btn--lg { height: 48px; padding: 0 var(--space-5, 20px); font-size: 15px; border-radius: var(--radius-lg, 12px); }
+
+/* Modifiers -------------------------------------------------- */
+.aa-btn--icon.aa-btn--sm { width: 32px; padding: 0; }
+.aa-btn--icon.aa-btn--md { width: 40px; padding: 0; }
+.aa-btn--icon.aa-btn--lg { width: 48px; padding: 0; }
+.aa-btn--full { width: 100%; }
+
+/* Variants --------------------------------------------------- */
+.aa-btn--primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+.aa-btn--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: hsl(var(--primary) / .9);
+  border-color: hsl(var(--primary) / .9);
+}
+
+.aa-btn--accent {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-color: hsl(var(--accent));
+}
+.aa-btn--accent:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: hsl(var(--accent) / .88);
+  border-color: hsl(var(--accent) / .88);
+}
+
+.aa-btn--secondary {
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  border-color: hsl(var(--secondary));
+}
+.aa-btn--secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: hsl(var(--secondary) / .8);
+  border-color: hsl(var(--secondary) / .8);
+}
+
+.aa-btn--outline {
+  background: transparent;
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+.aa-btn--outline:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: hsl(var(--muted) / .6);
+  border-color: hsl(var(--border));
+}
+
+.aa-btn--ghost {
+  background: transparent;
+  color: hsl(var(--foreground));
+  border-color: transparent;
+}
+.aa-btn--ghost:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: hsl(var(--muted) / .6);
+}
+
+.aa-btn--destructive {
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+  border-color: hsl(var(--destructive));
+}
+.aa-btn--destructive:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: hsl(var(--destructive) / .9);
+  border-color: hsl(var(--destructive) / .9);
+}
+
+/* States ----------------------------------------------------- */
+.aa-btn:not(:disabled):not([aria-disabled="true"]):active {
+  transform: scale(0.97) translateY(1px);
+}
+
+.aa-btn:disabled,
+.aa-btn[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.aa-btn[data-loading="true"] {
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+/* Loading spinner — child <span class="aa-btn__spinner" aria-hidden="true"></span> */
+.aa-btn__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: aa-btn-spin .6s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes aa-btn-spin { to { transform: rotate(360deg); } }
+
+/* Reduced motion -------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .aa-btn { transition: none; }
+  .aa-btn:not(:disabled):not([aria-disabled="true"]):active { transform: none; }
+  .aa-btn__spinner { animation-duration: 1.5s; }
+}

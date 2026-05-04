@@ -34,7 +34,7 @@ const Combobox = ({ value, onChange, options = [], placeholder = "Selecionar…"
         <div style={{
           position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50,
           background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8,
-          boxShadow: "0 8px 24px -4px rgb(0 0 0 / .15)",
+          boxShadow: "var(--shadow-popover)",
           maxHeight: 280, display: "flex", flexDirection: "column", overflow: "hidden",
         }}>
           <div style={{ padding: 8, borderBottom: "1px solid hsl(var(--border))" }}>

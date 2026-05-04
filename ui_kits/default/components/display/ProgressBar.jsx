@@ -26,7 +26,7 @@ const ProgressBar = ({ value = 0, max = 100, label, showPercent = true, intent =
         <div style={{
           width: `${pct}%`, height: "100%",
           background: colors[intent] ?? colors.primary,
-          transition: "width .25s ease-out",
+          transition: "width var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
           borderRadius: 999,
         }}/>
       </div>

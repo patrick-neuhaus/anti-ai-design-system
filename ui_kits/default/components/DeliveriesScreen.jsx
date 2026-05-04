@@ -16,8 +16,8 @@ const DeliveriesScreen = () => (
       title="Deliveries"
       subtitle="Gerenciamento de deliveries da expedição"
       actions={<>
-        <button className="btn btn-outline"><Icon.Upload size={14} /> Importar</button>
-        <button className="btn btn-primary"><Icon.Plus size={14} /> Nova delivery</button>
+        <button className="aa-btn aa-btn--outline aa-btn--md"><Icon.Upload size={14} /> Importar</button>
+        <button className="aa-btn aa-btn--primary aa-btn--md"><Icon.Plus size={14} /> Nova delivery</button>
       </>}
     />
 
@@ -27,10 +27,10 @@ const DeliveriesScreen = () => (
           <Icon.Search size={14} color="var(--muted-foreground)" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }}/>
           <input className="field" style={{ paddingLeft: 34 }} placeholder="Buscar por ID, cliente, rota..." />
         </div>
-        <button className="btn btn-outline btn-sm"><Icon.SlidersHorizontal size={14} /> Filtros</button>
-        <button className="btn btn-outline btn-sm"><Icon.Calendar size={14} /> Período</button>
+        <button className="aa-btn aa-btn--outline aa-btn--sm"><Icon.SlidersHorizontal size={14} /> Filtros</button>
+        <button className="aa-btn aa-btn--outline aa-btn--sm"><Icon.Calendar size={14} /> Período</button>
         <div style={{ flex: 1 }} />
-        <button className="btn btn-ghost btn-sm"><Icon.Settings2 size={14} /> Colunas</button>
+        <button className="aa-btn aa-btn--ghost aa-btn--sm"><Icon.Settings2 size={14} /> Colunas</button>
       </div>
     </div>
 
@@ -58,7 +58,7 @@ const DeliveriesScreen = () => (
               <td style={{ textAlign: "right" }}>{d.caixas}</td>
               <td style={{ textAlign: "right" }} className="mono">{d.peso}</td>
               <td><StatusBadge value={d.status} /></td>
-              <td><button className="btn btn-ghost btn-icon btn-sm"><Icon.MoreHorizontal size={16} /></button></td>
+              <td><button className="aa-btn aa-btn--ghost aa-btn--icon aa-btn--sm"><Icon.MoreHorizontal size={16} /></button></td>
             </tr>
           ))}
         </tbody>
@@ -67,8 +67,8 @@ const DeliveriesScreen = () => (
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 20px", borderTop: "1px solid var(--border)" }}>
         <span style={{ fontSize: 12, color: "var(--muted-foreground)" }}>1.247 resultados • Página 1 de 25</span>
         <div style={{ display: "flex", gap: 4 }}>
-          <button className="btn btn-outline btn-sm btn-icon"><Icon.ChevronLeft size={14} /></button>
-          <button className="btn btn-outline btn-sm btn-icon"><Icon.ChevronRight size={14} /></button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm aa-btn--icon"><Icon.ChevronLeft size={14} /></button>
+          <button className="aa-btn aa-btn--outline aa-btn--sm aa-btn--icon"><Icon.ChevronRight size={14} /></button>
         </div>
       </div>
     </div>

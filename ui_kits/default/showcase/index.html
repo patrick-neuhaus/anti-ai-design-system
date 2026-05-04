@@ -3,8 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Anti-AI Design System</title>
   <link rel="stylesheet" href="../../../colors_and_type.css" />
+  <link rel="stylesheet" href="../components/base/_aa-btn.css" />
   <link rel="stylesheet" href="./_nav.css" />
   <link rel="stylesheet" href="./_token-editor.css" />
   <link rel="stylesheet" href="./_footer.css" />
@@ -97,6 +101,7 @@
       line-height: 1.05;
       margin: 0 0 20px;
       color: hsl(var(--foreground));
+      text-wrap: balance;
     }
     /* ==================================================
        KINETIC TYPOGRAPHY — hero title word-by-word reveal
@@ -138,7 +143,28 @@
       color: hsl(var(--muted-foreground));
       line-height: 1.6;
       max-width: 560px;
-      margin: 0 0 32px;
+      margin: 0 0 28px;
+      text-wrap: pretty;
+    }
+    h2.section-title { text-wrap: balance; }
+    .section-sub { text-wrap: pretty; }
+    /* W1.3 / F-INT-018: CTA primario primeira dobra */
+    .hero-cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 0 0 36px;
+    }
+    .hero-cta-row .aa-btn {
+      box-shadow: 0 4px 16px hsl(var(--accent) / .18);
+    }
+    .hero-cta-row .aa-btn--outline {
+      box-shadow: none;
+    }
+    @media (max-width: 600px) {
+      .hero-cta-row { gap: 8px; }
+      .hero-cta-row .aa-btn { width: 100%; justify-content: center; }
     }
     .palette-chips {
       display: flex;
@@ -166,7 +192,8 @@
       height: 20px;
       border-radius: 50%;
       flex-shrink: 0;
-      border: 1px solid hsl(var(--border));
+      border: 1px solid hsl(var(--foreground) / .25);  /* mais forte que --border pra cream/branco aparecer no chip-swatch */
+      box-shadow: inset 0 0 0 1px hsl(var(--card) / .3);
     }
 
     /* Anti-padrão split side-by-side */
@@ -242,14 +269,7 @@
       font-size: 12px; color: #6b7280; font-family: sans-serif;
       box-shadow: 0 4px 6px rgba(0,0,0,.1);
     }
-    .mock-btn-ds {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 18px; border-radius: var(--radius-md, 10px);
-      border: none; background: hsl(var(--accent));
-      font-size: 13px; color: hsl(var(--accent-foreground));
-      font-family: var(--font-body); font-weight: 500;
-      cursor: default;
-    }
+    /* W1.2: .mock-btn-ds removida — substituida por aa-btn aa-btn--accent (canonical) */
     .mock-badge-ds {
       display: inline-flex; align-items: center;
       padding: 3px 10px; border-radius: 999px;
@@ -497,7 +517,7 @@
       scroll-behavior: smooth;
       gap: 24px;
       padding: 8px 0 24px;
-      -webkit-overflow-scrolling: touch;
+      /* X5: -webkit-overflow-scrolling:touch removido — iOS 13+ ja faz auto, era dead code */
     }
     .templates-carousel::-webkit-scrollbar { height: 6px; }
     .templates-carousel::-webkit-scrollbar-thumb { background: hsl(var(--border) / .3); border-radius: 3px; }
@@ -516,7 +536,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 24px 64px -16px hsl(0 0% 0% / .35);
+      box-shadow: 0 24px 64px -16px hsl(var(--foreground) / .35);
     }
     .slide-header-row {
       display: flex;
@@ -527,7 +547,7 @@
       margin-bottom: 12px;
     }
     .slide-header-row .slide-title { margin: 0; flex: 1 1 auto; min-width: 0; }
-    .slide-header-row .slide-btn-primary { flex-shrink: 0; }
+    .slide-header-row .aa-btn { flex-shrink: 0; }
     .slide-text {
       padding: 32px 40px 24px;
       display: flex;
@@ -537,9 +557,11 @@
     .slide-eyebrow {
       font-family: var(--font-mono);
       font-size: 11px;
+      font-weight: 600;
       letter-spacing: .12em;
       text-transform: uppercase;
-      color: hsl(var(--accent));
+      /* sidebar-indicator = accent harmonizado pro fundo dark do slide-card */
+      color: hsl(var(--sidebar-indicator));
       margin: 0 0 14px;
     }
     .slide-title {
@@ -561,46 +583,18 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-    /* anchor variant of Button accent — mirrors Button.jsx BTN_VARIANTS.accent + BTN_SIZES.md */
-    .slide-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--space-2, 8px);
-      padding: 0 var(--space-4, 16px);
-      height: 40px;
-      background: hsl(var(--accent));
-      color: #fff; /* W6.9: alinha Button.jsx accent (DRY). Trade: 3.74:1 AA fail (decisao estetica Patrick — branco em terracotta tem mais legibilidade visual percebida que cocoa-escuro 4.62). Tech debt: ajustar token --accent escurecer 5pp pra ratio AA passar com branco */
-      border: 1px solid hsl(var(--accent));
-      border-radius: var(--radius-md, 8px);
-      font-size: 14px;
-      font-weight: 500;
-      font-family: inherit;
-      text-decoration: none;
-      white-space: nowrap;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color var(--motion-fast, 150ms) var(--ease, cubic-bezier(.4,0,.2,1)),
-                  opacity var(--motion-fast, 150ms) var(--ease, cubic-bezier(.4,0,.2,1)),
-                  transform var(--motion-instant, 80ms) var(--ease-out, cubic-bezier(0,0,.2,1));
-    }
-    .slide-btn-primary:hover { background: hsl(var(--accent) / .88); }
-    .slide-btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 20px;
+    /* W1.2: .slide-btn-primary / .slide-btn-ghost removidas — substituidas por aa-btn (canonical, F-INT-001).
+       Variantes: aa-btn--accent (slide CTA primario), aa-btn--ghost-on-dark (slide ghost no painel escuro). */
+    .aa-btn--ghost-on-dark {
       background: transparent;
       color: hsl(var(--sidebar-foreground) / .75);
-      border-radius: var(--radius-md, 10px);
-      font-size: 13px;
-      font-weight: 500;
-      text-decoration: none;
-      border: 1px solid hsl(var(--sidebar-foreground) / .2);
-      cursor: pointer;
-      transition: background 150ms, border-color 150ms;
+      border-color: hsl(var(--sidebar-foreground) / .2);
     }
-    .slide-btn-ghost:hover { background: hsl(var(--sidebar-foreground) / .08); border-color: hsl(var(--sidebar-foreground) / .35); }
+    .aa-btn--ghost-on-dark:hover:not(:disabled):not([aria-disabled="true"]) {
+      background: hsl(var(--sidebar-foreground) / .08);
+      border-color: hsl(var(--sidebar-foreground) / .35);
+      color: hsl(var(--sidebar-foreground));
+    }
     .slide-visual {
       display: flex;
       align-items: stretch;
@@ -616,7 +610,7 @@
       display: flex;
       flex-direction: column;
       border: 1px solid hsl(var(--border));
-      box-shadow: 0 8px 24px -8px hsl(0 0% 0% / .2);
+      box-shadow: 0 8px 24px -8px hsl(var(--foreground) / .2);
       position: relative;
     }
     .slide-mockup iframe {
@@ -810,7 +804,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 12px hsl(0 0% 0% / .18);
+      box-shadow: 0 2px 12px hsl(var(--foreground) / .18);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       transition: background 150ms, opacity 150ms, transform 150ms;
@@ -853,7 +847,7 @@
     }
     .tab-btn.active {
       color: hsl(var(--foreground));
-      border-bottom-color: hsl(var(--accent));
+      border-bottom-color: hsl(var(--ring));
     }
     .tab-btn:hover:not(.active) { color: hsl(var(--foreground)); }
     .code-block {
@@ -1017,17 +1011,7 @@
       .hero-entry-card { animation: none; opacity: 1; transform: none; }
     }
 
-    /* Section progress bar (top of viewport) */
-    .progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 3px;
-      width: 0%;
-      background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
-      z-index: 200;
-      transition: width 80ms linear;
-      pointer-events: none;
-    }
+    /* V5/V6: .progress-bar movido pra _nav.css (era duplicado em 12 HTMLs). */
 
     /* ==================================================
        HERO CANVAS — floating component cards + parallax
@@ -1071,14 +1055,18 @@
       0%, 90%, 100% { opacity: 1; }
       95% { opacity: .6; }
     }
-    .float-card.fc-stat   { top: 8%;  left: 0;  width: 220px; animation: float-a 6s ease-in-out infinite; }
-    .float-card.fc-side   { top: 26%; right: 4%; width: 200px; animation: float-b 7s ease-in-out infinite; padding: 0; overflow: hidden; }
-    .float-card.fc-pal    { bottom: 14%; left: 8%; width: 240px; animation: float-c 8s ease-in-out infinite; }
-    .float-card.fc-badge  { bottom: 6%; right: 10%; width: auto; animation: float-d 5.5s ease-in-out infinite; padding: 8px 14px; border-radius: 999px; }
+    .float-card.fc-stat   { top: 6%;   left: 4%;  width: 220px; animation: float-a 6s ease-in-out infinite; }
+    .float-card.fc-side   { top: 22%;  right: 4%; width: 220px; animation: float-b 7s ease-in-out infinite; padding: 0; overflow: visible; }
+    .float-card.fc-side > .fc-side-mini { border-radius: inherit; overflow: visible; }
+    /* Wave 11.2: pal desce alinhar Y com palette-chips esquerda. Badge sobe pra acima do pal. */
+    .float-card.fc-pal    { bottom: -6%; left: 50%; width: 320px; transform: translateX(-50%); animation: float-c 8s ease-in-out infinite; }
+    .float-card.fc-badge  { bottom: 22%; left: -48px; width: auto; animation: float-d 5.5s ease-in-out infinite; padding: 10px 18px; border-radius: 999px; font-size: 13px; }
 
-    @keyframes float-a { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(-1deg); } }
-    @keyframes float-b { 0%,100% { transform: translateY(0) rotate(1deg); } 50% { transform: translateY(-14px) rotate(2deg); } }
-    @keyframes float-c { 0%,100% { transform: translateY(0) rotate(2deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+    /* Wave 11.1: fc-stat e fc-side ganham tilt sutil (Patrick feedback editorial).
+       fc-pal e fc-badge ficam retos pra tensao visual (composicao 2 inclinados + 2 retos). */
+    @keyframes float-a { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(-2deg); } }
+    @keyframes float-b { 0%,100% { transform: translateY(0) rotate(2deg);  } 50% { transform: translateY(-14px) rotate(1deg); } }
+    @keyframes float-c { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
     @keyframes float-d { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
     /* Hero card content */
@@ -1088,12 +1076,25 @@
     .fc-stat-value { font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1; animation: kpi-pulse 8s ease-in-out infinite; }
     .fc-stat-trend { font-size: 11px; color: hsl(var(--success)); margin-top: 4px; font-family: var(--font-mono); }
 
-    .fc-side-mini { background: hsl(var(--sidebar-background)); padding: 12px 10px; }
-    .fc-side-brand { font-family: var(--font-display); font-size: 13px; color: hsl(var(--sidebar-foreground)); font-weight: 600; margin-bottom: 10px; padding-left: 6px; }
-    .fc-side-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; font-size: 11px; color: hsl(var(--sidebar-foreground) / .8); }
-    .fc-side-row.active { background: hsl(var(--sidebar-accent)); color: hsl(var(--sidebar-accent-foreground)); position: relative; }
-    .fc-side-row.active::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 14px; background: hsl(var(--sidebar-indicator)); border-radius: 2px; }
-    .fc-side-dot { width: 10px; height: 10px; border-radius: 3px; background: currentColor; opacity: .7; }
+    /* W1.7 / F-INT-015: fc-side derivado do contrato real do Sidebar.
+       Mesma escala de cor (--sidebar-*), eyebrow de grupo, indicator 3px no active,
+       gap/padding/radius proporcionalmente reduzidos pra hero. */
+    /* W1.7 / F-INT-015 / D1: contrato visual mirrors Sidebar.jsx (eyebrow 10px/.08em/color .4, indicator 3px width / 18px height / radius 0 4px 4px 0, active bg sidebar-accent + color full). Items vem de window.DEFAULT_SIDEBAR_GROUPS. */
+    /* Mirror CRM sidebar (ui_kits/default/index.html: .aa-sidebar / .nav-item / .sidebar-logo-*).
+       Mesmo padding/gap/radius/indicator, escala reduzida pra hero card. */
+    .fc-side-mini { background: hsl(var(--sidebar-background)); padding: 14px 12px 12px; display: flex; flex-direction: column; gap: 2px; border-radius: inherit; }
+    /* Mirror exato sidebar-logo-wrap do CRM (ui_kits/default/index.html:730).
+       SVG dotted rect + tag rotacionada absoluta no canto. */
+    .fc-side-brand-wrap { position: relative; display: inline-flex; align-self: center; padding: 4px 4px 12px; }
+    .fc-side-brand-svg { color: hsl(var(--sidebar-foreground)); display: block; }
+    .fc-side-brand-tag { position: absolute; top: -4px; right: -18px; font-family: var(--font-mono); font-size: 7.5px; font-weight: 700; letter-spacing: .12em; color: hsl(var(--sidebar-indicator)); background: hsl(var(--sidebar-background)); padding: 2px 4px; border-radius: 3px; transform: rotate(-12deg); transform-origin: center; border: 1px solid hsl(var(--sidebar-indicator) / .5); box-shadow: 0 2px 4px hsl(var(--foreground)/.15); text-transform: uppercase; pointer-events: none; }
+    .fc-side-row svg { width: 14px; height: 14px; flex-shrink: 0; opacity: .85; }
+    .fc-side-eyebrow { font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: hsl(var(--sidebar-foreground) / .4); padding: 8px 10px 4px; }
+    .fc-side-row { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 10px; font-size: 11.5px; color: hsl(var(--sidebar-foreground) / .8); position: relative; }
+    .fc-side-row.active { background: hsl(var(--sidebar-accent)); color: hsl(var(--sidebar-foreground)); font-weight: 500; }
+    .fc-side-row.active::before { content: ""; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 3px; height: 18px; background: hsl(var(--sidebar-indicator)); border-radius: 0 3px 3px 0; }
+    .fc-side-dot { width: 12px; height: 12px; border-radius: 3px; background: hsl(var(--sidebar-foreground) / .25); flex-shrink: 0; }
+    .fc-side-row.active .fc-side-dot { background: hsl(var(--sidebar-foreground) / .9); }
 
     .fc-pal-title { font-size: 11px; font-family: var(--font-mono); color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
     .fc-pal-row { display: flex; gap: 6px; }
@@ -1102,11 +1103,14 @@
       height: 32px;
       border-radius: 6px;
       animation: pal-morph 8s ease-in-out infinite;
+      /* Inset ring + outline pra cream/branco aparecer no card cream sem sombra generica.
+         Anti-AI: ring discreto, nao box-shadow blur. */
+      box-shadow: inset 0 0 0 1.5px hsl(var(--foreground) / .28);
     }
     .fc-pal-chip:nth-child(1) { background: hsl(var(--primary)); animation-delay: 0s; }
     .fc-pal-chip:nth-child(2) { background: hsl(var(--accent)); animation-delay: .8s; }
     .fc-pal-chip:nth-child(3) { background: hsl(var(--success)); animation-delay: 1.6s; }
-    .fc-pal-chip:nth-child(4) { background: hsl(var(--info)); animation-delay: 2.4s; }
+    .fc-pal-chip:nth-child(4) { background: hsl(var(--accent-decorative)); animation-delay: 2.4s; }
     .fc-pal-chip:nth-child(5) { background: hsl(var(--destructive)); animation-delay: 3.2s; }
     @keyframes pal-morph {
       0%, 100% { filter: hue-rotate(0deg) saturate(1); }
@@ -1114,11 +1118,8 @@
     }
 
     .fc-badge-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-    .fc-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--success)); animation: pulse 1.6s ease-in-out infinite; }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 hsl(var(--success) / .5); }
-      50%      { box-shadow: 0 0 0 6px hsl(var(--success) / 0); }
-    }
+    /* D7: usa @keyframes aa-pulse-glow de _nav.css (shared) parametrizado via --pulse-hue */
+    .fc-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: hsl(var(--success)); --pulse-hue: var(--success); animation: aa-pulse-glow 1.6s ease-in-out infinite; }
 
     /* Subtle background grid in hero canvas (anti-AI: deliberate, not random) */
     .hero-canvas::before {
@@ -1153,11 +1154,14 @@
 
   <!-- Wave 9.2 — DS components for real template mockups -->
   <script type="text/babel" src="../components/Icon.jsx"></script>
+  <script type="text/babel" src="../components/brand/Logo.jsx"></script>
+  <script type="text/babel" src="../components/navigation/_sidebar-data.jsx"></script>
   <script type="text/babel" src="../components/display/Badge.jsx"></script>
   <script type="text/babel" src="../components/dashboard/StatCard.jsx"></script>
   <script type="text/babel" src="../components/dashboard/KpiGrid.jsx"></script>
 
   <script type="text/babel" src="../components/layout/NavHeader.jsx"></script>
+  <script type="text/babel" src="../components/base/ToggleGroup.jsx"></script>
   <script type="text/babel" src="../components/showcase/TokenEditorPreview.jsx"></script>
   <script type="text/babel" src="../components/showcase/FooterShowcase.jsx"></script>
 
@@ -1383,6 +1387,7 @@
     const PALETTE_CHIPS = [
       { label: "--primary", name: "Petroleum" },
       { label: "--accent", name: "Terracotta" },
+      { label: "--accent-decorative", name: "Decorativo" },
       { label: "--background", name: "Cream" },
       { label: "--sidebar-background", name: "Sidebar" },
       { label: "--success", name: "Success" },
@@ -1423,6 +1428,16 @@
                   Componentes com personalidade. Sem sombras genéricas, sem azul shadcn padrão,
                   sem a cara de IA que todo mundo usa. Um sistema que demonstra a si mesmo.
                 </p>
+                {/* W1.3 / F-INT-018: CTA primario primeira dobra (canonical aa-btn) */}
+                <div className="hero-cta-row">
+                  <a href="#templates" className="aa-btn aa-btn--accent aa-btn--lg">
+                    Ver templates
+                    <span aria-hidden="true">→</span>
+                  </a>
+                  <a href="#categorias" className="aa-btn aa-btn--outline aa-btn--lg">
+                    Explorar componentes
+                  </a>
+                </div>
                 <div className="palette-chips">
                   {PALETTE_CHIPS.map(({ label, name }) => (
                     <div key={label} className="chip-swatch">
@@ -1448,15 +1463,31 @@
                   <div className="fc-stat-trend">+12.4% vs ontem</div>
                 </div>
 
-                {/* Sidebar mini mock */}
-                <div className="float-card fc-side hero-entry-card" data-parallax="0.8">
-                  <div className="fc-side-mini">
-                    <div className="fc-side-brand">Artemis</div>
-                    <div className="fc-side-row active"><span className="fc-side-dot" /> Dashboard</div>
-                    <div className="fc-side-row"><span className="fc-side-dot" /> Romaneios</div>
-                    <div className="fc-side-row"><span className="fc-side-dot" /> Conferência</div>
-                    <div className="fc-side-row"><span className="fc-side-dot" /> Importação</div>
-                  </div>
+                {/* Sidebar mini mock — D1: items vem de window.DEFAULT_SIDEBAR_GROUPS
+                    (mesma source-of-truth que Sidebar.jsx). Drift impossivel. */}
+                <div className="float-card fc-side hero-entry-card" data-parallax="0.8" aria-hidden="true">
+                  {(() => {
+                    const grp = (window.DEFAULT_SIDEBAR_GROUPS || [])[0];
+                    if (!grp) return null;
+                    const items = grp.items.slice(0, 4);
+                    return (
+                      <div className="fc-side-mini">
+                        <div className="fc-side-brand-wrap">
+                          {window.Logo ? <window.Logo variant="full" height={18} style={{ color: "hsl(var(--sidebar-foreground))" }} /> : <span className="fc-side-brand">Artemis</span>}
+                          <span className="fc-side-brand-tag">Ops</span>
+                        </div>
+                        <div className="fc-side-eyebrow">{grp.label}</div>
+                        {items.map((it, i) => {
+                          const I = it.icon;
+                          return (
+                            <div key={it.key} className={"fc-side-row" + (i === 0 ? " active" : "")}>
+                              {I ? <I size={14} /> : <span className="fc-side-dot" />} {it.label}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* Palette mock — chips morfam HSL */}
@@ -1500,7 +1531,7 @@
         ),
         dsContent: (
           <div>
-            <div className="mock-btn-ds">Salvar alterações</div>
+            <div className="aa-btn aa-btn--accent aa-btn--md" style={{ cursor: "default" }}>Salvar alterações</div>
             <div className="mock-card-ds">
               Sombra hue-aware ou ausente — proposital, não acidental.
             </div>
@@ -1559,7 +1590,7 @@
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
             <div className="mock-badge-ds">terracotta</div>
             <div className="mock-badge-ds" style={{ background: "hsl(var(--primary) / .12)", color: "hsl(var(--primary))", borderColor: "hsl(var(--primary) / .25)" }}>petroleum</div>
-            <div className="mock-btn-ds" style={{ fontSize: 12, padding: "6px 14px" }}>Ação</div>
+            <div className="aa-btn aa-btn--accent aa-btn--sm" style={{ cursor: "default" }}>Ação</div>
           </div>
         ),
       },
@@ -1768,9 +1799,9 @@
       <section className="alt-bg" id="categorias">
         <div className="section-wrap reveal" ref={useReveal()}>
           <p className="eyebrow">Catálogo técnico</p>
-          <h2 className="section-title">Categorias de componentes</h2>
+          <h2 className="section-title">Componentes</h2>
           <p className="section-sub">
-            56+ componentes e telas organizados por função. Cada categoria tem showcase técnico próprio.
+            61 componentes e telas organizados por função. Cada categoria tem showcase técnico próprio.
           </p>
           <div className="categories-toc">
             {CATEGORIES.map((cat) => (
@@ -1895,7 +1926,7 @@
                         <p className="slide-eyebrow">{eyebrow}</p>
                         <div className="slide-header-row">
                           <h3 className="slide-title">{title}</h3>
-                          <a href={`../index.html?demo=${key}`} className="slide-btn-primary">Ver template completo →</a>
+                          <a href={`../index.html?demo=${key}`} className="aa-btn aa-btn--accent aa-btn--md">Ver template completo →</a>
                         </div>
                         <p className="slide-body">{body}</p>
                       </div>
@@ -2428,15 +2459,15 @@ document.documentElement.style.setProperty(<span class="code-string">"--accent"<
             </div>
 
             <div className="editor-actions">
-              <button className="editor-btn" onClick={handleReset}>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleReset}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
                 Reset
               </button>
-              <button className="editor-btn" onClick={handleSave}>
+              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleSave}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                 Salvar tema
               </button>
-              <button className="editor-btn primary" onClick={handleExport}>
+              <button className="aa-btn aa-btn--accent aa-btn--sm" onClick={handleExport}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Exportar CSS
               </button>

@@ -30,17 +30,17 @@ const FileUpload = ({ accept, multiple = false, onFiles, disabled = false, hint,
         onDrop={onDrop}
         style={{
           border: `1.5px dashed hsl(var(--${drag ? "ring" : "border"}))`,
-          borderRadius: 12,
+          borderRadius: "var(--radius-lg, 12px)",
           padding: "28px 16px",
           textAlign: "center",
           cursor: disabled ? "not-allowed" : "pointer",
           background: drag ? "hsl(var(--ring) / .06)" : "hsl(var(--muted) / .4)",
-          transition: "background-color .15s, border-color .15s",
+          transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), border-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
           opacity: disabled ? 0.5 : 1,
         }}
       >
         <div style={{
-          display: "inline-flex", width: 40, height: 40, borderRadius: 10,
+          display: "inline-flex", width: 40, height: 40, borderRadius: "var(--radius-md, 8px)",
           background: "hsl(var(--card))", color: "hsl(var(--muted-foreground))",
           alignItems: "center", justifyContent: "center", marginBottom: 10,
           border: "1px solid hsl(var(--border))",

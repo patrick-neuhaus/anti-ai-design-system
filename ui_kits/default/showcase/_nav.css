@@ -3,10 +3,18 @@
    NÃO editar CSS nav nos HTMLs individuais — edite aqui.
 */
 
-/* ── Pulse animation ──────────────────────────────────── */
-@keyframes nav-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / .5); }
-  50%       { box-shadow: 0 0 0 6px hsl(var(--accent) / 0); }
+/* ── Pulse animation (D7: shared, parametrico via --pulse-hue) ── */
+@keyframes aa-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--pulse-hue, var(--accent)) / .5); }
+  50%       { box-shadow: 0 0 0 6px hsl(var(--pulse-hue, var(--accent)) / 0); }
+}
+
+/* ── Scroll progress bar (V5/V6: shared, era duplicado em 12 HTMLs) ── */
+.progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 3px; width: 0%;
+  background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
+  z-index: 300; transition: width 80ms linear; pointer-events: none;
 }
 
 /* ── Floating header ──────────────────────────────────── */
@@ -54,7 +62,7 @@
   margin-right: 6px;
   vertical-align: middle;
   flex-shrink: 0;
-  animation: nav-pulse 1.6s ease-in-out infinite;
+  animation: aa-pulse-glow 1.6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,14 +92,14 @@
   background: hsl(var(--muted) / .6);
 }
 
-/* ── CTA mini — B1 fix: white text on accent bg ───────── */
+/* ── CTA mini — B1 fix: token-based fg pra acompanhar Token Editor ───────── */
 .nav-cta-mini {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 7px 14px;
   background: hsl(var(--accent));
-  color: #fff;
+  color: hsl(var(--accent-foreground));
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;

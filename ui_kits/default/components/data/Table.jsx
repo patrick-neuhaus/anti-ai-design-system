@@ -57,7 +57,7 @@ const Tr = ({ children, onClick, hoverable = false, ...rest }) => (
     onClick={onClick}
     style={{
       cursor: onClick || hoverable ? "pointer" : "default",
-      transition: "background-color .12s",
+      transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
     }}
     onMouseEnter={(e) => {
       if (onClick || hoverable) e.currentTarget.style.background = "hsl(var(--muted) / .4)";

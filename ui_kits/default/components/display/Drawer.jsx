@@ -55,7 +55,7 @@ const Drawer = ({ open, onClose, side = "right", title, children, footer, width 
 
   return (
     <div role="dialog" aria-modal="true" onClick={onClose}
-      style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgb(0 0 0 / .35)", animation: "dialog-fade .15s ease-out" }}
+      style={{ position: "fixed", inset: 0, zIndex: 1000, background: "var(--overlay-backdrop)", animation: "dialog-fade var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))" }}
     >
       <aside ref={drawerRef} onClick={(e) => e.stopPropagation()}
         role="dialog" aria-modal="true" aria-label={title || "Painel lateral"}
@@ -67,7 +67,7 @@ const Drawer = ({ open, onClose, side = "right", title, children, footer, width 
           borderLeft: isRight ? "1px solid hsl(var(--border))" : 0,
           borderRight: isRight ? 0 : "1px solid hsl(var(--border))",
           display: "flex", flexDirection: "column",
-          animation: `drawer-${side} .2s ease-out`,
+          animation: `drawer-${side} var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))`,
         }}
       >
         {title && (
