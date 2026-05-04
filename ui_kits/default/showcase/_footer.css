@@ -84,6 +84,7 @@
   line-height: 1.1;
   color: hsl(var(--sidebar-foreground));
   margin: 0 0 4px;
+  text-wrap: balance;
 }
 
 .footer-ed-ds-name .kinetic-letter {
@@ -113,6 +114,7 @@
   line-height: 1.6;
   max-width: 260px;
   margin: 0;
+  text-wrap: pretty;
 }
 
 .footer-ed-by {

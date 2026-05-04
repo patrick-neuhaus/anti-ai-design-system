@@ -137,7 +137,7 @@
   --secondary:         30 33% 93%;
   --secondary-foreground:16 38% 12%;
   --accent:            12 65% 55%;   /* terracotta             */
-  --accent-foreground:  0 0% 100%;   /* branco sempre — convention CTA. Trade-off: ~3.7:1 vs terracotta default (AA-). Pra atingir AAA c/ branco, escolher accent mais escuro. Black > white em luminance contrast aqui mas vira preto em CTA = visualmente ruim. */
+  --accent-foreground: 16 38% 11%;   /* cocoa escuro — pickFg(terracota) retorna near-black (5.28:1 AA). Branco = 3.75:1 AA- FAIL. Token Editor sobrescreve via pickFg quando user troca seed. Coerente com presets/default/tokens.css. */
 
   /* Status — same warm temperature */
   --destructive:        0 100% 43%;  /* escurecido p/ AA c/ white FG (~5:1 vs ~4.0:1 anterior) */

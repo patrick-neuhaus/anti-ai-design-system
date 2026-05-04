@@ -213,6 +213,24 @@ const _te_hslOf = (c) => {
   return `${Math.round(isNaN(h) ? 0 : h)} ${Math.round((isNaN(s)?0:s)*100)}% ${Math.round((isNaN(l)?0:l)*100)}%`;
 };
 
+// DR-01 §Edge cases — classifica seed pra avisar trade-off esperado.
+// Nao bloqueia: so informa que algoritmo bateu limite fisico (ex: white seed
+// nunca consegue 3:1 vs surface white). Escape hatch é override manual.
+const _te_classifySeed = (hex) => {
+  try {
+    const c = chroma(hex);
+    const l = c.get("hsl.l");
+    const s = c.get("hsl.s");
+    const h = c.get("hsl.h");
+    if (l >= 0.92) return { type: "nearWhite",  msg: "Seed quase branca — Accent vs BG some em surface clara (limite físico). Use override pra forçar foreground." };
+    if (l <= 0.08) return { type: "nearBlack",  msg: "Seed quase preta — colide com texto e bordas escuras. Override recomendado." };
+    if ((isNaN(s) || s < 0.05) && l > 0.15 && l < 0.85) return { type: "neutral", msg: "Seed neutra (cinza) — sem chroma pra gerar decorativo. Resultado vira monocromático." };
+    if (s > 0.85 && l > 0.55) return { type: "highChroma", msg: "Seed muito vívida + clara — passa AA texto, mas UI graphic 3:1 vs surface clara falha (esperado)." };
+    if (!isNaN(h) && h >= 50 && h <= 75 && l > 0.6) return { type: "yellowLike", msg: "Amarelo claro — contraste fraco em light mode. Algoritmo escurece primary; accent pode parecer pálido." };
+    return { type: "ok", msg: null };
+  } catch { return { type: "ok", msg: null }; }
+};
+
 // ── Inline icons pro surface toggle ───────────────────────────────────────
 const _te_IconSun = ({ size = 14 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -239,6 +257,8 @@ const TokenEditorPreview = ({ compact = false }) => {
   const [advTokens, setAdvTokens] = React.useState({});
   const [wcagPairs, setWcagPairs] = React.useState([]);
   const [themeMode, setThemeMode] = React.useState("light");  // light | dark | auto
+  const [seedProfile, setSeedProfile] = React.useState({ type: "ok", msg: null });
+  const [fgOverride, setFgOverride] = React.useState(null); // hex ou null
 
   React.useEffect(() => {
     const cur = _te_readCurrentTokens();
@@ -272,7 +292,10 @@ const TokenEditorPreview = ({ compact = false }) => {
       // 2. Accent-foreground: pickFg auto (white OU black baseado em luminance).
       //    Wave 8 fix: forçar white quebrava em accent muito claro (ex: #00ff2a → 1.4:1 FAIL).
       //    Agora: pickFg automaticamente escolhe melhor contraste. Tudo ligado.
-      const accentFg = _te_pickFg(accent.hex());
+      //    Override manual (DR-01 §Critérios "escape hatch") substitui pick automatico.
+      const accentFg = fgOverride
+        ? { fg: fgOverride, ratio: chroma.contrast(fgOverride, accent.hex()) }
+        : _te_pickFg(accent.hex());
 
       // 3. Primary: deriva direcao da seed pelo surface mode.
       //    - Light surface: primary DARK (text-fg branco AAA)
@@ -345,6 +368,7 @@ const TokenEditorPreview = ({ compact = false }) => {
 
   const handleAccentChange = (hex) => {
     setAccentHex(hex);
+    setSeedProfile(_te_classifySeed(hex));
     // Se mode auto, recalcula surface theme com base no novo accent
     if (themeMode === "auto") {
       const picked = _te_pickAutoTheme(hex);
@@ -352,6 +376,19 @@ const TokenEditorPreview = ({ compact = false }) => {
     }
     setDerived(deriveFromAccent(hex));
     // Recompute WCAG depois de re-deriving (que mudou foregrounds)
+    setAdvTokens(_te_readCurrentTokens());
+  };
+
+  const handleFgOverride = (hex) => {
+    setFgOverride(hex);
+    // re-deriva pra propagar fg novo
+    setDerived(deriveFromAccent(accentHex));
+    setAdvTokens(_te_readCurrentTokens());
+  };
+
+  const handleClearOverride = () => {
+    setFgOverride(null);
+    setDerived(deriveFromAccent(accentHex));
     setAdvTokens(_te_readCurrentTokens());
   };
 
@@ -378,6 +415,8 @@ const TokenEditorPreview = ({ compact = false }) => {
   const handleReset = () => {
     _te_resetAllTokens();
     setThemeMode("light");
+    setFgOverride(null);
+    setSeedProfile({ type: "ok", msg: null });
     const cur = _te_readCurrentTokens();
     setAccentHex(_te_hslVarToHex(cur["--accent"] || "20 50% 55%"));
     setAdvTokens(cur);
@@ -512,6 +551,47 @@ const TokenEditorPreview = ({ compact = false }) => {
             ))}
           </div>
         )}
+
+        {seedProfile.msg && (
+          <div className="seed-warning" role="status" style={{
+            display: "flex", gap: 10, alignItems: "flex-start",
+            padding: "10px 12px", marginTop: 12, marginBottom: 12,
+            background: "hsl(var(--warning) / 0.10)",
+            border: "1px solid hsl(var(--warning) / 0.35)",
+            borderRadius: 8, fontSize: 12, lineHeight: 1.45
+          }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 1, color: "hsl(var(--warning))" }} aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>
+              <strong style={{ display: "block", marginBottom: 2 }}>Seed extrema: {seedProfile.type}</strong>
+              <span style={{ color: "hsl(var(--muted-foreground))" }}>{seedProfile.msg}</span>
+            </div>
+          </div>
+        )}
+
+        <div className="fg-override-row" style={{
+          display: "flex", gap: 10, alignItems: "center",
+          padding: "8px 12px", marginTop: 12,
+          background: "hsl(var(--muted) / 0.4)",
+          borderRadius: 8, fontSize: 12
+        }}>
+          <span style={{ color: "hsl(var(--muted-foreground))", fontWeight: 500 }}>Accent foreground:</span>
+          <input
+            type="color"
+            value={fgOverride || (advTokens["--accent-foreground"] ? _te_hslVarToHex(advTokens["--accent-foreground"]) : "#ffffff")}
+            onChange={e => handleFgOverride(e.target.value)}
+            style={{ width: 28, height: 22, border: "1px solid hsl(var(--border))", borderRadius: 4, cursor: "pointer", padding: 0 }}
+            title="Auto = pickFg algoritmo. Editar = override manual."
+          />
+          {fgOverride && (
+            <>
+              <code style={{ fontFamily: "var(--font-mono)", fontSize: 11 }}>{fgOverride}</code>
+              <button onClick={handleClearOverride} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ marginLeft: "auto", padding: "2px 8px", fontSize: 11 }}>Auto</button>
+            </>
+          )}
+          {!fgOverride && (
+            <span style={{ color: "hsl(var(--muted-foreground))", fontSize: 11, marginLeft: "auto" }}>auto (pickFg)</span>
+          )}
+        </div>
 
         <div className="wcag-panel">
           <div className="wcag-panel-label">Contraste WCAG</div>
