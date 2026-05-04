@@ -9,6 +9,23 @@
 //
 // Boundary: este componente assume que vive dentro de .sidebar (CSS herda --sidebar-foreground etc).
 
+/* Inline SVGs pra theme toggle — auto-contido, nao depende de Icon canonical
+   (evita bug runtime quando Icon.Moon/Sun nao existem no Icon.jsx do projeto). */
+const _SunSvg = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="4"/>
+    <line x1="12" y1="3" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="21"/>
+    <line x1="5" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="19" y2="12"/>
+    <line x1="5.6" y1="5.6" x2="7" y2="7"/><line x1="17" y1="17" x2="18.4" y2="18.4"/>
+    <line x1="5.6" y1="18.4" x2="7" y2="17"/><line x1="17" y1="7" x2="18.4" y2="5.6"/>
+  </svg>
+);
+const _MoonSvg = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+);
+
 const initialsFromName = (name) =>
   String(name || "")
     .trim()
@@ -156,7 +173,7 @@ const UserMenu = ({
             aria-label="Alternar tema"
             onClick={onToggleTheme}
           >
-            {themeMode === "light" ? <Icon.Moon size={14} /> : <Icon.Sun size={14} />}
+            {themeMode === "light" ? <_MoonSvg size={14} /> : <_SunSvg size={14} />}
           </button>
         )}
       </div>
