@@ -1,0 +1,82 @@
+/* ============================================================
+   aa-input — canonical text input (Wave 4 / Frente A)
+   ------------------------------------------------------------
+   Espelha contrato visual de Input.jsx em CSS puro pra
+   elementos que nao podem usar componente React diretamente:
+   demos standalone, showcase mocks, app demo inline.
+
+   Single source of truth pra:
+     - sizes (sm/md/lg) batem com Input.jsx
+     - states (:focus, :disabled, :invalid, [aria-invalid])
+     - tokens (--card, --border, --primary, --destructive, --foreground)
+     - icon-left / icon-right padding adjustments
+     - reduced-motion
+
+   When NOT to use: dentro de tela React onde Input.jsx esta
+   acessivel — prefira componente.
+   ============================================================ */
+
+.aa-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: hsl(var(--foreground));
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)),
+    box-shadow var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1));
+}
+
+/* Sizes ------------------------------------------------------ */
+.aa-input--sm { height: 32px; padding: 0 10px; font-size: 13px; }
+.aa-input--md { height: 40px; padding: 0 12px; font-size: 14px; }
+.aa-input--lg { height: 48px; padding: 0 14px; font-size: 15px; }
+
+/* Icon adornments — adjust padding when wrapped in .aa-input-wrap */
+.aa-input--icon-left  { padding-left: 36px; }
+.aa-input--icon-right { padding-right: 36px; }
+
+/* States ----------------------------------------------------- */
+.aa-input:focus:not(:disabled) {
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / .15);
+}
+.aa-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.aa-input.is-invalid,
+.aa-input[aria-invalid="true"] {
+  border-color: hsl(var(--destructive));
+}
+.aa-input.is-invalid:focus:not(:disabled),
+.aa-input[aria-invalid="true"]:focus:not(:disabled) {
+  border-color: hsl(var(--destructive));
+  box-shadow: 0 0 0 3px hsl(var(--destructive) / .15);
+}
+
+/* Wrap (necessary for icon adornments) ----------------------- */
+.aa-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.aa-input-wrap__icon {
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+  color: hsl(var(--muted-foreground));
+}
+.aa-input-wrap__icon--left  { left: 10px; }
+.aa-input-wrap__icon--right { right: 10px; }
+
+/* Reduced motion -------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .aa-input { transition: none; }
+}
