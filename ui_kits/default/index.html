@@ -6,6 +6,7 @@
 <title>Anti-AI Design System · Templates</title>
 <link rel="stylesheet" href="../../colors_and_type.css" />
 <link rel="stylesheet" href="./components/base/_aa-btn.css" />
+<link rel="stylesheet" href="./showcase/_token-editor.css" />
 <style>
 html,body{margin:0;padding:0;height:100%;background:hsl(var(--background));color:hsl(var(--foreground));font-family:var(--font-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
@@ -101,7 +102,9 @@ a{color:inherit;text-decoration:none}
 
 /* Nav items */
 .nav-section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.45);padding:12px 10px 4px;white-space:nowrap;overflow:hidden}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms;background:none;border:none;font-family:inherit;text-align:left;width:100%}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms,transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1));background:none;border:none;font-family:inherit;text-align:left;width:100%}
+.nav-item:active{transform:scale(0.98)}
+.user-action-btn:active{transform:scale(0.92)}
 .nav-item:hover{background:hsl(var(--sidebar-accent)/.6);color:hsl(var(--sidebar-foreground))}
 .nav-item.active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground));font-weight:500}
 /* W1.6 followup / F-INT-019: indicator agora dentro do nav-item (left:0) pra nao ser cortado por overflow-x:hidden da sidebar-nav quando colapsada */
@@ -258,9 +261,13 @@ a{color:inherit;text-decoration:none}
 <body class="preset-base">
 <div id="root"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/chroma-js@2.4.2/chroma.min.js"></script>
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="components/base/ToggleGroup.jsx"></script>
+<script type="text/babel" src="components/showcase/TokenEditorPreview.jsx"></script>
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
@@ -292,7 +299,7 @@ const I = {
   ChevronRight:ic(["m9 18 6-6-6-6"]),
   Package:     ic(["M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z","m3.3 7 8.7 5 8.7-5","M12 22V12"]),
   Truck:       ic(["M5 18H3V6h13v12h-2","M14 9h4l3 3v6h-2","M7.5 17a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z","M17.5 17a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"]),
-  Users:       ic(["M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2","M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8z","M22 21v-2a4 4 0 0 0-3-3.87","M16 3.13a4 4 0 0 1 0 7.75"]),
+  Users:       ic(["M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2","M9 11a4 4 0 1 0 0-8 4 4 0 1 0 0 8z","M22 21v-2a4 4 0 0 0-3-3.87","M16 3.13a4 4 0 0 1 0 7.75"]),
   Settings:    ic(["M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z","M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"]),
   LogOut:      ic(["M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4","M16 17l5-5-5-5","M21 12H9"]),
   FileText:    ic(["M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z","M14 2v4a2 2 0 0 0 2 2h4","M10 9H8","M16 13H8","M16 17H8"]),
@@ -2527,7 +2534,18 @@ function App() {
 
   const renderPage = () => {
     if (activePage === "profile") return <ProfileScreen user={tpl.user} />;
-    if (activePage === "settings") return <SettingsScreen />;
+    if (activePage === "settings") return (
+      <div className="page-content">
+        <div className="page-header">
+          <div className="page-header-stack">
+            <span className="page-crumb">conta · configurações</span>
+            <h2 className="page-title">Design System</h2>
+            <p className="page-sub">Editor canônico de tokens — mesmo do showcase</p>
+          </div>
+        </div>
+        <TokenEditorPreview />
+      </div>
+    );;
     if (activePage === "dashboard") {
       if (session === "ops") return <OpsDashboard onNav={setActivePage} />;
       if (session === "crm") return <CrmDashboard onNav={setActivePage} />;
