@@ -75,7 +75,7 @@ a{color:inherit;text-decoration:none}
 .err-msg{font-size:12px;color:hsl(var(--destructive));text-align:center;padding:8px 12px;background:hsl(var(--destructive)/.08);border-radius:8px}
 
 /* ===== APP SHELL ===== */
-.app-shell{display:grid;grid-template-columns:272px 1fr;height:100dvh;overflow:hidden;transition:grid-template-columns 250ms}
+.app-shell{display:grid;grid-template-columns:272px 1fr;height:100dvh;overflow:hidden;transition:grid-template-columns var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))}
 .app-shell.collapsed{grid-template-columns:68px 1fr}
 
 /* ===== SIDEBAR ===== */
@@ -849,6 +849,9 @@ function FunnelStagesChart({ onSeeAll }) {
     { lbl:"Fechamento",   count: 4, valor: 95, color:"hsl(var(--success))" },
   ];
   const max = Math.max(...stages.map(s => s.valor));
+  // Skill #4 audit F1: entry animation — width 0 → target on mount
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setMounted(true), 50); return () => clearTimeout(t); }, []);
   return (
     <div className="card" style={{ padding:0 }}>
       <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
@@ -868,7 +871,7 @@ function FunnelStagesChart({ onSeeAll }) {
                 <span style={{ fontFamily:"var(--font-mono)", color:"hsl(var(--muted-foreground))" }}>{s.count} · R$ {s.valor}k</span>
               </div>
               <div style={{ height:8, background:"hsl(var(--muted) / .5)", borderRadius:4, overflow:"hidden" }}>
-                <div style={{ height:"100%", width:`${pct}%`, background:s.color, borderRadius:4, transition:"width 400ms ease" }} />
+                <div style={{ height:"100%", width: mounted ? `${pct}%` : "0%", background:s.color, borderRadius:4, transition:"width var(--motion-slow,300ms) var(--ease-out, cubic-bezier(0,0,.2,1))" }} />
               </div>
             </div>
           );
@@ -1658,6 +1661,9 @@ function RelatoriosPage() {
     { lbl:"Indicação", pct:75, color:"hsl(var(--info))" },
     { lbl:"Evento",    pct:38, color:"hsl(var(--warning))" },
   ];
+  // Skill #4 audit F1: entry animation
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setMounted(true), 50); return () => clearTimeout(t); }, []);
   return (
     <div className="page-content">
       <Breadcrumb items={["CRM", "Análise", "Relatórios"]} />
@@ -1742,7 +1748,7 @@ function RelatoriosPage() {
                   <span style={{ fontFamily:"var(--font-mono)", color:"hsl(var(--muted-foreground))" }}>{s.pct}%</span>
                 </div>
                 <div style={{ height:8, background:"hsl(var(--muted) / .5)", borderRadius:4, overflow:"hidden" }}>
-                  <div style={{ height:"100%", width:`${s.pct}%`, background:s.color, borderRadius:4, transition:"width 400ms ease" }} />
+                  <div style={{ height:"100%", width: mounted ? `${s.pct}%` : "0%", background:s.color, borderRadius:4, transition:"width var(--motion-slow,300ms) var(--ease-out, cubic-bezier(0,0,.2,1))" }} />
                 </div>
               </div>
             ))}
