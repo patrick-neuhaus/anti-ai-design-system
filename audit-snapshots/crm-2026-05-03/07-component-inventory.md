@@ -72,22 +72,47 @@
 
 ## D) Action plan
 
-### Phase 1 (este commit) — ✅ inventory doc + header rename
+### Phase 1 — ✅ COMPLETE (commit `04151fa`)
 
 - [x] Doc gerado neste arquivo
-- [ ] "Categorias de componentes" → "Componentes" em showcase
+- [x] "Categorias de componentes" → "Componentes" em showcase
 
-### Phase 2 — replace low-risk inline duplicates
+### Phase 2 — ✅ COMPLETE (commit `3b5ac7b`)
 
-Escopo: Drawer, Dialog, Skeleton, EmptyState, ProgressBar. Signatures matching. Risk low.
+- [x] Carregado canonical scripts: Icon.jsx, display/Drawer.jsx, display/Dialog.jsx
+- [x] Removido inline Drawer + Dialog (~80 linhas)
+- [x] Verificado: Pipeline drawer abre/fecha c/ canonical (focus trap nativo, Icon.X close, motion tokens)
 
-Approach: load `/components/display/Drawer.jsx` + Dialog/Skeleton/EmptyState/ProgressBar via `<script src>`, remove inline definitions.
+### Phase 3 — DEFERRED (manual review necessária)
 
-Defer: LoginScreen, AppSidebar, ProfileScreen — different signatures (template-specific props).
+10 inline duplicates restantes com signature mismatches:
 
-### Phase 3 — extract candidates
+| Inline | Canonical | Mismatch |
+|---|---|---|
+| Skeleton({width,height,rounded}) | Skeleton({width,height,radius,label,style}) | `rounded:bool` vs `radius:number` |
+| EmptyState({icon,title,desc,action,onAction}) | EmptyState({icon,title,description,action}) | `desc`→`description`, `action+onAction`→`action` (props mudaram) |
+| ProgressBar({value,max,color}) | ProgressBar({value,max,label,showPercent,intent,height}) | `color:string`→`intent:enum` |
+| Slider({value,onChange,min,max,step}) | Slider (TBD signature) | check |
+| NumberStepper | Stepper ou NumberField (escolha) | naming + signature |
+| RadioGroup | Radio (single) — group pattern? | check |
+| TextareaField | Textarea ou FormField (escolha) | naming |
+| Breadcrumb | navigation/Breadcrumb.jsx | usage map |
+| Pagination | navigation/Pagination.jsx | check |
+| Checkbox / SelectField / ToggleSwitch | base/* | naming + signature |
 
-Manual work (criar 6+ files em `/components/`). Não autonomous nesta sessão. Documentado pra Patrick decidir.
+Cada swap requer:
+1. Grep usages no template
+2. Map props inline → canonical
+3. Test visual + functional
+4. Commit individual
+
+Trabalho manual estimado: 4-6h. Não autonomous nesta sessão.
+
+### Phase 4 — extract candidatos pra docs
+
+10 components inline candidatos (CenarioPill, TelemetriaIACard, FunnelStagesChart, PipelineTrendChart, CrmDashboard, PipelinePage, ContatosPage, RelatoriosPage, ConversasPage, PromptsPage). Criar arquivos novos em `/components/` + showcase entries.
+
+Trabalho manual estimado: 6-8h. Não autonomous nesta sessão.
 
 ## E) Resumo executivo
 
