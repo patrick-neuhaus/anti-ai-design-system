@@ -139,7 +139,10 @@ a{color:inherit;text-decoration:none}
 .sidebar-nav > *:nth-child(8)  .nav-label, .sidebar-nav > *:nth-child(8)  .nav-badge { transition-delay: 140ms, 140ms, 140ms, 340ms; }
 .sidebar-nav > *:nth-child(9)  .nav-label, .sidebar-nav > *:nth-child(9)  .nav-badge { transition-delay: 160ms, 160ms, 160ms, 360ms; }
 .sidebar-nav > *:nth-child(10) .nav-label, .sidebar-nav > *:nth-child(10) .nav-badge { transition-delay: 180ms, 180ms, 180ms, 380ms; }
-.collapsed .nav-item{justify-content:center;padding:9px}
+/* Zero gap quando collapsed senao label hidden ainda 'empurra' icon do center.
+   gap:0 + justify-content:center = icon centralizado no rail 68px. */
+.collapsed .nav-item{justify-content:center;padding:9px;gap:0}
+.collapsed .user-panel-clickable{justify-content:center;flex:0 0 auto;gap:0}
 .collapsed .sidebar-brand{padding:6px 8px 16px;justify-content:center}
 .collapsed .sidebar-logo-tag{font-size:7px;top:-4px;right:-6px}
 
@@ -161,8 +164,7 @@ a{color:inherit;text-decoration:none}
 .collapsed .user-info{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms}
 .collapsed .user-panel{flex-direction:column;justify-content:center;align-items:center;padding:10px 6px;gap:8px;border-radius:12px}
 .collapsed .user-actions{flex-direction:column;gap:4px;max-width:none;opacity:1;visibility:visible;transform:none}
-/* W1.6 followup / F-INT-019: avatar centralizado no estado colapsado (clickable era flex-start por padrao) */
-.collapsed .user-panel-clickable{justify-content:center;flex:0 0 auto}
+/* (regra `.collapsed .user-panel-clickable` movida pra cima junto com .nav-item; mantemos so esta) */
 
 /* ===== MAIN ===== */
 .main-area{display:flex;flex-direction:column;min-width:0;background:hsl(var(--background));overflow:auto}
@@ -779,23 +781,98 @@ function CrmDashboard({ onNav }) {
           </div>
         ))}
       </div>
-      <div className="card" style={{ padding:0 }}>
-        <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-          <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Oportunidades ativas</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Ordenado por valor</p></div>
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("pipeline")}>Ver pipeline</button>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+        <FunnelStagesChart onSeeAll={() => onNav("pipeline")} />
+        <PipelineTrendChart />
+      </div>
+    </div>
+  );
+}
+
+/* ── Charts inline SVG (substituem tabela CRM por visual relevante pra dash) ── */
+function FunnelStagesChart({ onSeeAll }) {
+  // Estagios do funil c/ count + valor agregado
+  const stages = [
+    { lbl:"Qualificação", count:24, valor:480, color:"hsl(var(--info))" },
+    { lbl:"Proposta",     count:14, valor:320, color:"hsl(var(--accent))" },
+    { lbl:"Negociação",   count: 8, valor:185, color:"hsl(var(--warning))" },
+    { lbl:"Fechamento",   count: 4, valor: 95, color:"hsl(var(--success))" },
+  ];
+  const max = Math.max(...stages.map(s => s.valor));
+  return (
+    <div className="card" style={{ padding:0 }}>
+      <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div>
+          <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Funil por fase</h3>
+          <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Volume R$ por estágio</p>
         </div>
-        <table className="tbl">
-          <thead><tr><th>ID</th><th>Cliente</th><th>Valor</th><th>Fase</th><th>Status</th></tr></thead>
-          <tbody>{CRM_ROWS.map(r=>(
-            <tr key={r.id}>
-              <td className="mono">{r.id}</td>
-              <td>{r.cliente}</td>
-              <td className="mono">{r.valor}</td>
-              <td className="muted">{r.fase}</td>
-              <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
-            </tr>
-          ))}</tbody>
-        </table>
+        <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={onSeeAll}>Ver pipeline</button>
+      </div>
+      <div style={{ padding:"4px 20px 20px", display:"flex", flexDirection:"column", gap:14 }}>
+        {stages.map(s => {
+          const pct = (s.valor / max) * 100;
+          return (
+            <div key={s.lbl}>
+              <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:6 }}>
+                <span style={{ color:"hsl(var(--foreground))", fontWeight:500 }}>{s.lbl}</span>
+                <span style={{ fontFamily:"var(--font-mono)", color:"hsl(var(--muted-foreground))" }}>{s.count} · R$ {s.valor}k</span>
+              </div>
+              <div style={{ height:8, background:"hsl(var(--muted) / .5)", borderRadius:4, overflow:"hidden" }}>
+                <div style={{ height:"100%", width:`${pct}%`, background:s.color, borderRadius:4, transition:"width 400ms ease" }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PipelineTrendChart() {
+  // 12 meses de volume (R$k)
+  const data = [180, 215, 205, 240, 260, 275, 245, 290, 310, 305, 340, 352];
+  const labels = ["J","F","M","A","M","J","J","A","S","O","N","D"];
+  const W = 360, H = 140, P = 24;
+  const max = Math.max(...data), min = Math.min(...data);
+  const xStep = (W - P*2) / (data.length - 1);
+  const points = data.map((v, i) => {
+    const x = P + i * xStep;
+    const y = H - P - ((v - min) / (max - min)) * (H - P*2);
+    return [x, y];
+  });
+  const path = points.map(([x,y], i) => `${i===0?"M":"L"} ${x} ${y}`).join(" ");
+  // Area fill
+  const area = `${path} L ${points[points.length-1][0]} ${H - P} L ${P} ${H - P} Z`;
+  return (
+    <div className="card" style={{ padding:0 }}>
+      <div style={{ padding:"16px 20px" }}>
+        <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Volume mensal</h3>
+        <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Pipeline R$k últimos 12 meses</p>
+      </div>
+      <div style={{ padding:"4px 20px 20px" }}>
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display:"block" }} aria-label="Tendência mensal">
+          <defs>
+            <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%"   stopColor="hsl(var(--accent))" stopOpacity="0.35"/>
+              <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0"/>
+            </linearGradient>
+          </defs>
+          {/* gridlines horizontais */}
+          {[0, 0.5, 1].map(t => {
+            const y = P + t * (H - P*2);
+            return <line key={t} x1={P} x2={W-P} y1={y} y2={y} stroke="hsl(var(--border))" strokeDasharray="2 3" strokeWidth="1"/>;
+          })}
+          <path d={area} fill="url(#trendFill)" />
+          <path d={path} fill="none" stroke="hsl(var(--accent))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          {points.map(([x,y], i) => (
+            <circle key={i} cx={x} cy={y} r={i === points.length-1 ? 4 : 2.5}
+              fill="hsl(var(--background))" stroke="hsl(var(--accent))" strokeWidth="2"/>
+          ))}
+          {labels.map((l, i) => (
+            <text key={i} x={P + i * xStep} y={H - 6} fontSize="9" textAnchor="middle"
+              fill="hsl(var(--muted-foreground))" fontFamily="var(--font-mono)">{l}</text>
+          ))}
+        </svg>
       </div>
     </div>
   );
@@ -1419,6 +1496,196 @@ function PipelinePage() {
           </div>
         )}
       </Drawer>
+    </div>
+  );
+}
+
+// ─── ContatosPage (CRM) ───────────────────────────────────────────
+const CONTACTS_DATA = [
+  { id:"CT-0142", nome:"Ana Silveira",      empresa:"Tech Solutions SA",  cargo:"CTO",          fase:"Quente",       valor:48,  email:"ana@techsolutions.com.br",  tel:"+55 11 9 8742-1100" },
+  { id:"CT-0141", nome:"Roberto Mendes",    empresa:"Grupo Meridional",   cargo:"Diretor TI",   fase:"Em andamento", valor:120, email:"roberto@meridional.com",     tel:"+55 11 9 9851-2233" },
+  { id:"CT-0140", nome:"Carla Aguiar",      empresa:"Agro Norte Ltda",    cargo:"Compras",      fase:"Quente",       valor:22,  email:"carla.a@agronorte.com.br",   tel:"+55 65 9 8400-7755" },
+  { id:"CT-0139", nome:"Bruno Tavares",     empresa:"Retail Prime",       cargo:"Procurement",  fase:"Novo",         valor:67,  email:"bruno@retailprime.com",      tel:"+55 11 9 8700-1188" },
+  { id:"CT-0138", nome:"Felipe Castro",     empresa:"MegaComm Brasil",    cargo:"Diretor",      fase:"Quente",       valor:95,  email:"felipe@megacomm.br",         tel:"+55 31 9 9234-5566" },
+  { id:"CT-0137", nome:"Juliana Pinheiro",  empresa:"NovaInd",            cargo:"Operações",    fase:"Em risco",     valor:38,  email:"juliana@novaind.com",        tel:"+55 11 9 9100-2244" },
+  { id:"CT-0136", nome:"Marcos Leal",       empresa:"Distribuidora Sul",  cargo:"Logística",    fase:"Em andamento", valor:55,  email:"marcos@distsul.com.br",      tel:"+55 51 9 8900-3322" },
+  { id:"CT-0135", nome:"Patricia Otero",    empresa:"BrandX",             cargo:"Marketing",    fase:"Novo",         valor:18,  email:"p.otero@brandx.com.br",      tel:"+55 11 9 9655-1010" },
+];
+function ContatosPage() {
+  const [search, setSearch] = useState("");
+  const [faseFilter, setFaseFilter] = useState("");
+  const filtered = CONTACTS_DATA.filter(c => {
+    if (search && !(c.nome.toLowerCase().includes(search.toLowerCase()) || c.empresa.toLowerCase().includes(search.toLowerCase()))) return false;
+    if (faseFilter && c.fase !== faseFilter) return false;
+    return true;
+  });
+  const fases = ["Novo","Em andamento","Quente","Em risco"];
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <Breadcrumb items={["CRM", "Vendas", "Contatos"]} />
+        <div className="page-header-stack">
+          <h2 className="page-title">Contatos</h2>
+          <p className="page-sub">Base de contatos comerciais ativos</p>
+        </div>
+      </div>
+      <div className="kpis">
+        {[["89","Total"],["28","Quentes"],["41","Em andamento"],["R$ 463k","Pipeline"]].map(([v,l]) => (
+          <div key={l} className="kpi">
+            <div className="kpi-label">{l}</div>
+            <div className="kpi-value" style={{ fontSize:22 }}>{v}</div>
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{ padding:0 }}>
+        <div style={{ padding:"14px 20px", display:"flex", gap:10, flexWrap:"wrap", alignItems:"center", borderBottom:"1px solid hsl(var(--border))" }}>
+          <input type="text" placeholder="Buscar por nome ou empresa..." value={search} onChange={e => setSearch(e.target.value)}
+            style={{ flex:"1 1 280px", minWidth:0, padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }}/>
+          <select value={faseFilter} onChange={e => setFaseFilter(e.target.value)}
+            style={{ padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13 }}>
+            <option value="">Todas as fases</option>
+            {fases.map(f => <option key={f} value={f}>{f}</option>)}
+          </select>
+          <button className="aa-btn aa-btn--accent aa-btn--sm">+ Novo contato</button>
+        </div>
+        <table className="tbl">
+          <thead><tr><th>ID</th><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Fase</th><th>Valor</th><th>Contato</th></tr></thead>
+          <tbody>{filtered.map(c => (
+            <tr key={c.id}>
+              <td className="mono">{c.id}</td>
+              <td style={{ fontWeight:500 }}>{c.nome}</td>
+              <td>{c.empresa}</td>
+              <td className="muted">{c.cargo}</td>
+              <td><span className="pill" style={{ background:"hsl(var(--muted) / .5)" }}>{c.fase}</span></td>
+              <td className="mono">R$ {c.valor}k</td>
+              <td className="muted" style={{ fontSize:11 }}>
+                <div>{c.email}</div>
+                <div style={{ fontFamily:"var(--font-mono)" }}>{c.tel}</div>
+              </td>
+            </tr>
+          ))}</tbody>
+        </table>
+        {filtered.length === 0 && <div style={{ padding:32, textAlign:"center", color:"hsl(var(--muted-foreground))" }}>Nenhum contato encontrado</div>}
+      </div>
+    </div>
+  );
+}
+
+// ─── RelatoriosPage (CRM) ─────────────────────────────────────────
+function RelatoriosPage() {
+  const months = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  const cur = [180, 215, 205, 240, 260, 275, 245, 290, 310, 305, 340, 352];
+  const prev = [140, 165, 175, 195, 210, 220, 215, 245, 270, 265, 295, 305];
+  const W = 720, H = 240, P = 32;
+  const all = [...cur, ...prev];
+  const max = Math.max(...all), min = Math.min(...all);
+  const xStep = (W - P*2) / (cur.length - 1);
+  const lineFor = (data) => data.map((v, i) => {
+    const x = P + i * xStep;
+    const y = H - P - ((v - min) / (max - min)) * (H - P*2);
+    return [x, y];
+  });
+  const ptsCur = lineFor(cur);
+  const ptsPrev = lineFor(prev);
+  const path = (pts) => pts.map(([x,y], i) => `${i===0?"M":"L"} ${x} ${y}`).join(" ");
+  const winRate = [42, 48, 51, 56, 60, 64, 62, 67, 71, 68, 70, 68];
+  const conversionByOrigin = [
+    { lbl:"Inbound",   pct:68, color:"hsl(var(--success))" },
+    { lbl:"Outbound",  pct:42, color:"hsl(var(--accent))" },
+    { lbl:"Indicação", pct:75, color:"hsl(var(--info))" },
+    { lbl:"Evento",    pct:38, color:"hsl(var(--warning))" },
+  ];
+  return (
+    <div className="page-content">
+      <div className="page-header">
+        <Breadcrumb items={["CRM", "Análise", "Relatórios"]} />
+        <div className="page-header-stack">
+          <h2 className="page-title">Relatórios</h2>
+          <p className="page-sub">Análise de performance comercial</p>
+        </div>
+      </div>
+      <div className="kpis">
+        {[["R$ 3.2M","Receita YTD","up","+18%"],["68%","Win rate médio","up","+6pt"],["18d","Ciclo médio","dn","-3d"],["R$ 84k","Ticket médio","up","+12%"]].map(([v,l,d,pct]) => (
+          <div key={l} className="kpi">
+            <div className="kpi-label">{l}</div>
+            <div className="kpi-value" style={{ fontSize:22 }}>{v}</div>
+            <span className={`kpi-delta ${d}`}>{pct}</span>
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{ padding:0 }}>
+        <div style={{ padding:"16px 20px", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
+          <div>
+            <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Receita: 2025 vs 2024</h3>
+            <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Volume mensal R$k</p>
+          </div>
+          <div style={{ display:"flex", gap:14, fontSize:11, fontFamily:"var(--font-mono)" }}>
+            <span style={{ display:"inline-flex", alignItems:"center", gap:6 }}><span style={{ width:12, height:2, background:"hsl(var(--accent))" }}/> 2025</span>
+            <span style={{ display:"inline-flex", alignItems:"center", gap:6 }}><span style={{ width:12, height:2, background:"hsl(var(--muted-foreground))", opacity:.5 }}/> 2024</span>
+          </div>
+        </div>
+        <div style={{ padding:"4px 20px 20px" }}>
+          <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} style={{ display:"block" }} aria-label="Tendência receita">
+            {[0, 0.25, 0.5, 0.75, 1].map(t => {
+              const y = P + t * (H - P*2);
+              return <line key={t} x1={P} x2={W-P} y1={y} y2={y} stroke="hsl(var(--border))" strokeDasharray="2 3" strokeWidth="1"/>;
+            })}
+            <path d={path(ptsPrev)} fill="none" stroke="hsl(var(--muted-foreground))" strokeOpacity=".5" strokeWidth="2" strokeDasharray="4 3" strokeLinecap="round"/>
+            <path d={path(ptsCur)}  fill="none" stroke="hsl(var(--accent))" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            {ptsCur.map(([x,y], i) => (
+              <circle key={i} cx={x} cy={y} r={i === ptsCur.length-1 ? 5 : 3}
+                fill="hsl(var(--background))" stroke="hsl(var(--accent))" strokeWidth="2"/>
+            ))}
+            {months.map((l, i) => (
+              <text key={i} x={P + i * xStep} y={H - 8} fontSize="10" textAnchor="middle"
+                fill="hsl(var(--muted-foreground))" fontFamily="var(--font-mono)">{l}</text>
+            ))}
+          </svg>
+        </div>
+      </div>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+        <div className="card" style={{ padding:0 }}>
+          <div style={{ padding:"16px 20px" }}>
+            <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Win rate mensal</h3>
+            <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>% propostas convertidas</p>
+          </div>
+          <div style={{ padding:"4px 20px 20px" }}>
+            <svg viewBox="0 0 360 140" width="100%" height="140" style={{ display:"block" }}>
+              {winRate.map((v, i) => {
+                const bw = (360 - 48) / winRate.length;
+                const x = 24 + i * bw;
+                const h = (v / 100) * 100;
+                const y = 130 - h;
+                return (
+                  <g key={i}>
+                    <rect x={x+1} y={y} width={bw - 2} height={h} fill="hsl(var(--accent))" rx="2" opacity={i === winRate.length-1 ? 1 : 0.7}/>
+                    {i % 2 === 0 && <text x={x + bw/2} y="138" fontSize="9" textAnchor="middle" fill="hsl(var(--muted-foreground))" fontFamily="var(--font-mono)">{months[i]}</text>}
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+        </div>
+        <div className="card" style={{ padding:0 }}>
+          <div style={{ padding:"16px 20px" }}>
+            <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Conversão por origem</h3>
+            <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Last 90d</p>
+          </div>
+          <div style={{ padding:"4px 20px 20px", display:"flex", flexDirection:"column", gap:14 }}>
+            {conversionByOrigin.map(s => (
+              <div key={s.lbl}>
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, marginBottom:6 }}>
+                  <span style={{ color:"hsl(var(--foreground))", fontWeight:500 }}>{s.lbl}</span>
+                  <span style={{ fontFamily:"var(--font-mono)", color:"hsl(var(--muted-foreground))" }}>{s.pct}%</span>
+                </div>
+                <div style={{ height:8, background:"hsl(var(--muted) / .5)", borderRadius:4, overflow:"hidden" }}>
+                  <div style={{ height:"100%", width:`${s.pct}%`, background:s.color, borderRadius:4, transition:"width 400ms ease" }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -2186,9 +2453,11 @@ function App() {
       if (session === "wiki") return <WikiDashboard onNav={setActivePage} />;
     }
     // Rich sub-pages
-    if (activePage === "romaneios") return <RomaneiosPage />;
-    if (activePage === "pipeline")  return <PipelinePage />;
-    if (activePage === "artigos")   return <ArticlesPage />;
+    if (activePage === "romaneios")  return <RomaneiosPage />;
+    if (activePage === "pipeline")   return <PipelinePage />;
+    if (activePage === "contatos")   return <ContatosPage />;
+    if (activePage === "relatorios") return <RelatoriosPage />;
+    if (activePage === "artigos")    return <ArticlesPage />;
     // Generic sub-pages
     const flat = tpl.navGroups.flatMap(g=>g.items).find(i=>i.k===activePage);
     const label = flat?.lbl ?? activePage;
