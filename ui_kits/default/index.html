@@ -102,7 +102,8 @@ a{color:inherit;text-decoration:none}
 
 /* Nav items */
 .nav-section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.45);padding:12px 10px 4px;white-space:nowrap;overflow:hidden}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms,transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1));background:none;border:none;font-family:inherit;text-align:left;width:100%}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;min-width:0;transition:background 120ms,color 120ms,transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1));background:none;border:none;font-family:inherit;text-align:left;width:100%}
+.nav-label{overflow:hidden;text-overflow:ellipsis}
 .nav-item:active{transform:scale(0.98)}
 .user-action-btn:active{transform:scale(0.92)}
 .nav-item:hover{background:hsl(var(--sidebar-accent)/.6);color:hsl(var(--sidebar-foreground))}
@@ -437,7 +438,7 @@ const TEMPLATES = {
       { label: "Vendas", items: [
         { k:"dashboard", lbl:"Dashboard",  Icon:I.BarChart,    badge:null },
         { k:"pipeline",  lbl:"Pipeline",   Icon:I.Pipelines,   badge:"14" },
-        { k:"contatos",  lbl:"Contatos",   Icon:I.Users,       badge:"89" },
+        { k:"leads",     lbl:"Leads",      Icon:I.Users,       badge:"89" },
         { k:"conversas", lbl:"Conversas",  Icon:I.MessageSquare, badge:"12" },
       ]},
       { label: "IA", items: [
@@ -888,13 +889,33 @@ function CrmDashboard({ onNav }) {
   );
 }
 
-/* Telemetria IA — observability panel pra CRMs c/ IA conversacional (inspirado ia-da-plus). */
+/* Telemetria IA — observability panel pra CRMs c/ IA conversacional (inspirado ia-da-plus).
+   Count-up animation entry (iter3 fix). */
+function CountUpNumber({ value, prefix = "", suffix = "", duration = 1000 }) {
+  const [displayed, setDisplayed] = useState(0);
+  useEffect(() => {
+    let raf, start;
+    const animate = (ts) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayed(value * eased);
+      if (progress < 1) raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [value, duration]);
+  // Format: integer pra valores >= 100, 1 decimal pra < 100
+  const fmt = displayed >= 100 ? Math.round(displayed) : displayed.toFixed(1);
+  return <>{prefix}{fmt}{suffix}</>;
+}
 function TelemetriaIACard() {
   const metrics = [
-    { lbl:"Custo / mês",       valor:"R$ 384",   delta:"-12%", deltaDir:"dn", hint:"economia vs gpt-4 puro" },
-    { lbl:"Latência média",    valor:"1.4s",     delta:"-0.2s", deltaDir:"dn", hint:"p95 resposta IA" },
-    { lbl:"Taxa de resposta",  valor:"87%",      delta:"+4pt",  deltaDir:"up", hint:"leads c/ pelo menos 1 reply" },
-    { lbl:"Tokens / conversa", valor:"2.1k",     delta:"+8%",   deltaDir:"up", hint:"tendência subir = melhorar prompt" },
+    { lbl:"Custo / mês",       num:384,  prefix:"R$ ",     suffix:"",   delta:"-12%",   deltaDir:"dn", hint:"economia vs gpt-4 puro" },
+    { lbl:"Latência média",    num:1.4,  prefix:"",        suffix:"s",  delta:"-0.2s",  deltaDir:"dn", hint:"p95 resposta IA" },
+    { lbl:"Taxa de resposta",  num:87,   prefix:"",        suffix:"%",  delta:"+4pt",   deltaDir:"up", hint:"leads c/ pelo menos 1 reply" },
+    { lbl:"Tokens / conversa", num:2.1,  prefix:"",        suffix:"k",  delta:"+8%",    deltaDir:"up", hint:"tendência subir = melhorar prompt" },
   ];
   return (
     <div className="card" style={{ padding:0 }}>
@@ -912,7 +933,9 @@ function TelemetriaIACard() {
         {metrics.map(m => (
           <div key={m.lbl}>
             <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", textTransform:"uppercase", letterSpacing:".04em", marginBottom:4 }}>{m.lbl}</div>
-            <div style={{ fontFamily:"var(--font-display)", fontSize:22, fontWeight:600, lineHeight:1, marginBottom:4 }}>{m.valor}</div>
+            <div style={{ fontFamily:"var(--font-display)", fontSize:22, fontWeight:600, lineHeight:1, marginBottom:4 }}>
+              <CountUpNumber value={m.num} prefix={m.prefix} suffix={m.suffix} />
+            </div>
             <div style={{ display:"flex", alignItems:"center", gap:6 }}>
               <span style={{ fontSize:11, fontFamily:"var(--font-mono)", color: m.deltaDir==="up"?"hsl(var(--success))":"hsl(var(--info))" }}>{m.delta}</span>
               <span style={{ fontSize:10, color:"hsl(var(--muted-foreground))" }}>{m.hint}</span>
@@ -1651,7 +1674,7 @@ const CONTACTS_DATA = [
   { id:"CT-0136", nome:"Marcos Leal",       empresa:"Distribuidora Sul",  cargo:"Logística",    fase:"Em andamento", cenario:"E", valor:55,  email:"marcos@distsul.com.br",      tel:"+55 51 9 8900-3322" },
   { id:"CT-0135", nome:"Patricia Otero",    empresa:"BrandX",             cargo:"Marketing",    fase:"Novo",         cenario:"D", valor:18,  email:"p.otero@brandx.com.br",      tel:"+55 11 9 9655-1010" },
 ];
-function ContatosPage() {
+function LeadsPage({ onNav, setSelectedLeadId }) {
   const [search, setSearch] = useState("");
   const [faseFilter, setFaseFilter] = useState("");
   const filtered = CONTACTS_DATA.filter(c => {
@@ -1660,13 +1683,14 @@ function ContatosPage() {
     return true;
   });
   const fases = ["Novo","Em andamento","Quente","Em risco"];
+  const openConversa = (id) => { setSelectedLeadId?.(id); onNav?.("conversas"); };
   return (
     <div className="page-content">
       <div className="page-header">
         <div className="page-header-stack">
-          <span className="page-crumb">crm · vendas · contatos</span>
-          <h2 className="page-title">Contatos</h2>
-          <p className="page-sub">Base de contatos comerciais ativos</p>
+          <span className="page-crumb">crm · vendas · leads</span>
+          <h2 className="page-title">Leads</h2>
+          <p className="page-sub">Base comercial ativa · clique pra abrir conversa</p>
         </div>
       </div>
       <div className="kpis">
@@ -1691,7 +1715,9 @@ function ContatosPage() {
         <table className="tbl">
           <thead><tr><th>ID</th><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Cen.</th><th>Fase</th><th>Valor</th><th>Contato</th></tr></thead>
           <tbody>{filtered.map(c => (
-            <tr key={c.id}>
+            <tr key={c.id} tabIndex={0} aria-label={`Abrir conversa com ${c.nome}`} onClick={() => openConversa(c.id)}
+              onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openConversa(c.id); } }}
+              style={{ cursor:"pointer" }}>
               <td className="mono">{c.id}</td>
               <td style={{ fontWeight:500 }}>{c.nome}</td>
               <td>{c.empresa}</td>
@@ -1835,27 +1861,64 @@ function RelatoriosPage() {
 }
 
 // ─── ConversasPage (CRM) — chat threads lead × IA (inspirado ia-da-plus, mock data) ──
+// CT-XX maps to lead (CONTACTS_DATA), conversa.leadId aponta pra contato
 const CONVERSAS_DATA = [
-  { id:"CV-091", lead:"Ana Silveira", empresa:"Tech Solutions SA", cenario:"D", lastMsg:"Pode me mandar a proposta?", lastTime:"agora", unread:2, status:"hot" },
-  { id:"CV-090", lead:"Roberto Mendes", empresa:"Grupo Meridional", cenario:"B", lastMsg:"Vou alinhar com o time.", lastTime:"5min", unread:0, status:"warm" },
-  { id:"CV-089", lead:"Carla Aguiar", empresa:"Agro Norte Ltda", cenario:"B", lastMsg:"Que valores vocês trabalham?", lastTime:"12min", unread:1, status:"hot" },
-  { id:"CV-088", lead:"Bruno Tavares", empresa:"Retail Prime", cenario:"D", lastMsg:"Preciso ver com o financeiro.", lastTime:"1h", unread:0, status:"warm" },
-  { id:"CV-087", lead:"Felipe Castro", empresa:"MegaComm Brasil", cenario:"E", lastMsg:"Hoje trabalhamos com [concorrente].", lastTime:"3h", unread:0, status:"cool" },
-  { id:"CV-086", lead:"Juliana Pinheiro", empresa:"NovaInd", cenario:"A", lastMsg:"Por enquanto não estamos buscando.", lastTime:"ontem", unread:0, status:"cold" },
+  { id:"CV-091", leadId:"CT-0142", lead:"Ana Silveira",      empresa:"Tech Solutions SA", cenario:"D", lastMsg:"Pode me mandar a proposta?",                lastTime:"agora", unread:2, status:"hot",  iaPaused:false },
+  { id:"CV-090", leadId:"CT-0141", lead:"Roberto Mendes",    empresa:"Grupo Meridional",  cenario:"B", lastMsg:"Vou alinhar com o time.",                  lastTime:"5min",  unread:0, status:"warm", iaPaused:false },
+  { id:"CV-089", leadId:"CT-0140", lead:"Carla Aguiar",      empresa:"Agro Norte Ltda",   cenario:"B", lastMsg:"Que valores vocês trabalham?",             lastTime:"12min", unread:1, status:"hot",  iaPaused:true  },
+  { id:"CV-088", leadId:"CT-0139", lead:"Bruno Tavares",     empresa:"Retail Prime",      cenario:"D", lastMsg:"Preciso ver com o financeiro.",            lastTime:"1h",    unread:0, status:"warm", iaPaused:false },
+  { id:"CV-087", leadId:"CT-0138", lead:"Felipe Castro",     empresa:"MegaComm Brasil",   cenario:"E", lastMsg:"Hoje trabalhamos com [concorrente].",      lastTime:"3h",    unread:0, status:"cool", iaPaused:false },
+  { id:"CV-086", leadId:"CT-0137", lead:"Juliana Pinheiro",  empresa:"NovaInd",           cenario:"A", lastMsg:"Por enquanto não estamos buscando.",       lastTime:"ontem", unread:0, status:"cold", iaPaused:false },
 ];
-const MOCK_THREAD = [
-  { from:"ia",   ts:"hoje 09:14", text:"Oi Ana! Sou a assistente da Artemis. Vi que vocês têm interesse em automação de pipeline. Tem 2 minutos pra eu entender melhor?" },
-  { from:"lead", ts:"hoje 09:18", text:"Tenho. Estamos avaliando soluções pro Q3." },
-  { from:"ia",   ts:"hoje 09:18", text:"Ótimo. Hoje a Tech Solutions usa algum CRM ou planilhas?" },
-  { from:"lead", ts:"hoje 09:21", text:"Hubspot. Mas o time tá reclamando que tá complicado e caro." },
-  { from:"ia",   ts:"hoje 09:21", text:"Entendi. Time de quantos vendedores?" },
-  { from:"lead", ts:"hoje 09:23", text:"12 BDRs + 4 closers. Tô falando com o CTO sobre trocar." },
-  { from:"ia",   ts:"hoje 09:23", text:"Faz sentido. A Artemis costuma reduzir 40-60% no custo CRM em time desse porte. Posso agendar uma demo de 20min com seu CTO?" },
-  { from:"lead", ts:"hoje 09:30", text:"Pode me mandar a proposta?" },
-];
-function ConversasPage() {
-  const [selected, setSelected] = useState(CONVERSAS_DATA[0]);
+// Threads mockados — diferentes pra cada lead. msg type: text|audio|image
+const THREADS = {
+  "CV-091": [
+    { from:"ia",   ts:"hoje 09:14", text:"Oi Ana! Sou a assistente da Artemis. Vi que vocês baixaram material sobre automação de pipeline. Tem 2 min?" },
+    { from:"lead", ts:"hoje 09:18", text:"Tenho. Estamos avaliando soluções pro Q3." },
+    { from:"ia",   ts:"hoje 09:18", text:"Ótimo. Hoje a Tech Solutions usa algum CRM?" },
+    { from:"lead", ts:"hoje 09:21", text:"Hubspot. Mas o time tá reclamando que tá complicado e caro." },
+    { from:"ia",   ts:"hoje 09:23", text:"A Artemis costuma reduzir 40-60% custo CRM em times de 10-20 vendedores. Posso agendar demo 20min?" },
+    { from:"lead", ts:"hoje 09:30", text:"Pode me mandar a proposta?" },
+  ],
+  "CV-090": [
+    { from:"ia",   ts:"hoje 14:02", text:"Roberto, segue o resumo pós-call de ontem com pricing e escopo." },
+    { from:"lead", ts:"hoje 14:18", type:"audio", duration:"0:23", transcript:"Oi, recebi sim. Vou levar pro time de TI ainda hoje, mas a parte de integração ERP precisa ser revisada — temos Protheus." },
+    { from:"ia",   ts:"hoje 14:19", text:"Anotado. Já temos conector Protheus pronto desde abril. Posso te mandar a doc técnica?" },
+    { from:"lead", ts:"hoje 14:25", text:"Vou alinhar com o time." },
+  ],
+  "CV-089": [
+    { from:"ia",   ts:"hoje 11:45", text:"Carla, recebi seu interesse via formulário. Vocês buscam pra qual região agrícola?" },
+    { from:"lead", ts:"hoje 12:01", text:"Mato Grosso e MS. Operação de soja." },
+    { from:"lead", ts:"hoje 12:02", type:"image", caption:"Mapa atual da operação", text:"[imagem da fazenda]" },
+    { from:"ia",   ts:"hoje 12:05", text:"Perfeito. Já atendemos 14 fazendeiros na região. Quer ver case da Bom Futuro Agro?" },
+    { from:"lead", ts:"hoje 12:14", text:"Que valores vocês trabalham?" },
+  ],
+  "CV-088": [
+    { from:"ia",   ts:"hoje 08:30", text:"Oi Bruno! Conforme combinado, segue proposta v2 com desconto 15%." },
+    { from:"lead", ts:"hoje 09:45", text:"Recebi. Preciso ver com o financeiro." },
+  ],
+  "CV-087": [
+    { from:"ia",   ts:"ontem 16:12", text:"Felipe, vi que vocês são clientes Salesforce. O que tá funcionando bem?" },
+    { from:"lead", ts:"ontem 16:30", text:"Hoje trabalhamos com [concorrente]." },
+  ],
+  "CV-086": [
+    { from:"ia",   ts:"ontem 10:00", text:"Juliana, faz sentido conversar sobre automação comercial?" },
+    { from:"lead", ts:"ontem 11:22", text:"Por enquanto não estamos buscando." },
+  ],
+};
+function ConversasPage({ selectedLeadId }) {
+  // Sync conversa via leadId vindo de Leads page
+  const initial = (selectedLeadId && CONVERSAS_DATA.find(c => c.leadId === selectedLeadId)) || CONVERSAS_DATA[0];
+  const [selected, setSelected] = useState(initial);
   const [draft, setDraft] = useState("");
+  const [iaPaused, setIaPaused] = useState(initial?.iaPaused || false);
+  useEffect(() => {
+    if (selectedLeadId) {
+      const found = CONVERSAS_DATA.find(c => c.leadId === selectedLeadId);
+      if (found) { setSelected(found); setIaPaused(found.iaPaused || false); }
+    }
+  }, [selectedLeadId]);
+  const thread = (selected && THREADS[selected.id]) || [];
   return (
     <div className="page-content">
       <span className="page-crumb">crm · vendas · conversas</span>
@@ -1910,27 +1973,67 @@ function ConversasPage() {
                       {selected.lead}
                       <CenarioPill letter={selected.cenario} />
                     </div>
-                    <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))" }}>{selected.empresa} · WhatsApp</div>
+                    <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))" }}>{selected.empresa} · WhatsApp · {selected.leadId}</div>
                   </div>
                 </div>
-                <div style={{ display:"flex", gap:6 }}>
-                  <button className="aa-btn aa-btn--outline aa-btn--sm">Transferir</button>
-                  <button className="aa-btn aa-btn--ghost aa-btn--sm">⋯</button>
+                <div style={{ display:"flex", gap:6, alignItems:"center" }}>
+                  {/* IA toggle: IA respondendo automatic ↔ Manual (atendente assume) */}
+                  <div style={{ display:"flex", gap:2, padding:2, background:"hsl(var(--muted) / .5)", borderRadius:8, border:"1px solid hsl(var(--border))" }}>
+                    <button type="button" onClick={() => setIaPaused(false)} title="IA responde automaticamente"
+                      style={{ padding:"5px 10px", borderRadius:6, fontSize:11, fontWeight:500, border:"none", cursor:"pointer", fontFamily:"inherit", display:"inline-flex", alignItems:"center", gap:5,
+                        background: !iaPaused ? "hsl(var(--card))" : "transparent",
+                        color: !iaPaused ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                        boxShadow: !iaPaused ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>
+                      <span style={{ width:6, height:6, borderRadius:"50%", background: !iaPaused ? "hsl(var(--success))" : "hsl(var(--muted-foreground))" }} />
+                      IA
+                    </button>
+                    <button type="button" onClick={() => setIaPaused(true)} title="Atendente assume conversa"
+                      style={{ padding:"5px 10px", borderRadius:6, fontSize:11, fontWeight:500, border:"none", cursor:"pointer", fontFamily:"inherit",
+                        background: iaPaused ? "hsl(var(--card))" : "transparent",
+                        color: iaPaused ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                        boxShadow: iaPaused ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>Manual</button>
+                  </div>
+                  <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Mais opções">⋯</button>
                 </div>
               </div>
               <div style={{ flex:1, overflowY:"auto", padding:"20px", display:"flex", flexDirection:"column", gap:10, background:"hsl(var(--background))" }}>
-                {MOCK_THREAD.map((m, i) => {
+                {thread.map((m, i) => {
                   const isLead = m.from === "lead";
                   return (
                     <div key={i} style={{ display:"flex", flexDirection:"column", alignItems: isLead ? "flex-end" : "flex-start", gap:2 }}>
-                      <div style={{ maxWidth:"75%", padding:"10px 14px", borderRadius:14,
+                      <div style={{ maxWidth:"75%", padding: m.type === "audio" || m.type === "image" ? "12px 14px" : "10px 14px", borderRadius:14,
                         background: isLead ? "hsl(var(--card))" : "hsl(var(--primary))",
                         color: isLead ? "hsl(var(--card-foreground))" : "hsl(var(--primary-foreground))",
                         border: isLead ? "1px solid hsl(var(--border))" : "none",
                         fontSize:13, lineHeight:1.5,
                         borderBottomRightRadius: isLead ? 4 : 14,
                         borderBottomLeftRadius: isLead ? 14 : 4 }}>
-                        {m.text}
+                        {m.type === "audio" ? (
+                          <div style={{ display:"flex", flexDirection:"column", gap:8, minWidth:200 }}>
+                            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                              <button style={{ width:32, height:32, borderRadius:"50%", border:"none", background: isLead ? "hsl(var(--primary))" : "hsl(var(--primary-foreground)/.2)", color: isLead ? "hsl(var(--primary-foreground))" : "hsl(var(--primary-foreground))", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>▶</button>
+                              <div style={{ flex:1, height:18, display:"flex", alignItems:"center", gap:1.5 }}>
+                                {[2,5,8,4,12,7,15,10,6,14,9,11,5,8,4,7,3,6,2].map((h,idx) => (
+                                  <div key={idx} style={{ width:2, height:`${h*1.2}px`, background: isLead ? "hsl(var(--muted-foreground))" : "hsl(var(--primary-foreground)/.7)", borderRadius:1 }} />
+                                ))}
+                              </div>
+                              <span style={{ fontSize:10, fontFamily:"var(--font-mono)", opacity:.7 }}>{m.duration}</span>
+                            </div>
+                            {m.transcript && (
+                              <div style={{ fontSize:11, lineHeight:1.5, padding:"8px 10px", borderRadius:8, background: isLead ? "hsl(var(--muted) / .5)" : "hsl(var(--primary-foreground) / .12)", borderLeft:"2px solid hsl(var(--accent))" }}>
+                                <div style={{ fontSize:9, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", opacity:.6, marginBottom:3, fontFamily:"var(--font-mono)" }}>Transcrição</div>
+                                {m.transcript}
+                              </div>
+                            )}
+                          </div>
+                        ) : m.type === "image" ? (
+                          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                            <div style={{ width:240, height:160, borderRadius:8, background:`hsl(var(--muted))`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)" }}>📷 {m.caption || "imagem"}</div>
+                            <div style={{ fontSize:11, opacity:.85 }}>{m.text}</div>
+                          </div>
+                        ) : (
+                          m.text
+                        )}
                       </div>
                       <div style={{ fontSize:10, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)", padding:"0 4px" }}>
                         {!isLead && <span style={{ color:"hsl(var(--accent))" }}>● IA · </span>}{m.ts}
@@ -1939,11 +2042,18 @@ function ConversasPage() {
                   );
                 })}
               </div>
-              <div style={{ padding:"14px 20px", borderTop:"1px solid hsl(var(--border))", display:"flex", gap:8 }}>
-                <input type="text" placeholder="Assumir conversa: digite mensagem ou Enter pra IA continuar…" aria-label="Digite mensagem" value={draft} onChange={e=>setDraft(e.target.value)}
-                  style={{ flex:1, padding:"10px 14px", borderRadius:10, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
-                <button className="aa-btn aa-btn--primary aa-btn--sm" disabled={!draft.trim()}>Enviar</button>
-              </div>
+              {iaPaused ? (
+                <div style={{ padding:"14px 20px", borderTop:"1px solid hsl(var(--border))", display:"flex", gap:8, alignItems:"center" }}>
+                  <input type="text" placeholder="Modo manual ativo: digite resposta…" aria-label="Digite mensagem" value={draft} onChange={e=>setDraft(e.target.value)}
+                    style={{ flex:1, padding:"10px 14px", borderRadius:10, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+                  <button className="aa-btn aa-btn--primary aa-btn--sm" disabled={!draft.trim()}>Enviar</button>
+                </div>
+              ) : (
+                <div style={{ padding:"16px 20px", borderTop:"1px solid hsl(var(--border))", textAlign:"center", fontSize:12, color:"hsl(var(--muted-foreground))", display:"flex", justifyContent:"center", alignItems:"center", gap:8 }}>
+                  <span style={{ width:6, height:6, borderRadius:"50%", background:"hsl(var(--success))", boxShadow:"0 0 6px hsl(var(--success))" }} />
+                  IA respondendo automaticamente · clique <strong style={{ color:"hsl(var(--foreground))" }}>Manual</strong> pra assumir
+                </div>
+              )}
             </>
           ) : (
             <div style={{ padding:60, textAlign:"center", color:"hsl(var(--muted-foreground))" }}>Selecione uma conversa</div>
@@ -2816,6 +2926,7 @@ function App() {
   })();
   const [session, setSession] = useState(initDemo);
   const [activePage, setActivePage] = useState("dashboard");
+  const [selectedLeadId, setSelectedLeadId] = useState(null);
   // Sidebar collapsed estado (lifted pra parent — sincroniza com .app-shell.collapsed grid)
   const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
   useEffect(() => {
@@ -2882,8 +2993,8 @@ function App() {
     // Rich sub-pages
     if (activePage === "romaneios")  return <RomaneiosPage />;
     if (activePage === "pipeline")   return <PipelinePage />;
-    if (activePage === "contatos")   return <ContatosPage />;
-    if (activePage === "conversas")  return <ConversasPage />;
+    if (activePage === "leads" || activePage === "contatos") return <LeadsPage onNav={setActivePage} setSelectedLeadId={setSelectedLeadId} />;
+    if (activePage === "conversas")  return <ConversasPage selectedLeadId={selectedLeadId} />;
     if (activePage === "prompts")    return <PromptsPage />;
     if (activePage === "relatorios") return <RelatoriosPage />;
     if (activePage === "artigos")    return <ArticlesPage />;
