@@ -740,7 +740,15 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCo
                   fontWeight="700" textAnchor="middle" fill="currentColor">M</text>
               </svg>
             )
-            : <img src="../../assets/placeholder-logo.svg" alt="Artemis" className="sidebar-logo-full" />
+            : (
+              /* Inline SVG (era <img> mas img nao herda currentColor → ficava preto.
+                 Agora consume --sidebar-foreground via Token Editor pickFg auto). */
+              <svg className="sidebar-logo-full" viewBox="0 0 120 32" width="120" height="32" role="img" aria-label="Logo"
+                style={{ color: "hsl(var(--sidebar-foreground))" }}>
+                <rect x="0.5" y="0.5" width="119" height="31" rx="6" fill="none" stroke="currentColor" strokeOpacity="0.4" strokeDasharray="4 3"/>
+                <text x="60" y="20" fontFamily="ui-sans-serif, system-ui, sans-serif" fontSize="11" fontWeight="600" letterSpacing="0.16em" textAnchor="middle" fill="currentColor">LOGO</text>
+              </svg>
+            )
           }
           {!collapsed && <span className="sidebar-logo-tag">{tpl.label}</span>}
         </div>
@@ -1448,7 +1456,59 @@ function RomaneiosPage() {
 }
 
 // ─── PipelinePage (CRM) ───────────────────────────────────────────
-const PIPELINE_STAGES = ["Qualificação", "Proposta", "Negociação", "Fechamento", "Ganho"];
+// Funis multi-pipeline (Patrick: "tem que colocar mais de uma opção de funil"). Inspirado HubSpot/Pipedrive.
+const FUNNELS = {
+  vendas: {
+    label:"Vendas SDR → Closer",
+    desc:"Funil completo aquisição",
+    stages:["Qualificação","Proposta","Negociação","Fechamento","Ganho"],
+    cards:[
+      { id:"OP-4921", cliente:"Tech Solutions SA",  valor:48000,  fase:"Proposta",     resp:"Ana Lima",    prob:60, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"OP-4920", cliente:"Grupo Meridional",   valor:120000, fase:"Negociação",   resp:"Carlos R.",   prob:75, cenario:"B", status:"warn",  label:"Em risco" },
+      { id:"OP-4919", cliente:"Agro Norte Ltda",    valor:22500,  fase:"Fechamento",   resp:"Mariana C.",  prob:90, cenario:"B", status:"ok",    label:"Quente" },
+      { id:"OP-4918", cliente:"Retail Prime",       valor:67000,  fase:"Qualificação", resp:"Jonas F.",    prob:30, cenario:"D", status:"neutral",label:"Novo" },
+      { id:"OP-4917", cliente:"MegaComm Brasil",    valor:95000,  fase:"Fechamento",   resp:"Ana Lima",    prob:85, cenario:"E", status:"ok",    label:"Quente" },
+      { id:"OP-4916", cliente:"StartUp Fintech",    valor:15000,  fase:"Proposta",     resp:"Carlos R.",   prob:45, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"OP-4915", cliente:"Indústria Omega",    valor:210000, fase:"Negociação",   resp:"Mariana C.",  prob:55, cenario:"E", status:"warn",  label:"Em risco" },
+    ],
+  },
+  inbound: {
+    label:"Inbound (MQL → SQL)",
+    desc:"Leads qualificados marketing",
+    stages:["MQL","SQL","Discovery","Demo","Decisão"],
+    cards:[
+      { id:"IB-2104", cliente:"Padaria Real",      valor:8000,   fase:"MQL",       resp:"Ana Lima",   prob:15, cenario:"D", status:"neutral",label:"Novo" },
+      { id:"IB-2103", cliente:"FoodTech Brasil",   valor:35000,  fase:"SQL",       resp:"Ana Lima",   prob:35, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"IB-2102", cliente:"Lobsterk SA",       valor:62000,  fase:"Discovery", resp:"Carlos R.",  prob:50, cenario:"B", status:"info",  label:"Em andamento" },
+      { id:"IB-2101", cliente:"Vivere Hotéis",     valor:78000,  fase:"Demo",      resp:"Mariana C.", prob:65, cenario:"B", status:"ok",    label:"Quente" },
+      { id:"IB-2100", cliente:"NovaPay",           valor:45000,  fase:"Decisão",   resp:"Jonas F.",   prob:80, cenario:"B", status:"ok",    label:"Quente" },
+    ],
+  },
+  outbound: {
+    label:"Outbound (Cold → Warm)",
+    desc:"Prospecção ativa",
+    stages:["Lista fria","1º contato","Reunião","Proposta","Fechamento"],
+    cards:[
+      { id:"OB-3050", cliente:"Construtora Atlas", valor:180000, fase:"Lista fria",  resp:"Carlos R.",  prob:5,  cenario:"C", status:"neutral",label:"Frio" },
+      { id:"OB-3049", cliente:"Distribuidora MK",  valor:52000,  fase:"1º contato", resp:"Carlos R.",  prob:10, cenario:"C", status:"neutral",label:"Frio" },
+      { id:"OB-3048", cliente:"Logmix Cargas",     valor:88000,  fase:"Reunião",    resp:"Ana Lima",   prob:35, cenario:"D", status:"info",  label:"Em andamento" },
+      { id:"OB-3047", cliente:"AgroVale",          valor:135000, fase:"Proposta",   resp:"Mariana C.", prob:55, cenario:"B", status:"ok",    label:"Quente" },
+      { id:"OB-3046", cliente:"InsurePro",         valor:42000,  fase:"Fechamento", resp:"Jonas F.",   prob:75, cenario:"B", status:"ok",    label:"Quente" },
+    ],
+  },
+  renovacao: {
+    label:"Renovação",
+    desc:"Contratos próximos do fim",
+    stages:["Aviso 90d","Reunião","Proposta","Assinada"],
+    cards:[
+      { id:"RN-1208", cliente:"Tech Solutions SA",  valor:48000,  fase:"Aviso 90d",  resp:"Ana Lima",   prob:70, cenario:"A", status:"info",  label:"Em andamento" },
+      { id:"RN-1207", cliente:"Retail Prime",       valor:67000,  fase:"Reunião",    resp:"Mariana C.", prob:80, cenario:"A", status:"ok",    label:"Quente" },
+      { id:"RN-1206", cliente:"MegaComm Brasil",    valor:95000,  fase:"Proposta",   resp:"Ana Lima",   prob:85, cenario:"A", status:"ok",    label:"Quente" },
+      { id:"RN-1205", cliente:"Distribuidora Sul",  valor:55000,  fase:"Assinada",   resp:"Carlos R.",  prob:100,cenario:"A", status:"ok",    label:"Ganho" },
+    ],
+  },
+};
+const PIPELINE_STAGES = FUNNELS.vendas.stages; // backward-compat (default)
 // Cenário A-F qualification (inspirado ia-da-plus). Atributo lead/conta secundário ao fase pipeline.
 const CENARIO_LABEL = {
   A: "Já tem, satisfeito",
@@ -1466,6 +1526,102 @@ const CENARIO_COLOR = {
   E: "accent",           // multi = competitivo
   F: "muted-foreground", // não qualificado = neutro escuro
 };
+/* FilterBar — pattern CRM completo: active chips + popover trigger + saved views + quick toggles.
+   Inspirado HubSpot + Salesforce + Pipedrive. Reusable inline. */
+function FilterChip({ label, value, onRemove, color = "primary" }) {
+  return (
+    <span style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"4px 4px 4px 10px", borderRadius:999,
+      background:`hsl(var(--${color}) / .12)`, color:`hsl(var(--${color}))`, border:`1px solid hsl(var(--${color}) / .25)`,
+      fontSize:12, fontWeight:500 }}>
+      <span style={{ fontFamily:"var(--font-mono)", opacity:.7, fontSize:11 }}>{label}:</span>
+      <span>{value}</span>
+      {onRemove && (
+        <button type="button" onClick={onRemove} aria-label={`Remover filtro ${label}`}
+          style={{ width:18, height:18, borderRadius:"50%", border:"none", background:"transparent", cursor:"pointer",
+            color:`hsl(var(--${color}))`, display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:13, lineHeight:1, padding:0 }}>×</button>
+      )}
+    </span>
+  );
+}
+
+function FilterBar({ search, setSearch, filters, setFilters, savedViews, activeView, setActiveView, options, placeholder = "Buscar…" }) {
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const activeFilters = Object.entries(filters || {}).filter(([_, v]) => v && (Array.isArray(v) ? v.length > 0 : true));
+  const removeFilter = (key) => setFilters({ ...filters, [key]: Array.isArray(filters[key]) ? [] : "" });
+  const clearAll = () => { setFilters(Object.fromEntries(Object.keys(filters).map(k => [k, Array.isArray(filters[k]) ? [] : ""]))); setSearch(""); };
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+      <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+        {/* Saved views tabs */}
+        {savedViews && savedViews.length > 0 && (
+          <div style={{ display:"flex", gap:2, padding:2, background:"hsl(var(--muted) / .5)", borderRadius:8, border:"1px solid hsl(var(--border))" }}>
+            {savedViews.map(v => (
+              <button key={v.value} type="button" onClick={() => setActiveView(v.value)}
+                style={{ padding:"5px 10px", borderRadius:6, fontSize:11, fontWeight:500, border:"none", cursor:"pointer", fontFamily:"inherit",
+                  background: activeView===v.value ? "hsl(var(--card))" : "transparent",
+                  color: activeView===v.value ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                  boxShadow: activeView===v.value ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>{v.label} <span style={{ opacity:.6, fontFamily:"var(--font-mono)", fontSize:10 }}>{v.count}</span></button>
+            ))}
+          </div>
+        )}
+        {/* Search */}
+        <input type="search" placeholder={placeholder} aria-label="Buscar" value={search} onChange={e => setSearch(e.target.value)}
+          style={{ flex:"1 1 240px", minWidth:0, padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+        {/* Filter button */}
+        <button type="button" onClick={() => setPopoverOpen(!popoverOpen)}
+          style={{ padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background: popoverOpen ? "hsl(var(--muted))" : "hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:12, fontWeight:500, cursor:"pointer", display:"inline-flex", alignItems:"center", gap:6, fontFamily:"inherit" }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+          Filtros{activeFilters.length > 0 && <span style={{ padding:"1px 6px", borderRadius:999, background:"hsl(var(--primary))", color:"hsl(var(--primary-foreground))", fontSize:10, fontFamily:"var(--font-mono)" }}>{activeFilters.length}</span>}
+        </button>
+      </div>
+      {/* Active chips */}
+      {activeFilters.length > 0 && (
+        <div style={{ display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
+          {activeFilters.map(([key, val]) => (
+            <FilterChip key={key} label={options?.[key]?.label || key} value={Array.isArray(val) ? val.join(", ") : val} onRemove={() => removeFilter(key)} />
+          ))}
+          <button type="button" onClick={clearAll} style={{ background:"none", border:"none", color:"hsl(var(--muted-foreground))", cursor:"pointer", fontSize:11, textDecoration:"underline", fontFamily:"inherit" }}>Limpar tudo</button>
+        </div>
+      )}
+      {/* Filter popover (drawer pra mobile) */}
+      {popoverOpen && (
+        <div role="dialog" aria-label="Filtros avançados" style={{ position:"absolute", marginTop:48, right:0, zIndex:30, width:320, padding:16, borderRadius:12, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", boxShadow:"0 8px 24px hsl(var(--foreground)/.15)" }}>
+          <div style={{ fontSize:12, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", color:"hsl(var(--muted-foreground))", marginBottom:10 }}>Filtros avançados</div>
+          {Object.entries(options || {}).map(([key, opt]) => (
+            <div key={key} style={{ marginBottom:14 }}>
+              <div style={{ fontSize:12, fontWeight:500, marginBottom:6 }}>{opt.label}</div>
+              {opt.type === "checkbox" ? (
+                <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+                  {opt.values.map(v => {
+                    const arr = Array.isArray(filters[key]) ? filters[key] : [];
+                    const checked = arr.includes(v);
+                    return (
+                      <label key={v} style={{ display:"flex", alignItems:"center", gap:8, fontSize:12, cursor:"pointer", padding:"4px 6px", borderRadius:6 }}>
+                        <input type="checkbox" checked={checked} onChange={() => setFilters({ ...filters, [key]: checked ? arr.filter(x=>x!==v) : [...arr, v] })} />
+                        {v}
+                      </label>
+                    );
+                  })}
+                </div>
+              ) : (
+                <select value={filters[key] || ""} onChange={e => setFilters({ ...filters, [key]: e.target.value })}
+                  style={{ width:"100%", padding:"6px 10px", borderRadius:6, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:12 }}>
+                  <option value="">Todos</option>
+                  {opt.values.map(v => <option key={v} value={v}>{v}</option>)}
+                </select>
+              )}
+            </div>
+          ))}
+          <div style={{ display:"flex", gap:6, marginTop:12, paddingTop:10, borderTop:"1px solid hsl(var(--border))" }}>
+            <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={clearAll}>Limpar</button>
+            <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }} onClick={() => setPopoverOpen(false)}>Aplicar</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CenarioPill({ letter }) {
   if (!letter) return null;
   const color = CENARIO_COLOR[letter] || "muted-foreground";
@@ -1477,42 +1633,57 @@ function CenarioPill({ letter }) {
     </span>
   );
 }
-const PIPELINE_CARDS = [
-  { id:"OP-4921", cliente:"Tech Solutions SA",  valor:48000,  fase:"Proposta",     resp:"Ana Lima",    prob:60, cenario:"D", status:"info",  label:"Em andamento" },
-  { id:"OP-4920", cliente:"Grupo Meridional",   valor:120000, fase:"Negociação",   resp:"Carlos R.",   prob:75, cenario:"B", status:"warn",  label:"Em risco" },
-  { id:"OP-4919", cliente:"Agro Norte Ltda",    valor:22500,  fase:"Fechamento",   resp:"Mariana C.",  prob:90, cenario:"B", status:"ok",    label:"Quente" },
-  { id:"OP-4918", cliente:"Retail Prime",       valor:67000,  fase:"Qualificação", resp:"Jonas F.",    prob:30, cenario:"D", status:"neutral",label:"Novo" },
-  { id:"OP-4917", cliente:"MegaComm Brasil",    valor:95000,  fase:"Fechamento",   resp:"Ana Lima",    prob:85, cenario:"E", status:"ok",    label:"Quente" },
-  { id:"OP-4916", cliente:"StartUp Fintech",    valor:15000,  fase:"Proposta",     resp:"Carlos R.",   prob:45, cenario:"D", status:"info",  label:"Em andamento" },
-  { id:"OP-4915", cliente:"Indústria Omega",    valor:210000, fase:"Negociação",   resp:"Mariana C.",  prob:55, cenario:"E", status:"warn",  label:"Em risco" },
-];
+// PIPELINE_CARDS now uses FUNNELS — backward-compat
+const PIPELINE_CARDS = FUNNELS.vendas.cards;
 
 function PipelinePage() {
   const [drawerCard, setDrawerCard] = useState(null);
   const [activeTab, setActiveTab] = useState("kanban");
   const [priority, setPriority] = useState("alta");
+  const [funnel, setFunnel] = useState("vendas");
+  const currentFunnel = FUNNELS[funnel];
+  const stages = currentFunnel.stages;
+  const cards = currentFunnel.cards;
   const [prazo, setPrazo] = useState(30);
   const [nota, setNota] = useState("");
 
-  const stageCards = (stage) => PIPELINE_CARDS.filter(c => c.fase === stage);
-  const totalVal = PIPELINE_CARDS.reduce((s,c) => s+c.valor, 0);
+  const stageCards = (stage) => cards.filter(c => c.fase === stage);
+  const totalVal = cards.reduce((s,c) => s+c.valor, 0);
 
   return (
     <div className="page-content">
       <div className="page-header">
         <div className="page-header-stack">
           <span className="page-crumb">crm · vendas · pipeline</span>
-          <h2 className="page-title">Pipeline de Vendas</h2>
-          <p className="page-sub">Gerencie oportunidades por fase. Clique num card para ver detalhes.</p>
+          <h2 className="page-title">Pipeline</h2>
+          <p className="page-sub">{currentFunnel.desc} · {cards.length} oportunidades</p>
         </div>
         <div className="page-actions">
           <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Nova oportunidade</button>
         </div>
       </div>
 
+      {/* Funnel selector — múltiplos funis (Vendas/Inbound/Outbound/Renovação) */}
+      <div style={{ display:"flex", gap:6, alignItems:"center", flexWrap:"wrap", marginTop:-4 }}>
+        <span style={{ fontSize:11, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", color:"hsl(var(--muted-foreground))", marginRight:4 }}>Funil:</span>
+        {Object.entries(FUNNELS).map(([key, f]) => (
+          <button key={key} type="button" onClick={() => setFunnel(key)}
+            style={{ padding:"6px 12px", borderRadius:999, fontSize:12, fontWeight:500, cursor:"pointer", fontFamily:"inherit", transition:"all 150ms",
+              border: funnel===key ? "1px solid hsl(var(--primary))" : "1px solid hsl(var(--border))",
+              background: funnel===key ? "hsl(var(--primary) / .12)" : "hsl(var(--card))",
+              color: funnel===key ? "hsl(var(--primary))" : "hsl(var(--foreground))" }}>
+            {f.label} <span style={{ opacity:.6, fontFamily:"var(--font-mono)", fontSize:10, marginLeft:4 }}>{f.cards.length}</span>
+          </button>
+        ))}
+        <button type="button" style={{ padding:"6px 10px", borderRadius:999, fontSize:11, cursor:"pointer", fontFamily:"inherit",
+          border:"1px dashed hsl(var(--border))", background:"transparent", color:"hsl(var(--muted-foreground))" }}>
+          + Novo funil
+        </button>
+      </div>
+
       {/* KPIs resumo */}
       <div className="kpis" style={{ gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))" }}>
-        {[["7","Oportunidades","up",null],["R$ "+totalVal.toLocaleString("pt-BR"),"Volume total","up",null],["68%","Taxa média","up",null],["R$ 95k","Maior opp.",null,null]].map(([v,l,d])=>(
+        {[[String(cards.length),"Oportunidades","up",null],["R$ "+totalVal.toLocaleString("pt-BR"),"Volume total","up",null],[Math.round(cards.reduce((s,c)=>s+c.prob,0)/cards.length)+"%","Taxa média","up",null],["R$ "+Math.max(...cards.map(c=>c.valor/1000))+"k","Maior opp.",null,null]].map(([v,l,d])=>(
           <div key={l} className="kpi">
             <div className="kpi-label">{l}</div>
             <div className="kpi-value" style={{ fontSize:20 }}>{v}</div>
@@ -1523,13 +1694,13 @@ function PipelinePage() {
       {/* Tabs kanban / lista */}
       <div className="tabs-nav">
         {[["kanban","Kanban"],["lista","Lista"],["config","Configurar opp."]].map(([k,l]) => (
-          <div key={k} className={`tab-item${activeTab===k?" active":""}`} onClick={() => setActiveTab(k)}>{l}</div>
+          <button key={k} type="button" className={`tab-item${activeTab===k?" active":""}`} onClick={() => setActiveTab(k)}>{l}</button>
         ))}
       </div>
 
       {activeTab === "kanban" && (
-        <div className="kanban-scroll" style={{ display:"grid", gridTemplateColumns:`repeat(${PIPELINE_STAGES.length},1fr)`, gap:12, overflowX:"auto", paddingBottom:14 }}>
-          {PIPELINE_STAGES.map(stage => (
+        <div className="kanban-scroll" style={{ display:"grid", gridTemplateColumns:`repeat(${stages.length},1fr)`, gap:12, overflowX:"auto", paddingBottom:14 }}>
+          {stages.map(stage => (
             <div key={stage} style={{ minWidth:160 }}>
               <div style={{ fontSize:11, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", color:"hsl(var(--muted-foreground))", padding:"0 4px 8px", display:"flex", justifyContent:"space-between" }}>
                 <span>{stage}</span>
@@ -1573,7 +1744,7 @@ function PipelinePage() {
           <table className="tbl">
             <thead><tr><th>ID</th><th>Cliente</th><th>Cen.</th><th>Valor</th><th>Fase</th><th>Resp.</th><th>Prob.</th><th>Status</th></tr></thead>
             <tbody>
-              {PIPELINE_CARDS.map(c => (
+              {cards.map(c => (
                 /* W1.10 / F-INT-002: table row clicavel — tabIndex + onKeyDown pra teclado */
                 <tr key={c.id}
                   tabIndex={0}
@@ -1676,13 +1847,30 @@ const CONTACTS_DATA = [
 ];
 function LeadsPage({ onNav, setSelectedLeadId }) {
   const [search, setSearch] = useState("");
-  const [faseFilter, setFaseFilter] = useState("");
+  const [activeView, setActiveView] = useState("all");
+  const [filters, setFilters] = useState({ fase:[], cenario:[], owner:"" });
+  // Saved views por filtro pre-set
+  const SAVED_VIEWS = [
+    { value:"all",   label:"Todos",        count:CONTACTS_DATA.length },
+    { value:"hot",   label:"Quentes",      count:CONTACTS_DATA.filter(c => c.fase==="Quente").length },
+    { value:"new",   label:"Novos hoje",   count:CONTACTS_DATA.filter(c => c.fase==="Novo").length },
+    { value:"mine",  label:"Meus leads",   count:Math.floor(CONTACTS_DATA.length/2) },
+    { value:"risk",  label:"Em risco",     count:CONTACTS_DATA.filter(c => c.fase==="Em risco").length },
+  ];
+  const FILTER_OPTIONS = {
+    fase:    { label:"Fase",    type:"checkbox", values:["Novo","Em andamento","Quente","Em risco"] },
+    cenario: { label:"Cenário", type:"checkbox", values:["A","B","C","D","E","F"] },
+    owner:   { label:"Responsável", type:"select",   values:["Ana Lima","Carlos R.","Mariana C.","Jonas F."] },
+  };
   const filtered = CONTACTS_DATA.filter(c => {
     if (search && !(c.nome.toLowerCase().includes(search.toLowerCase()) || c.empresa.toLowerCase().includes(search.toLowerCase()))) return false;
-    if (faseFilter && c.fase !== faseFilter) return false;
+    if (activeView === "hot" && c.fase !== "Quente") return false;
+    if (activeView === "new" && c.fase !== "Novo") return false;
+    if (activeView === "risk" && c.fase !== "Em risco") return false;
+    if (filters.fase?.length && !filters.fase.includes(c.fase)) return false;
+    if (filters.cenario?.length && !filters.cenario.includes(c.cenario)) return false;
     return true;
   });
-  const fases = ["Novo","Em andamento","Quente","Em risco"];
   const openConversa = (id) => { setSelectedLeadId?.(id); onNav?.("conversas"); };
   return (
     <div className="page-content">
@@ -1701,16 +1889,18 @@ function LeadsPage({ onNav, setSelectedLeadId }) {
           </div>
         ))}
       </div>
-      <div className="card" style={{ padding:0 }}>
-        <div style={{ padding:"14px 20px", display:"flex", gap:10, flexWrap:"wrap", alignItems:"center", borderBottom:"1px solid hsl(var(--border))" }}>
-          <input type="text" placeholder="Buscar por nome ou empresa..." aria-label="Buscar contatos por nome ou empresa" value={search} onChange={e => setSearch(e.target.value)}
-            style={{ flex:"1 1 280px", minWidth:0, padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }}/>
-          <select value={faseFilter} onChange={e => setFaseFilter(e.target.value)} aria-label="Filtrar por fase"
-            style={{ padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13 }}>
-            <option value="">Todas as fases</option>
-            {fases.map(f => <option key={f} value={f}>{f}</option>)}
-          </select>
-          <button className="aa-btn aa-btn--accent aa-btn--sm">+ Novo contato</button>
+      <div className="card" style={{ padding:0, position:"relative" }}>
+        <div style={{ padding:"14px 20px", borderBottom:"1px solid hsl(var(--border))", display:"flex", gap:10, alignItems:"flex-start", justifyContent:"space-between" }}>
+          <div style={{ flex:1, minWidth:0 }}>
+            <FilterBar
+              search={search} setSearch={setSearch}
+              filters={filters} setFilters={setFilters}
+              savedViews={SAVED_VIEWS} activeView={activeView} setActiveView={setActiveView}
+              options={FILTER_OPTIONS}
+              placeholder="Buscar lead, empresa ou contato…"
+            />
+          </div>
+          <button className="aa-btn aa-btn--accent aa-btn--sm" style={{ flexShrink:0 }}>+ Novo lead</button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Cen.</th><th>Fase</th><th>Valor</th><th>Contato</th></tr></thead>
