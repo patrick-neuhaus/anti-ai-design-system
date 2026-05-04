@@ -45,7 +45,7 @@ const _te_getWcagBadge = (ratio, type = "text") => {
 const _te_ADVANCED_TOKENS = [
   { group: "Marca",       tokens: ["--primary","--accent","--ring"] },
   { group: "Status",      tokens: ["--success","--warning","--info","--destructive"] },
-  { group: "Sidebar",     tokens: ["--sidebar-background","--sidebar-accent","--sidebar-indicator","--sidebar-border"] },
+  { group: "Sidebar",     tokens: ["--sidebar-background","--sidebar-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-indicator","--sidebar-border"] },
   { group: "Superfícies", tokens: ["--background","--card","--muted","--border"] },
 ];
 const _te_ALL_TOKENS = _te_ADVANCED_TOKENS.flatMap(g => g.tokens);
@@ -93,6 +93,7 @@ const _te_computeWcagPairs = (tokens) => {
     { label: "Text / Card",     fg: tokens["--foreground"],         bg: tokens["--card"],       type: "text" },
     { label: "Text on Accent",  fg: tokens["--accent-foreground"],  bg: tokens["--accent"],     type: "text" },
     { label: "Text on Primary", fg: tokens["--primary-foreground"], bg: tokens["--primary"],    type: "text" },
+    { label: "User-panel Text", fg: tokens["--sidebar-accent-foreground"], bg: tokens["--sidebar-accent"], type: "text" },
     { label: "Accent vs BG (UI)",     fg: tokens["--accent"],            bg: tokens["--background"], type: "ui" },
     { label: "Decorative vs BG (UI)", fg: tokens["--accent-decorative"], bg: tokens["--background"], type: "ui" },
   ];
@@ -345,19 +346,24 @@ const TokenEditorPreview = ({ compact = false }) => {
       // Wave 8 fix: sidebar-foreground auto-pick (white OU black) via pickFg(sidebarBg).
       // Antes default white sempre — quebrava se sidebar-bg ficasse claro.
       const sidebarFg = _te_pickFg(sidebarBg.hex());
+      // Wave 9 fix (step 1+2): sidebar-accent-foreground derivado via pickFg(sidebar-accent).
+      // user-panel text precisa contraste vs --sidebar-accent (bg do card),
+      // não vs --sidebar-background. DR-01 sec 82-90 — par real.
+      const sidebarAccentFg = _te_pickFg(sidebarAccent.hex());
 
       const d = {
-        "--accent":              _te_hslOf(accentFinal),
-        "--accent-foreground":   _te_hexToHsl(accentFg.fg),
-        "--primary":             _te_hslOf(primary),
-        "--primary-foreground":  _te_hexToHsl(primaryFg),
-        "--ring":                _te_hslOf(ring),
-        "--accent-decorative":   _te_hslOf(decorative),
-        "--sidebar-background":  _te_hslOf(sidebarBg),
-        "--sidebar-foreground":  _te_hexToHsl(sidebarFg.fg),
-        "--sidebar-accent":      _te_hslOf(sidebarAccent),
-        "--sidebar-indicator":   _te_hslOf(accentFinal),
-        "--sidebar-border":      _te_hslOf(sidebarBorder),
+        "--accent":                    _te_hslOf(accentFinal),
+        "--accent-foreground":         _te_hexToHsl(accentFg.fg),
+        "--primary":                   _te_hslOf(primary),
+        "--primary-foreground":        _te_hexToHsl(primaryFg),
+        "--ring":                      _te_hslOf(ring),
+        "--accent-decorative":         _te_hslOf(decorative),
+        "--sidebar-background":        _te_hslOf(sidebarBg),
+        "--sidebar-foreground":        _te_hexToHsl(sidebarFg.fg),
+        "--sidebar-accent":            _te_hslOf(sidebarAccent),
+        "--sidebar-accent-foreground": _te_hexToHsl(sidebarAccentFg.fg),
+        "--sidebar-indicator":         _te_hslOf(accentFinal),
+        "--sidebar-border":            _te_hslOf(sidebarBorder),
       };
       Object.entries(d).forEach(([k, v]) => _te_applyToken(k, v));
       const cur = _te_readCurrentTokens();
