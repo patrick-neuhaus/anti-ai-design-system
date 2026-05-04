@@ -1,91 +1,35 @@
 // ui_kits/default/components/navigation/Sidebar.jsx
-// Sidebar — primary fill, accent left bar on active, eyebrow group labels.
-// Brand-agnostic. Tokens only via hsl(var(--*)). Brand/user/nav arrive as props.
+// Sidebar — thin wrapper sobre aa-sidebar (canonical CSS in _aa-sidebar.css).
+// Source of truth visual: _aa-sidebar.css. Componente apenas mapeia props -> classes.
+// When to use: primary navigation aside em apps logados.
+// When NOT to use: marketing site nav (use NavHeader). Tabs intra-page (use Tabs).
 // Mobile (<768px): hamburger trigger + slide-in drawer + backdrop.
-// Footer: usa UserMenu (avatar+nome+dropdown). Carrega UserMenu ANTES de Sidebar.
-
-const initialsFrom = (name) =>
-  String(name || "")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? "")
-    .join("") || "··";
-
-const SidebarItem = ({ icon: I, label, active, onClick, collapsed }) => (
-  <button
-    onClick={onClick}
-    /* W1.6 / F-INT-016: aria-label sempre presente; quando collapsed e o unico nome */
-    aria-label={label}
-    aria-current={active ? "page" : undefined}
-    title={collapsed ? label : undefined}
-    /* N1 / WCAG 2.4.7: class needed pra :focus-visible CSS rule */
-    className="aa-sidebar-item"
-    style={{
-      position: "relative",
-      display: "flex",
-      gap: collapsed ? 0 : 12,
-      alignItems: "center",
-      justifyContent: collapsed ? "center" : "flex-start",
-      padding: collapsed ? "10px 0" : "8px 12px",
-      borderRadius: "var(--radius-md, 8px)",
-      background: active ? "hsl(var(--sidebar-accent))" : "transparent",
-      color: active ? "hsl(var(--sidebar-foreground))" : "hsl(var(--sidebar-foreground) / .7)",
-      fontSize: 14,
-      fontWeight: 500,
-      border: 0,
-      width: "100%",
-      textAlign: "left",
-      cursor: "pointer",
-      transition: "background-color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)), color var(--motion-fast,150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
-    }}
-    onMouseEnter={(e) => {
-      if (!active) {
-        e.currentTarget.style.background = "hsl(var(--sidebar-accent) / .5)";
-        e.currentTarget.style.color = "hsl(var(--sidebar-foreground))";
-      }
-    }}
-    onMouseLeave={(e) => {
-      if (!active) {
-        e.currentTarget.style.background = "transparent";
-        e.currentTarget.style.color = "hsl(var(--sidebar-foreground) / .7)";
-      }
-    }}
-  >
-    {active && (
-      <span aria-hidden="true" style={{
-        position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)",
-        width: 3, height: 20,
-        background: "hsl(var(--sidebar-indicator))",
-        borderRadius: "0 4px 4px 0",
-      }}/>
-    )}
-    <I size={18} aria-hidden="true" />
-    {!collapsed && <span style={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{label}</span>}
-  </button>
-);
-
-const SidebarGroup = ({ label, children, collapsed }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 2, marginTop: 14 }}>
-    {!collapsed && (
-      <div style={{
-        padding: "0 12px 6px",
-        fontSize: 10, fontWeight: 600, letterSpacing: ".08em",
-        textTransform: "uppercase",
-        color: "hsl(var(--sidebar-foreground) / .4)",
-      }}>{label}</div>
-    )}
-    {children}
-  </div>
-);
-
-/* DEFAULT_GROUPS movido para _sidebar-data.jsx (source of truth shared com MiniSidebar mock). */
+// Footer: UserMenu (carrega ANTES de Sidebar).
 
 const Sidebar = ({
-  active, onNavigate, collapsed, onToggleCollapse, onLogout, onConfig, onProfile,
-  onToggleTheme, themeMode, accountActive,
-  brand, user, groups,
+  /* Nav state */
+  active,
+  onNavigate,
+  collapsed,
+  onToggleCollapse,
+  /* Footer (UserMenu) */
+  onLogout,
+  onConfig,
+  onProfile,
+  onToggleTheme,
+  themeMode,
+  accountActive,
+  /* Brand slots */
+  brand,
+  /* user object */
+  user,
+  /* nav data */
+  groups,
+  /* Optional brand decorations */
+  brandTag,        // string -> renders aa-sidebar__brand-text (e.g. "TEMPLATE")
+  brandLogoTag,    // string -> renders aa-sidebar__logo-tag (rotated diagonal, e.g. "CRM")
+  brandHref,       // string -> renders "← DS" link iframe-only (parent != self check)
+  brandLogoNode,   // ReactNode -> custom logo (overrides brand.logo img)
 }) => {
   const [isMobile, setIsMobile] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -112,9 +56,6 @@ const Sidebar = ({
   }, [mobileOpen]);
 
   const navGroups = groups ?? window.DEFAULT_SIDEBAR_GROUPS;
-  const userName = user?.name ?? "Nome Sobrenome";
-  const userEmail = user?.email ?? "email@exemplo.com";
-  const userInitials = initialsFrom(userName);
   const logoSrc = brand?.logo ?? "../../assets/placeholder-logo.svg";
   const markSrc = brand?.mark ?? "../../assets/placeholder-mark.svg";
   const brandAlt = brand?.name ?? "App";
@@ -123,63 +64,125 @@ const Sidebar = ({
     onNavigate?.(key);
     if (isMobile) setMobileOpen(false);
   };
-
   const handleLogout = () => {
     onLogout?.();
     if (isMobile) setMobileOpen(false);
   };
+
+  /* Iframe-only "← DS" back link (linha 783-803 CRM template) */
+  const showBackLink = brandHref &&
+    typeof window !== "undefined" &&
+    window.parent !== window;
+
+  /* Brand block (logo + tag diagonal + back link) — shared mobile/desktop */
+  const renderBrand = () => (
+    <div className="aa-sidebar__brand">
+      <div className="aa-sidebar__logo-wrap">
+        {brandLogoNode
+          ? brandLogoNode
+          : <img src={collapsed ? markSrc : logoSrc} alt={brandAlt} style={{ height: collapsed ? 28 : 22, display: "block" }} />}
+        {!collapsed && brandLogoTag && (
+          <span className="aa-sidebar__logo-tag">{brandLogoTag}</span>
+        )}
+      </div>
+      {!collapsed && brandTag && (
+        <span className="aa-sidebar__brand-text">{brandTag}</span>
+      )}
+      {showBackLink && !collapsed && (
+        <a href={brandHref}
+          target="_top"
+          title="Voltar para o showcase"
+          style={{
+            marginLeft: "auto",
+            display: "inline-flex", alignItems: "center", gap: 4,
+            fontSize: 10, fontFamily: "var(--font-mono)",
+            letterSpacing: ".06em", textTransform: "uppercase",
+            color: "hsl(var(--sidebar-foreground) / .5)",
+            textDecoration: "none",
+            padding: "2px 6px", borderRadius: 4,
+            border: "1px solid hsl(var(--sidebar-foreground) / .15)",
+            transition: "opacity 150ms",
+            whiteSpace: "nowrap",
+          }}
+          onMouseEnter={e => e.currentTarget.style.opacity = "1"}
+          onMouseLeave={e => e.currentTarget.style.opacity = ""}
+        >← DS</a>
+      )}
+    </div>
+  );
+
+  /* Nav items rendering */
+  const renderNav = (compact) => (
+    <nav className="aa-sidebar__nav">
+      {navGroups.map((g) => (
+        <React.Fragment key={g.label}>
+          <div className="aa-sidebar__group-label">{g.label}</div>
+          {g.items.map((it) => {
+            const Icon = it.icon;
+            const isActive = active === it.key;
+            return (
+              <button
+                key={it.key}
+                type="button"
+                onClick={() => handleNavigate(it.key)}
+                aria-label={it.label}
+                aria-current={isActive ? "page" : undefined}
+                title={compact ? it.label : undefined}
+                className={`aa-sidebar__item${isActive ? " is-active" : ""}`}
+              >
+                <Icon className="aa-sidebar__item-icon" size={16} />
+                <span className="aa-sidebar__item-label">{it.label}</span>
+                {it.badge != null && (
+                  <span className="aa-sidebar__item-badge">{it.badge}</span>
+                )}
+              </button>
+            );
+          })}
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+
+  const renderFooter = (compact) => (
+    <div className="aa-sidebar__footer">
+      <UserMenu
+        user={user}
+        onProfile={onProfile}
+        onConfig={onConfig}
+        onLogout={isMobile ? handleLogout : onLogout}
+        onToggleTheme={onToggleTheme}
+        themeMode={themeMode}
+        active={accountActive}
+        collapsed={compact}
+      />
+    </div>
+  );
 
   // — MOBILE: hamburger + drawer + backdrop —
   if (isMobile) {
     return (
       <>
         <button
+          className="aa-sidebar__hamburger"
           onClick={() => setMobileOpen(true)}
           aria-label="Abrir menu"
-          style={{
-            position: "fixed", top: 14, left: 14, zIndex: 100,
-            width: 40, height: 40, borderRadius: "var(--radius-md, 8px)",
-            background: "hsl(var(--card))",
-            border: "1px solid hsl(var(--border))",
-            display: mobileOpen ? "none" : "flex",
-            alignItems: "center", justifyContent: "center",
-            color: "hsl(var(--foreground))",
-            cursor: "pointer",
-            boxShadow: "var(--shadow-sidebar)",
-            padding: 0,
-          }}
+          style={{ display: mobileOpen ? "none" : "flex" }}
         >
           <Icon.Menu size={20} />
         </button>
-
         {mobileOpen && (
           <div
+            className="aa-sidebar__backdrop"
             onClick={() => setMobileOpen(false)}
             aria-hidden="true"
-            style={{
-              position: "fixed", inset: 0,
-              background: "var(--overlay-backdrop)",
-              zIndex: 90,
-            }}
           />
         )}
-
         <aside
+          className={`aa-sidebar aa-sidebar--drawer${mobileOpen ? " is-open" : ""}`}
           aria-hidden={!mobileOpen}
-          style={{
-            position: "fixed", top: 0, left: 0, bottom: 0,
-            width: 280, zIndex: 95,
-            transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
-            transition: "transform var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))",
-            background: "hsl(var(--sidebar-background))",
-            color: "hsl(var(--sidebar-foreground))",
-            padding: "14px 12px",
-            display: "flex", flexDirection: "column",
-            boxShadow: mobileOpen ? "var(--shadow-drawer)" : "none",
-          }}
         >
           <div style={{ position: "relative", padding: "8px 4px", height: 44, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <img src={logoSrc} alt={brandAlt} style={{ height: 28 }} />
+            {brandLogoNode || <img src={logoSrc} alt={brandAlt} style={{ height: 28 }} />}
             <button
               onClick={() => setMobileOpen(false)}
               aria-label="Fechar menu"
@@ -194,125 +197,30 @@ const Sidebar = ({
               <Icon.X size={20} />
             </button>
           </div>
-
-          <nav style={{ flex: 1, overflowY: "auto", marginTop: 4 }}>
-            {navGroups.map((g) => (
-              <SidebarGroup key={g.label} label={g.label} collapsed={false}>
-                {g.items.map((it) => (
-                  <SidebarItem
-                    key={it.key} icon={it.icon} label={it.label} collapsed={false}
-                    active={active === it.key}
-                    onClick={() => handleNavigate(it.key)}
-                  />
-                ))}
-              </SidebarGroup>
-            ))}
-          </nav>
-
-          <div style={{ paddingTop: 10, marginTop: 10 }}>
-            <UserMenu
-              user={user}
-              onProfile={onProfile}
-              onConfig={onConfig}
-              onLogout={handleLogout}
-              onToggleTheme={onToggleTheme}
-              themeMode={themeMode}
-              active={accountActive}
-              collapsed={false}
-            />
-          </div>
+          {renderNav(false)}
+          {renderFooter(false)}
         </aside>
       </>
     );
   }
 
   // — DESKTOP —
-  const width = collapsed ? 72 : 272;
   return (
-    <aside style={{
-      /* N3: position era duplicado (sticky + relative); JS object literal segunda key
-         vencia, sticky silenciosamente quebrava. Mantemos sticky — establishes containing
-         block pro toggle absolute child sem precisar de relative explicito. */
-      width, flexShrink: 0,
-      background: "hsl(var(--sidebar-background))",
-      color: "hsl(var(--sidebar-foreground))",
-      /* X2: 100dvh evita iOS Safari address-bar viewport bug (sidebar clip) */
-      height: "100dvh",
-      position: "sticky", top: 0,
-      padding: "14px 12px",
-      display: "flex", flexDirection: "column",
-      borderRight: "1px solid hsl(var(--sidebar-border))",
-      transition: "width var(--motion-normal,200ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))",
-    }}>
-      {/* Collapse toggle — centrado na divisória vertical */}
+    <aside className={`aa-sidebar aa-sidebar--sticky${collapsed ? " is-collapsed" : ""}`}>
       <button
+        className="aa-sidebar__toggle"
         onClick={onToggleCollapse}
-        aria-label="Toggle sidebar"
-        style={{
-          position: "absolute", right: -12, top: "50%", transform: "translateY(-50%)",
-          width: 24, height: 24, borderRadius: "50%",
-          background: "hsl(var(--sidebar-foreground))",
-          color: "hsl(var(--sidebar-background))",
-          border: "1px solid hsl(var(--border))",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "var(--shadow-control)",
-          cursor: "pointer",
-          zIndex: 10,
-        }}
+        title={collapsed ? "Expandir" : "Recolher"}
+        aria-label={collapsed ? "Expandir sidebar" : "Recolher sidebar"}
+        type="button"
       >
         {collapsed ? <Icon.ChevronRight size={14} /> : <Icon.ChevronLeft size={14} />}
       </button>
-
-      {/* W1.6 / F-INT-019: collapsed brand mais limpo — height proporcional, mark sem box,
-          alinhamento centralizado pra nao ficar torto. */}
-      <div style={{ padding: collapsed ? "8px 0" : "8px 4px", height: collapsed ? 56 : 88, display: "flex", alignItems: "center", justifyContent: "center", transition: "height var(--motion-normal,200ms) var(--ease-standard, cubic-bezier(.4,0,.2,1))" }}>
-        {collapsed ? (
-          <img src={markSrc} alt={brandAlt} style={{ width: 32, height: 32, objectFit: "contain", display: "block" }} />
-        ) : (
-          <img src={logoSrc} alt={brandAlt} style={{ height: 28 }} />
-        )}
-      </div>
-
-      <nav style={{ flex: 1, overflowY: "auto", marginTop: 4 }}>
-        {navGroups.map((g) => (
-          <SidebarGroup key={g.label} label={g.label} collapsed={collapsed}>
-            {g.items.map((it) => (
-              <SidebarItem key={it.key} icon={it.icon} label={it.label} collapsed={collapsed}
-                active={active === it.key} onClick={() => onNavigate?.(it.key)} />
-            ))}
-          </SidebarGroup>
-        ))}
-      </nav>
-
-      <div style={{ paddingTop: 10, marginTop: 10 }}>
-        <UserMenu
-          user={user}
-          onProfile={onProfile}
-          onConfig={onConfig}
-          onLogout={onLogout}
-          onToggleTheme={onToggleTheme}
-          themeMode={themeMode}
-          active={accountActive}
-          collapsed={collapsed}
-        />
-      </div>
+      {renderBrand()}
+      {renderNav(collapsed)}
+      {renderFooter(collapsed)}
     </aside>
   );
 };
-
-/* N1 / WCAG 2.4.7: focus-visible explicito pra SidebarItem (keyboard nav).
-   Pattern autocontido (F-INT-007) — injeta uma vez via id check. */
-if (typeof document !== "undefined" && !document.getElementById("aa-sidebar-item-css")) {
-  const s = document.createElement("style");
-  s.id = "aa-sidebar-item-css";
-  s.textContent = `
-    .aa-sidebar-item:focus-visible {
-      outline: 2px solid hsl(var(--ring));
-      outline-offset: -2px;
-    }
-    .aa-sidebar-item:focus:not(:focus-visible) { outline: none; }
-  `;
-  document.head.appendChild(s);
-}
 
 window.Sidebar = Sidebar;
