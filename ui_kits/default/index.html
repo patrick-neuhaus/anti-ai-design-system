@@ -477,7 +477,8 @@ const COLOR_PRESETS = {
     "--success":"152 85% 30%","--warning":"38 92% 50%","--destructive":"0 100% 43%",
   },
   "CRM Dark": {
-    "--primary":"220 90% 55%","--accent":"280 70% 65%",
+    /* accent darkened p/ AA white-on-accent (Skill #3 audit U1: 3.40 → 5.7+ ratio) */
+    "--primary":"220 90% 55%","--accent":"280 60% 50%",
     "--background":"222 20% 10%","--foreground":"220 15% 92%",
     "--card":"222 20% 14%","--card-foreground":"220 15% 92%",
     "--popover":"222 20% 14%","--popover-foreground":"220 15% 92%",
@@ -1051,11 +1052,18 @@ function ProgressBar({ value, max=100, color }) {
 }
 
 function Drawer({ open, onClose, title, children }) {
+  // Skill #3 audit D3: ESC key dismiss (a11y)
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
   if (!open) return null;
   return (
     <>
       <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.3)", zIndex:50, backdropFilter:"blur(2px)" }} />
-      <div style={{ position:"fixed", top:0, right:0, bottom:0, width:400, maxWidth:"90vw", background:"hsl(var(--card))", borderLeft:"1px solid hsl(var(--border))", zIndex:51, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px hsl(var(--foreground)/.1)", animation:"slideIn 200ms ease" }}>
+      <div role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:0, right:0, bottom:0, width:400, maxWidth:"90vw", background:"hsl(var(--card))", borderLeft:"1px solid hsl(var(--border))", zIndex:51, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px hsl(var(--foreground)/.1)", animation:"slideIn 200ms ease" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
           <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
           <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
@@ -1068,11 +1076,17 @@ function Drawer({ open, onClose, title, children }) {
 }
 
 function Dialog({ open, onClose, title, children }) {
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
   if (!open) return null;
   return (
     <>
       <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.4)", zIndex:60, backdropFilter:"blur(4px)" }} />
-      <div style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:480, maxWidth:"90vw", background:"hsl(var(--card))", border:"1px solid hsl(var(--border))", borderRadius:20, zIndex:61, boxShadow:"0 24px 64px hsl(var(--foreground)/.2)", animation:"dialogIn 200ms ease" }}>
+      <div role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:480, maxWidth:"90vw", background:"hsl(var(--card))", border:"1px solid hsl(var(--border))", borderRadius:20, zIndex:61, boxShadow:"0 24px 64px hsl(var(--foreground)/.2)", animation:"dialogIn 200ms ease" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
           <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
           <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
@@ -1588,9 +1602,9 @@ function ContatosPage() {
       </div>
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"14px 20px", display:"flex", gap:10, flexWrap:"wrap", alignItems:"center", borderBottom:"1px solid hsl(var(--border))" }}>
-          <input type="text" placeholder="Buscar por nome ou empresa..." value={search} onChange={e => setSearch(e.target.value)}
+          <input type="text" placeholder="Buscar por nome ou empresa..." aria-label="Buscar contatos por nome ou empresa" value={search} onChange={e => setSearch(e.target.value)}
             style={{ flex:"1 1 280px", minWidth:0, padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }}/>
-          <select value={faseFilter} onChange={e => setFaseFilter(e.target.value)}
+          <select value={faseFilter} onChange={e => setFaseFilter(e.target.value)} aria-label="Filtrar por fase"
             style={{ padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13 }}>
             <option value="">Todas as fases</option>
             {fases.map(f => <option key={f} value={f}>{f}</option>)}
