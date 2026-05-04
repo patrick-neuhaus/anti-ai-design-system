@@ -609,17 +609,8 @@ function LoginScreen({ onLogin }) {
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────
-function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
+function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCollapsed }) {
   const reducedMotion = useReducedMotion(); // F-RP-012
-  // Auto-collapse mobile (<= 768px)
-  const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth <= 768) setCollapsed(true);
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
 
   const tpl = TEMPLATES[templateKey];
   const initials = tpl.user.name.split(" ").slice(0,2).map(w=>w[0]).join("");
@@ -643,9 +634,11 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
           }
           {!collapsed && <span className="sidebar-logo-tag">{tpl.label}</span>}
         </div>
-        {/* Back to showcase — F-UX-016 */}
-        {!collapsed && (
+        {/* Back to showcase — F-UX-016. So aparece em iframe (template embedded
+            via showcase template-card). Standalone (aberto direto) esconde. */}
+        {!collapsed && typeof window !== "undefined" && window.parent !== window && (
           <a href="../showcase/index.html"
+            target="_top"
             title="Voltar para o showcase"
             style={{
               marginLeft: "auto",
@@ -671,7 +664,9 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout }) {
       <nav className="sidebar-nav">
         {tpl.navGroups.map((grp) => (
           <React.Fragment key={grp.label}>
-            {!collapsed && <div className="nav-section-label">{grp.label}</div>}
+            {/* Label sempre renderizado pra manter spacing vertical entre groups quando collapsed.
+                CSS .collapsed .nav-section-label esconde texto (opacity 0) mas padding mantem altura. */}
+            <div className="nav-section-label">{grp.label}</div>
             {grp.items.map(({ k, lbl, Icon, badge }) => (
               <div key={k}
                 className={`nav-item${activePage === k ? " active" : ""}`}
@@ -758,8 +753,8 @@ function CrmDashboard({ onNav }) {
   return (
     <div className="page-content">
       <div className="page-header">
+        <Breadcrumb items={["CRM", "Vendas", "Dashboard"]} />
         <div className="page-header-stack">
-          <span className="page-crumb">crm · dashboard</span>
           <h2 className="page-title">Dashboard</h2>
           <p className="page-sub">Pipeline de vendas e conversão</p>
         </div>
@@ -2139,6 +2134,15 @@ function App() {
   })();
   const [session, setSession] = useState(initDemo);
   const [activePage, setActivePage] = useState("dashboard");
+  // Sidebar collapsed estado (lifted pra parent — sincroniza com .app-shell.collapsed grid)
+  const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth <= 768) setCollapsed(true);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   // Apply theme from URL ?theme= on mount
   useEffect(() => {
@@ -2181,12 +2185,14 @@ function App() {
   };
 
   return (
-    <div className="app-shell" style={{ gridTemplateColumns: undefined, transition: reducedMotion ? "none" : undefined }}>
+    <div className={`app-shell${collapsed ? " collapsed" : ""}`} style={{ transition: reducedMotion ? "none" : undefined }}>
       <AppSidebar
         templateKey={session}
         activePage={activePage}
         onNav={setActivePage}
         onLogout={() => { setSession(null); setActivePage("dashboard"); }}
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
       />
       <main className="main-area">
         {renderPage()}
