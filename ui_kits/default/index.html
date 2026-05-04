@@ -234,7 +234,10 @@ a{color:inherit;text-decoration:none}
 
 <script type="text/babel" src="components/Icon.jsx"></script>
 <script type="text/babel" src="components/brand/Logo.jsx"></script>
+<script type="text/babel" src="components/base/Button.jsx"></script>
+<script type="text/babel" src="components/base/Input.jsx"></script>
 <script type="text/babel" src="components/base/ToggleGroup.jsx"></script>
+<script type="text/babel" src="components/surfaces/Card.jsx"></script>
 <script type="text/babel" src="components/display/Drawer.jsx"></script>
 <script type="text/babel" src="components/display/Dialog.jsx"></script>
 <script type="text/babel" src="components/navigation/UserMenu.jsx"></script>
@@ -619,7 +622,7 @@ function LoginScreen({ onLogin }) {
               <div className="err-msg" role="alert" aria-live="polite">{error}</div>
             )}
             {/* F-CA-011: loading state + aria-busy on submit button */}
-            <button type="submit" className="aa-btn aa-btn--primary aa-btn--md aa-btn--full" disabled={loading} aria-busy={loading}>
+            <Button type="submit" variant="primary" size="md" fullWidth disabled={loading} aria-busy={loading}>
               {loading ? (
                 <>
                   <span style={{
@@ -632,7 +635,7 @@ function LoginScreen({ onLogin }) {
                   Entrando...
                 </>
               ) : (<><I.Check size={16} /> Entrar</>)}
-            </button>
+            </Button>
           </form>
 
           <p style={{ fontSize:12, color:"hsl(var(--muted-foreground))", textAlign:"center", margin:0 }}>
@@ -712,7 +715,7 @@ function OpsDashboard({ onNav }) {
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Romaneios recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas 72 horas</p></div>
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("romaneios")}>Ver todos</button>
+          <Button variant="outline" size="sm" onClick={()=>onNav("romaneios")}>Ver todos</Button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Data</th><th>Transportadora</th><th>Status</th></tr></thead>
@@ -836,7 +839,7 @@ function FunnelStagesChart({ onSeeAll }) {
           <h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Funil por fase</h3>
           <p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Volume R$ por estágio</p>
         </div>
-        <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={onSeeAll}>Ver pipeline</button>
+        <Button variant="outline" size="sm" onClick={onSeeAll}>Ver pipeline</Button>
       </div>
       <div style={{ padding:"4px 20px 20px", display:"flex", flexDirection:"column", gap:14 }}>
         {stages.map(s => {
@@ -930,7 +933,7 @@ function WikiDashboard({ onNav }) {
       <div className="card" style={{ padding:0 }}>
         <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div><h3 style={{ fontSize:14,fontWeight:600,margin:0 }}>Artigos recentes</h3><p style={{ fontSize:12,color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Últimas publicações</p></div>
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>onNav("artigos")}>Ver todos</button>
+          <Button variant="outline" size="sm" onClick={()=>onNav("artigos")}>Ver todos</Button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Título</th><th>Autor</th><th>Views</th><th>Status</th></tr></thead>
@@ -969,19 +972,19 @@ function Pagination({ page, total, perPage, onChange }) {
   const totalPages = Math.ceil(total / perPage);
   return (
     <div style={{ display:"flex", alignItems:"center", gap:4, justifyContent:"flex-end", marginTop:4 }}>
-      <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => onChange(page-1)} disabled={page <= 1}
-        style={{ padding:"5px 10px" }}>←</button>
+      <Button variant="outline" size="sm" onClick={() => onChange(page-1)} disabled={page <= 1}
+        style={{ padding:"5px 10px" }}>←</Button>
       {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
         const p = i + 1;
         return (
-          <button key={p} className="aa-btn aa-btn--sm" onClick={() => onChange(p)}
+          <Button key={p} variant="ghost" size="sm" onClick={() => onChange(p)}
             style={{ padding:"5px 10px", background: page===p ? "hsl(var(--primary))" : "hsl(var(--card))", color: page===p ? "hsl(var(--primary-foreground))" : "hsl(var(--foreground))", border:"1px solid hsl(var(--border))", borderRadius:8 }}>
             {p}
-          </button>
+          </Button>
         );
       })}
-      <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => onChange(page+1)} disabled={page >= totalPages}
-        style={{ padding:"5px 10px" }}>→</button>
+      <Button variant="outline" size="sm" onClick={() => onChange(page+1)} disabled={page >= totalPages}
+        style={{ padding:"5px 10px" }}>→</Button>
       <span style={{ fontSize:11, color:"hsl(var(--muted-foreground))", marginLeft:6, fontFamily:"var(--font-mono)" }}>
         {(page-1)*perPage+1}–{Math.min(page*perPage,total)} de {total}
       </span>
@@ -1053,7 +1056,7 @@ function EmptyState({ icon, title, desc, action, onAction }) {
       <div style={{ fontSize:40, marginBottom:12 }}>{icon || "📭"}</div>
       <h3 style={{ fontSize:16, fontWeight:600, color:"hsl(var(--foreground))", margin:"0 0 8px" }}>{title}</h3>
       {desc && <p style={{ fontSize:13, margin:"0 0 20px", lineHeight:1.6 }}>{desc}</p>}
-      {action && <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={onAction}>{action}</button>}
+      {action && <Button variant="primary" size="sm" onClick={onAction}>{action}</Button>}
     </div>
   );
 }
@@ -1073,11 +1076,11 @@ function NumberStepper({ value, onChange, min=0, max=999, step=1, label }) {
     <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
       {label && <span style={{ fontSize:12, fontWeight:500 }}>{label}</span>}
       <div style={{ display:"flex", alignItems:"center", border:"1.5px solid hsl(var(--border))", borderRadius:8, overflow:"hidden", width:"fit-content" }}>
-        <button className="aa-btn aa-btn--ghost aa-btn--md" onClick={() => onChange(Math.max(min, value-step))}
-          style={{ padding:"6px 10px", borderRadius:0, borderRight:"1px solid hsl(var(--border))" }}>−</button>
+        <Button variant="ghost" size="md" onClick={() => onChange(Math.max(min, value-step))}
+          style={{ padding:"6px 10px", borderRadius:0, borderRight:"1px solid hsl(var(--border))" }}>−</Button>
         <span style={{ padding:"6px 14px", fontFamily:"var(--font-mono)", fontSize:13, minWidth:40, textAlign:"center" }}>{value}</span>
-        <button className="aa-btn aa-btn--ghost aa-btn--md" onClick={() => onChange(Math.min(max, value+step))}
-          style={{ padding:"6px 10px", borderRadius:0, borderLeft:"1px solid hsl(var(--border))" }}>+</button>
+        <Button variant="ghost" size="md" onClick={() => onChange(Math.min(max, value+step))}
+          style={{ padding:"6px 10px", borderRadius:0, borderLeft:"1px solid hsl(var(--border))" }}>+</Button>
       </div>
     </div>
   );
@@ -1183,12 +1186,12 @@ function RomaneiosPage() {
         </div>
         <div className="page-actions">
           {selected.size > 0 && (
-            <button className="aa-btn aa-btn--destructive aa-btn--sm" onClick={() => setConfirmDialog(true)}>
+            <Button variant="destructive" size="sm" onClick={() => setConfirmDialog(true)}>
               <I.Trash2 size={13}/> Excluir {selected.size} selecionados
-            </button>
+            </Button>
           )}
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={simulateReload}><I.RotateCcw size={13}/> Atualizar</button>
-          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Novo romaneio</button>
+          <Button variant="outline" size="sm" onClick={simulateReload}><I.RotateCcw size={13}/> Atualizar</Button>
+          <Button variant="primary" size="sm"><I.Plus size={13}/> Novo romaneio</Button>
         </div>
       </div>
 
@@ -1205,9 +1208,9 @@ function RomaneiosPage() {
             placeholder="Todas transportadoras"
             options={transportadoras.map(t => ({ value:t, label:t }))} />
           {(search||statusFilter||transFilter) && (
-            <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => { setSearch(""); setStatusFilter(""); setTransFilter(""); setPage(1); }}>
+            <Button variant="ghost" size="sm" onClick={() => { setSearch(""); setStatusFilter(""); setTransFilter(""); setPage(1); }}>
               Limpar filtros
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -1256,9 +1259,9 @@ function RomaneiosPage() {
                   <td className="mono">{r.valor}</td>
                   <td><span className={`pill ${r.status}`}><span className="dot"/>{r.label}</span></td>
                   <td>
-                    <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => setDrawer(r)} style={{ padding:"4px 8px" }}>
+                    <Button variant="ghost" size="sm" onClick={() => setDrawer(r)} style={{ padding:"4px 8px" }}>
                       <I.Info size={13}/> Detalhes
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -1293,8 +1296,8 @@ function RomaneiosPage() {
             </div>
             <TextareaField label="Observações" placeholder="Adicione uma observação…" value="" onChange={() => {}} />
             <div style={{ display:"flex", gap:8 }}>
-              <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }} onClick={() => setDrawer(null)}>Salvar observações</button>
-              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setDrawer(null)}>Fechar</button>
+              <Button variant="primary" size="sm" style={{ flex:1 }} onClick={() => setDrawer(null)}>Salvar observações</Button>
+              <Button variant="outline" size="sm" onClick={() => setDrawer(null)}>Fechar</Button>
             </div>
           </div>
         )}
@@ -1306,10 +1309,10 @@ function RomaneiosPage() {
           Você está prestes a excluir <strong style={{ color:"hsl(var(--foreground))" }}>{selected.size} romaneios</strong>. Esta ação é irreversível.
         </p>
         <div style={{ display:"flex", gap:8, justifyContent:"flex-end" }}>
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setConfirmDialog(false)}>Cancelar</button>
-          <button className="aa-btn aa-btn--destructive aa-btn--sm" onClick={() => { setSelected(new Set()); setConfirmDialog(false); }}>
+          <Button variant="outline" size="sm" onClick={() => setConfirmDialog(false)}>Cancelar</Button>
+          <Button variant="destructive" size="sm" onClick={() => { setSelected(new Set()); setConfirmDialog(false); }}>
             <I.Trash2 size={13}/> Confirmar exclusão
-          </button>
+          </Button>
         </div>
       </Dialog>
     </div>
@@ -1474,8 +1477,8 @@ function FilterBar({ search, setSearch, filters, setFilters, savedViews, activeV
             </div>
           ))}
           <div style={{ display:"flex", gap:6, marginTop:12, paddingTop:10, borderTop:"1px solid hsl(var(--border))" }}>
-            <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={clearAll}>Limpar</button>
-            <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }} onClick={() => setPopoverOpen(false)}>Aplicar</button>
+            <Button variant="ghost" size="sm" onClick={clearAll}>Limpar</Button>
+            <Button variant="primary" size="sm" style={{ flex:1 }} onClick={() => setPopoverOpen(false)}>Aplicar</Button>
           </div>
         </div>
       )}
@@ -1545,7 +1548,7 @@ function PipelinePage() {
           <p className="page-sub">{currentFunnel.desc} · {cards.length} oportunidades</p>
         </div>
         <div className="page-actions">
-          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Nova oportunidade</button>
+          <Button variant="primary" size="sm"><I.Plus size={13}/> Nova oportunidade</Button>
         </div>
       </div>
 
@@ -1696,8 +1699,8 @@ function PipelinePage() {
               <TextareaField label="Descrição da oportunidade" placeholder="Contexto, histórico, próximos passos…" value={nota} onChange={setNota} rows={3} />
             </div>
             <div style={{ gridColumn:"1/-1", display:"flex", gap:8 }}>
-              <button className="aa-btn aa-btn--primary aa-btn--sm">Salvar configuração</button>
-              <button className="aa-btn aa-btn--outline aa-btn--sm">Descartar</button>
+              <Button variant="primary" size="sm">Salvar configuração</Button>
+              <Button variant="outline" size="sm">Descartar</Button>
             </div>
           </div>
         </div>
@@ -1728,8 +1731,8 @@ function PipelinePage() {
             </div>
             <TextareaField label="Notas internas" placeholder="Observações sobre a oportunidade…" value={nota} onChange={setNota} rows={3} />
             <div style={{ display:"flex", gap:8 }}>
-              <button className="aa-btn aa-btn--primary aa-btn--sm" style={{ flex:1 }}>Salvar</button>
-              <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={() => setDrawerCard(null)}>Fechar</button>
+              <Button variant="primary" size="sm" style={{ flex:1 }}>Salvar</Button>
+              <Button variant="outline" size="sm" onClick={() => setDrawerCard(null)}>Fechar</Button>
             </div>
           </div>
         )}
@@ -1804,7 +1807,7 @@ function LeadsPage({ onNav, setSelectedLeadId }) {
               placeholder="Buscar lead, empresa ou contato…"
             />
           </div>
-          <button className="aa-btn aa-btn--accent aa-btn--sm" style={{ flexShrink:0 }}>+ Novo lead</button>
+          <Button variant="accent" size="sm" style={{ flexShrink:0 }}>+ Novo lead</Button>
         </div>
         <table className="tbl">
           <thead><tr><th>ID</th><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Cen.</th><th>Fase</th><th>Valor</th><th>Contato</th></tr></thead>
@@ -2087,7 +2090,7 @@ function ConversasPage({ selectedLeadId }) {
                         color: iaPaused ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
                         boxShadow: iaPaused ? "0 1px 2px hsl(var(--foreground)/.08)" : "none" }}>Manual</button>
                   </div>
-                  <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Mais opções">⋯</button>
+                  <Button variant="ghost" size="sm" title="Mais opções">⋯</Button>
                 </div>
               </div>
               <div style={{ flex:1, overflowY:"auto", padding:"20px", display:"flex", flexDirection:"column", gap:10, background:"hsl(var(--background))" }}>
@@ -2140,7 +2143,7 @@ function ConversasPage({ selectedLeadId }) {
                 <div style={{ padding:"14px 20px", borderTop:"1px solid hsl(var(--border))", display:"flex", gap:8, alignItems:"center" }}>
                   <input type="text" placeholder="Modo manual ativo: digite resposta…" aria-label="Digite mensagem" value={draft} onChange={e=>setDraft(e.target.value)}
                     style={{ flex:1, padding:"10px 14px", borderRadius:10, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
-                  <button className="aa-btn aa-btn--primary aa-btn--sm" disabled={!draft.trim()}>Enviar</button>
+                  <Button variant="primary" size="sm" disabled={!draft.trim()}>Enviar</Button>
                 </div>
               ) : (
                 <div style={{ padding:"16px 20px", borderTop:"1px solid hsl(var(--border))", textAlign:"center", fontSize:12, color:"hsl(var(--muted-foreground))", display:"flex", justifyContent:"center", alignItems:"center", gap:8 }}>
@@ -2196,7 +2199,7 @@ function PromptsPage() {
           <p className="page-sub">Biblioteca de templates de mensagem · {Object.values(PROMPT_DATA).flat().length} prompts</p>
         </div>
         <div className="page-actions">
-          <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={() => setEditing({ id:"NOVO", titulo:"", versao:"v1", uso:0, taxa:0, body:"# Novo prompt\n\nOlá {{nome}}!\n\n*Descreva aqui o objetivo* e o **call-to-action**." })}><I.Plus size={13}/> Novo prompt</button>
+          <Button variant="primary" size="sm" onClick={() => setEditing({ id:"NOVO", titulo:"", versao:"v1", uso:0, taxa:0, body:"# Novo prompt\n\nOlá {{nome}}!\n\n*Descreva aqui o objetivo* e o **call-to-action**." })}><I.Plus size={13}/> Novo prompt</Button>
         </div>
       </div>
       <div className="tabs-nav">
@@ -2216,8 +2219,8 @@ function PromptsPage() {
                 <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)" }}>{p.id} · {p.versao}</div>
               </div>
               <div style={{ display:"flex", gap:4 }}>
-                <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Editar" onClick={() => setEditing(p)}><I.Edit size={13} /></button>
-                <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Duplicar"><I.Copy size={13} /></button>
+                <Button variant="ghost" size="sm" title="Editar" onClick={() => setEditing(p)}><I.Edit size={13} /></Button>
+                <Button variant="ghost" size="sm" title="Duplicar"><I.Copy size={13} /></Button>
               </div>
             </div>
             <div style={{ fontSize:12, lineHeight:1.5, color:"hsl(var(--foreground))", padding:12, background:"hsl(var(--muted) / .4)", borderRadius:10, border:"1px solid hsl(var(--border))", fontFamily:"var(--font-mono)" }}>
@@ -2290,8 +2293,8 @@ function PromptEditor({ prompt, onClose }) {
           </div>
         </div>
         <div style={{ display:"flex", gap:8, marginTop:"auto", paddingTop:12, borderTop:"1px solid hsl(var(--border))" }}>
-          <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={onClose} style={{ flex:1 }}>Salvar</button>
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={onClose}>Cancelar</button>
+          <Button variant="primary" size="sm" onClick={onClose} style={{ flex:1 }}>Salvar</Button>
+          <Button variant="outline" size="sm" onClick={onClose}>Cancelar</Button>
         </div>
       </div>
     </Drawer>
@@ -2353,7 +2356,7 @@ function ArticlesPage() {
           <p className="page-sub">Encontre artigos, guias e políticas internas. {ARTICLES_ALL.length} documentos publicados.</p>
         </div>
         <div className="page-actions">
-          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Novo artigo</button>
+          <Button variant="primary" size="sm"><I.Plus size={13}/> Novo artigo</Button>
         </div>
       </div>
 
@@ -2389,7 +2392,7 @@ function ArticlesPage() {
               <input className="field-input" placeholder="Buscar artigos, tags…" value={search}
                 onChange={e => simulateSearch(e.target.value)}
                 style={{ flex:1, padding:"6px 10px", border:"none", background:"transparent", outline:"none", fontSize:13, color:"hsl(var(--foreground))" }} />
-              {search && <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => simulateSearch("")} style={{ padding:"4px 8px" }}>×</button>}
+              {search && <Button variant="ghost" size="sm" onClick={() => simulateSearch("")} style={{ padding:"4px 8px" }}>×</Button>}
             </div>
           </div>
 
@@ -2399,9 +2402,9 @@ function ArticlesPage() {
               {filtered.length} {filtered.length === 1 ? "artigo" : "artigos"} encontrados
             </span>
             {(selectedCats.size > 0 || statusFilter || search) && (
-              <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={() => { setSelectedCats(new Set()); setStatusFilter(""); setSearch(""); setPage(1); }}>
+              <Button variant="ghost" size="sm" onClick={() => { setSelectedCats(new Set()); setStatusFilter(""); setSearch(""); setPage(1); }}>
                 Limpar filtros
-              </button>
+              </Button>
             )}
           </div>
 
@@ -2543,17 +2546,17 @@ function ProfileScreen({ user }) {
                   <input className="field-input" value={user.email || `${user.name.toLowerCase().replace(" ",".")}@exemplo.com`} disabled style={{ opacity:.6 }} />
                 </div>
                 <div style={{ display:"flex",gap:8 }}>
-                  <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSave}>Salvar</button>
-                  <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>setEditing(false)}>Cancelar</button>
+                  <Button variant="primary" size="sm" onClick={handleSave}>Salvar</Button>
+                  <Button variant="outline" size="sm" onClick={()=>setEditing(false)}>Cancelar</Button>
                 </div>
               </div>
             ) : (
               <>
                 <div style={{ fontSize:20,fontWeight:600,marginBottom:4 }}>{name}</div>
                 <div style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>{user.role}</div>
-                <button className="aa-btn aa-btn--outline aa-btn--sm" style={{ marginTop:14 }} onClick={()=>setEditing(true)}>
+                <Button variant="outline" size="sm" style={{ marginTop:14 }} onClick={()=>setEditing(true)}>
                   <I.Edit size={13}/> Editar perfil
-                </button>
+                </Button>
               </>
             )}
           </div>
@@ -2588,7 +2591,7 @@ function ProfileScreen({ user }) {
         {[["Senha","Última alteração há 14 dias","Alterar senha"],["2FA","Não configurado","Configurar 2FA"]].map(([l,d,btn])=>(
           <div key={l} style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid hsl(var(--border)/.6)" }}>
             <div><div style={{ fontSize:13,fontWeight:500 }}>{l}</div><div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>{d}</div></div>
-            <button className="aa-btn aa-btn--outline aa-btn--sm">{btn}</button>
+            <Button variant="outline" size="sm">{btn}</Button>
           </div>
         ))}
       </div>
@@ -2601,7 +2604,7 @@ function ProfileScreen({ user }) {
             <div style={{ fontSize:13,fontWeight:500 }}>Excluir conta</div>
             <div style={{ fontSize:11.5,color:"hsl(var(--muted-foreground))" }}>Remove todos os dados permanentemente</div>
           </div>
-          <button className="aa-btn aa-btn--destructive aa-btn--sm"><I.Trash2 size={13}/> Excluir conta</button>
+          <Button variant="destructive" size="sm"><I.Trash2 size={13}/> Excluir conta</Button>
         </div>
       </div>
     </div>
@@ -2800,15 +2803,15 @@ function SettingsScreen() {
           <p className="page-sub">Editor de tokens de cor + histórico + presets + export/import</p>
         </div>
         <div className="page-actions">
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleUndo} disabled={histIdx<=0} title="Desfazer">
+          <Button variant="outline" size="sm" onClick={handleUndo} disabled={histIdx<=0} title="Desfazer">
             <I.Undo size={13}/> Undo
-          </button>
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleRedo} disabled={histIdx>=history.length-1} title="Refazer">
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleRedo} disabled={histIdx>=history.length-1} title="Refazer">
             <I.Redo size={13}/> Redo
-          </button>
-          <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleResetAll}><I.RotateCcw size={13}/> Restaurar</button>
-          <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSave}
-            style={{ opacity: minContrast<3?0.5:1 }}><I.Save size={13}/> Salvar</button>
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleResetAll}><I.RotateCcw size={13}/> Restaurar</Button>
+          <Button variant="primary" size="sm" onClick={handleSave}
+            style={{ opacity: minContrast<3?0.5:1 }}><I.Save size={13}/> Salvar</Button>
         </div>
       </div>
 
@@ -2906,10 +2909,10 @@ function SettingsScreen() {
         <div className="card">
           <div className="card-header"><h3>Export / Import</h3><p>JSON e URL compartilhável</p></div>
           <div style={{ display:"flex",gap:10,flexWrap:"wrap" }}>
-            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={handleExportJson}><I.Copy size={14}/> Exportar JSON</button>
-            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={()=>importRef.current?.click()}><I.Upload size={14}/> Importar JSON</button>
+            <Button variant="outline" size="md" onClick={handleExportJson}><I.Copy size={14}/> Exportar JSON</Button>
+            <Button variant="outline" size="md" onClick={()=>importRef.current?.click()}><I.Upload size={14}/> Importar JSON</Button>
             <input ref={importRef} type="file" accept=".json" style={{ display:"none" }} onChange={handleImportJson} />
-            <button className="aa-btn aa-btn--outline aa-btn--md" onClick={handleShareUrl}><I.Link size={14}/> Copiar link de tema</button>
+            <Button variant="outline" size="md" onClick={handleShareUrl}><I.Link size={14}/> Copiar link de tema</Button>
           </div>
           <div style={{ marginTop:16,padding:16,borderRadius:10,background:"hsl(var(--muted)/.5)",fontFamily:"var(--font-mono)",fontSize:12,maxHeight:200,overflow:"auto",whiteSpace:"pre" }}>
             {JSON.stringify(overrides,null,2)||"// nenhum override ativo"}
@@ -2937,8 +2940,8 @@ function SettingsScreen() {
             })}
           </div>
           <div style={{ display:"flex",gap:8,marginTop:12 }}>
-            <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleUndo} disabled={histIdx<=0}><I.Undo size={13}/> Undo</button>
-            <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={handleRedo} disabled={histIdx>=history.length-1}><I.Redo size={13}/> Redo</button>
+            <Button variant="outline" size="sm" onClick={handleUndo} disabled={histIdx<=0}><I.Undo size={13}/> Undo</Button>
+            <Button variant="outline" size="sm" onClick={handleRedo} disabled={histIdx>=history.length-1}><I.Redo size={13}/> Redo</Button>
           </div>
         </div>
       )}
@@ -2950,7 +2953,7 @@ function SettingsScreen() {
           <div style={{ display:"flex",gap:8,marginBottom:16 }}>
             <input className="field-input" style={{ maxWidth:240 }} placeholder="Nome do tema (ex: verão 2026)"
               value={themeName} onChange={e=>setThemeName(e.target.value)} />
-            <button className="aa-btn aa-btn--primary aa-btn--sm" onClick={handleSaveNamed}><I.Save size={13}/> Salvar tema atual</button>
+            <Button variant="primary" size="sm" onClick={handleSaveNamed}><I.Save size={13}/> Salvar tema atual</Button>
           </div>
           {Object.keys(namedThemes).length===0
             ? <p style={{ fontSize:13,color:"hsl(var(--muted-foreground))" }}>Nenhum tema salvo ainda.</p>
@@ -2959,8 +2962,8 @@ function SettingsScreen() {
                 {Object.keys(namedThemes).map(name=>(
                   <div key={name} style={{ display:"flex",alignItems:"center",gap:12,padding:"10px 14px",borderRadius:10,border:"1px solid hsl(var(--border))",background:"hsl(var(--card))" }}>
                     <span style={{ flex:1,fontSize:13,fontWeight:500 }}>{name}</span>
-                    <button className="aa-btn aa-btn--outline aa-btn--sm" onClick={()=>handleLoadNamed(name)}>Carregar</button>
-                    <button className="aa-btn aa-btn--ghost aa-btn--sm" onClick={()=>{const n={...namedThemes};delete n[name];setNamedThemes(n);localStorage.setItem(STORAGE_KEY+"-named",JSON.stringify(n));}}><I.Trash2 size={13}/></button>
+                    <Button variant="outline" size="sm" onClick={()=>handleLoadNamed(name)}>Carregar</Button>
+                    <Button variant="ghost" size="sm" onClick={()=>{const n={...namedThemes};delete n[name];setNamedThemes(n);localStorage.setItem(STORAGE_KEY+"-named",JSON.stringify(n));}}><I.Trash2 size={13}/></Button>
                   </div>
                 ))}
               </div>
