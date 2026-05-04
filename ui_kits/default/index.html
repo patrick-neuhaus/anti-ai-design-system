@@ -231,11 +231,24 @@ a{color:inherit;text-decoration:none}
 .avatar-edit-btn:hover{background:hsl(var(--muted))}
 .avatar-upload-input{display:none}
 
-/* Tabs */
+/* Tabs (iter2 fix: indicator outside pattern + press anim — pega user-panel ::before vibe) */
 .tabs-nav{display:flex;gap:2px;border-bottom:1px solid hsl(var(--border));margin-bottom:20px}
-.tab-item{padding:10px 16px;font-size:13px;color:hsl(var(--muted-foreground));border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:color 150ms}
-.tab-item.active{color:hsl(var(--foreground));border-bottom-color:hsl(var(--ring));font-weight:500}
+.tab-item{padding:10px 16px;font-size:13px;color:hsl(var(--muted-foreground));margin-bottom:-1px;cursor:pointer;transition:color 150ms,transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1));position:relative;background:none;border:none;font-family:inherit}
 .tab-item:hover:not(.active){color:hsl(var(--foreground))}
+.tab-item:active{transform:scale(0.97)}
+.tab-item.active{color:hsl(var(--foreground));font-weight:500}
+.tab-item.active::after{content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:3px;background:hsl(var(--ring));border-radius:3px 3px 0 0}
+
+/* Custom scrollbar (iter2 fix — substitui scroll padrão feio) */
+.kanban-scroll::-webkit-scrollbar,
+*::-webkit-scrollbar{height:8px;width:8px}
+.kanban-scroll::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track{background:hsl(var(--muted) / .3);border-radius:4px}
+.kanban-scroll::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb{background:hsl(var(--muted-foreground) / .35);border-radius:4px;transition:background 150ms}
+.kanban-scroll::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover{background:hsl(var(--muted-foreground) / .55)}
+* {scrollbar-width:thin;scrollbar-color:hsl(var(--muted-foreground) / .35) hsl(var(--muted) / .3)}
 
 /* Danger zone */
 .danger-zone{border-top:1px solid hsl(var(--destructive)/.3);padding-top:20px;margin-top:4px}
@@ -506,7 +519,7 @@ const COLOR_PRESETS = {
     "--input":"222 20% 14%",
     /* ring-offset matches card surface so focus ring is visible on dark bg (Wave 1 TODO) */
     "--ring-offset":"222 20% 14%",
-    "--sidebar-background":"222 20% 7%","--sidebar-accent":"222 20% 15%","--sidebar-border":"222 20% 14%","--sidebar-indicator":"220 90% 65%",
+    "--sidebar-background":"222 20% 7%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 20% 15%","--sidebar-border":"222 20% 14%","--sidebar-indicator":"220 90% 65%",
     "--success":"152 70% 45%","--warning":"38 90% 55%","--destructive":"0 85% 55%",
     "--accent-decorative":"310 70% 65%",
   },
@@ -520,7 +533,7 @@ const COLOR_PRESETS = {
     "--muted":"220 15% 92%","--muted-foreground":"222 15% 38%",
     "--input":"0 0% 100%",
     "--ring-offset":"0 0% 100%",
-    "--sidebar-background":"222 25% 14%","--sidebar-accent":"222 22% 22%","--sidebar-border":"222 22% 19%","--sidebar-indicator":"280 65% 60%",
+    "--sidebar-background":"222 25% 14%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 22% 22%","--sidebar-border":"222 22% 19%","--sidebar-indicator":"280 65% 60%",
     "--success":"152 70% 35%","--warning":"38 88% 45%","--destructive":"0 80% 48%",
     "--accent-decorative":"310 65% 55%",
   },
@@ -1546,7 +1559,7 @@ function PipelinePage() {
       </div>
 
       {activeTab === "kanban" && (
-        <div style={{ display:"grid", gridTemplateColumns:`repeat(${PIPELINE_STAGES.length},1fr)`, gap:12, overflowX:"auto" }}>
+        <div className="kanban-scroll" style={{ display:"grid", gridTemplateColumns:`repeat(${PIPELINE_STAGES.length},1fr)`, gap:12, overflowX:"auto", paddingBottom:14 }}>
           {PIPELINE_STAGES.map(stage => (
             <div key={stage} style={{ minWidth:160 }}>
               <div style={{ fontSize:11, fontWeight:600, textTransform:"uppercase", letterSpacing:".06em", color:"hsl(var(--muted-foreground))", padding:"0 4px 8px", display:"flex", justifyContent:"space-between" }}>
