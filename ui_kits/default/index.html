@@ -86,7 +86,8 @@ a{color:inherit;text-decoration:none}
 .sidebar-nav::-webkit-scrollbar-thumb{background:hsl(var(--sidebar-foreground)/.18);border-radius:4px}
 
 /* Toggle bolinha — fica fora do clip da sidebar */
-.sidebar-toggle{position:absolute;right:-14px;top:60px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms,transform 150ms;box-shadow:0 2px 8px hsl(var(--foreground)/.18)}
+.sidebar-toggle{position:absolute;right:-14px;top:60px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms,transform 150ms,right 220ms ease;box-shadow:0 2px 8px hsl(var(--foreground)/.18)}
+.collapsed .sidebar-toggle{right:-14px;top:78px}
 .sidebar-toggle:hover{background:hsl(var(--muted));box-shadow:0 3px 12px hsl(var(--foreground)/.25);transform:scale(1.08)}
 
 /* Brand logo + label diagonal sobre logo */
@@ -100,7 +101,7 @@ a{color:inherit;text-decoration:none}
 
 /* Nav items */
 .nav-section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.45);padding:12px 10px 4px;white-space:nowrap;overflow:hidden}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;overflow:hidden;min-width:0;transition:background 120ms,color 120ms;background:none;border:none;font-family:inherit;text-align:left;width:100%}
 .nav-item:hover{background:hsl(var(--sidebar-accent)/.6);color:hsl(var(--sidebar-foreground))}
 .nav-item.active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground));font-weight:500}
 /* W1.6 followup / F-INT-019: indicator agora dentro do nav-item (left:0) pra nao ser cortado por overflow-x:hidden da sidebar-nav quando colapsada */
@@ -147,7 +148,8 @@ a{color:inherit;text-decoration:none}
 .collapsed .sidebar-logo-tag{font-size:7px;top:-4px;right:-6px}
 
 /* User panel — flex-shrink:0 pra nao ser comprimido + cursor pointer no clickable area */
-.user-panel{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:8px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0}
+.user-panel{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:8px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0;transition:border-color 150ms,box-shadow 150ms}
+.user-panel.account-active{border-color:hsl(var(--sidebar-indicator)/.6);box-shadow:inset 2px 0 0 hsl(var(--sidebar-indicator))}
 .user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left}
 .user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-foreground))}
 .avatar{width:34px;height:34px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}
@@ -156,7 +158,7 @@ a{color:inherit;text-decoration:none}
 .user-info{flex:1;min-width:0;overflow:hidden}
 .user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-actions{display:flex;gap:2px;flex-shrink:0}
-.user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer}
+.user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer;background:none;border:none;padding:0;font-family:inherit}
 .user-action-btn:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-foreground))}
 .user-info,.user-actions{opacity:1;max-width:200px;transform:translateX(0);transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;visibility:visible;overflow:hidden}
 /* Collapsed: user-info esconde (so name), MAS user-actions ficam visiveis em column.
@@ -726,22 +728,23 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCo
                 CSS .collapsed .nav-section-label esconde texto (opacity 0) mas padding mantem altura. */}
             <div className="nav-section-label">{grp.label}</div>
             {grp.items.map(({ k, lbl, Icon, badge }) => (
-              <div key={k}
+              <button key={k} type="button"
                 className={`nav-item${activePage === k ? " active" : ""}`}
                 onClick={() => onNav(k)}
+                aria-current={activePage === k ? "page" : undefined}
                 title={collapsed ? lbl : undefined}>
                 <Icon size={16} />
                 <span className="nav-label">{lbl}</span>
                 {badge && !collapsed && <span className="nav-badge">{badge}</span>}
-              </div>
+              </button>
             ))}
           </React.Fragment>
         ))}
       </nav>
 
       {/* User panel — clique no avatar/nome abre Perfil; botoes Config/Sair separados */}
-      <div className="user-panel">
-        <button className="user-panel-clickable" onClick={() => onNav("profile")} title="Meu perfil">
+      <div className={`user-panel${activePage === "profile" || activePage === "settings" ? " account-active" : ""}`}>
+        <button className="user-panel-clickable" onClick={() => onNav("profile")} title="Meu perfil" aria-current={activePage === "profile" ? "page" : undefined}>
           <div className="avatar">{initials}</div>
           <div className="user-info">
             <div className="user-name">{tpl.user.name}</div>
@@ -751,16 +754,16 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCo
             nao perder config + logout (Patrick: 'devia ficar vertical quando colapsa') */}
         <div className="user-actions">
           {templateKey === "crm" && onToggleTheme && (
-            <div className="user-action-btn" title={themeMode === "light" ? "Modo escuro" : "Modo claro"} onClick={onToggleTheme}>
+            <button type="button" className="user-action-btn" title={themeMode === "light" ? "Modo escuro" : "Modo claro"} onClick={onToggleTheme}>
               {themeMode === "light" ? <I.Moon size={14} /> : <I.Sun size={14} />}
-            </div>
+            </button>
           )}
-          <div className="user-action-btn" title="Configurações" onClick={() => onNav("settings")}>
+          <button type="button" className="user-action-btn" title="Configurações" onClick={() => onNav("settings")} aria-current={activePage === "settings" ? "page" : undefined}>
             <I.Settings size={14} />
-          </div>
-          <div className="user-action-btn" title="Sair" onClick={onLogout}>
+          </button>
+          <button type="button" className="user-action-btn" title="Sair" onClick={onLogout}>
             <I.LogOut size={14} />
-          </div>
+          </button>
         </div>
       </div>
     </aside>
@@ -811,8 +814,8 @@ function OpsDashboard({ onNav }) {
 function CrmDashboard({ onNav }) {
   return (
     <div className="page-content">
+      <Breadcrumb items={["CRM", "Vendas", "Dashboard"]} />
       <div className="page-header">
-        <Breadcrumb items={["CRM", "Vendas", "Dashboard"]} />
         <div className="page-header-stack">
           <h2 className="page-title">Dashboard</h2>
           <p className="page-sub">Pipeline de vendas e conversão</p>
@@ -1568,8 +1571,8 @@ function ContatosPage() {
   const fases = ["Novo","Em andamento","Quente","Em risco"];
   return (
     <div className="page-content">
+      <Breadcrumb items={["CRM", "Vendas", "Contatos"]} />
       <div className="page-header">
-        <Breadcrumb items={["CRM", "Vendas", "Contatos"]} />
         <div className="page-header-stack">
           <h2 className="page-title">Contatos</h2>
           <p className="page-sub">Base de contatos comerciais ativos</p>
@@ -1643,8 +1646,8 @@ function RelatoriosPage() {
   ];
   return (
     <div className="page-content">
+      <Breadcrumb items={["CRM", "Análise", "Relatórios"]} />
       <div className="page-header">
-        <Breadcrumb items={["CRM", "Análise", "Relatórios"]} />
         <div className="page-header-stack">
           <h2 className="page-title">Relatórios</h2>
           <p className="page-sub">Análise de performance comercial</p>
