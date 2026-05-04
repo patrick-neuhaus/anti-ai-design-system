@@ -91,7 +91,7 @@ a{color:inherit;text-decoration:none}
 .sidebar-toggle:hover{background:hsl(var(--muted));box-shadow:0 3px 12px hsl(var(--foreground)/.25);transform:scale(1.08)}
 
 /* Brand logo + label diagonal sobre logo */
-.sidebar-brand{display:flex;align-items:center;gap:10px;padding:6px 10px 16px;min-width:0;flex-shrink:0}
+.sidebar-brand{display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 10px 16px;min-width:0;flex-shrink:0}
 .sidebar-logo-wrap{position:relative;flex-shrink:0;display:inline-block}
 .sidebar-logo-full{height:30px;width:auto;display:block}
 .sidebar-logo-icon{width:30px;height:30px;border-radius:7px;display:block;object-fit:contain}
@@ -815,9 +815,9 @@ function OpsDashboard({ onNav }) {
 function CrmDashboard({ onNav }) {
   return (
     <div className="page-content">
-      <Breadcrumb items={["CRM", "Vendas", "Dashboard"]} />
       <div className="page-header">
         <div className="page-header-stack">
+          <span className="page-crumb">crm · vendas · dashboard</span>
           <h2 className="page-title">Dashboard</h2>
           <p className="page-sub">Pipeline de vendas e conversão</p>
         </div>
@@ -1406,9 +1406,9 @@ function PipelinePage() {
 
   return (
     <div className="page-content">
-      <Breadcrumb items={["CRM", "Vendas", "Pipeline"]} />
       <div className="page-header">
         <div className="page-header-stack">
+          <span className="page-crumb">crm · vendas · pipeline</span>
           <h2 className="page-title">Pipeline de Vendas</h2>
           <p className="page-sub">Gerencie oportunidades por fase. Clique num card para ver detalhes.</p>
         </div>
@@ -1588,9 +1588,9 @@ function ContatosPage() {
   const fases = ["Novo","Em andamento","Quente","Em risco"];
   return (
     <div className="page-content">
-      <Breadcrumb items={["CRM", "Vendas", "Contatos"]} />
       <div className="page-header">
         <div className="page-header-stack">
+          <span className="page-crumb">crm · vendas · contatos</span>
           <h2 className="page-title">Contatos</h2>
           <p className="page-sub">Base de contatos comerciais ativos</p>
         </div>
@@ -1666,9 +1666,9 @@ function RelatoriosPage() {
   useEffect(() => { const r = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(r); }, []);
   return (
     <div className="page-content">
-      <Breadcrumb items={["CRM", "Análise", "Relatórios"]} />
       <div className="page-header">
         <div className="page-header-stack">
+          <span className="page-crumb">crm · análise · relatórios</span>
           <h2 className="page-title">Relatórios</h2>
           <p className="page-sub">Análise de performance comercial</p>
         </div>
