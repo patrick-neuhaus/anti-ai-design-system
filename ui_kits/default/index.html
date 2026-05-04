@@ -233,6 +233,24 @@ a{color:inherit;text-decoration:none}
 /* Danger zone */
 .danger-zone{border-top:1px solid hsl(var(--destructive)/.3);padding-top:20px;margin-top:4px}
 /* D2: @keyframes btn-spin removido — login spinner agora usa aa-btn-spin de _aa-btn.css. */
+
+/* ===== REFLOW (Skill #1 audit A3 — WCAG 1.4.10 320 CSS px) ===== */
+@media (max-width:640px){
+  .page-content{padding:16px 14px 32px;gap:14px}
+  .page-header{flex-direction:column;align-items:flex-start;gap:8px}
+  .page-header-stack{min-width:0;width:100%}
+  .page-title{font-size:24px;line-height:1.2;word-break:break-word}
+  .page-sub{word-break:break-word}
+  .kpis{grid-template-columns:1fr;gap:10px}
+  .kpi{padding:14px 16px}
+  .kpi-value{font-size:22px}
+  /* Grids inline 1fr 1fr quebram em 1col */
+  .page-content > div[style*="grid-template-columns"]{grid-template-columns:1fr !important}
+}
+@media (max-width:380px){
+  .page-content{padding:12px 10px 24px}
+  .card{padding:14px 16px;border-radius:14px}
+}
 </style>
 </head>
 <body class="preset-base">
@@ -296,6 +314,8 @@ const I = {
   Link:        ic(["M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71","M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"]),
   Undo:        ic(["M3 7v6h6","M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"]),
   Redo:        ic(["M21 7v6h-6","M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"]),
+  Sun:         ic(["M12 3v2","M12 19v2","M5 12H3","M21 12h-2","M5.6 5.6l1.4 1.4","M17 17l1.4 1.4","M5.6 18.4 7 17","M17 7l1.4-1.4","M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"]),
+  Moon:        ic(["M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"]),
 };
 
 // ─── Color utils ─────────────────────────────────────────────────
@@ -457,13 +477,34 @@ const COLOR_PRESETS = {
   "CRM Dark": {
     "--primary":"220 90% 55%","--accent":"280 70% 65%",
     "--background":"222 20% 10%","--foreground":"220 15% 92%",
-    "--card":"222 20% 14%","--border":"222 20% 20%",
+    "--card":"222 20% 14%","--card-foreground":"220 15% 92%",
+    "--popover":"222 20% 14%","--popover-foreground":"220 15% 92%",
+    "--secondary":"222 20% 18%","--secondary-foreground":"220 15% 92%",
+    "--border":"222 20% 22%",
+    /* muted: dark variant pra evitar fallback claro do default (Skill #1 audit F1 — fix "bars brancas" em pill/badges) */
+    "--muted":"222 20% 20%",
     /* muted-foreground: bumped from 65% → 72% for WCAG AA 4.5:1 vs dark bg (F-UX-002 / F-UI-008) */
     "--muted-foreground":"220 15% 72%",
+    "--input":"222 20% 14%",
     /* ring-offset matches card surface so focus ring is visible on dark bg (Wave 1 TODO) */
     "--ring-offset":"222 20% 14%",
-    "--sidebar-background":"222 20% 7%","--sidebar-accent":"222 20% 15%","--sidebar-indicator":"220 90% 65%",
+    "--sidebar-background":"222 20% 7%","--sidebar-accent":"222 20% 15%","--sidebar-border":"222 20% 14%","--sidebar-indicator":"220 90% 65%",
     "--success":"152 70% 45%","--warning":"38 90% 55%","--destructive":"0 85% 55%",
+    "--accent-decorative":"310 70% 65%",
+  },
+  "CRM Light": {
+    "--primary":"220 85% 45%","--accent":"280 65% 55%",
+    "--background":"220 20% 98%","--foreground":"222 25% 14%",
+    "--card":"0 0% 100%","--card-foreground":"222 25% 14%",
+    "--popover":"0 0% 100%","--popover-foreground":"222 25% 14%",
+    "--secondary":"220 15% 94%","--secondary-foreground":"222 25% 14%",
+    "--border":"220 15% 88%",
+    "--muted":"220 15% 92%","--muted-foreground":"222 15% 38%",
+    "--input":"0 0% 100%",
+    "--ring-offset":"0 0% 100%",
+    "--sidebar-background":"222 25% 14%","--sidebar-accent":"222 22% 22%","--sidebar-border":"222 22% 19%","--sidebar-indicator":"280 65% 60%",
+    "--success":"152 70% 35%","--warning":"38 88% 45%","--destructive":"0 80% 48%",
+    "--accent-decorative":"310 65% 55%",
   },
   "Wiki Sage": {
     "--primary":"145 40% 35%","--accent":"38 80% 55%",
@@ -616,7 +657,7 @@ function LoginScreen({ onLogin }) {
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────
-function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCollapsed }) {
+function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCollapsed, themeMode, onToggleTheme }) {
   const reducedMotion = useReducedMotion(); // F-RP-012
 
   const tpl = TEMPLATES[templateKey];
@@ -709,6 +750,11 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCo
         {/* Actions sempre renderizadas — em collapsed CSS empilha vertical pra
             nao perder config + logout (Patrick: 'devia ficar vertical quando colapsa') */}
         <div className="user-actions">
+          {templateKey === "crm" && onToggleTheme && (
+            <div className="user-action-btn" title={themeMode === "light" ? "Modo escuro" : "Modo claro"} onClick={onToggleTheme}>
+              {themeMode === "light" ? <I.Moon size={14} /> : <I.Sun size={14} />}
+            </div>
+          )}
           <div className="user-action-btn" title="Configurações" onClick={() => onNav("settings")}>
             <I.Settings size={14} />
           </div>
@@ -2433,12 +2479,24 @@ function App() {
     } catch {}
   }, []);
 
-  // Aplica preset de cores do template ao logar
+  // Theme mode (CRM only): "dark" | "light". Persiste em localStorage.
+  const [themeMode, setThemeMode] = useState(() => {
+    try { return localStorage.getItem("crm-theme") || "dark"; } catch { return "dark"; }
+  });
+  const onToggleTheme = () => {
+    const next = themeMode === "light" ? "dark" : "light";
+    setThemeMode(next);
+    try { localStorage.setItem("crm-theme", next); } catch {}
+  };
+
+  // Aplica preset de cores do template ao logar (+ honra themeMode pra CRM — Skill #1 audit A2)
   useEffect(() => {
     if (!session) return;
-    const preset = COLOR_PRESETS[TEMPLATES[session]?.presetKey];
+    let presetKey = TEMPLATES[session]?.presetKey;
+    if (session === "crm") presetKey = themeMode === "light" ? "CRM Light" : "CRM Dark";
+    const preset = COLOR_PRESETS[presetKey];
     if (preset) Object.entries(preset).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
-  }, [session]);
+  }, [session, themeMode]);
 
   if (!session) return <LoginScreen onLogin={({ templateKey }) => { setSession(templateKey); setActivePage("dashboard"); }} />;
 
@@ -2473,6 +2531,8 @@ function App() {
         onLogout={() => { setSession(null); setActivePage("dashboard"); }}
         collapsed={collapsed}
         setCollapsed={setCollapsed}
+        themeMode={themeMode}
+        onToggleTheme={onToggleTheme}
       />
       <main className="main-area">
         {renderPage()}
