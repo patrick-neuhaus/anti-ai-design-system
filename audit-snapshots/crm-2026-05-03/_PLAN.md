@@ -85,5 +85,10 @@ Já listados em `00-prestep-findings.md`. Skills #1-#4 cobrem todos. Skill #5 va
 
 - ✅ Pre-step screenshot capture (11 telas)
 - ✅ `00-prestep-findings.md` (raw observations)
-- ⏳ Skill #1 ui-design-system — start agora
-- ⏸️ Skills #2-#5 pendentes
+- ✅ Skill #1 ui-design-system — A1+A2+A3 applied (commit `e43f215`)
+- ✅ Skill #2 component-architect — B1+B2+B3+B4 applied (commit `351e3ce`)
+- ✅ Skill #3 ux-audit — D1+D2+D3 applied (commit `ae05bcb`)
+- ✅ Skill #4 motion-design — F1+F2+F3 applied (commit `ab61624`)
+- ✅ Skill #5 trident --design — G1+G3 applied + final scorecard (commit pending)
+
+**Chain completa.** Total: 5 commits, +112/-29 ln em `index.html`. Backlog em cada `0N-*.md` pra próxima iteração.

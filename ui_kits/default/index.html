@@ -826,7 +826,7 @@ function CrmDashboard({ onNav }) {
         {[["R$ 352k","Volume pipeline","up","+23%"],["14","Oportunidades","up","+4"],["68%","Taxa conversão","dn","-2pt"],["R$ 95k","Fechamentos mês","up","+11%"]].map(([v,l,d,pct])=>(
           <div key={l} className="kpi">
             <div className="kpi-label">{l}</div>
-            <div className="kpi-value" style={{ fontSize:22 }}>{v}</div>
+            <div className="kpi-value" style={{ fontSize:"var(--text-xl)" }}>{v}</div>
             {d && <span className={`kpi-delta ${d}`}>{pct}</span>}
           </div>
         ))}
@@ -851,7 +851,7 @@ function FunnelStagesChart({ onSeeAll }) {
   const max = Math.max(...stages.map(s => s.valor));
   // Skill #4 audit F1: entry animation — width 0 → target on mount
   const [mounted, setMounted] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setMounted(true), 50); return () => clearTimeout(t); }, []);
+  useEffect(() => { const r = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(r); }, []);
   return (
     <div className="card" style={{ padding:0 }}>
       <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
@@ -1599,7 +1599,7 @@ function ContatosPage() {
         {[["89","Total"],["28","Quentes"],["41","Em andamento"],["R$ 463k","Pipeline"]].map(([v,l]) => (
           <div key={l} className="kpi">
             <div className="kpi-label">{l}</div>
-            <div className="kpi-value" style={{ fontSize:22 }}>{v}</div>
+            <div className="kpi-value" style={{ fontSize:"var(--text-xl)" }}>{v}</div>
           </div>
         ))}
       </div>
@@ -1663,7 +1663,7 @@ function RelatoriosPage() {
   ];
   // Skill #4 audit F1: entry animation
   const [mounted, setMounted] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setMounted(true), 50); return () => clearTimeout(t); }, []);
+  useEffect(() => { const r = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(r); }, []);
   return (
     <div className="page-content">
       <Breadcrumb items={["CRM", "Análise", "Relatórios"]} />
@@ -1677,7 +1677,7 @@ function RelatoriosPage() {
         {[["R$ 3.2M","Receita YTD","up","+18%"],["68%","Win rate médio","up","+6pt"],["18d","Ciclo médio","dn","-3d"],["R$ 84k","Ticket médio","up","+12%"]].map(([v,l,d,pct]) => (
           <div key={l} className="kpi">
             <div className="kpi-label">{l}</div>
-            <div className="kpi-value" style={{ fontSize:22 }}>{v}</div>
+            <div className="kpi-value" style={{ fontSize:"var(--text-xl)" }}>{v}</div>
             <span className={`kpi-delta ${d}`}>{pct}</span>
           </div>
         ))}
