@@ -11,9 +11,7 @@
   <div class="deck">
     <main class="stage">
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 1 — CAPA
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 1 — CAPA ════════════ -->
       <section class="slide slide-cover" data-slide="1">
         <div class="logos">
           <img class="plus" src="assets/plus-wordmark.png" alt="Plus">
@@ -21,308 +19,535 @@
           <img class="artemis" src="assets/artemis-logo.svg" alt="Artemis">
         </div>
         <h1 class="headline">Agente de prospecção da Plus</h1>
-        <p class="lede" style="margin: 0 auto;">Conversa, qualifica e devolve lead pronto.</p>
-        <div class="meta">PLUS IOT · DESENVOLVIDO PELA ARTEMIS</div>
+        <p class="lede" style="margin: 0 auto;">
+          <span class="pulse-dot"></span>Sobe CSV. Conversa no WhatsApp. Lead qualificado pro time.
+        </p>
+        <div class="meta">DESENVOLVIDO PELA ARTEMIS · 2026</div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 2 — O QUE É
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 2 — O QUE FAZ ════════════ -->
       <section class="slide" data-slide="2">
-        <div class="eyebrow">O QUE É</div>
-        <h2 class="title">Agente de WhatsApp que conversa, qualifica e devolve lead pronto.</h2>
+        <div class="eyebrow primary">O QUE O APLICATIVO FAZ</div>
+        <h2 class="title">Recebe lista de leads, conversa no WhatsApp, devolve qualificado.</h2>
         <p class="lede">
-          Lead chega de qualquer canal — CSV, Meta Ads, formulário no site, manual.
-          Agente abre conversa em &lt;30s, qualifica BANT pra IoT (volume de chips,
-          aplicação, operadora atual, prazo) e move no kanban até virar handoff humano.
+          Time da Plus sobe CSV de leads. Agente abre conversa, qualifica BANT pra IoT
+          (volume de chips, aplicação, operadora atual), registra resposta e move pelo
+          kanban. Quando vira lead quente, vendedor humano assume.
         </p>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 24px;">
           <span class="tag">Chips M2M</span>
-          <span class="tag">1nce + 3 operadoras</span>
+          <span class="tag">Parceria 1nce</span>
           <span class="tag accent">Rastreador · Frotas · Security · Agro</span>
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 3 — FLUXO
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 3 — FLUXO ════════════ -->
       <section class="slide" data-slide="3">
-        <div class="eyebrow">COMO FUNCIONA</div>
-        <h2 class="title">Quatro passos do lead à venda.</h2>
+        <div class="eyebrow">FLUXO</div>
+        <h2 class="title">Quatro passos. Cada um automático.</h2>
         <div class="flow">
           <div class="flow-step">
             <div class="num">01</div>
-            <div class="name">Lead entra</div>
-            <div class="desc">CSV, Meta Ads, formulário, manual. Cadastro automático no CRM.</div>
+            <div class="name">Sobe CSV</div>
+            <div class="desc">Lista de leads importada no aplicativo. Deduplicação automática.</div>
           </div>
           <div class="flow-step">
             <div class="num">02</div>
             <div class="name">Agente conversa</div>
-            <div class="desc">Primeira mensagem em &lt;30s. Qualifica BANT pra IoT no diálogo.</div>
+            <div class="desc">Primeira mensagem WhatsApp. Qualifica volume, aplicação, urgência.</div>
           </div>
           <div class="flow-step">
             <div class="num">03</div>
             <div class="name">Move kanban</div>
-            <div class="desc">Conforme conversa avança: novo → qualificando → quente → handoff.</div>
+            <div class="desc">Cards andam pelas etapas conforme conversa avança.</div>
           </div>
           <div class="flow-step">
             <div class="num">04</div>
             <div class="name">Handoff humano</div>
-            <div class="desc">Vendedor Plus recebe lead com contexto, transcrição e nota interna.</div>
+            <div class="desc">Vendedor recebe lead com transcrição, sentimento e nota interna.</div>
           </div>
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 4 — IMPORTA LEADS
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 4 — CSV IMPORT MOCK ════════════ -->
       <section class="slide" data-slide="4">
-        <div class="split heavy-left">
-          <div>
-            <div class="eyebrow">CAPTURA</div>
-            <h2 class="title">Importa leads de qualquer fonte.</h2>
-            <ul class="points">
-              <li>CSV em massa — colunas auto-detectadas</li>
-              <li>Meta Ads (Facebook + Instagram Lead Forms)</li>
-              <li>Formulário do site da Plus</li>
-              <li>Cadastro manual via vendedor</li>
-              <li>Deduplicação automática por telefone</li>
-            </ul>
-          </div>
-          <div class="visual" style="padding:0;">
-            <div class="demo-frame">
-              <iframe src="../ui_kits/default/index.html?demo=crm&page=leads" title="CRM Leads" loading="lazy"></iframe>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 5 — DISPARO AUTOMÁTICO
-           ════════════════════════════════════════════════════════ -->
-      <section class="slide" data-slide="5">
         <div class="split">
           <div>
-            <div class="eyebrow">PRIMEIRA MENSAGEM</div>
-            <h2 class="title">Resposta em menos de 30 segundos.</h2>
-            <p class="body">
-              Lead novo dispara o agente. Mensagem inicial personalizada com nome
-              e contexto da fonte (veio do anúncio X, baixou material Y).
+            <div class="eyebrow primary">PASSO 1 · IMPORTAR</div>
+            <h2 class="title">Arrasta CSV. Leads aparecem no app.</h2>
+            <p class="body" style="margin-bottom: 24px;">
+              Deduplicação por telefone. Colunas auto-detectadas
+              (nome, telefone, fonte, aplicação).
             </p>
-            <p class="body">
-              Sem agente humano gastando 15min por lead frio. Filtro automático
-              antes da equipe Plus tocar.
-            </p>
-            <div style="margin-top:24px;">
-              <span class="tag">&lt;30s tempo de resposta</span>
-              <span class="tag accent">24/7 disponível</span>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tag">Drag &amp; drop</span>
+              <span class="tag">Auto-mapping</span>
+              <span class="tag">Dedup automática</span>
             </div>
           </div>
-          <div class="wa-mock">
-            <div class="wa-bubble out">Olá Carlos! Vi que você se interessou por chip M2M pra rastreamento veicular 🚗
+          <div class="visual">
+            <div class="csv-mock">
+              <div class="csv-dropzone">
+                <div class="csv-icon">CSV</div>
+                <span class="label">Arraste leads-out-2026.csv</span>
+                <span class="filename">📄 leads-out-2026.csv · 1247 linhas</span>
+              </div>
+              <div class="csv-progress"><div class="csv-progress-fill"></div></div>
+              <div class="csv-rows">
+                <div class="csv-row">
+                  <div class="avatar">CM</div>
+                  <div><span class="name">Carlos Mendes</span><div class="meta">+55 11 9 8412-2031 · Frota</div></div>
+                  <span class="meta" style="color: hsl(var(--success));">+</span>
+                </div>
+                <div class="csv-row">
+                  <div class="avatar">AS</div>
+                  <div><span class="name">Ana Souza</span><div class="meta">+55 21 9 9214-7755 · Rastreador</div></div>
+                  <span class="meta" style="color: hsl(var(--success));">+</span>
+                </div>
+                <div class="csv-row">
+                  <div class="avatar">RP</div>
+                  <div><span class="name">Rafael Pinto</span><div class="meta">+55 47 9 8842-3301 · Agro</div></div>
+                  <span class="meta" style="color: hsl(var(--success));">+</span>
+                </div>
+                <div class="csv-row">
+                  <div class="avatar">JL</div>
+                  <div><span class="name">Juliana Lima</span><div class="meta">+55 19 9 9712-5544 · Security</div></div>
+                  <span class="meta" style="color: hsl(var(--success));">+</span>
+                </div>
+              </div>
+              <div class="csv-summary">✓ 1247 leads importados · 23 duplicados removidos</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ 5 — DISPARO + CONVERSA ANIMADA ════════════ -->
+      <section class="slide" data-slide="5">
+        <div class="split heavy-right">
+          <div>
+            <div class="eyebrow primary">PASSO 2 · DISPARO</div>
+            <h2 class="title">Resposta em menos de 30 segundos.</h2>
+            <p class="body">
+              Lead novo dispara agente. Mensagem inicial personalizada com nome e
+              contexto da fonte. Sem vendedor humano gastando 15min em lead frio.
+            </p>
+            <div style="margin-top: 20px;">
+              <span class="tag">&lt;30s primeira resposta</span>
+              <span class="tag accent">24/7</span>
+            </div>
+          </div>
+          <div class="wa-mock sequence">
+            <div class="wa-header">
+              <div class="wa-avatar">CM</div>
+              <div>
+                <div class="wa-name">Carlos Mendes</div>
+                <div class="wa-status">+55 11 9 8412-2031 · online</div>
+              </div>
+            </div>
+            <div class="wa-typing out"><span></span><span></span><span></span></div>
+            <div class="wa-bubble out">Olá Carlos! Vi seu interesse em chip M2M pra rastreamento de frota 🚗
               <span class="ts">14:32</span>
             </div>
+            <div class="wa-typing"><span></span><span></span><span></span></div>
             <div class="wa-bubble in">oi, isso mesmo. tô avaliando trocar o que uso hoje
               <span class="ts">14:33</span>
             </div>
-            <div class="wa-bubble out">Perfeito. Pra te dar a melhor proposta: quantos veículos você gerencia hoje?
+            <div class="wa-typing out"><span></span><span></span><span></span></div>
+            <div class="wa-bubble out">Perfeito. Quantos veículos você gerencia hoje?
               <span class="ts">14:33</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 6 — CONVERSA QUALIFICADA (CRM iframe)
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 6 — CONVERSA QUALIFICADA (drawer mock) ════════════ -->
       <section class="slide" data-slide="6">
-        <div class="eyebrow">⭐ CONVERSA</div>
-        <h2 class="title" style="margin-bottom:24px;">Conversa qualificada com sentimento e notas.</h2>
-        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
-          <iframe src="../ui_kits/default/index.html?demo=crm&page=conversas" title="CRM Conversas" loading="lazy"></iframe>
-        </div>
-      </section>
-
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 7 — PIPELINE VISUAL (CRM iframe)
-           ════════════════════════════════════════════════════════ -->
-      <section class="slide" data-slide="7">
-        <div class="eyebrow">⭐ PIPELINE</div>
-        <h2 class="title" style="margin-bottom:24px;">Pipeline kanban — do lead ao fechamento.</h2>
-        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
-          <iframe src="../ui_kits/default/index.html?demo=crm&page=pipeline" title="CRM Pipeline" loading="lazy"></iframe>
-        </div>
-      </section>
-
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 8 — LAB + PROMPTS (CRM iframe)
-           ════════════════════════════════════════════════════════ -->
-      <section class="slide" data-slide="8">
-        <div class="eyebrow">⭐ LAB &amp; PROMPTS</div>
-        <h2 class="title" style="margin-bottom:24px;">Lab de prompts — testa antes de subir.</h2>
-        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
-          <iframe src="../ui_kits/default/index.html?demo=crm&page=prompts" title="CRM Prompts" loading="lazy"></iframe>
-        </div>
-      </section>
-
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 9 — DASHBOARD
-           ════════════════════════════════════════════════════════ -->
-      <section class="slide" data-slide="9">
-        <div class="eyebrow">⭐ DASHBOARD</div>
-        <h2 class="title" style="margin-bottom:24px;">Visão executiva do funil.</h2>
-        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
-          <iframe src="../ui_kits/default/index.html?demo=crm&page=dashboard" title="CRM Dashboard" loading="lazy"></iframe>
-        </div>
-      </section>
-
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 10 — CONFIGURAÇÕES
-           ════════════════════════════════════════════════════════ -->
-      <section class="slide" data-slide="10">
-        <div class="split heavy-left">
+        <div class="split heavy-right">
           <div>
-            <div class="eyebrow">SETUP</div>
-            <h2 class="title">Configurável sem mexer no código.</h2>
-            <ul class="points">
-              <li>Conexão Evolution API (WhatsApp oficial)</li>
-              <li>Banco de FAQs por aplicação IoT</li>
-              <li>Múltiplos números de WhatsApp</li>
-              <li>Seleção de modelo de IA por etapa</li>
-              <li>Workspace por equipe (vendas, suporte)</li>
-            </ul>
+            <div class="eyebrow primary">PASSO 3 · QUALIFICAR</div>
+            <h2 class="title">Conversa com sentimento e nota interna.</h2>
+            <p class="body">
+              Áudio é transcrito. Texto é analisado. Sentimento atualiza em tempo real.
+              Quando vendedor abre o drawer, encontra resumo + transcrição + alerta interno.
+            </p>
+            <div style="margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap;">
+              <span class="tag">Transcrição de áudio</span>
+              <span class="tag accent">Sentimento ao vivo</span>
+              <span class="tag">Notas internas</span>
+            </div>
           </div>
-          <div class="visual" style="padding:0;">
-            <div class="demo-frame">
-              <iframe src="../ui_kits/default/index.html?demo=crm&page=settings" title="CRM Configurações" loading="lazy"></iframe>
+          <div class="conv-drawer">
+            <div class="conv-header">
+              <div class="csv-row" style="background: transparent; border: none; padding: 0;">
+                <div class="avatar">CM</div>
+              </div>
+              <div>
+                <div class="name">Carlos Mendes</div>
+                <div class="sub">FROTA · 380 VEÍCULOS</div>
+              </div>
+              <div class="sentiment-pill"></div>
+            </div>
+            <div class="conv-body">
+              <div class="wa-bubble in" style="background: hsl(222 20% 18%);">tenho 380 veículos com rastreador hoje, contrato expira em janeiro
+                <span class="ts">14:34</span>
+              </div>
+              <div class="audio-msg">
+                <div class="audio-play">▶</div>
+                <div class="waveform">
+                  <div class="bar" style="animation-delay: 0s"></div>
+                  <div class="bar" style="animation-delay: 0.05s"></div>
+                  <div class="bar" style="animation-delay: 0.1s"></div>
+                  <div class="bar" style="animation-delay: 0.15s"></div>
+                  <div class="bar" style="animation-delay: 0.2s"></div>
+                  <div class="bar" style="animation-delay: 0.25s"></div>
+                  <div class="bar" style="animation-delay: 0.3s"></div>
+                  <div class="bar" style="animation-delay: 0.35s"></div>
+                  <div class="bar" style="animation-delay: 0.4s"></div>
+                  <div class="bar" style="animation-delay: 0.45s"></div>
+                  <div class="bar" style="animation-delay: 0.5s"></div>
+                  <div class="bar" style="animation-delay: 0.55s"></div>
+                </div>
+                <span class="audio-time">0:23</span>
+              </div>
+              <div class="conv-note">
+                <span class="label">NOTA</span>
+                <span>Lead quente. Volume 380 chips. Janeiro 2027. Cobertura é dor.</span>
+              </div>
+            </div>
+            <div class="conv-footer">
+              <div class="conv-input">Responder...</div>
+              <div class="audio-play" style="background: hsl(var(--primary));">↑</div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 11 — MONITORAMENTO ARTEMIS ⭐⭐
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 7 — KANBAN MOCK ════════════ -->
+      <section class="slide" data-slide="7">
+        <div class="eyebrow primary">PASSO 4 · MOVE KANBAN</div>
+        <h2 class="title" style="margin-bottom: 24px;">Cards andam pelas etapas conforme conversa avança.</h2>
+        <div style="position: relative; height: 440px;">
+          <div class="kanban-mock">
+            <div class="kanban-col">
+              <div class="kanban-col-head">
+                <span class="kanban-col-name">Novos</span>
+                <span class="kanban-col-count">847</span>
+              </div>
+              <div class="kanban-card">
+                <div class="name">Pedro Almeida</div>
+                <div class="meta">+55 31 9 8421-1208</div>
+                <span class="vol">120 chips</span>
+              </div>
+              <div class="kanban-card">
+                <div class="name">Marina Rocha</div>
+                <div class="meta">+55 11 9 9712-3344</div>
+                <span class="vol">45 chips</span>
+              </div>
+            </div>
+            <div class="kanban-col">
+              <div class="kanban-col-head">
+                <span class="kanban-col-name">Qualificando</span>
+                <span class="kanban-col-count">213</span>
+              </div>
+              <div class="kanban-card">
+                <div class="name">João Castro</div>
+                <div class="meta">+55 21 9 8855-1100</div>
+                <span class="vol">200 chips</span>
+              </div>
+            </div>
+            <div class="kanban-col">
+              <div class="kanban-col-head">
+                <span class="kanban-col-name">Quente</span>
+                <span class="kanban-col-count">68</span>
+              </div>
+              <div class="kanban-card">
+                <div class="name">Beatriz Nunes</div>
+                <div class="meta">+55 47 9 9143-7766</div>
+                <span class="vol">500 chips</span>
+              </div>
+            </div>
+            <div class="kanban-col">
+              <div class="kanban-col-head">
+                <span class="kanban-col-name">Handoff</span>
+                <span class="kanban-col-count">19</span>
+              </div>
+            </div>
+          </div>
+          <div class="kanban-card moving">
+            <div class="name">Carlos Mendes</div>
+            <div class="meta">+55 11 9 8412-2031</div>
+            <span class="vol">380 chips</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ 8 — LAB / PROMPTS ════════════ -->
+      <section class="slide" data-slide="8">
+        <div class="split">
+          <div>
+            <div class="eyebrow primary">LAB DE PROMPTS</div>
+            <h2 class="title">Edita prompt. Testa. Sobe.</h2>
+            <p class="body">
+              Cada etapa do funil tem prompt próprio. Editor de Markdown
+              + diff antes/depois + teste contra leads anteriores antes de
+              subir em produção.
+            </p>
+            <div style="margin-top: 20px;">
+              <span class="tag">Editor Markdown</span>
+              <span class="tag accent">Diff visual</span>
+              <span class="tag">Test runs</span>
+            </div>
+          </div>
+          <div class="prompt-editor">
+            <div class="editor-tabs">
+              <div class="editor-tab">novo-lead.md</div>
+              <div class="editor-tab active">qualificacao.md</div>
+              <div class="editor-tab">handoff.md</div>
+            </div>
+            <div class="editor-body">
+              <div class="editor-line heading"># Qualificação · Frota</div>
+              <div class="editor-line del">Você precisa de chip de internet?</div>
+              <div class="editor-line add">Sua aplicação é rastreador, frota, agro ou outro?</div>
+              <div class="editor-line del">Quantos celulares?</div>
+              <div class="editor-line add">Quantos dispositivos no campo?</div>
+              <div class="editor-line del">Qual operadora?</div>
+              <div class="editor-line add">Tem problema de cobertura hoje?</div>
+              <div class="editor-line ctx">+ direciona pra vertical IoT</div>
+            </div>
+            <div class="editor-status">
+              <span>main · qualificacao.md</span>
+              <span class="saved">✓ salvo · 14:42</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ 9 — DASHBOARD KPI ════════════ -->
+      <section class="slide" data-slide="9">
+        <div class="eyebrow primary">DASHBOARD</div>
+        <h2 class="title" style="margin-bottom: 32px;">Visão executiva do funil.</h2>
+        <div class="kpi-strip">
+          <div class="kpi-card">
+            <div class="kpi-label">LEADS ATIVOS</div>
+            <div class="kpi-value">1.247</div>
+            <div class="kpi-delta up">↑ +312 esta semana</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">QUENTE</div>
+            <div class="kpi-value">68</div>
+            <div class="kpi-delta up">↑ +14 hoje</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">RESP. MÉDIA</div>
+            <div class="kpi-value">23s</div>
+            <div class="kpi-delta up">↓ -7s vs sem.</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">TAXA QUAL.</div>
+            <div class="kpi-value">19%</div>
+            <div class="kpi-delta up">↑ +2pp</div>
+          </div>
+        </div>
+        <div class="chart-mock">
+          <div class="chart-title">Leads qualificados · últimos 8 dias</div>
+          <div class="chart-bars">
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+            <div class="chart-bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ 10 — CONFIGURAÇÕES ════════════ -->
+      <section class="slide" data-slide="10">
+        <div class="split heavy-left">
+          <div>
+            <div class="eyebrow primary">CONFIGURAÇÕES</div>
+            <h2 class="title">Ajustes sem mexer no código.</h2>
+            <p class="body">
+              Time da Plus mexe em ligação Evolution API, FAQs por aplicação IoT,
+              número WhatsApp, modelo de IA — tudo via interface.
+            </p>
+          </div>
+          <div class="settings-list">
+            <div class="settings-row">
+              <div class="settings-icon">EV</div>
+              <div>
+                <div class="name">Evolution API</div>
+                <div class="desc">api.plus.evolution.io</div>
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="settings-row">
+              <div class="settings-icon">FAQ</div>
+              <div>
+                <div class="name">Banco de FAQs</div>
+                <div class="desc">42 perguntas · 4 verticais IoT</div>
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="settings-row">
+              <div class="settings-icon">IA</div>
+              <div>
+                <div class="name">Modelo de IA</div>
+                <div class="desc">Por etapa · novo, qualif., handoff</div>
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="settings-row">
+              <div class="settings-icon">WS</div>
+              <div>
+                <div class="name">Workspace por equipe</div>
+                <div class="desc">Vendas · Suporte · Pós-venda</div>
+              </div>
+              <div class="toggle"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════ 11 — MONITORAMENTO ARTEMIS ════════════ -->
       <section class="slide" data-slide="11">
         <div class="split">
           <div>
-            <div class="eyebrow accent">ARTEMIS · MONITORAMENTO ATIVO</div>
-            <h2 class="title">A Artemis é avisada antes de você perceber.</h2>
+            <div class="eyebrow">ARTEMIS · MONITORAMENTO</div>
+            <h2 class="title">Avisada antes de você perceber.</h2>
             <div class="cap-list">
               <div class="cap-item">
                 <div class="dot"></div>
                 <div>
                   <h4>Evolution API caiu</h4>
-                  <p>Time recebe alerta no WhatsApp em segundos. Agente de plantão responde.</p>
+                  <p>Alerta no WhatsApp do time em segundos. Dev de plantão responde.</p>
                 </div>
               </div>
               <div class="cap-item">
                 <div class="dot"></div>
                 <div>
                   <h4>Edge function timeout</h4>
-                  <p>Trace automático. Se passar de N falhas, escala pra dev de plantão.</p>
+                  <p>Trace automático. N falhas em janela escala pro dev.</p>
                 </div>
               </div>
               <div class="cap-item">
                 <div class="dot"></div>
                 <div>
-                  <h4>Prompt falhando</h4>
-                  <p>Detecção de respostas fora do esperado. Análise antes de virar problema.</p>
+                  <h4>Prompt fora do esperado</h4>
+                  <p>Detecção de respostas estranhas antes de virar problema.</p>
                 </div>
               </div>
             </div>
           </div>
           <div class="wa-mock">
-            <div class="wa-bubble alert">⚠️ <strong>Plus · Alerta</strong><br>
-              Evolution API: 3 erros 502 em 1min<br>
-              Stack: <code>edge/whatsapp-send</code><br>
+            <div class="wa-header">
+              <div class="wa-avatar" style="background: hsl(var(--warning) / 0.3); color: hsl(var(--warning));">⚠</div>
+              <div>
+                <div class="wa-name">Plus · Alertas</div>
+                <div class="wa-status">artemis-bot</div>
+              </div>
+            </div>
+            <div class="wa-bubble alert">
+              <strong>⚠ Evolution API</strong><br>
+              3 erros 502 em 1min<br>
+              <code style="font-family: 'Geist Mono', monospace; font-size: 11px;">edge/whatsapp-send</code><br>
               Lead afetado: Carlos M. (#1247)
-              <span class="ts">14:42 · Artemis-bot</span>
+              <span class="ts">14:42</span>
             </div>
-            <div class="wa-bubble in">Investigando agora
-              <span class="ts">14:43 · Artemis-dev</span>
+            <div class="wa-bubble out">Investigando agora
+              <span class="ts">14:43 · Artemis</span>
             </div>
-            <div class="wa-bubble in">Resolvido. Container reiniciou. 0 lead perdido.
-              <span class="ts">14:51 · Artemis-dev</span>
+            <div class="wa-bubble out">Resolvido. Container reiniciou. 0 lead perdido.
+              <span class="ts">14:51 · Artemis</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 12 — CURADORIA DE PROMPT ARTEMIS ⭐⭐
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 12 — CURADORIA DE PROMPT ════════════ -->
       <section class="slide" data-slide="12">
-        <div class="eyebrow accent">ARTEMIS · CURADORIA DE PROMPT</div>
-        <h2 class="title">Refinamos o agente baseado em conversas reais.</h2>
-        <p class="lede">
-          Toda semana a Artemis revisa amostra de conversas, identifica onde o agente
-          confundiu chip M2M com SIM card comum, perdeu pergunta sobre redundância de
-          operadora, ou não diferenciou rastreador veicular de logger agro. Diff antes/depois:
+        <div class="eyebrow">ARTEMIS · CURADORIA</div>
+        <h2 class="title">Refinamento contínuo do agente.</h2>
+        <p class="lede" style="margin-bottom: 28px;">
+          Toda semana o time Artemis revisa amostra de conversas reais. Identifica onde
+          o agente confundiu chip M2M com SIM corporativo, perdeu pergunta de
+          redundância de operadora, ou não diferenciou rastreador veicular de logger agro.
         </p>
-        <div class="diff" style="margin-top: 16px;">
-          <div class="diff-col">
-            <h4>Antes</h4>
-            <div class="diff-line del">"Você precisa de chip de internet?"</div>
-            <div class="diff-line ctx">— vago, lead não sabia responder</div>
-            <div class="diff-line del">"Quantos celulares?"</div>
-            <div class="diff-line ctx">— confunde com plano corporativo</div>
-            <div class="diff-line del">"Qual operadora?"</div>
-            <div class="diff-line ctx">— ignora redundância 1nce</div>
+        <div class="prompt-editor" style="min-height: 280px;">
+          <div class="editor-tabs">
+            <div class="editor-tab">v3 (atual)</div>
+            <div class="editor-tab active">v4 (proposta)</div>
           </div>
-          <div class="diff-col">
-            <h4>Depois</h4>
-            <div class="diff-line add">"Sua aplicação é rastreador, frota, agro ou outro?"</div>
-            <div class="diff-line ctx">+ direciona pra vertical IoT</div>
-            <div class="diff-line add">"Quantos dispositivos no campo?"</div>
-            <div class="diff-line ctx">+ termo correto pra M2M</div>
-            <div class="diff-line add">"Tem problema de cobertura hoje?"</div>
-            <div class="diff-line ctx">+ abre conversa sobre redundância 3 op.</div>
+          <div class="editor-body">
+            <div class="editor-line heading"># Diff · qualificacao-frota.md</div>
+            <div class="editor-line del">Você quer chip de internet pros seus aparelhos?</div>
+            <div class="editor-line add">Sua frota usa rastreador GPS hoje? Qual modelo?</div>
+            <div class="editor-line del">Tem problema com sinal?</div>
+            <div class="editor-line add">Sua operação tem perda de cobertura em alguma região? Onde?</div>
+            <div class="editor-line ctx">+ abre conversa pra redundância 1nce (3 operadoras)</div>
+            <div class="editor-line ctx">+ termo correto pro nicho IoT</div>
+          </div>
+          <div class="editor-status">
+            <span>curadoria semanal · 47 conversas analisadas</span>
+            <span class="saved">✓ pronto pra deploy</span>
           </div>
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 13 — SUPORTE HUMANO ARTEMIS ⭐⭐
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 13 — SUPORTE ARTEMIS ════════════ -->
       <section class="slide" data-slide="13">
         <div class="split">
           <div>
-            <div class="eyebrow accent">ARTEMIS · SUPORTE</div>
+            <div class="eyebrow">ARTEMIS · SUPORTE</div>
             <h2 class="title">Suporte humano direto. Sem ticket, sem fila.</h2>
-            <ul class="points">
-              <li>Canal WhatsApp dedicado pro time da Plus</li>
-              <li>Resposta de dev real, não bot</li>
-              <li>Mesma pessoa que conhece o sistema</li>
-              <li>Histórico fica registrado pra contexto</li>
+            <ul style="list-style: none; display: grid; gap: 12px; max-width: 50ch;">
+              <li style="padding-left: 24px; position: relative; color: hsl(var(--foreground)); font-size: var(--text-base);">
+                <span style="position: absolute; left: 0; top: 8px; width: 8px; height: 8px; border-radius: 2px; background: hsl(var(--accent-decorative));"></span>
+                Canal WhatsApp dedicado pro time da Plus
+              </li>
+              <li style="padding-left: 24px; position: relative; color: hsl(var(--foreground)); font-size: var(--text-base);">
+                <span style="position: absolute; left: 0; top: 8px; width: 8px; height: 8px; border-radius: 2px; background: hsl(var(--accent-decorative));"></span>
+                Resposta de dev real, não bot
+              </li>
+              <li style="padding-left: 24px; position: relative; color: hsl(var(--foreground)); font-size: var(--text-base);">
+                <span style="position: absolute; left: 0; top: 8px; width: 8px; height: 8px; border-radius: 2px; background: hsl(var(--accent-decorative));"></span>
+                Mesma pessoa que conhece o sistema
+              </li>
+              <li style="padding-left: 24px; position: relative; color: hsl(var(--foreground)); font-size: var(--text-base);">
+                <span style="position: absolute; left: 0; top: 8px; width: 8px; height: 8px; border-radius: 2px; background: hsl(var(--accent-decorative));"></span>
+                Histórico fica registrado pra contexto
+              </li>
             </ul>
-            <div style="margin-top:24px;">
-              <span class="tag">Zero ticket</span>
-              <span class="tag accent">Resposta humana</span>
-            </div>
           </div>
           <div class="wa-mock">
-            <div class="wa-bubble in">Galera, vendedor pediu pra puxar relatório de conversão por aplicação. Tem como?
+            <div class="wa-header">
+              <div class="wa-avatar">PA</div>
+              <div>
+                <div class="wa-name">Plus ⇄ Artemis</div>
+                <div class="wa-status">canal de suporte</div>
+              </div>
+            </div>
+            <div class="wa-bubble in">Galera, vendedor pediu relatório de conversão por aplicação. Tem como?
               <span class="ts">10:14 · Plus</span>
             </div>
-            <div class="wa-bubble out">Bom dia! Tem sim, hoje aparece no Dashboard. Posso te mandar print ou prefere a query?
+            <div class="wa-bubble out">Bom dia! Tem sim, aparece no Dashboard. Print ou prefere a query?
               <span class="ts">10:15 · Artemis</span>
             </div>
             <div class="wa-bubble in">Manda os dois 🙏
-              <span class="ts">10:15 · Plus</span>
+              <span class="ts">10:15</span>
             </div>
             <div class="wa-bubble out">Print enviado. CSV no email. Qualquer coisa só chamar.
-              <span class="ts">10:18 · Artemis</span>
+              <span class="ts">10:18</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 14 — ROADMAP
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 14 — ROADMAP ════════════ -->
       <section class="slide" data-slide="14">
-        <div class="eyebrow">PRÓXIMOS 90 DIAS</div>
+        <div class="eyebrow primary">PRÓXIMOS 90 DIAS</div>
         <h2 class="title">O que entra a partir daqui.</h2>
         <div class="roadmap">
           <div class="roadmap-col">
@@ -355,16 +580,14 @@
         </div>
       </section>
 
-      <!-- ════════════════════════════════════════════════════════
-           SLIDE 15 — CONTATO
-           ════════════════════════════════════════════════════════ -->
+      <!-- ════════════ 15 — CONTATO ════════════ -->
       <section class="slide slide-cta" data-slide="15">
-        <div class="logos" style="display:flex; align-items:center; justify-content:center; gap:24px; margin-bottom:48px;">
-          <img class="plus" src="assets/plus-wordmark.png" alt="Plus" style="height:60px;">
-          <span style="color: hsl(var(--muted-foreground)); font-size: 24px;">×</span>
-          <img class="artemis" src="assets/artemis-logo.svg" alt="Artemis" style="height:30px;">
+        <div class="logos">
+          <img class="plus" src="assets/plus-wordmark.png" alt="Plus">
+          <span class="x">×</span>
+          <img class="artemis" src="assets/artemis-logo.svg" alt="Artemis">
         </div>
-        <h1 class="headline" style="margin: 0 auto 16px;">Vamos seguir.</h1>
+        <h1 class="headline" style="margin: 0 auto 16px; max-width: 18ch;">Vamos seguir.</h1>
         <p class="lede" style="margin: 0 auto;">Time Artemis disponível no WhatsApp pra qualquer ajuste.</p>
         <div class="channels">
           <div class="channel">
@@ -376,7 +599,7 @@
             patrick.studioartemis@gmail.com
           </div>
         </div>
-        <div class="meta" style="margin-top:48px; font-family: 'Geist Mono', monospace; font-size: 13px; color: hsl(var(--muted-foreground));">
+        <div class="meta" style="margin-top:48px; font-family: 'Geist Mono', monospace; font-size: 13px; color: hsl(var(--muted-foreground)); letter-spacing: 0.08em;">
           DESENVOLVIDO PELA ARTEMIS · 2026
         </div>
       </section>
@@ -384,7 +607,10 @@
     </main>
 
     <footer class="deck-footer">
-      <span class="brand">Plus <span class="by">by Artemis</span></span>
+      <span class="brand">
+        <img src="assets/plus-icon.svg" alt="" style="height: 18px; width: 18px;">
+        Plus <span class="by">by Artemis</span>
+      </span>
       <div class="progress"><div class="progress-bar" style="width:6.66%"></div></div>
       <span class="counter">1 / 15</span>
     </footer>
