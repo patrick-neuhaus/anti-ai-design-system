@@ -159,8 +159,9 @@ a{color:inherit;text-decoration:none}
 .user-panel.account-active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
 .user-panel-row1{display:flex;align-items:center;gap:8px;min-width:0}
 .user-panel-row2{display:flex;gap:6px}
-.user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left;font-family:inherit}
+.user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left;font-family:inherit;transition:transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))}
 .user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-foreground))}
+.user-panel-clickable:active{transform:scale(0.97)}
 .avatar{width:36px;height:36px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}
 .collapsed .avatar{width:30px;height:30px;font-size:10px}
 .user-info{flex:1;min-width:0;overflow:hidden}
@@ -170,7 +171,7 @@ a{color:inherit;text-decoration:none}
 .user-action-btn:active{transform:scale(0.92)}
 .user-action-btn-wide{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:8px;font-size:12px;color:hsl(var(--sidebar-foreground)/.7);background:none;border:none;cursor:pointer;transition:background 120ms,color 120ms,transform var(--motion-fast,150ms);font-family:inherit;white-space:nowrap}
 .user-action-btn-wide:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-foreground))}
-.user-action-btn-wide:active{transform:scale(0.97)}
+.user-action-btn-wide:active{transform:scale(0.96)}
 .user-action-btn-wide svg{flex-shrink:0;opacity:.85}
 .user-info{opacity:1;max-width:200px;transform:translateX(0);transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;visibility:visible;overflow:hidden}
 /* Collapsed: row1 = avatar + theme stacked. row2 = settings/logout stacked icon-only. labels hidden. */
