@@ -325,13 +325,16 @@ const TokenEditorPreview = ({ compact = false }) => {
       // 4. Ring: herda primary (action group)
       const ring = primary;
 
-      // 5. Decorative: hue +30° analogo (Material tonalSpot). Sem clamp —
-      //    decorativo segue a vibe do accent escolhido.
-      const decorative = chroma.hsl(
+      // 5. Decorative: hue +30° analogo (Material tonalSpot). DR-01 sec 152:
+      //    UI graphic ≥3:1 vs adjacent. Wave 9 fix: clamp lightness pra garantir
+      //    contraste vs surface (era falhando em accent vivido tipo #d32f2f).
+      let decorative = chroma.hsl(
         (baseHue + 30) % 360,
         Math.max(0.4, accent.get("hsl.s") || 0.5),
         Math.min(0.7, Math.max(0.4, accent.get("hsl.l") || 0.55))
       );
+      // Garante 3:1 vs surface — adjust lightness ate passar (max 40 iter).
+      decorative = _te_clampForContrast(decorative.hex(), surface, 3.0);
 
       // 7. Sidebar harmonizado com primary (era fixo = pagina nao mudava inteira):
       //    - sidebar-background = primary darkened (painel dark coerente)
