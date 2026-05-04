@@ -1,0 +1,431 @@
+{
+  "$schema": "internal://anti-ai/token-map.v1",
+  "version": "1.0.0",
+  "scope": "ui_kits/default/index.html (CRM template)",
+  "spec_source": "DR-01-color-tokens.md (sec 117 — 5 grupos semânticos)",
+  "generated": "2026-05-04",
+  "purpose": "Mapeamento canônico tokens → consumers → roles. Input pro token editor enhancement (deriveColorTokens) + cirúrgico foreground fix.",
+
+  "groups": {
+    "action": {
+      "description": "Tokens previsíveis, clicáveis, legíveis. Mesma família da seed normalizados.",
+      "dr_section": "117 (Ação)",
+      "tokens": ["primary", "primary-foreground", "ring"]
+    },
+    "brand": {
+      "description": "Identidade visual. Próximo da seed quando seed é usável; diverge quando seed é extrema.",
+      "dr_section": "117 (Marca/acento)",
+      "tokens": ["accent", "accent-foreground"]
+    },
+    "focus": {
+      "description": "Token com vida própria. Derivado para visibilidade, mede contraste vs superfícies adjacentes.",
+      "dr_section": "117 (Foco) + 121",
+      "tokens": ["ring"],
+      "note": "Pode coincidir com primary mas tem critério próprio (3:1 vs adjacent)"
+    },
+    "surface_text": {
+      "description": "Neutros. Não derivados de complementares da seed. Material approach: neutral + neutral-variant chroma baixa.",
+      "dr_section": "117 (Superfícies/texto) + 122",
+      "tokens": [
+        "background", "foreground",
+        "card", "card-foreground",
+        "muted", "muted-foreground",
+        "border",
+        "sidebar-background", "sidebar-foreground",
+        "sidebar-accent", "sidebar-border"
+      ]
+    },
+    "decorative": {
+      "description": "Mais liberdade de hue. NÃO aplicável a texto. NÃO crítico pra contraste de leitura.",
+      "dr_section": "117 (Decoração) + 123",
+      "tokens": ["sidebar-decorative (PROPOSTO — split de sidebar-indicator decorative-only)"]
+    },
+    "selection": {
+      "description": "Indica item selecionado. Herda comportamento de primary (DR sec 127).",
+      "dr_section": "127",
+      "tokens": ["sidebar-indicator (=primary derivation)"]
+    },
+    "semantic_status": {
+      "description": "Manual ou harmonizado. Não inventar a partir do accent.",
+      "dr_section": "125",
+      "tokens": ["success", "warning", "destructive", "info"]
+    }
+  },
+
+  "tokens": {
+    "background": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": "html, body", "line": 11, "property": "background" },
+        { "selector": ".main-area", "line": 191, "property": "background" },
+        { "selector": ".login-form-side", "line": 47, "property": "background" }
+      ],
+      "interacts_with": ["foreground"],
+      "derivation": "declared per preset (neutral, low chroma)",
+      "wcag_pair": "background × foreground ≥ 4.5:1",
+      "drift": false
+    },
+
+    "foreground": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": "html, body", "line": 11, "property": "color" },
+        { "selector": ".field-input", "line": 70, "property": "color" },
+        { "selector": ".field-group label", "line": 69, "property": "color" },
+        { "selector": ".sidebar-toggle", "line": 90, "property": "color" }
+      ],
+      "interacts_with": ["background", "card"],
+      "derivation": "DR sec 82 — chooseForegroundForBackground(background, 4.5)",
+      "wcag_pair": "foreground × background ≥ 4.5:1",
+      "drift": false
+    },
+
+    "card": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".card", "line": 202, "property": "background" },
+        { "selector": ".field-input", "line": 70, "property": "background" },
+        { "selector": ".sidebar-toggle", "line": 90, "property": "background" }
+      ],
+      "interacts_with": ["card-foreground", "border"],
+      "derivation": "declared per preset (slightly elevated from background)",
+      "drift": false
+    },
+
+    "card-foreground": {
+      "role": "surface_text",
+      "consumers": [],
+      "interacts_with": ["card"],
+      "derivation": "DR sec 82 — chooseForegroundForBackground(card, 4.5)",
+      "drift": false,
+      "note": "Token existe mas tem zero consumers explícitos no CRM — possível sweep de cleanup ou herda foreground via cascade"
+    },
+
+    "muted": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".tpl-card:hover", "line": 55, "property": "background opacity" },
+        { "selector": ".tpl-cred", "line": 61, "property": "background" },
+        { "selector": ".sidebar-toggle:hover", "line": 92, "property": "background" }
+      ],
+      "interacts_with": ["muted-foreground"],
+      "derivation": "background + L bump 4-6% (or per preset hue variant)",
+      "drift": false
+    },
+
+    "muted-foreground": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".login-box p", "line": 50, "property": "color" },
+        { "selector": ".tpl-card-desc", "line": 60, "property": "color" },
+        { "selector": ".tpl-cred", "line": 61, "property": "color" },
+        { "selector": ".page-crumb", "line": 197, "property": "color" },
+        { "selector": ".page-sub", "line": 199, "property": "color" }
+      ],
+      "interacts_with": ["card", "background"],
+      "derivation": "DR sec 82 — chooseForegroundForBackground vs card surface, target 4.5:1 (texto secundário aceita 4.5)",
+      "drift": false
+    },
+
+    "border": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".tpl-card", "line": 54, "property": "border" },
+        { "selector": ".field-input", "line": 70, "property": "border" },
+        { "selector": ".tpl-radio", "line": 62, "property": "border" },
+        { "selector": ".sidebar-toggle", "line": 90, "property": "border" },
+        { "selector": ".card", "line": 202, "property": "border" }
+      ],
+      "interacts_with": ["card", "background"],
+      "derivation": "neutral, 3:1 vs adjacent (DR sec 152 — non-text indicators)",
+      "drift": false
+    },
+
+    "primary": {
+      "role": "action",
+      "consumers": [
+        { "selector": ".tpl-card:hover", "line": 55, "property": "border-color/.5" },
+        { "selector": ".tpl-card.selected", "line": 56, "property": "border-color + bg/.06" },
+        { "selector": ".tpl-radio (selected)", "line": 63, "property": "border-color" },
+        { "selector": ".tpl-radio-dot", "line": 64, "property": "background" },
+        { "selector": ".field-input:focus", "line": 71, "property": "border + shadow ring" }
+      ],
+      "interacts_with": ["primary-foreground", "ring", "sidebar-indicator (DERIVED)"],
+      "derivation": "DR sec 53-59 — same hue family as accent, normalized for action fill (lightness + chroma)",
+      "wcag_pair": "primary × primary-foreground ≥ 4.5:1",
+      "drift": false,
+      "downstream": ["sidebar-indicator (= var(--primary) post-binding)"]
+    },
+
+    "primary-foreground": {
+      "role": "action",
+      "consumers": [],
+      "interacts_with": ["primary"],
+      "derivation": "DR sec 82-90 — chooseForegroundForBackground(primary, 4.5). Adjust primary tone if foreground fails.",
+      "drift": false,
+      "note": "Token existe, sem consumers explícitos no CRM. Definido pra futuro uso (botões primary-fill)"
+    },
+
+    "ring": {
+      "role": "focus",
+      "consumers": [],
+      "interacts_with": ["primary", "background", "card"],
+      "derivation": "DR sec 69-75 — visibility first, fidelity second. Min 3:1 vs adjacent surfaces, change contrast vs unfocused state.",
+      "drift": false,
+      "note": "Token existe, focus rings hoje usando primary direto. Wave futura: separar."
+    },
+
+    "accent": {
+      "role": "brand",
+      "consumers": [
+        { "selector": ".forgot-link", "line": 73, "property": "color" },
+        { "selector": ".login-brand-orbs::after", "line": 33, "property": "background" },
+        { "selector": ".avatar", "line": 169, "property": "background/.3 + border/.5" }
+      ],
+      "interacts_with": ["accent-foreground", "primary (sibling, same family)"],
+      "derivation": "DR sec 47-51 — manter identidade da seed, trazer para faixa usável (clamp lightness/chroma per profile)",
+      "wcag_pair": "accent × accent-foreground ≥ 4.5:1",
+      "drift": false
+    },
+
+    "accent-foreground": {
+      "role": "brand",
+      "consumers": [],
+      "interacts_with": ["accent"],
+      "derivation": "DR sec 82-90 — chooseForegroundForBackground(accent, 4.5)",
+      "drift": false,
+      "note": "Sem consumers no CRM template. Definido em ia-da-plus."
+    },
+
+    "destructive": {
+      "role": "semantic_status",
+      "consumers": [
+        { "selector": ".err-msg", "line": 76, "property": "color + bg/.08" }
+      ],
+      "interacts_with": [],
+      "derivation": "MANUAL — DR sec 125 (não inventar a partir do accent)",
+      "drift": false
+    },
+
+    "success": {
+      "role": "semantic_status",
+      "consumers": [],
+      "interacts_with": [],
+      "derivation": "MANUAL — DR sec 125",
+      "drift": false
+    },
+
+    "warning": {
+      "role": "semantic_status",
+      "consumers": [],
+      "interacts_with": [],
+      "derivation": "MANUAL — DR sec 125",
+      "drift": false
+    },
+
+    "info": {
+      "role": "semantic_status",
+      "consumers": [],
+      "interacts_with": [],
+      "derivation": "MANUAL — DR sec 125",
+      "drift": false
+    },
+
+    "sidebar-background": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".login-brand", "line": 21, "property": "background" },
+        { "selector": ".sidebar", "line": 84, "property": "background" },
+        { "selector": ".sidebar-logo-tag", "line": 101, "property": "background" },
+        { "selector": ".user-action-btn:hover", "line": 174, "property": "background/.5" },
+        { "selector": ".user-action-btn-wide:hover", "line": 177, "property": "background/.4" }
+      ],
+      "interacts_with": ["sidebar-foreground", "sidebar-accent"],
+      "derivation": "declared per preset (deeper than background, branded hue allowed)",
+      "drift": false
+    },
+
+    "sidebar-foreground": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".login-brand", "line": 21, "property": "color" },
+        { "selector": ".login-brand-badge", "line": 26, "property": "border + bg via opacity" },
+        { "selector": ".login-brand-grid", "line": 36, "property": "gradient lines" },
+        { "selector": ".brand-float", "line": 40, "property": "color/.12" },
+        { "selector": ".sidebar", "line": 84, "property": "color" },
+        { "selector": ".sidebar-nav scrollbar", "lines": [85, 87], "property": "color via opacity" },
+        { "selector": ".sidebar-brand-text", "line": 99, "property": "color/.55" },
+        { "selector": ".nav-section-label", "line": 104, "property": "color/.45" },
+        { "selector": ".nav-item", "line": 105, "property": "color/.8" },
+        { "selector": ".nav-item:hover", "line": 109, "property": "color" },
+        { "selector": ".nav-item.active", "line": 110, "property": "color" },
+        { "selector": ".nav-badge", "line": 117, "property": "color/.55" },
+        { "selector": ".nav-item:hover .nav-badge", "line": 119, "property": "color/.85" },
+        { "selector": ".user-name (hover)", "line": 167, "property": "color" },
+        { "selector": ".avatar", "line": 169, "property": "color" },
+        { "selector": ".user-action-btn", "line": 173, "property": "color/.7" },
+        { "selector": ".user-action-btn:hover", "line": 174, "property": "color" },
+        { "selector": ".user-action-btn-wide", "line": 176, "property": "color/.7" },
+        { "selector": ".user-action-btn-wide:hover", "line": 177, "property": "color" }
+      ],
+      "interacts_with": ["sidebar-background", "sidebar-accent"],
+      "derivation": "DR sec 82 — chooseForegroundForBackground(sidebar-background, 4.5)",
+      "drift": false,
+      "note": "Heavy consumer. Foreground neutro garante 4.5:1 vs sidebar-bg dark. Cascade em opacity multipliers funciona em dark sidebar."
+    },
+
+    "sidebar-accent": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".nav-item:hover", "line": 109, "property": "background/.6" },
+        { "selector": ".nav-item.active", "line": 110, "property": "background" },
+        { "selector": ".user-panel", "line": 161, "property": "background" },
+        { "selector": ".user-panel.account-active", "line": 162, "property": "background" }
+      ],
+      "interacts_with": ["sidebar-background", "sidebar-accent-foreground (MISSING)"],
+      "derivation": "sidebar-background + L bump 6-8%",
+      "drift": false,
+      "GAP": "sidebar-accent-foreground não declarado. user-panel hoje herda sidebar-foreground (branco) — pode quebrar contraste se sidebar-accent ficar claro via token editor. CIRÚRGICO PROPOSTO: declarar token + bind consumers."
+    },
+
+    "sidebar-accent-foreground": {
+      "role": "surface_text",
+      "status": "PROPOSED (cirúrgico fix)",
+      "consumers_proposed": [
+        ".user-panel { color }",
+        ".user-name { color }",
+        ".user-action-btn-wide { color/.7 }",
+        ".user-action-btn { color/.7 }",
+        ".avatar { color }"
+      ],
+      "interacts_with": ["sidebar-accent"],
+      "derivation": "DR sec 82-90 — chooseForegroundForBackground(sidebar-accent, 4.5)",
+      "wcag_pair": "sidebar-accent × sidebar-accent-foreground ≥ 4.5:1",
+      "preset_values_required": {
+        "CRM Dark": "0 0% 100% (white — sidebar-accent é 222 20% 15%, dark)",
+        "CRM Light": "0 0% 100% (white — sidebar-accent é 222 22% 22%, dark)",
+        "Wiki Sage": "0 0% 100% (white — sidebar-accent é 145 40% 38%, dark)",
+        "Ops Logística": "0 0% 100% (white — sidebar-accent é 184 80% 25%, dark)"
+      }
+    },
+
+    "sidebar-border": {
+      "role": "surface_text",
+      "consumers": [
+        { "selector": ".user-panel", "line": 161, "property": "border" }
+      ],
+      "interacts_with": ["sidebar-accent"],
+      "derivation": "sidebar-accent + L delta or border subtle on dark surface",
+      "drift": false
+    },
+
+    "sidebar-indicator": {
+      "role": "MIXED (drift detected) — selection + decorative + branding",
+      "consumers": [
+        { "selector": ".login-brand-orbs::before", "line": 32, "property": "background", "role": "decorative" },
+        { "selector": ".sidebar-brand-text", "line": 99, "property": "background/.18 + border/.3", "role": "decorative (badge)" },
+        { "selector": ".sidebar-logo-tag", "line": 101, "property": "color + border/.5", "role": "decorative (label diagonal)" },
+        { "selector": ".nav-item.active::before", "line": 112, "property": "background (pill)", "role": "selection" },
+        { "selector": ".nav-item.active .nav-badge", "line": 118, "property": "color", "role": "selection (count emphasis)" },
+        { "selector": ".user-panel.account-active::before", "line": 163, "property": "background (pill)", "role": "selection" }
+      ],
+      "interacts_with": ["primary (post-binding)"],
+      "derivation": "var(--primary) — bound em CRM Dark/Light presets (commit 6c3b0ad)",
+      "drift": true,
+      "drift_reason": "DR sec 127 alerta explícito: misturar selection + decorative no mesmo token = inconsistência clássica",
+      "split_proposal": {
+        "sidebar-selection": {
+          "role": "selection",
+          "derivation": "var(--primary)",
+          "consumers_to_migrate": ["nav-item.active::before", "user-panel.account-active::before", "nav-item.active .nav-badge"]
+        },
+        "sidebar-decorative": {
+          "role": "decorative",
+          "derivation": "var(--accent) ou DR decorative (analog hue rotation +20-40°)",
+          "consumers_to_migrate": ["login-brand-orbs::before", "sidebar-brand-text bg+border", "sidebar-logo-tag"]
+        }
+      },
+      "split_priority": "P2 — não bloqueia cirúrgico user-panel. Endereçar quando token editor enhancement puder testar split via sliders."
+    }
+  },
+
+  "wcag_pairs_to_validate": [
+    { "pair": "background × foreground", "min": 4.5, "type": "text" },
+    { "pair": "card × foreground", "min": 4.5, "type": "text" },
+    { "pair": "card × muted-foreground", "min": 4.5, "type": "secondary text" },
+    { "pair": "primary × primary-foreground", "min": 4.5, "type": "button text" },
+    { "pair": "accent × accent-foreground", "min": 4.5, "type": "button text" },
+    { "pair": "sidebar-background × sidebar-foreground", "min": 4.5, "type": "nav text" },
+    { "pair": "sidebar-accent × sidebar-accent-foreground", "min": 4.5, "type": "user-panel text (CIRÚRGICO)" },
+    { "pair": "ring × background", "min": 3.0, "type": "focus indicator" },
+    { "pair": "ring × card", "min": 3.0, "type": "focus indicator" },
+    { "pair": "border × card", "min": 3.0, "type": "non-text border" },
+    { "pair": "sidebar-indicator × sidebar-background", "min": 3.0, "type": "selection pill (non-text)" }
+  ],
+
+  "derivation_topology": {
+    "description": "Ordem topológica de recompute quando seed muda. Token editor enhancement segue essa ordem.",
+    "order": [
+      ["seed", "input do usuário"],
+      ["accent", "DR sec 47-51 — clamp seed L+C"],
+      ["primary", "DR sec 53-59 — same hue, normalize action fill"],
+      ["accent-foreground", "DR sec 82 — vs accent"],
+      ["primary-foreground", "DR sec 82 — vs primary"],
+      ["ring", "DR sec 69-75 — vs surfaces"],
+      ["decorative", "DR sec 61-67 — analog hue rotation"],
+      ["sidebar-indicator", "= primary (post-split = sidebar-selection)"],
+      ["sidebar-accent", "sidebar-bg + L bump"],
+      ["sidebar-accent-foreground", "DR sec 82 — vs sidebar-accent"]
+    ],
+    "manual": ["success", "warning", "destructive", "info"],
+    "preset_declared": ["background", "foreground", "card", "card-foreground", "muted", "muted-foreground", "border", "sidebar-background", "sidebar-foreground", "sidebar-border"]
+  },
+
+  "drift_summary": {
+    "active_drifts": [
+      {
+        "token": "sidebar-indicator",
+        "severity": "P2",
+        "issue": "3 roles no mesmo token (selection + decorative + branding)",
+        "split_proposed": true,
+        "blocks_enhancement": false
+      }
+    ],
+    "gaps": [
+      {
+        "token": "sidebar-accent-foreground",
+        "severity": "P0",
+        "issue": "Não declarado. user-panel quebra contraste se sidebar-accent vira claro via token editor.",
+        "fix": "CIRÚRGICO — declarar em cada preset + migrar consumers",
+        "blocks_enhancement": false,
+        "blocks_user_panel_quality": true
+      }
+    ]
+  },
+
+  "next_actions": [
+    {
+      "step": 1,
+      "name": "Cirúrgico: sidebar-accent-foreground",
+      "files": ["ui_kits/default/index.html (COLOR_PRESETS + .user-panel CSS)"],
+      "blocks": "no",
+      "estimate_min": 30
+    },
+    {
+      "step": 2,
+      "name": "Token editor enhancement: deriveColorTokens(seed, mode)",
+      "files": ["ui_kits/default/index.html (token editor JS module)", "(opcional) novo módulo color-math.js"],
+      "deps_libs": ["culori (CDN, OKLCH conversion)"],
+      "input": "user picks seed via color picker",
+      "output": "all derivable tokens recomputed via setProperty",
+      "spec": "DR-01 sec 38-107 + 8 edge cases (sec 129-145)",
+      "estimate_h": "3-4"
+    },
+    {
+      "step": 3,
+      "name": "Split sidebar-indicator (P2)",
+      "deps": "step 2 done (use editor sliders pra validar visual)",
+      "estimate_min": 60
+    }
+  ]
+}
