@@ -281,7 +281,10 @@ a{color:inherit;text-decoration:none}
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 
+<script type="text/babel" src="components/Icon.jsx"></script>
 <script type="text/babel" src="components/base/ToggleGroup.jsx"></script>
+<script type="text/babel" src="components/display/Drawer.jsx"></script>
+<script type="text/babel" src="components/display/Dialog.jsx"></script>
 <script type="text/babel" src="components/showcase/TokenEditorPreview.jsx"></script>
 
 <script type="text/babel">
@@ -1119,83 +1122,9 @@ function ProgressBar({ value, max=100, color }) {
   );
 }
 
-function Drawer({ open, onClose, title, children }) {
-  const dialogRef = useRef(null);
-  const prevFocusRef = useRef(null);
-  // Skill #3 D3 + iter2 D2: ESC + focus trap + return focus on close
-  useEffect(() => {
-    if (!open) return;
-    prevFocusRef.current = document.activeElement;
-    const focusFirst = () => {
-      const f = dialogRef.current?.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-      f?.focus();
-    };
-    const t = setTimeout(focusFirst, 50);
-    const onKey = (e) => {
-      if (e.key === "Escape") return onClose();
-      if (e.key !== "Tab" || !dialogRef.current) return;
-      const fs = dialogRef.current.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
-      if (!fs.length) return;
-      const first = fs[0], last = fs[fs.length-1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => { clearTimeout(t); window.removeEventListener("keydown", onKey); prevFocusRef.current?.focus?.(); };
-  }, [open, onClose]);
-  if (!open) return null;
-  return (
-    <>
-      <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.3)", zIndex:50, backdropFilter:"blur(2px)" }} />
-      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:0, right:0, bottom:0, width:400, maxWidth:"90vw", background:"hsl(var(--card))", borderLeft:"1px solid hsl(var(--border))", zIndex:51, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px hsl(var(--foreground)/.1)", animation:"slideIn 200ms ease" }}>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
-          <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
-          <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
-        </div>
-        <div style={{ flex:1, overflow:"auto", padding:"20px" }}>{children}</div>
-      </div>
-      <style>{`@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}`}</style>
-    </>
-  );
-}
-
-function Dialog({ open, onClose, title, children }) {
-  const dialogRef = useRef(null);
-  const prevFocusRef = useRef(null);
-  useEffect(() => {
-    if (!open) return;
-    prevFocusRef.current = document.activeElement;
-    const t = setTimeout(() => {
-      const f = dialogRef.current?.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-      f?.focus();
-    }, 50);
-    const onKey = (e) => {
-      if (e.key === "Escape") return onClose();
-      if (e.key !== "Tab" || !dialogRef.current) return;
-      const fs = dialogRef.current.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
-      if (!fs.length) return;
-      const first = fs[0], last = fs[fs.length-1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => { clearTimeout(t); window.removeEventListener("keydown", onKey); prevFocusRef.current?.focus?.(); };
-  }, [open, onClose]);
-  if (!open) return null;
-  return (
-    <>
-      <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.4)", zIndex:60, backdropFilter:"blur(4px)" }} />
-      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:480, maxWidth:"90vw", background:"hsl(var(--card))", border:"1px solid hsl(var(--border))", borderRadius:20, zIndex:61, boxShadow:"0 24px 64px hsl(var(--foreground)/.2)", animation:"dialogIn 200ms ease" }}>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
-          <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
-          <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
-        </div>
-        <div style={{ padding:"20px" }}>{children}</div>
-      </div>
-      <style>{`@keyframes dialogIn{from{transform:translate(-50%,-54%);opacity:0}to{transform:translate(-50%,-50%);opacity:1}}`}</style>
-    </>
-  );
-}
+/* iter3 phase2: Drawer + Dialog inline removidos.
+   Canonical via window.Drawer / window.Dialog (carregado em components/display/Drawer.jsx + Dialog.jsx).
+   Canonical implementa focus trap + return focus + animation tokens + ESC nativos. */
 
 function Skeleton({ width, height = 16, rounded = false }) {
   return (
