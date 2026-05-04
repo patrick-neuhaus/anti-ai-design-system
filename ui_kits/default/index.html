@@ -112,7 +112,11 @@ a{color:inherit;text-decoration:none}
 .nav-item.active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
 .nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
 .nav-item .nav-label{flex:1;overflow:hidden;text-overflow:ellipsis}
-.nav-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:hsl(var(--sidebar-indicator));font-weight:600}
+/* nav-badge: info neutro inactive; herda indicator (=primary) so quando .nav-item.active.
+   DR-01 sec 127: separar role selection vs info pra evitar drift de token. */
+.nav-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:hsl(var(--sidebar-foreground)/.55);font-weight:600;transition:color 120ms}
+.nav-item.active .nav-badge{color:hsl(var(--sidebar-indicator))}
+.nav-item:hover .nav-badge{color:hsl(var(--sidebar-foreground)/.85)}
 /* Sidebar collapse stagger — Wave 4 P3 F-MO-007
    Labels/badges fade-out + slide left before hiding.
    Each nav item staggers 40ms via nth-child delays.
@@ -568,7 +572,7 @@ const COLOR_PRESETS = {
     "--input":"222 20% 14%",
     /* ring-offset matches card surface so focus ring is visible on dark bg (Wave 1 TODO) */
     "--ring-offset":"222 20% 14%",
-    "--sidebar-background":"222 20% 7%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 20% 15%","--sidebar-border":"222 20% 14%","--sidebar-indicator":"220 90% 65%",
+    "--sidebar-background":"222 20% 7%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 20% 15%","--sidebar-border":"222 20% 14%","--sidebar-indicator":"var(--primary)",
     "--success":"152 70% 45%","--warning":"38 90% 55%","--destructive":"0 85% 55%",
     "--accent-decorative":"310 70% 65%",
   },
@@ -582,7 +586,7 @@ const COLOR_PRESETS = {
     "--muted":"220 15% 92%","--muted-foreground":"222 15% 38%",
     "--input":"0 0% 100%",
     "--ring-offset":"0 0% 100%",
-    "--sidebar-background":"222 25% 14%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 22% 22%","--sidebar-border":"222 22% 19%","--sidebar-indicator":"280 65% 60%",
+    "--sidebar-background":"222 25% 14%","--sidebar-foreground":"0 0% 100%","--sidebar-accent":"222 22% 22%","--sidebar-border":"222 22% 19%","--sidebar-indicator":"var(--primary)",
     "--success":"152 70% 35%","--warning":"38 88% 45%","--destructive":"0 80% 48%",
     "--accent-decorative":"310 65% 55%",
   },
