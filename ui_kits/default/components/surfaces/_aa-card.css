@@ -1,0 +1,87 @@
+/* ============================================================
+   aa-card — canonical card surface (Wave 3 / Frente A)
+   ------------------------------------------------------------
+   Espelha contrato visual de Card.jsx em CSS puro pra
+   elementos que nao podem usar componente React diretamente:
+   demos standalone, showcase mocks, app demo inline.
+
+   Single source of truth pra:
+     - base surface (background, border, radius, padding, shadow)
+     - interactive variant (cursor, focus-ring)
+     - card-header structure (h3 title + p subtitle)
+     - tokens (--card, --border, --foreground, --muted-foreground, --ring)
+     - mobile responsive padding/radius
+
+   When NOT to use: dentro de tela React onde Card.jsx esta
+   acessivel — prefira componente.
+   ============================================================ */
+
+.aa-card {
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: 20px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 2px hsl(var(--foreground) / .04);
+}
+
+/* Interactive — F-CA-003: keyboard-focusable + focus ring */
+.aa-card--interactive {
+  cursor: pointer;
+  transition:
+    box-shadow var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1)),
+    transform var(--motion-fast, 150ms) var(--ease-standard, cubic-bezier(.4,0,.2,1));
+}
+.aa-card--interactive:hover {
+  box-shadow: 0 4px 12px hsl(var(--foreground) / .08);
+}
+.aa-card--interactive:active {
+  transform: scale(0.99);
+}
+.aa-card--interactive:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Padding modifier (espelha prop padding=0 no Card.jsx) */
+.aa-card--flush { padding: 0; }
+
+/* Header --------------------------------------------------- */
+.aa-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.aa-card-header__main { flex: 1; min-width: 0; }
+.aa-card-header__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.aa-card-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin: 0;
+}
+.aa-card-header p {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+  margin: 3px 0 0;
+}
+
+/* Mobile responsive ---------------------------------------- */
+@media (max-width: 380px) {
+  .aa-card {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+}
+
+/* Reduced motion ------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .aa-card--interactive { transition: none; }
+  .aa-card--interactive:active { transform: none; }
+}

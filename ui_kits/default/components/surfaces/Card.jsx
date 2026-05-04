@@ -1,28 +1,46 @@
 // ui_kits/default/components/surfaces/Card.jsx
-// Card — base content surface (paper). Subtle border + radius, no shadow by default.
+// Card — thin wrapper sobre aa-card (canonical CSS in _aa-card.css).
+// Source of truth visual: _aa-card.css. Componente apenas mapeia props -> classes.
 // When to use: any grouped content block (stat tile, form section, list panel).
-// When NOT to use: full-page chrome (use Section + AppLayout). Floating ephemeral content (Popover/Toast — Round B).
+// When NOT to use: full-page chrome (use Section + AppLayout). Floating ephemeral content (Popover/Toast).
 
-const Card = ({ children, padding = 20, as: As = "div", className = "card", style, onClick, ...rest }) => {
+const Card = ({
+  children,
+  padding,
+  as: As = "div",
+  className: extraClassName,
+  style,
+  onClick,
+  ...rest
+}) => {
   /* F-CA-003: interactive Card must be keyboard-focusable + receive focus ring */
   const isInteractive = Boolean(onClick);
+
+  const classes = [
+    "aa-card",
+    isInteractive && "aa-card--interactive",
+    padding === 0 && "aa-card--flush",
+    extraClassName,
+  ].filter(Boolean).join(" ");
+
+  /* padding prop fica como style override quando explicito (numero != 0) */
+  const styleOverride = (typeof padding === "number" && padding !== 0)
+    ? { padding, ...style }
+    : style;
+
   return (
     <As
-      className={className}
+      className={classes}
       onClick={onClick}
       tabIndex={isInteractive ? 0 : undefined}
       role={isInteractive && As === "div" ? "button" : undefined}
-      onKeyDown={isInteractive ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(e); } } : undefined}
-      style={{
-        background: "hsl(var(--card))",
-        color: "hsl(var(--card-foreground))",
-        border: "1px solid hsl(var(--border))",
-        borderRadius: 12,
-        padding,
-        cursor: isInteractive ? "pointer" : undefined,
-        /* No outline:none override — inherits :focus-visible ring from colors_and_type.css */
-        ...style,
-      }}
+      onKeyDown={isInteractive ? (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick(e);
+        }
+      } : undefined}
+      style={styleOverride}
       {...rest}
     >
       {children}
@@ -31,12 +49,12 @@ const Card = ({ children, padding = 20, as: As = "div", className = "card", styl
 };
 
 const CardHeader = ({ title, subtitle, actions }) => (
-  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 12 }}>
-    <div>
-      {title && <div style={{ fontSize: 14, fontWeight: 600, color: "hsl(var(--foreground))" }}>{title}</div>}
-      {subtitle && <div style={{ fontSize: 12, color: "hsl(var(--muted-foreground))", marginTop: 2 }}>{subtitle}</div>}
+  <div className="aa-card-header">
+    <div className="aa-card-header__main">
+      {title && <h3>{title}</h3>}
+      {subtitle && <p>{subtitle}</p>}
     </div>
-    {actions && <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>{actions}</div>}
+    {actions && <div className="aa-card-header__actions">{actions}</div>}
   </div>
 );
 
