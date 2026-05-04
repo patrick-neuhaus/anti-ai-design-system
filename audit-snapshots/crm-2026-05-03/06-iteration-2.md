@@ -32,3 +32,48 @@
 - Apply gate humano: BYPASSED (autorizado)
 
 Pass.
+
+## Results
+
+### Applied (2 commits)
+
+**Commit `d39adb4` (A+B):**
+- A1 user-panel.account-active match nav-item pattern (bg + indicator bar)
+- A2 type scale globals +2px (xs 12→13, sm 14→15, base 16→17, lg 18→19, xl 20→22, 2xl 24→26, 3xl 30→32)
+- B1 TokenEditorPreview: accent-foreground = pickFg auto (não força white). #00ff2a now picks black.
+- B2 TokenEditorPreview: sidebar-foreground = pickFg(sidebarBg) auto
+
+**Commit `9d15dfd` (C+D):**
+- C2 CenarioPill (A-F qualification): Pipeline cards + lista + Contatos + Conversas
+- C3 TelemetriaIACard: Dashboard 4-metric observability (custo/latência/taxa/tokens)
+- C1 ConversasPage: nova rota, WhatsApp-style 2-col (lista + thread)
+- C4 PromptsPage: nova rota, library tabs (Qualificação/Follow-up/Cobrança/Pós-venda)
+- D1+D2 Drawer + Dialog: focus trap (Tab wrap) + return focus on close + autofocus first
+
+### Sidebar nav atualizado
+
+```
+Vendas
+├── Dashboard
+├── Pipeline (14)
+├── Contatos (89)
+└── Conversas (12)        ← novo
+IA                         ← grupo novo
+└── Prompts                ← novo
+Análise
+└── Relatórios
+```
+
+### Verificações
+
+- ✅ 6 nav-items todos `<button>` keyboard-acessíveis com aria-current
+- ✅ ConversasPage renderiza chat 2-col com mensagens IA (primary) vs lead (card)
+- ✅ PromptsPage 4 tabs c/ cards mock body mono + métricas uso/taxa
+- ✅ Telemetria card no Dashboard 4 metrics
+- ✅ CenarioPill em todos lugares onde lead/contato aparece
+
+### Estado final
+
+8 commits totais (5 chain audit + 3 follow-up). 2 novas pages, 4 novos componentes (CenarioPill, TelemetriaIACard, ConversasPage, PromptsPage), token system bumped, Token Editor logic fix, focus trap a11y.
+
+Patrick verifica visual + decide próxima iteração.
