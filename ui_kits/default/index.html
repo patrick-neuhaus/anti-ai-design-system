@@ -169,7 +169,10 @@ a{color:inherit;text-decoration:none}
 .user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left;font-family:inherit;transition:transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))}
 .user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)))}
 .user-panel-clickable:active{transform:scale(0.97)}
-.avatar{width:36px;height:36px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}
+/* Avatar: bg = accent brand-tint (identidade), border = neutral foreground com opacity
+   (DR-01 sec 152: non-text indicator ≥3:1 vs adjacent — neutral garante contraste
+   independente do accent). */
+.avatar{width:36px;height:36px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground))/.3);flex-shrink:0}
 .collapsed .avatar{width:30px;height:30px;font-size:10px}
 .user-info{flex:1;min-width:0;overflow:hidden}
 .user-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
