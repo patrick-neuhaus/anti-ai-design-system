@@ -83,7 +83,8 @@ const SidebarGroup = ({ label, children, collapsed }) => (
 /* DEFAULT_GROUPS movido para _sidebar-data.jsx (source of truth shared com MiniSidebar mock). */
 
 const Sidebar = ({
-  active, onNavigate, collapsed, onToggleCollapse, onLogout, onConfig,
+  active, onNavigate, collapsed, onToggleCollapse, onLogout, onConfig, onProfile,
+  onToggleTheme, themeMode, accountActive,
   brand, user, groups,
 }) => {
   const [isMobile, setIsMobile] = React.useState(false);
@@ -209,7 +210,16 @@ const Sidebar = ({
           </nav>
 
           <div style={{ paddingTop: 10, marginTop: 10 }}>
-            <UserMenu user={user} onConfig={onConfig} onLogout={handleLogout} collapsed={false} align="top" />
+            <UserMenu
+              user={user}
+              onProfile={onProfile}
+              onConfig={onConfig}
+              onLogout={handleLogout}
+              onToggleTheme={onToggleTheme}
+              themeMode={themeMode}
+              active={accountActive}
+              collapsed={false}
+            />
           </div>
         </aside>
       </>
@@ -275,7 +285,16 @@ const Sidebar = ({
       </nav>
 
       <div style={{ paddingTop: 10, marginTop: 10 }}>
-        <UserMenu user={user} onConfig={onConfig} onLogout={onLogout} collapsed={collapsed} align="top" />
+        <UserMenu
+          user={user}
+          onProfile={onProfile}
+          onConfig={onConfig}
+          onLogout={onLogout}
+          onToggleTheme={onToggleTheme}
+          themeMode={themeMode}
+          active={accountActive}
+          collapsed={collapsed}
+        />
       </div>
     </aside>
   );
