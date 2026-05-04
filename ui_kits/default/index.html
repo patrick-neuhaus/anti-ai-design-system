@@ -327,6 +327,8 @@ const I = {
   Redo:        ic(["M21 7v6h-6","M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"]),
   Sun:         ic(["M12 3v2","M12 19v2","M5 12H3","M21 12h-2","M5.6 5.6l1.4 1.4","M17 17l1.4 1.4","M5.6 18.4 7 17","M17 7l1.4-1.4","M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"]),
   Moon:        ic(["M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"]),
+  MessageSquare:ic(["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"]),
+  Sparkles:    ic(["M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z","M19 14l.5 1.5L21 16l-1.5.5L19 18l-.5-1.5L17 16l1.5-.5L19 14z","M5 16l.5 1.5L7 18l-1.5.5L5 20l-.5-1.5L3 18l1.5-.5L5 16z"]),
 };
 
 // ─── Color utils ─────────────────────────────────────────────────
@@ -403,6 +405,10 @@ const TEMPLATES = {
         { k:"dashboard", lbl:"Dashboard",  Icon:I.BarChart,    badge:null },
         { k:"pipeline",  lbl:"Pipeline",   Icon:I.Pipelines,   badge:"14" },
         { k:"contatos",  lbl:"Contatos",   Icon:I.Users,       badge:"89" },
+        { k:"conversas", lbl:"Conversas",  Icon:I.MessageSquare, badge:"12" },
+      ]},
+      { label: "IA", items: [
+        { k:"prompts",   lbl:"Prompts",    Icon:I.Sparkles,    badge:null },
       ]},
       { label: "Análise", items: [
         { k:"relatorios", lbl:"Relatórios", Icon:I.TrendingUp, badge:null },
@@ -844,6 +850,43 @@ function CrmDashboard({ onNav }) {
         <FunnelStagesChart onSeeAll={() => onNav("pipeline")} />
         <PipelineTrendChart />
       </div>
+      <TelemetriaIACard />
+    </div>
+  );
+}
+
+/* Telemetria IA — observability panel pra CRMs c/ IA conversacional (inspirado ia-da-plus). */
+function TelemetriaIACard() {
+  const metrics = [
+    { lbl:"Custo / mês",       valor:"R$ 384",   delta:"-12%", deltaDir:"dn", hint:"economia vs gpt-4 puro" },
+    { lbl:"Latência média",    valor:"1.4s",     delta:"-0.2s", deltaDir:"dn", hint:"p95 resposta IA" },
+    { lbl:"Taxa de resposta",  valor:"87%",      delta:"+4pt",  deltaDir:"up", hint:"leads c/ pelo menos 1 reply" },
+    { lbl:"Tokens / conversa", valor:"2.1k",     delta:"+8%",   deltaDir:"up", hint:"tendência subir = melhorar prompt" },
+  ];
+  return (
+    <div className="card" style={{ padding:0 }}>
+      <div style={{ padding:"16px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div>
+          <h3 style={{ fontSize:"var(--text-sm)",fontWeight:600,margin:0, display:"flex", alignItems:"center", gap:6 }}>
+            <span style={{ display:"inline-block", width:8, height:8, borderRadius:"50%", background:"hsl(var(--success))", boxShadow:"0 0 8px hsl(var(--success)/.5)" }} />
+            Telemetria IA
+          </h3>
+          <p style={{ fontSize:"var(--text-xs)",color:"hsl(var(--muted-foreground))",marginTop:2,marginBottom:0 }}>Observabilidade do agente conversacional · últimos 30d</p>
+        </div>
+        <span style={{ fontSize:11, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)" }}>v1.4 · gpt-4o-mini</span>
+      </div>
+      <div style={{ padding:"4px 20px 20px", display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14 }}>
+        {metrics.map(m => (
+          <div key={m.lbl}>
+            <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", textTransform:"uppercase", letterSpacing:".04em", marginBottom:4 }}>{m.lbl}</div>
+            <div style={{ fontFamily:"var(--font-display)", fontSize:22, fontWeight:600, lineHeight:1, marginBottom:4 }}>{m.valor}</div>
+            <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+              <span style={{ fontSize:11, fontFamily:"var(--font-mono)", color: m.deltaDir==="up"?"hsl(var(--success))":"hsl(var(--info))" }}>{m.delta}</span>
+              <span style={{ fontSize:10, color:"hsl(var(--muted-foreground))" }}>{m.hint}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -1064,18 +1107,34 @@ function ProgressBar({ value, max=100, color }) {
 }
 
 function Drawer({ open, onClose, title, children }) {
-  // Skill #3 audit D3: ESC key dismiss (a11y)
+  const dialogRef = useRef(null);
+  const prevFocusRef = useRef(null);
+  // Skill #3 D3 + iter2 D2: ESC + focus trap + return focus on close
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    prevFocusRef.current = document.activeElement;
+    const focusFirst = () => {
+      const f = dialogRef.current?.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      f?.focus();
+    };
+    const t = setTimeout(focusFirst, 50);
+    const onKey = (e) => {
+      if (e.key === "Escape") return onClose();
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const fs = dialogRef.current.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      if (!fs.length) return;
+      const first = fs[0], last = fs[fs.length-1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => { clearTimeout(t); window.removeEventListener("keydown", onKey); prevFocusRef.current?.focus?.(); };
   }, [open, onClose]);
   if (!open) return null;
   return (
     <>
       <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.3)", zIndex:50, backdropFilter:"blur(2px)" }} />
-      <div role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:0, right:0, bottom:0, width:400, maxWidth:"90vw", background:"hsl(var(--card))", borderLeft:"1px solid hsl(var(--border))", zIndex:51, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px hsl(var(--foreground)/.1)", animation:"slideIn 200ms ease" }}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:0, right:0, bottom:0, width:400, maxWidth:"90vw", background:"hsl(var(--card))", borderLeft:"1px solid hsl(var(--border))", zIndex:51, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px hsl(var(--foreground)/.1)", animation:"slideIn 200ms ease" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
           <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
           <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
@@ -1088,17 +1147,32 @@ function Drawer({ open, onClose, title, children }) {
 }
 
 function Dialog({ open, onClose, title, children }) {
+  const dialogRef = useRef(null);
+  const prevFocusRef = useRef(null);
   useEffect(() => {
     if (!open) return;
-    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    prevFocusRef.current = document.activeElement;
+    const t = setTimeout(() => {
+      const f = dialogRef.current?.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      f?.focus();
+    }, 50);
+    const onKey = (e) => {
+      if (e.key === "Escape") return onClose();
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const fs = dialogRef.current.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      if (!fs.length) return;
+      const first = fs[0], last = fs[fs.length-1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => { clearTimeout(t); window.removeEventListener("keydown", onKey); prevFocusRef.current?.focus?.(); };
   }, [open, onClose]);
   if (!open) return null;
   return (
     <>
       <div onClick={onClose} style={{ position:"fixed", inset:0, background:"hsl(var(--foreground)/.4)", zIndex:60, backdropFilter:"blur(4px)" }} />
-      <div role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:480, maxWidth:"90vw", background:"hsl(var(--card))", border:"1px solid hsl(var(--border))", borderRadius:20, zIndex:61, boxShadow:"0 24px 64px hsl(var(--foreground)/.2)", animation:"dialogIn 200ms ease" }}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:480, maxWidth:"90vw", background:"hsl(var(--card))", border:"1px solid hsl(var(--border))", borderRadius:20, zIndex:61, boxShadow:"0 24px 64px hsl(var(--foreground)/.2)", animation:"dialogIn 200ms ease" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 20px", borderBottom:"1px solid hsl(var(--border))" }}>
           <h3 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h3>
           <button onClick={onClose} className="aa-btn aa-btn--ghost aa-btn--sm" style={{ padding:"4px 8px", fontSize:18, lineHeight:1 }}>×</button>
@@ -1393,14 +1467,42 @@ function RomaneiosPage() {
 
 // ─── PipelinePage (CRM) ───────────────────────────────────────────
 const PIPELINE_STAGES = ["Qualificação", "Proposta", "Negociação", "Fechamento", "Ganho"];
+// Cenário A-F qualification (inspirado ia-da-plus). Atributo lead/conta secundário ao fase pipeline.
+const CENARIO_LABEL = {
+  A: "Já tem, satisfeito",
+  B: "Já tem, com dor",
+  C: "Não tem, sem interesse",
+  D: "Não tem, curioso",
+  E: "Multi-fornecedor",
+  F: "Não qualificado",
+};
+const CENARIO_COLOR = {
+  A: "muted-foreground", // já satisfeito = neutro
+  B: "warning",          // dor = oportunidade quente
+  C: "destructive",      // sem interesse = ruim
+  D: "info",             // curioso = potencial
+  E: "accent",           // multi = competitivo
+  F: "muted-foreground", // não qualificado = neutro escuro
+};
+function CenarioPill({ letter }) {
+  if (!letter) return null;
+  const color = CENARIO_COLOR[letter] || "muted-foreground";
+  return (
+    <span title={`Cenário ${letter} — ${CENARIO_LABEL[letter] || ""}`}
+      style={{ fontFamily:"var(--font-mono)", fontSize:11, fontWeight:600, padding:"2px 7px", borderRadius:6,
+        background:`hsl(var(--${color}) / .15)`, color:`hsl(var(--${color}))`, border:`1px solid hsl(var(--${color}) / .3)` }}>
+      {letter}
+    </span>
+  );
+}
 const PIPELINE_CARDS = [
-  { id:"OP-4921", cliente:"Tech Solutions SA",  valor:48000,  fase:"Proposta",     resp:"Ana Lima",    prob:60, status:"info",  label:"Em andamento" },
-  { id:"OP-4920", cliente:"Grupo Meridional",   valor:120000, fase:"Negociação",   resp:"Carlos R.",   prob:75, status:"warn",  label:"Em risco" },
-  { id:"OP-4919", cliente:"Agro Norte Ltda",    valor:22500,  fase:"Fechamento",   resp:"Mariana C.",  prob:90, status:"ok",    label:"Quente" },
-  { id:"OP-4918", cliente:"Retail Prime",       valor:67000,  fase:"Qualificação", resp:"Jonas F.",    prob:30, status:"neutral",label:"Novo" },
-  { id:"OP-4917", cliente:"MegaComm Brasil",    valor:95000,  fase:"Fechamento",   resp:"Ana Lima",    prob:85, status:"ok",    label:"Quente" },
-  { id:"OP-4916", cliente:"StartUp Fintech",    valor:15000,  fase:"Proposta",     resp:"Carlos R.",   prob:45, status:"info",  label:"Em andamento" },
-  { id:"OP-4915", cliente:"Indústria Omega",    valor:210000, fase:"Negociação",   resp:"Mariana C.",  prob:55, status:"warn",  label:"Em risco" },
+  { id:"OP-4921", cliente:"Tech Solutions SA",  valor:48000,  fase:"Proposta",     resp:"Ana Lima",    prob:60, cenario:"D", status:"info",  label:"Em andamento" },
+  { id:"OP-4920", cliente:"Grupo Meridional",   valor:120000, fase:"Negociação",   resp:"Carlos R.",   prob:75, cenario:"B", status:"warn",  label:"Em risco" },
+  { id:"OP-4919", cliente:"Agro Norte Ltda",    valor:22500,  fase:"Fechamento",   resp:"Mariana C.",  prob:90, cenario:"B", status:"ok",    label:"Quente" },
+  { id:"OP-4918", cliente:"Retail Prime",       valor:67000,  fase:"Qualificação", resp:"Jonas F.",    prob:30, cenario:"D", status:"neutral",label:"Novo" },
+  { id:"OP-4917", cliente:"MegaComm Brasil",    valor:95000,  fase:"Fechamento",   resp:"Ana Lima",    prob:85, cenario:"E", status:"ok",    label:"Quente" },
+  { id:"OP-4916", cliente:"StartUp Fintech",    valor:15000,  fase:"Proposta",     resp:"Carlos R.",   prob:45, cenario:"D", status:"info",  label:"Em andamento" },
+  { id:"OP-4915", cliente:"Indústria Omega",    valor:210000, fase:"Negociação",   resp:"Mariana C.",  prob:55, cenario:"E", status:"warn",  label:"Em risco" },
 ];
 
 function PipelinePage() {
@@ -1463,7 +1565,10 @@ function PipelinePage() {
                     className="card" style={{ cursor:"pointer", padding:"12px 14px", borderRadius:14, transition:"box-shadow 150ms, transform 150ms" }}
                     onMouseEnter={e => { e.currentTarget.style.boxShadow="0 4px 16px hsl(var(--foreground)/.1)"; e.currentTarget.style.transform="translateY(-1px)"; }}
                     onMouseLeave={e => { e.currentTarget.style.boxShadow=""; e.currentTarget.style.transform=""; }}>
-                    <div style={{ fontSize:12, fontWeight:600, marginBottom:4 }}>{card.cliente}</div>
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6, marginBottom:4 }}>
+                      <div style={{ fontSize:12, fontWeight:600, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{card.cliente}</div>
+                      <CenarioPill letter={card.cenario} />
+                    </div>
                     <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", marginBottom:8 }}>{card.resp}</div>
                     <div style={{ fontSize:13, fontWeight:700, fontFamily:"var(--font-display)", marginBottom:8 }}>
                       R$ {card.valor.toLocaleString("pt-BR")}
@@ -1484,7 +1589,7 @@ function PipelinePage() {
       {activeTab === "lista" && (
         <div className="card" style={{ padding:0 }}>
           <table className="tbl">
-            <thead><tr><th>ID</th><th>Cliente</th><th>Valor</th><th>Fase</th><th>Resp.</th><th>Prob.</th><th>Status</th></tr></thead>
+            <thead><tr><th>ID</th><th>Cliente</th><th>Cen.</th><th>Valor</th><th>Fase</th><th>Resp.</th><th>Prob.</th><th>Status</th></tr></thead>
             <tbody>
               {PIPELINE_CARDS.map(c => (
                 /* W1.10 / F-INT-002: table row clicavel — tabIndex + onKeyDown pra teclado */
@@ -1496,6 +1601,7 @@ function PipelinePage() {
                   style={{ cursor:"pointer" }}>
                   <td className="mono">{c.id}</td>
                   <td style={{ fontWeight:500 }}>{c.cliente}</td>
+                  <td><CenarioPill letter={c.cenario} /></td>
                   <td className="mono">R$ {c.valor.toLocaleString("pt-BR")}</td>
                   <td><span style={{ fontSize:12, padding:"2px 8px", borderRadius:6, background:"hsl(var(--muted))", fontWeight:500 }}>{c.fase}</span></td>
                   <td className="muted">{c.resp}</td>
@@ -1577,14 +1683,14 @@ function PipelinePage() {
 
 // ─── ContatosPage (CRM) ───────────────────────────────────────────
 const CONTACTS_DATA = [
-  { id:"CT-0142", nome:"Ana Silveira",      empresa:"Tech Solutions SA",  cargo:"CTO",          fase:"Quente",       valor:48,  email:"ana@techsolutions.com.br",  tel:"+55 11 9 8742-1100" },
-  { id:"CT-0141", nome:"Roberto Mendes",    empresa:"Grupo Meridional",   cargo:"Diretor TI",   fase:"Em andamento", valor:120, email:"roberto@meridional.com",     tel:"+55 11 9 9851-2233" },
-  { id:"CT-0140", nome:"Carla Aguiar",      empresa:"Agro Norte Ltda",    cargo:"Compras",      fase:"Quente",       valor:22,  email:"carla.a@agronorte.com.br",   tel:"+55 65 9 8400-7755" },
-  { id:"CT-0139", nome:"Bruno Tavares",     empresa:"Retail Prime",       cargo:"Procurement",  fase:"Novo",         valor:67,  email:"bruno@retailprime.com",      tel:"+55 11 9 8700-1188" },
-  { id:"CT-0138", nome:"Felipe Castro",     empresa:"MegaComm Brasil",    cargo:"Diretor",      fase:"Quente",       valor:95,  email:"felipe@megacomm.br",         tel:"+55 31 9 9234-5566" },
-  { id:"CT-0137", nome:"Juliana Pinheiro",  empresa:"NovaInd",            cargo:"Operações",    fase:"Em risco",     valor:38,  email:"juliana@novaind.com",        tel:"+55 11 9 9100-2244" },
-  { id:"CT-0136", nome:"Marcos Leal",       empresa:"Distribuidora Sul",  cargo:"Logística",    fase:"Em andamento", valor:55,  email:"marcos@distsul.com.br",      tel:"+55 51 9 8900-3322" },
-  { id:"CT-0135", nome:"Patricia Otero",    empresa:"BrandX",             cargo:"Marketing",    fase:"Novo",         valor:18,  email:"p.otero@brandx.com.br",      tel:"+55 11 9 9655-1010" },
+  { id:"CT-0142", nome:"Ana Silveira",      empresa:"Tech Solutions SA",  cargo:"CTO",          fase:"Quente",       cenario:"D", valor:48,  email:"ana@techsolutions.com.br",  tel:"+55 11 9 8742-1100" },
+  { id:"CT-0141", nome:"Roberto Mendes",    empresa:"Grupo Meridional",   cargo:"Diretor TI",   fase:"Em andamento", cenario:"B", valor:120, email:"roberto@meridional.com",     tel:"+55 11 9 9851-2233" },
+  { id:"CT-0140", nome:"Carla Aguiar",      empresa:"Agro Norte Ltda",    cargo:"Compras",      fase:"Quente",       cenario:"B", valor:22,  email:"carla.a@agronorte.com.br",   tel:"+55 65 9 8400-7755" },
+  { id:"CT-0139", nome:"Bruno Tavares",     empresa:"Retail Prime",       cargo:"Procurement",  fase:"Novo",         cenario:"D", valor:67,  email:"bruno@retailprime.com",      tel:"+55 11 9 8700-1188" },
+  { id:"CT-0138", nome:"Felipe Castro",     empresa:"MegaComm Brasil",    cargo:"Diretor",      fase:"Quente",       cenario:"E", valor:95,  email:"felipe@megacomm.br",         tel:"+55 31 9 9234-5566" },
+  { id:"CT-0137", nome:"Juliana Pinheiro",  empresa:"NovaInd",            cargo:"Operações",    fase:"Em risco",     cenario:"A", valor:38,  email:"juliana@novaind.com",        tel:"+55 11 9 9100-2244" },
+  { id:"CT-0136", nome:"Marcos Leal",       empresa:"Distribuidora Sul",  cargo:"Logística",    fase:"Em andamento", cenario:"E", valor:55,  email:"marcos@distsul.com.br",      tel:"+55 51 9 8900-3322" },
+  { id:"CT-0135", nome:"Patricia Otero",    empresa:"BrandX",             cargo:"Marketing",    fase:"Novo",         cenario:"D", valor:18,  email:"p.otero@brandx.com.br",      tel:"+55 11 9 9655-1010" },
 ];
 function ContatosPage() {
   const [search, setSearch] = useState("");
@@ -1624,13 +1730,14 @@ function ContatosPage() {
           <button className="aa-btn aa-btn--accent aa-btn--sm">+ Novo contato</button>
         </div>
         <table className="tbl">
-          <thead><tr><th>ID</th><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Fase</th><th>Valor</th><th>Contato</th></tr></thead>
+          <thead><tr><th>ID</th><th>Nome</th><th>Empresa</th><th>Cargo</th><th>Cen.</th><th>Fase</th><th>Valor</th><th>Contato</th></tr></thead>
           <tbody>{filtered.map(c => (
             <tr key={c.id}>
               <td className="mono">{c.id}</td>
               <td style={{ fontWeight:500 }}>{c.nome}</td>
               <td>{c.empresa}</td>
               <td className="muted">{c.cargo}</td>
+              <td><CenarioPill letter={c.cenario} /></td>
               <td><span className="pill" style={{ background:"hsl(var(--muted) / .5)" }}>{c.fase}</span></td>
               <td className="mono">R$ {c.valor}k</td>
               <td className="muted" style={{ fontSize:11 }}>
@@ -1763,6 +1870,201 @@ function RelatoriosPage() {
             ))}
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── ConversasPage (CRM) — chat threads lead × IA (inspirado ia-da-plus, mock data) ──
+const CONVERSAS_DATA = [
+  { id:"CV-091", lead:"Ana Silveira", empresa:"Tech Solutions SA", cenario:"D", lastMsg:"Pode me mandar a proposta?", lastTime:"agora", unread:2, status:"hot" },
+  { id:"CV-090", lead:"Roberto Mendes", empresa:"Grupo Meridional", cenario:"B", lastMsg:"Vou alinhar com o time.", lastTime:"5min", unread:0, status:"warm" },
+  { id:"CV-089", lead:"Carla Aguiar", empresa:"Agro Norte Ltda", cenario:"B", lastMsg:"Que valores vocês trabalham?", lastTime:"12min", unread:1, status:"hot" },
+  { id:"CV-088", lead:"Bruno Tavares", empresa:"Retail Prime", cenario:"D", lastMsg:"Preciso ver com o financeiro.", lastTime:"1h", unread:0, status:"warm" },
+  { id:"CV-087", lead:"Felipe Castro", empresa:"MegaComm Brasil", cenario:"E", lastMsg:"Hoje trabalhamos com [concorrente].", lastTime:"3h", unread:0, status:"cool" },
+  { id:"CV-086", lead:"Juliana Pinheiro", empresa:"NovaInd", cenario:"A", lastMsg:"Por enquanto não estamos buscando.", lastTime:"ontem", unread:0, status:"cold" },
+];
+const MOCK_THREAD = [
+  { from:"ia",   ts:"hoje 09:14", text:"Oi Ana! Sou a assistente da Artemis. Vi que vocês têm interesse em automação de pipeline. Tem 2 minutos pra eu entender melhor?" },
+  { from:"lead", ts:"hoje 09:18", text:"Tenho. Estamos avaliando soluções pro Q3." },
+  { from:"ia",   ts:"hoje 09:18", text:"Ótimo. Hoje a Tech Solutions usa algum CRM ou planilhas?" },
+  { from:"lead", ts:"hoje 09:21", text:"Hubspot. Mas o time tá reclamando que tá complicado e caro." },
+  { from:"ia",   ts:"hoje 09:21", text:"Entendi. Time de quantos vendedores?" },
+  { from:"lead", ts:"hoje 09:23", text:"12 BDRs + 4 closers. Tô falando com o CTO sobre trocar." },
+  { from:"ia",   ts:"hoje 09:23", text:"Faz sentido. A Artemis costuma reduzir 40-60% no custo CRM em time desse porte. Posso agendar uma demo de 20min com seu CTO?" },
+  { from:"lead", ts:"hoje 09:30", text:"Pode me mandar a proposta?" },
+];
+function ConversasPage() {
+  const [selected, setSelected] = useState(CONVERSAS_DATA[0]);
+  const [draft, setDraft] = useState("");
+  return (
+    <div className="page-content">
+      <span className="page-crumb">crm · vendas · conversas</span>
+      <div className="page-header">
+        <div className="page-header-stack">
+          <h2 className="page-title">Conversas</h2>
+          <p className="page-sub">Threads ativos lead × IA · 12 não lidas</p>
+        </div>
+      </div>
+      <div className="card" style={{ padding:0, display:"grid", gridTemplateColumns:"320px 1fr", height:"calc(100dvh - 220px)", overflow:"hidden" }}>
+        {/* Coluna esquerda: lista threads */}
+        <div style={{ borderRight:"1px solid hsl(var(--border))", display:"flex", flexDirection:"column", overflow:"hidden" }}>
+          <div style={{ padding:"12px 16px", borderBottom:"1px solid hsl(var(--border))" }}>
+            <input type="search" placeholder="Buscar conversas…" aria-label="Buscar conversas"
+              style={{ width:"100%", padding:"8px 12px", borderRadius:8, border:"1px solid hsl(var(--border))", background:"hsl(var(--background))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+          </div>
+          <div style={{ flex:1, overflowY:"auto" }}>
+            {CONVERSAS_DATA.map(c => {
+              const isActive = selected?.id === c.id;
+              return (
+                <button key={c.id} type="button" onClick={() => setSelected(c)}
+                  style={{ display:"block", width:"100%", textAlign:"left", padding:"12px 16px", borderBottom:"1px solid hsl(var(--border))",
+                    background: isActive ? "hsl(var(--primary)/.08)" : "transparent",
+                    borderLeft: isActive ? "3px solid hsl(var(--primary))" : "3px solid transparent",
+                    cursor:"pointer", fontFamily:"inherit", color:"inherit", transition:"background 120ms" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8, marginBottom:4 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, minWidth:0 }}>
+                      <span style={{ fontWeight:600, fontSize:13, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{c.lead}</span>
+                      <CenarioPill letter={c.cenario} />
+                    </div>
+                    <span style={{ fontSize:10, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)", flexShrink:0 }}>{c.lastTime}</span>
+                  </div>
+                  <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{c.empresa}</div>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:8 }}>
+                    <span style={{ fontSize:12, color:"hsl(var(--foreground))", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", fontWeight: c.unread>0 ? 500 : 400 }}>{c.lastMsg}</span>
+                    {c.unread > 0 && <span style={{ fontSize:10, fontWeight:600, padding:"1px 6px", borderRadius:999, background:"hsl(var(--accent))", color:"hsl(var(--accent-foreground))", flexShrink:0 }}>{c.unread}</span>}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        {/* Coluna direita: chat thread */}
+        <div style={{ display:"flex", flexDirection:"column", overflow:"hidden" }}>
+          {selected ? (
+            <>
+              <div style={{ padding:"14px 20px", borderBottom:"1px solid hsl(var(--border))", display:"flex", justifyContent:"space-between", alignItems:"center", gap:12 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:10, minWidth:0 }}>
+                  <div className="avatar" style={{ width:36, height:36, fontSize:12 }}>{selected.lead.split(" ").slice(0,2).map(w=>w[0]).join("")}</div>
+                  <div style={{ minWidth:0 }}>
+                    <div style={{ fontSize:14, fontWeight:600, display:"flex", alignItems:"center", gap:6 }}>
+                      {selected.lead}
+                      <CenarioPill letter={selected.cenario} />
+                    </div>
+                    <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))" }}>{selected.empresa} · WhatsApp</div>
+                  </div>
+                </div>
+                <div style={{ display:"flex", gap:6 }}>
+                  <button className="aa-btn aa-btn--outline aa-btn--sm">Transferir</button>
+                  <button className="aa-btn aa-btn--ghost aa-btn--sm">⋯</button>
+                </div>
+              </div>
+              <div style={{ flex:1, overflowY:"auto", padding:"20px", display:"flex", flexDirection:"column", gap:10, background:"hsl(var(--background))" }}>
+                {MOCK_THREAD.map((m, i) => {
+                  const isLead = m.from === "lead";
+                  return (
+                    <div key={i} style={{ display:"flex", flexDirection:"column", alignItems: isLead ? "flex-end" : "flex-start", gap:2 }}>
+                      <div style={{ maxWidth:"75%", padding:"10px 14px", borderRadius:14,
+                        background: isLead ? "hsl(var(--card))" : "hsl(var(--primary))",
+                        color: isLead ? "hsl(var(--card-foreground))" : "hsl(var(--primary-foreground))",
+                        border: isLead ? "1px solid hsl(var(--border))" : "none",
+                        fontSize:13, lineHeight:1.5,
+                        borderBottomRightRadius: isLead ? 4 : 14,
+                        borderBottomLeftRadius: isLead ? 14 : 4 }}>
+                        {m.text}
+                      </div>
+                      <div style={{ fontSize:10, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)", padding:"0 4px" }}>
+                        {!isLead && <span style={{ color:"hsl(var(--accent))" }}>● IA · </span>}{m.ts}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ padding:"14px 20px", borderTop:"1px solid hsl(var(--border))", display:"flex", gap:8 }}>
+                <input type="text" placeholder="Assumir conversa: digite mensagem ou Enter pra IA continuar…" aria-label="Digite mensagem" value={draft} onChange={e=>setDraft(e.target.value)}
+                  style={{ flex:1, padding:"10px 14px", borderRadius:10, border:"1px solid hsl(var(--border))", background:"hsl(var(--card))", color:"hsl(var(--foreground))", fontSize:13, outline:"none" }} />
+                <button className="aa-btn aa-btn--primary aa-btn--sm" disabled={!draft.trim()}>Enviar</button>
+              </div>
+            </>
+          ) : (
+            <div style={{ padding:60, textAlign:"center", color:"hsl(var(--muted-foreground))" }}>Selecione uma conversa</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── PromptsPage (CRM) — biblioteca de templates de mensagem (inspirado ia-da-plus) ──
+const PROMPT_TIPOS = [
+  { value:"qualificacao", label:"Qualificação", desc:"Primeiro contato + descoberta" },
+  { value:"followup",     label:"Follow-up",    desc:"Reativação leads parados" },
+  { value:"cobranca",     label:"Cobrança",     desc:"Negociação de fechamento" },
+  { value:"posvenda",     label:"Pós-venda",    desc:"NPS + retenção" },
+];
+const PROMPT_DATA = {
+  qualificacao: [
+    { id:"PR-Q1", titulo:"Abertura inbound", versao:"v3", uso:142, taxa:67, body:"Oi {{nome}}! Vi que você baixou nosso material sobre {{tema}}. Tem 2 minutos pra eu entender melhor o que você procura?" },
+    { id:"PR-Q2", titulo:"Discovery rápido", versao:"v2", uso:98,  taxa:54, body:"Pra te ajudar melhor: hoje a {{empresa}} usa alguma ferramenta pra {{problema}}? Se sim, qual? E o que tem incomodado mais?" },
+    { id:"PR-Q3", titulo:"Cenário B detector", versao:"v1", uso:67,  taxa:71, body:"Entendi que vocês já têm. Qual a maior dor com {{ferramenta_atual}} hoje? Custo, complexidade, suporte ou outra coisa?" },
+  ],
+  followup: [
+    { id:"PR-F1", titulo:"Reativação 7d", versao:"v4", uso:230, taxa:42, body:"Oi {{nome}}, voltei aqui rapidinho. Faz uma semana que conversamos — quer que eu te mande um resumo dos próximos passos ou prefere agendar 15min?" },
+    { id:"PR-F2", titulo:"Reativação 30d", versao:"v2", uso:88,  taxa:18, body:"{{nome}}, sumiu :) — algo mudou aí? Continua avaliando ou faz mais sentido a gente pausar e retomar mês que vem?" },
+  ],
+  cobranca: [
+    { id:"PR-C1", titulo:"Resumo proposta", versao:"v5", uso:312, taxa:58, body:"{{nome}}, segue o resumo: {{escopo}} por R${{valor}}/mês, vigência {{vigencia}}. Pra fechar hoje a gente trava {{desconto}}% off. Posso preparar o contrato?" },
+    { id:"PR-C2", titulo:"Objeção preço",  versao:"v3", uso:155, taxa:39, body:"Faz sentido a preocupação com preço. Mas o ROI esperado em {{tempo}} é {{roi}}x — quer que eu te mande o case da {{cliente_similar}}?" },
+  ],
+  posvenda: [
+    { id:"PR-P1", titulo:"NPS 30d",        versao:"v2", uso:87,  taxa:74, body:"{{nome}}, faz 30 dias do go-live! De 0 a 10, quanto recomendaria a Artemis pra um amigo? E o que poderia melhorar?" },
+  ],
+};
+function PromptsPage() {
+  const [tipo, setTipo] = useState("qualificacao");
+  const prompts = PROMPT_DATA[tipo] || [];
+  return (
+    <div className="page-content">
+      <span className="page-crumb">crm · ia · prompts</span>
+      <div className="page-header">
+        <div className="page-header-stack">
+          <h2 className="page-title">Prompts</h2>
+          <p className="page-sub">Biblioteca de templates de mensagem · {Object.values(PROMPT_DATA).flat().length} prompts</p>
+        </div>
+        <div className="page-actions">
+          <button className="aa-btn aa-btn--primary aa-btn--sm"><I.Plus size={13}/> Novo prompt</button>
+        </div>
+      </div>
+      <div className="tabs-nav">
+        {PROMPT_TIPOS.map(t => (
+          <div key={t.value} className={`tab-item${tipo===t.value?" active":""}`} onClick={() => setTipo(t.value)}>{t.label}</div>
+        ))}
+      </div>
+      <div style={{ fontSize:12, color:"hsl(var(--muted-foreground))", marginTop:-12, marginBottom:4 }}>
+        {PROMPT_TIPOS.find(t=>t.value===tipo)?.desc}
+      </div>
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(360px, 1fr))", gap:14 }}>
+        {prompts.map(p => (
+          <div key={p.id} className="card" style={{ display:"flex", flexDirection:"column", gap:10 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:8 }}>
+              <div style={{ minWidth:0 }}>
+                <div style={{ fontSize:14, fontWeight:600 }}>{p.titulo}</div>
+                <div style={{ fontSize:11, color:"hsl(var(--muted-foreground))", fontFamily:"var(--font-mono)" }}>{p.id} · {p.versao}</div>
+              </div>
+              <div style={{ display:"flex", gap:4 }}>
+                <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Editar"><I.Edit size={13} /></button>
+                <button className="aa-btn aa-btn--ghost aa-btn--sm" title="Duplicar"><I.Copy size={13} /></button>
+              </div>
+            </div>
+            <div style={{ fontSize:12, lineHeight:1.5, color:"hsl(var(--foreground))", padding:12, background:"hsl(var(--muted) / .4)", borderRadius:10, border:"1px solid hsl(var(--border))", fontFamily:"var(--font-mono)" }}>
+              {p.body}
+            </div>
+            <div style={{ display:"flex", justifyContent:"space-between", fontSize:11, color:"hsl(var(--muted-foreground))" }}>
+              <span><strong style={{ color:"hsl(var(--foreground))" }}>{p.uso}</strong> usos</span>
+              <span>Taxa resposta: <strong style={{ color:p.taxa>=60?"hsl(var(--success))":p.taxa>=40?"hsl(var(--warning))":"hsl(var(--destructive))" }}>{p.taxa}%</strong></span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -2557,6 +2859,8 @@ function App() {
     if (activePage === "romaneios")  return <RomaneiosPage />;
     if (activePage === "pipeline")   return <PipelinePage />;
     if (activePage === "contatos")   return <ContatosPage />;
+    if (activePage === "conversas")  return <ConversasPage />;
+    if (activePage === "prompts")    return <PromptsPage />;
     if (activePage === "relatorios") return <RelatoriosPage />;
     if (activePage === "artigos")    return <ArticlesPage />;
     // Generic sub-pages
