@@ -3163,7 +3163,14 @@ function App() {
     } catch { return null; }
   })();
   const [session, setSession] = useState(initDemo);
-  const [activePage, setActivePage] = useState("dashboard");
+  // Initial page from URL param ?page= (used by deck iframes)
+  const initPage = (() => {
+    try {
+      const p = new URLSearchParams(window.location.search).get("page");
+      return p || "dashboard";
+    } catch { return "dashboard"; }
+  })();
+  const [activePage, setActivePage] = useState(initPage);
   const [selectedLeadId, setSelectedLeadId] = useState(null);
   // Sidebar collapsed estado (lifted pra parent — sincroniza com .app-shell.collapsed grid)
   const [collapsed, setCollapsed] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);

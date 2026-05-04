@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Plus · by Artemis</title>
+  <link rel="icon" href="assets/plus-icon.svg">
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+  <div class="deck">
+    <main class="stage">
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 1 — CAPA
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide slide-cover" data-slide="1">
+        <div class="logos">
+          <img class="plus" src="assets/plus-wordmark.png" alt="Plus">
+          <span class="x">×</span>
+          <img class="artemis" src="assets/artemis-logo.svg" alt="Artemis">
+        </div>
+        <h1 class="headline">Agente de prospecção da Plus</h1>
+        <p class="lede" style="margin: 0 auto;">Conversa, qualifica e devolve lead pronto.</p>
+        <div class="meta">PLUS IOT · DESENVOLVIDO PELA ARTEMIS</div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 2 — O QUE É
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="2">
+        <div class="eyebrow">O QUE É</div>
+        <h2 class="title">Agente de WhatsApp que conversa, qualifica e devolve lead pronto.</h2>
+        <p class="lede">
+          Lead chega de qualquer canal — CSV, Meta Ads, formulário no site, manual.
+          Agente abre conversa em &lt;30s, qualifica BANT pra IoT (volume de chips,
+          aplicação, operadora atual, prazo) e move no kanban até virar handoff humano.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 16px;">
+          <span class="tag">Chips M2M</span>
+          <span class="tag">1nce + 3 operadoras</span>
+          <span class="tag accent">Rastreador · Frotas · Security · Agro</span>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 3 — FLUXO
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="3">
+        <div class="eyebrow">COMO FUNCIONA</div>
+        <h2 class="title">Quatro passos do lead à venda.</h2>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="num">01</div>
+            <div class="name">Lead entra</div>
+            <div class="desc">CSV, Meta Ads, formulário, manual. Cadastro automático no CRM.</div>
+          </div>
+          <div class="flow-step">
+            <div class="num">02</div>
+            <div class="name">Agente conversa</div>
+            <div class="desc">Primeira mensagem em &lt;30s. Qualifica BANT pra IoT no diálogo.</div>
+          </div>
+          <div class="flow-step">
+            <div class="num">03</div>
+            <div class="name">Move kanban</div>
+            <div class="desc">Conforme conversa avança: novo → qualificando → quente → handoff.</div>
+          </div>
+          <div class="flow-step">
+            <div class="num">04</div>
+            <div class="name">Handoff humano</div>
+            <div class="desc">Vendedor Plus recebe lead com contexto, transcrição e nota interna.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 4 — IMPORTA LEADS
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="4">
+        <div class="split heavy-left">
+          <div>
+            <div class="eyebrow">CAPTURA</div>
+            <h2 class="title">Importa leads de qualquer fonte.</h2>
+            <ul class="points">
+              <li>CSV em massa — colunas auto-detectadas</li>
+              <li>Meta Ads (Facebook + Instagram Lead Forms)</li>
+              <li>Formulário do site da Plus</li>
+              <li>Cadastro manual via vendedor</li>
+              <li>Deduplicação automática por telefone</li>
+            </ul>
+          </div>
+          <div class="visual" style="padding:0;">
+            <div class="demo-frame">
+              <iframe src="../ui_kits/default/index.html?demo=crm&page=leads" title="CRM Leads" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 5 — DISPARO AUTOMÁTICO
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="5">
+        <div class="split">
+          <div>
+            <div class="eyebrow">PRIMEIRA MENSAGEM</div>
+            <h2 class="title">Resposta em menos de 30 segundos.</h2>
+            <p class="body">
+              Lead novo dispara o agente. Mensagem inicial personalizada com nome
+              e contexto da fonte (veio do anúncio X, baixou material Y).
+            </p>
+            <p class="body">
+              Sem agente humano gastando 15min por lead frio. Filtro automático
+              antes da equipe Plus tocar.
+            </p>
+            <div style="margin-top:24px;">
+              <span class="tag">&lt;30s tempo de resposta</span>
+              <span class="tag accent">24/7 disponível</span>
+            </div>
+          </div>
+          <div class="wa-mock">
+            <div class="wa-bubble out">Olá Carlos! Vi que você se interessou por chip M2M pra rastreamento veicular 🚗
+              <span class="ts">14:32</span>
+            </div>
+            <div class="wa-bubble in">oi, isso mesmo. tô avaliando trocar o que uso hoje
+              <span class="ts">14:33</span>
+            </div>
+            <div class="wa-bubble out">Perfeito. Pra te dar a melhor proposta: quantos veículos você gerencia hoje?
+              <span class="ts">14:33</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 6 — CONVERSA QUALIFICADA (CRM iframe)
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="6">
+        <div class="eyebrow">⭐ CONVERSA</div>
+        <h2 class="title" style="margin-bottom:24px;">Conversa qualificada com sentimento e notas.</h2>
+        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
+          <iframe src="../ui_kits/default/index.html?demo=crm&page=conversas" title="CRM Conversas" loading="lazy"></iframe>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 7 — PIPELINE VISUAL (CRM iframe)
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="7">
+        <div class="eyebrow">⭐ PIPELINE</div>
+        <h2 class="title" style="margin-bottom:24px;">Pipeline kanban — do lead ao fechamento.</h2>
+        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
+          <iframe src="../ui_kits/default/index.html?demo=crm&page=pipeline" title="CRM Pipeline" loading="lazy"></iframe>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 8 — LAB + PROMPTS (CRM iframe)
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="8">
+        <div class="eyebrow">⭐ LAB &amp; PROMPTS</div>
+        <h2 class="title" style="margin-bottom:24px;">Lab de prompts — testa antes de subir.</h2>
+        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
+          <iframe src="../ui_kits/default/index.html?demo=crm&page=prompts" title="CRM Prompts" loading="lazy"></iframe>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 9 — DASHBOARD
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="9">
+        <div class="eyebrow">⭐ DASHBOARD</div>
+        <h2 class="title" style="margin-bottom:24px;">Visão executiva do funil.</h2>
+        <div class="demo-frame" style="height: calc(100vh - 280px); min-height: 480px;">
+          <iframe src="../ui_kits/default/index.html?demo=crm&page=dashboard" title="CRM Dashboard" loading="lazy"></iframe>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 10 — CONFIGURAÇÕES
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="10">
+        <div class="split heavy-left">
+          <div>
+            <div class="eyebrow">SETUP</div>
+            <h2 class="title">Configurável sem mexer no código.</h2>
+            <ul class="points">
+              <li>Conexão Evolution API (WhatsApp oficial)</li>
+              <li>Banco de FAQs por aplicação IoT</li>
+              <li>Múltiplos números de WhatsApp</li>
+              <li>Seleção de modelo de IA por etapa</li>
+              <li>Workspace por equipe (vendas, suporte)</li>
+            </ul>
+          </div>
+          <div class="visual" style="padding:0;">
+            <div class="demo-frame">
+              <iframe src="../ui_kits/default/index.html?demo=crm&page=settings" title="CRM Configurações" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 11 — MONITORAMENTO ARTEMIS ⭐⭐
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="11">
+        <div class="split">
+          <div>
+            <div class="eyebrow accent">ARTEMIS · MONITORAMENTO ATIVO</div>
+            <h2 class="title">A Artemis é avisada antes de você perceber.</h2>
+            <div class="cap-list">
+              <div class="cap-item">
+                <div class="dot"></div>
+                <div>
+                  <h4>Evolution API caiu</h4>
+                  <p>Time recebe alerta no WhatsApp em segundos. Agente de plantão responde.</p>
+                </div>
+              </div>
+              <div class="cap-item">
+                <div class="dot"></div>
+                <div>
+                  <h4>Edge function timeout</h4>
+                  <p>Trace automático. Se passar de N falhas, escala pra dev de plantão.</p>
+                </div>
+              </div>
+              <div class="cap-item">
+                <div class="dot"></div>
+                <div>
+                  <h4>Prompt falhando</h4>
+                  <p>Detecção de respostas fora do esperado. Análise antes de virar problema.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wa-mock">
+            <div class="wa-bubble alert">⚠️ <strong>Plus · Alerta</strong><br>
+              Evolution API: 3 erros 502 em 1min<br>
+              Stack: <code>edge/whatsapp-send</code><br>
+              Lead afetado: Carlos M. (#1247)
+              <span class="ts">14:42 · Artemis-bot</span>
+            </div>
+            <div class="wa-bubble in">Investigando agora
+              <span class="ts">14:43 · Artemis-dev</span>
+            </div>
+            <div class="wa-bubble in">Resolvido. Container reiniciou. 0 lead perdido.
+              <span class="ts">14:51 · Artemis-dev</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 12 — CURADORIA DE PROMPT ARTEMIS ⭐⭐
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="12">
+        <div class="eyebrow accent">ARTEMIS · CURADORIA DE PROMPT</div>
+        <h2 class="title">Refinamos o agente baseado em conversas reais.</h2>
+        <p class="lede">
+          Toda semana a Artemis revisa amostra de conversas, identifica onde o agente
+          confundiu chip M2M com SIM card comum, perdeu pergunta sobre redundância de
+          operadora, ou não diferenciou rastreador veicular de logger agro. Diff antes/depois:
+        </p>
+        <div class="diff" style="margin-top: 16px;">
+          <div class="diff-col">
+            <h4>Antes</h4>
+            <div class="diff-line del">"Você precisa de chip de internet?"</div>
+            <div class="diff-line ctx">— vago, lead não sabia responder</div>
+            <div class="diff-line del">"Quantos celulares?"</div>
+            <div class="diff-line ctx">— confunde com plano corporativo</div>
+            <div class="diff-line del">"Qual operadora?"</div>
+            <div class="diff-line ctx">— ignora redundância 1nce</div>
+          </div>
+          <div class="diff-col">
+            <h4>Depois</h4>
+            <div class="diff-line add">"Sua aplicação é rastreador, frota, agro ou outro?"</div>
+            <div class="diff-line ctx">+ direciona pra vertical IoT</div>
+            <div class="diff-line add">"Quantos dispositivos no campo?"</div>
+            <div class="diff-line ctx">+ termo correto pra M2M</div>
+            <div class="diff-line add">"Tem problema de cobertura hoje?"</div>
+            <div class="diff-line ctx">+ abre conversa sobre redundância 3 op.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 13 — SUPORTE HUMANO ARTEMIS ⭐⭐
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="13">
+        <div class="split">
+          <div>
+            <div class="eyebrow accent">ARTEMIS · SUPORTE</div>
+            <h2 class="title">Suporte humano direto. Sem ticket, sem fila.</h2>
+            <ul class="points">
+              <li>Canal WhatsApp dedicado pro time da Plus</li>
+              <li>Resposta de dev real, não bot</li>
+              <li>Mesma pessoa que conhece o sistema</li>
+              <li>Histórico fica registrado pra contexto</li>
+            </ul>
+            <div style="margin-top:24px;">
+              <span class="tag">Zero ticket</span>
+              <span class="tag accent">Resposta humana</span>
+            </div>
+          </div>
+          <div class="wa-mock">
+            <div class="wa-bubble in">Galera, vendedor pediu pra puxar relatório de conversão por aplicação. Tem como?
+              <span class="ts">10:14 · Plus</span>
+            </div>
+            <div class="wa-bubble out">Bom dia! Tem sim, hoje aparece no Dashboard. Posso te mandar print ou prefere a query?
+              <span class="ts">10:15 · Artemis</span>
+            </div>
+            <div class="wa-bubble in">Manda os dois 🙏
+              <span class="ts">10:15 · Plus</span>
+            </div>
+            <div class="wa-bubble out">Print enviado. CSV no email. Qualquer coisa só chamar.
+              <span class="ts">10:18 · Artemis</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 14 — ROADMAP
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="14">
+        <div class="eyebrow">PRÓXIMOS 90 DIAS</div>
+        <h2 class="title">O que entra a partir daqui.</h2>
+        <div class="roadmap">
+          <div class="roadmap-col">
+            <h4>30 dias</h4>
+            <h3>Atividades &amp; tasks</h3>
+            <ul>
+              <li>Tasks por lead (ligar, mandar proposta)</li>
+              <li>Timeline de atividades no drawer</li>
+              <li>Lembretes automáticos pro vendedor</li>
+            </ul>
+          </div>
+          <div class="roadmap-col mid">
+            <h4>60 dias</h4>
+            <h3>Importação em massa</h3>
+            <ul>
+              <li>CSV bulk com mapeamento de colunas</li>
+              <li>Bulk actions (mover, taggear, atribuir)</li>
+              <li>Custom fields por vertical IoT</li>
+            </ul>
+          </div>
+          <div class="roadmap-col far">
+            <h4>90 dias</h4>
+            <h3>Inteligência</h3>
+            <ul>
+              <li>Resumo automático de conversas</li>
+              <li>Forecast de fechamento por etapa</li>
+              <li>Score de qualificação por lead</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════
+           SLIDE 15 — CONTATO
+           ════════════════════════════════════════════════════════ -->
+      <section class="slide slide-cta" data-slide="15">
+        <div class="logos" style="display:flex; align-items:center; justify-content:center; gap:24px; margin-bottom:48px;">
+          <img class="plus" src="assets/plus-wordmark.png" alt="Plus" style="height:60px;">
+          <span style="color: hsl(var(--muted-foreground)); font-size: 24px;">×</span>
+          <img class="artemis" src="assets/artemis-logo.svg" alt="Artemis" style="height:30px;">
+        </div>
+        <h1 class="headline" style="margin: 0 auto 16px;">Vamos seguir.</h1>
+        <p class="lede" style="margin: 0 auto;">Time Artemis disponível no WhatsApp pra qualquer ajuste.</p>
+        <div class="channels">
+          <div class="channel">
+            <span class="label">Canal direto</span>
+            WhatsApp · Time Artemis
+          </div>
+          <div class="channel">
+            <span class="label">Email</span>
+            patrick.studioartemis@gmail.com
+          </div>
+        </div>
+        <div class="meta" style="margin-top:48px; font-family: 'Geist Mono', monospace; font-size: 13px; color: hsl(var(--muted-foreground));">
+          DESENVOLVIDO PELA ARTEMIS · 2026
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="deck-footer">
+      <span class="brand">Plus <span class="by">by Artemis</span></span>
+      <div class="progress"><div class="progress-bar" style="width:6.66%"></div></div>
+      <span class="counter">1 / 15</span>
+    </footer>
+
+    <div class="kbd-hint">
+      <kbd>←</kbd><kbd>→</kbd> navegar · <kbd>F</kbd> tela cheia
+    </div>
+  </div>
+
+  <script src="deck.js"></script>
+</body>
+</html>
