@@ -45,7 +45,7 @@ const _te_getWcagBadge = (ratio, type = "text") => {
 const _te_ADVANCED_TOKENS = [
   { group: "Marca",       tokens: ["--primary","--accent","--ring"] },
   { group: "Status",      tokens: ["--success","--warning","--info","--destructive"] },
-  { group: "Sidebar",     tokens: ["--sidebar-background","--sidebar-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-indicator","--sidebar-border"] },
+  { group: "Sidebar",     tokens: ["--sidebar-background","--sidebar-foreground","--sidebar-accent","--sidebar-accent-foreground","--sidebar-indicator","--sidebar-decorative","--sidebar-border"] },
   { group: "Superfícies", tokens: ["--background","--card","--muted","--border"] },
 ];
 const _te_ALL_TOKENS = _te_ADVANCED_TOKENS.flatMap(g => g.tokens);
@@ -358,6 +358,7 @@ const TokenEditorPreview = ({ compact = false }) => {
         "--primary-foreground":        _te_hexToHsl(primaryFg),
         "--ring":                      _te_hslOf(ring),
         "--accent-decorative":         _te_hslOf(decorative),
+        "--sidebar-decorative":        _te_hslOf(decorative),
         "--sidebar-background":        _te_hslOf(sidebarBg),
         "--sidebar-foreground":        _te_hexToHsl(sidebarFg.fg),
         "--sidebar-accent":            _te_hslOf(sidebarAccent),
