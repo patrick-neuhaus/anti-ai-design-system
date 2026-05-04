@@ -82,119 +82,12 @@ a{color:inherit;text-decoration:none}
 .app-shell{display:grid;grid-template-columns:272px 1fr;height:100dvh;overflow:hidden;transition:grid-template-columns var(--motion-normal,200ms) var(--ease-out, cubic-bezier(0,0,.2,1))}
 .app-shell.collapsed{grid-template-columns:68px 1fr}
 
-/* ===== SIDEBAR ===== */
-/* overflow:visible no root pra toggle bolinha nao ser cortado, scroll interno fica no .sidebar-nav */
-.sidebar{background:hsl(var(--sidebar-background));color:hsl(var(--sidebar-foreground));display:flex;flex-direction:column;padding:18px 14px 14px;gap:2px;position:relative;overflow:visible;min-width:0;height:100dvh}
-.sidebar-nav{flex:1 1 auto;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden;min-height:0;margin:0 -14px;padding:0 14px;scrollbar-width:thin;scrollbar-color:hsl(var(--sidebar-foreground)/.15) transparent}
-.sidebar-nav::-webkit-scrollbar{width:4px}
-.sidebar-nav::-webkit-scrollbar-thumb{background:hsl(var(--sidebar-foreground)/.18);border-radius:4px}
-
-/* Toggle bolinha — fica fora do clip da sidebar */
-.sidebar-toggle{position:absolute;right:-14px;top:60px;width:28px;height:28px;border-radius:50%;background:hsl(var(--card));border:1.5px solid hsl(var(--border));display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:50;color:hsl(var(--foreground));transition:background 150ms,box-shadow 150ms,transform 150ms,right 220ms ease;box-shadow:0 2px 8px hsl(var(--foreground)/.18)}
-.collapsed .sidebar-toggle{right:-14px;top:78px}
-.sidebar-toggle:hover{background:hsl(var(--muted));box-shadow:0 3px 12px hsl(var(--foreground)/.25);transform:scale(1.08)}
-
-/* Brand logo + label diagonal sobre logo */
-.sidebar-brand{display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 10px 16px;min-width:0;flex-shrink:0}
-.sidebar-logo-wrap{position:relative;flex-shrink:0;display:inline-block}
-.sidebar-logo-full{height:30px;width:auto;display:block}
-.sidebar-logo-icon{width:30px;height:30px;border-radius:7px;display:block;object-fit:contain}
-.sidebar-brand-text{font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:hsl(var(--sidebar-foreground)/.55);padding:3px 8px;border-radius:4px;background:hsl(var(--sidebar-decorative, var(--sidebar-indicator))/.18);border:1px solid hsl(var(--sidebar-decorative, var(--sidebar-indicator))/.3)}
-/* Label diagonal aplicado sobre o logo (collapsed) */
-.sidebar-logo-tag{position:absolute;top:-6px;right:-10px;font-family:var(--font-mono);font-size:7.5px;font-weight:700;letter-spacing:.12em;color:hsl(var(--sidebar-decorative, var(--sidebar-indicator)));background:hsl(var(--sidebar-background));padding:2px 4px;border-radius:3px;transform:rotate(-12deg);transform-origin:center;border:1px solid hsl(var(--sidebar-decorative, var(--sidebar-indicator))/.5);box-shadow:0 2px 4px hsl(var(--foreground)/.15);pointer-events:none}
-
-/* Nav items */
-.nav-section-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;color:hsl(var(--sidebar-foreground)/.45);padding:12px 10px 4px;white-space:nowrap;overflow:hidden}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;font-size:13px;color:hsl(var(--sidebar-foreground)/.8);position:relative;cursor:pointer;white-space:nowrap;min-width:0;transition:background 120ms,color 120ms,transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1));background:none;border:none;font-family:inherit;text-align:left;width:100%}
-.nav-label{overflow:hidden;text-overflow:ellipsis}
-.nav-item:active{transform:scale(0.98)}
-.user-action-btn:active{transform:scale(0.92)}
-.nav-item:hover{background:hsl(var(--sidebar-accent)/.6);color:hsl(var(--sidebar-foreground))}
-.nav-item.active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-foreground));font-weight:500}
-/* W1.6 followup / F-INT-019: indicator agora dentro do nav-item (left:0) pra nao ser cortado por overflow-x:hidden da sidebar-nav quando colapsada */
-.nav-item.active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
-.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
-.nav-item .nav-label{flex:1;overflow:hidden;text-overflow:ellipsis}
-/* nav-badge: info neutro inactive; herda indicator (=primary) so quando .nav-item.active.
-   DR-01 sec 127: separar role selection vs info pra evitar drift de token. */
-.nav-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:hsl(var(--sidebar-foreground)/.55);font-weight:600;transition:color 120ms}
-.nav-item.active .nav-badge{color:hsl(var(--sidebar-indicator))}
-.nav-item:hover .nav-badge{color:hsl(var(--sidebar-foreground)/.85)}
-/* Sidebar collapse stagger — Wave 4 P3 F-MO-007
-   Labels/badges fade-out + slide left before hiding.
-   Each nav item staggers 40ms via nth-child delays.
-   Reduced-motion: instant (transition overridden by global block). */
-.nav-label,.nav-badge,.nav-section-label,.sidebar-brand-text{
-  opacity:1;
-  max-width:200px;
-  transform:translateX(0);
-  transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;
-  visibility:visible;
-  white-space:nowrap;
-  overflow:hidden;
-}
-.collapsed .nav-label,.collapsed .nav-badge,.collapsed .nav-section-label,.collapsed .sidebar-brand-text{
-  opacity:0;
-  max-width:0;
-  transform:translateX(-8px);
-  visibility:hidden;
-  transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms;
-}
-/* Stagger: each nav-item delays its children by 40ms increments */
-.sidebar-nav > *:nth-child(1)  .nav-label, .sidebar-nav > *:nth-child(1)  .nav-badge { transition-delay: 0ms,   0ms,   0ms,   200ms; }
-.sidebar-nav > *:nth-child(2)  .nav-label, .sidebar-nav > *:nth-child(2)  .nav-badge { transition-delay: 20ms,  20ms,  20ms,  220ms; }
-.sidebar-nav > *:nth-child(3)  .nav-label, .sidebar-nav > *:nth-child(3)  .nav-badge { transition-delay: 40ms,  40ms,  40ms,  240ms; }
-.sidebar-nav > *:nth-child(4)  .nav-label, .sidebar-nav > *:nth-child(4)  .nav-badge { transition-delay: 60ms,  60ms,  60ms,  260ms; }
-.sidebar-nav > *:nth-child(5)  .nav-label, .sidebar-nav > *:nth-child(5)  .nav-badge { transition-delay: 80ms,  80ms,  80ms,  280ms; }
-.sidebar-nav > *:nth-child(6)  .nav-label, .sidebar-nav > *:nth-child(6)  .nav-badge { transition-delay: 100ms, 100ms, 100ms, 300ms; }
-.sidebar-nav > *:nth-child(7)  .nav-label, .sidebar-nav > *:nth-child(7)  .nav-badge { transition-delay: 120ms, 120ms, 120ms, 320ms; }
-.sidebar-nav > *:nth-child(8)  .nav-label, .sidebar-nav > *:nth-child(8)  .nav-badge { transition-delay: 140ms, 140ms, 140ms, 340ms; }
-.sidebar-nav > *:nth-child(9)  .nav-label, .sidebar-nav > *:nth-child(9)  .nav-badge { transition-delay: 160ms, 160ms, 160ms, 360ms; }
-.sidebar-nav > *:nth-child(10) .nav-label, .sidebar-nav > *:nth-child(10) .nav-badge { transition-delay: 180ms, 180ms, 180ms, 380ms; }
-/* Zero gap quando collapsed senao label hidden ainda 'empurra' icon do center.
-   gap:0 + justify-content:center = icon centralizado no rail 68px. */
-.collapsed .nav-item{justify-content:center;padding:9px;gap:0}
-.collapsed .user-panel-clickable{justify-content:center;flex:0 0 auto;gap:0}
-.collapsed .sidebar-brand{padding:6px 8px 16px;justify-content:center}
-.collapsed .sidebar-logo-tag{font-size:7px;top:-4px;right:-6px}
-
-/* User panel — 2-row card (dwg-insight pattern):
-   Row 1: avatar + name + theme toggle (icon-only)
-   Row 2: [Settings label] [Logout label] full-width buttons */
-.user-panel{flex-shrink:0;display:flex;flex-direction:column;gap:10px;padding:12px;margin-top:8px;border-radius:16px;background:hsl(var(--sidebar-accent));border:1px solid hsl(var(--sidebar-border));min-width:0;position:relative;transition:border-color 150ms,box-shadow 150ms}
-/* User-panel text usa --sidebar-accent-foreground (DR-01 sec 82-90: foreground vs par real).
-   Fallback pra --sidebar-foreground se preset não declarou. */
-.user-panel{color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)))}
-.user-panel.account-active{background:hsl(var(--sidebar-accent));color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)))}
-.user-panel.account-active::before{content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:20px;background:hsl(var(--sidebar-indicator));border-radius:0 3px 3px 0}
-.user-panel-row1{display:flex;align-items:center;gap:8px;min-width:0}
-.user-panel-row2{display:flex;gap:6px}
-.user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left;font-family:inherit;transition:transform var(--motion-fast,150ms) var(--ease-out, cubic-bezier(0,0,.2,1))}
-.user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)))}
-.user-panel-clickable:active{transform:scale(0.97)}
-/* Avatar: bg = accent brand-tint (identidade), border = neutral foreground com opacity
-   (DR-01 sec 152: non-text indicator ≥3:1 vs adjacent — neutral garante contraste
-   independente do accent). */
+/* ===== SIDEBAR (Wave 1b) — CSS migrado pra _aa-sidebar.css canonical ===== */
+/* AppSidebar agora usa <Sidebar> componente. CSS classes .sidebar/.nav-*/.user-panel*
+   removidas — substituidas pela hierarquia .aa-sidebar* no _aa-sidebar.css.
+   UserMenu injeta proprio .aa-user-panel* CSS via id check.
+   Mantido: .avatar standalone (usado pelo chat-thread linha 2235), nao em sidebar. */
 .avatar{width:36px;height:36px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground))/.3);flex-shrink:0}
-.collapsed .avatar{width:30px;height:30px;font-size:10px}
-.user-info{flex:1;min-width:0;overflow:hidden}
-.user-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground))/.7);transition:background 120ms,color 120ms,transform var(--motion-fast,150ms);cursor:pointer;background:none;border:none;padding:0;font-family:inherit;flex-shrink:0}
-.user-action-btn:hover{background:hsl(var(--sidebar-background)/.5);color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)))}
-.user-action-btn:active{transform:scale(0.92)}
-.user-action-btn-wide{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:8px;font-size:12px;color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground))/.7);background:none;border:none;cursor:pointer;transition:background 120ms,color 120ms,transform var(--motion-fast,150ms);font-family:inherit;white-space:nowrap}
-.user-action-btn-wide:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-accent-foreground, var(--sidebar-foreground)))}
-.user-action-btn-wide:active{transform:scale(0.96)}
-.user-action-btn-wide svg{flex-shrink:0;opacity:.85}
-.user-info{opacity:1;max-width:200px;transform:translateX(0);transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;visibility:visible;overflow:hidden}
-/* Collapsed: row1 = avatar + theme stacked. row2 = settings/logout stacked icon-only. labels hidden. */
-.collapsed .user-panel{padding:8px 6px;gap:6px;border-radius:12px}
-.collapsed .user-info{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms;display:none}
-.collapsed .user-panel-row1{flex-direction:column;gap:6px;align-items:center}
-.collapsed .user-panel-clickable{flex:0 0 auto;justify-content:center;gap:0}
-.collapsed .user-panel-row2{flex-direction:column;gap:4px}
-.collapsed .user-action-btn-wide{padding:0;width:32px;height:32px;align-self:center;border:none;background:none}
-.collapsed .user-action-btn-wide span{display:none}
 
 /* ===== MAIN ===== */
 .main-area{display:flex;flex-direction:column;min-width:0;background:hsl(var(--background));overflow:auto}
@@ -344,6 +237,8 @@ a{color:inherit;text-decoration:none}
 <script type="text/babel" src="components/base/ToggleGroup.jsx"></script>
 <script type="text/babel" src="components/display/Drawer.jsx"></script>
 <script type="text/babel" src="components/display/Dialog.jsx"></script>
+<script type="text/babel" src="components/navigation/UserMenu.jsx"></script>
+<script type="text/babel" src="components/navigation/Sidebar.jsx"></script>
 <script type="text/babel" src="components/showcase/TokenEditorPreview.jsx"></script>
 
 <script type="text/babel">
@@ -750,113 +645,48 @@ function LoginScreen({ onLogin }) {
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────
+// Wave 1b (Frente A): substituido inline JSX por <Sidebar> componente vitrine.
+// Source of truth visual: _aa-sidebar.css. Componente injeta UserMenu no footer.
+// Mantem mapping tpl.navGroups shape (k/lbl/Icon) -> Sidebar shape (key/label/icon).
 function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCollapsed, themeMode, onToggleTheme }) {
-  const reducedMotion = useReducedMotion(); // F-RP-012
-
   const tpl = TEMPLATES[templateKey];
-  const initials = tpl.user.name.split(" ").slice(0,2).map(w=>w[0]).join("");
 
-  const noMotionStyle = reducedMotion ? { transition: "none" } : {};
+  // Map TEMPLATES shape (k/lbl/Icon) -> Sidebar componente shape (key/label/icon)
+  const groups = React.useMemo(() => tpl.navGroups.map(g => ({
+    label: g.label,
+    items: g.items.map(it => ({
+      key: it.k,
+      label: it.lbl,
+      icon: it.Icon,
+      badge: it.badge,
+    })),
+  })), [tpl]);
+
+  const accountActive = activePage === "profile" || activePage === "settings";
 
   return (
-    <aside className={`sidebar${collapsed ? " collapsed":""}`} style={{ gridColumn:1 }}>
-      {/* Toggle bolinha */}
-      <button className="sidebar-toggle" onClick={() => setCollapsed(c=>!c)} title={collapsed?"Expandir":"Recolher"} style={noMotionStyle}>
-        {collapsed ? <I.ChevronRight size={14} /> : <I.ChevronLeft size={14} />}
-      </button>
-
-      {/* W1.6 followup / F-INT-019: usa placeholders do worktree (artemis-* nao versionados),
-          colapsado esconde tag diagonal pra nao ficar torto. */}
-      <div className="sidebar-brand">
-        <div className="sidebar-logo-wrap">
-          {/* Wave 11: Logo Artemis (currentColor herda --sidebar-foreground via Token Editor pickFg).
-             variant="icon" colapsado, "full" expandido. Brand mark fixo (#005EFF accent).
-             className NAO setada — old .sidebar-logo-full/-icon CSS forcava height 30px e quebrava ratio. */}
-          {window.Logo
-            ? <window.Logo variant={collapsed ? "icon" : "full"} height={collapsed ? 28 : 22}
-                style={{ color: "hsl(var(--sidebar-foreground))", display: "block" }} />
-            : <div style={{height: collapsed ? 28 : 22}} aria-label="Artemis" />
-          }
-          {!collapsed && <span className="sidebar-logo-tag">{tpl.label}</span>}
-        </div>
-        {/* Back to showcase — F-UX-016. So aparece em iframe (template embedded
-            via showcase template-card). Standalone (aberto direto) esconde. */}
-        {!collapsed && typeof window !== "undefined" && window.parent !== window && (
-          <a href="../showcase/index.html"
-            target="_top"
-            title="Voltar para o showcase"
-            style={{
-              marginLeft: "auto",
-              display: "inline-flex", alignItems: "center", gap: 4,
-              fontSize: 10, fontFamily: "var(--font-mono)",
-              letterSpacing: ".06em", textTransform: "uppercase",
-              color: "hsl(var(--sidebar-foreground) / .5)",
-              textDecoration: "none",
-              padding: "2px 6px", borderRadius: 4,
-              border: "1px solid hsl(var(--sidebar-foreground) / .15)",
-              transition: "opacity 150ms",
-              whiteSpace: "nowrap",
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = "1"}
-            onMouseLeave={e => e.currentTarget.style.opacity = ""}
-          >
-            ← DS
-          </a>
-        )}
-      </div>
-
-      {/* Nav scrollable middle (group "Conta" removido — perfil/config no user-panel) */}
-      <nav className="sidebar-nav">
-        {tpl.navGroups.map((grp) => (
-          <React.Fragment key={grp.label}>
-            {/* Label sempre renderizado pra manter spacing vertical entre groups quando collapsed.
-                CSS .collapsed .nav-section-label esconde texto (opacity 0) mas padding mantem altura. */}
-            <div className="nav-section-label">{grp.label}</div>
-            {grp.items.map(({ k, lbl, Icon, badge }) => (
-              <button key={k} type="button"
-                className={`nav-item${activePage === k ? " active" : ""}`}
-                onClick={() => onNav(k)}
-                aria-current={activePage === k ? "page" : undefined}
-                title={collapsed ? lbl : undefined}>
-                <Icon size={16} />
-                <span className="nav-label">{lbl}</span>
-                {badge && !collapsed && <span className="nav-badge">{badge}</span>}
-              </button>
-            ))}
-          </React.Fragment>
-        ))}
-      </nav>
-
-      {/* User panel — 2-row card (dwg-insight pattern)
-          Row 1: avatar + name + theme toggle (icon-only)
-          Row 2: [Configurações label] [Sair label] full-width
-          Collapsed: tudo stacked icon-only */}
-      <div className={`user-panel${activePage === "profile" || activePage === "settings" ? " account-active" : ""}`}>
-        <div className="user-panel-row1">
-          <button className="user-panel-clickable" onClick={() => onNav("profile")} title="Meu perfil" aria-current={activePage === "profile" ? "page" : undefined}>
-            <div className="avatar">{initials}</div>
-            <div className="user-info">
-              <div className="user-name">{tpl.user.name}</div>
-            </div>
-          </button>
-          {templateKey === "crm" && onToggleTheme && (
-            <button type="button" className="user-action-btn" title={themeMode === "light" ? "Modo escuro" : "Modo claro"} onClick={onToggleTheme}>
-              {themeMode === "light" ? <I.Moon size={14} /> : <I.Sun size={14} />}
-            </button>
-          )}
-        </div>
-        <div className="user-panel-row2">
-          <button type="button" className="user-action-btn-wide" title="Configurações" onClick={() => onNav("settings")} aria-current={activePage === "settings" ? "page" : undefined}>
-            <I.Settings size={14} />
-            <span>Configurações</span>
-          </button>
-          <button type="button" className="user-action-btn-wide" title="Sair" onClick={onLogout}>
-            <I.LogOut size={14} />
-            <span>Sair</span>
-          </button>
-        </div>
-      </div>
-    </aside>
+    <Sidebar
+      active={activePage}
+      onNavigate={onNav}
+      collapsed={collapsed}
+      onToggleCollapse={() => setCollapsed(c => !c)}
+      onProfile={() => onNav("profile")}
+      onConfig={() => onNav("settings")}
+      onLogout={onLogout}
+      onToggleTheme={templateKey === "crm" ? onToggleTheme : undefined}
+      themeMode={themeMode}
+      accountActive={accountActive}
+      groups={groups}
+      user={tpl.user}
+      brandLogoTag={tpl.label}
+      brandHref="../showcase/index.html"
+      brandLogoNode={
+        window.Logo
+          ? <window.Logo variant={collapsed ? "icon" : "full"} height={collapsed ? 28 : 22}
+              style={{ color: "hsl(var(--sidebar-foreground))", display: "block" }} />
+          : <div style={{ height: collapsed ? 28 : 22 }} aria-label="Artemis" />
+      }
+    />
   );
 }
 
