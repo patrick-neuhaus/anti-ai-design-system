@@ -1,0 +1,296 @@
+{
+  "audit_date": "2026-05-04",
+  "vitrine_path": "ui_kits/default/components/",
+  "crm_path": "ui_kits/default/index.html",
+  "crm_lines": 3298,
+  "vitrine_components": 69,
+  "key_finding": "CRM template NAO consome a maioria dos componentes JSX da vitrine. Usa CSS classes raw (.card, .sidebar, .nav-item, .field-input) + JSX inline custom. Apenas 9 componentes vitrine sao reusados no CRM. Vitrine = library showcase; CRM = template inline com paradigma proprio.",
+  "summary": {
+    "total": 69,
+    "reused_in_crm": 9,
+    "inline_in_crm": 12,
+    "not_in_crm": 48,
+    "by_category": {
+      "aligned": 9,
+      "minor": 0,
+      "major": 8,
+      "missing_in_crm": 48,
+      "missing_in_vitrine": 4
+    }
+  },
+  "components": [
+    {
+      "name": "display/Drawer",
+      "vitrine_file": "components/display/Drawer.jsx",
+      "crm_locations": ["index.html:1442", "index.html:1875", "index.html:2424"],
+      "crm_usage": "<Drawer> reuso direto, 3 instancias",
+      "category": "aligned",
+      "drift_notes": "CRM consome via window.Drawer. Side, title, footer, width passados normais. Zero drift.",
+      "severity": "P3",
+      "recommendation": "none"
+    },
+    {
+      "name": "display/Dialog",
+      "vitrine_file": "components/display/Dialog.jsx",
+      "crm_locations": ["index.html:1472"],
+      "crm_usage": "<Dialog> 1 instancia + 1 ad-hoc role='dialog' linha 1617 (popover de filtros)",
+      "category": "minor",
+      "drift_notes": "1 uso real do Dialog. Linha 1617 usa role='dialog' inline com style proprio (popover de filtros). Talvez deveria ser Popover, nao Dialog.",
+      "severity": "P2",
+      "recommendation": "flag"
+    },
+    {
+      "name": "display/Skeleton",
+      "vitrine_file": "components/display/Skeleton.jsx",
+      "crm_locations": ["index.html:1387-1395", "index.html:2581-2585"],
+      "crm_usage": "<Skeleton> ~10 instancias em loading states",
+      "category": "aligned",
+      "drift_notes": "Reuso direto. width/height/rounded props OK.",
+      "severity": "P3",
+      "recommendation": "none"
+    },
+    {
+      "name": "base/Checkbox",
+      "vitrine_file": "components/base/Checkbox.jsx",
+      "crm_locations": ["index.html:1411", "index.html:1419", "index.html:2535", "index.html:1629"],
+      "crm_usage": "<Checkbox> ~4 instancias + 1 raw <input type='checkbox'> linha 1629",
+      "category": "minor",
+      "drift_notes": "Misto. Maior parte usa <Checkbox> componente. Linha 1629 (filtros side-panel) usa raw input. Inconsistencia.",
+      "severity": "P2",
+      "recommendation": "patch-crm"
+    },
+    {
+      "name": "navigation/Pagination",
+      "vitrine_file": "components/navigation/Pagination.jsx",
+      "crm_locations": ["index.html:1436", "index.html:2624"],
+      "crm_usage": "<Pagination> 2 instancias",
+      "category": "aligned",
+      "severity": "P3",
+      "recommendation": "none"
+    },
+    {
+      "name": "navigation/Breadcrumb",
+      "vitrine_file": "components/navigation/Breadcrumb.jsx",
+      "crm_locations": ["index.html:1346", "index.html:2517"],
+      "crm_usage": "<Breadcrumb items={[]} /> 2 instancias",
+      "category": "aligned",
+      "severity": "P3",
+      "recommendation": "none"
+    },
+    {
+      "name": "display/EmptyState",
+      "vitrine_file": "components/display/EmptyState.jsx",
+      "crm_locations": ["index.html:1401", "index.html:2592"],
+      "crm_usage": "<EmptyState icon='' title='' /> 2 instancias",
+      "category": "aligned",
+      "severity": "P3",
+      "recommendation": "none"
+    },
+    {
+      "name": "display/ProgressBar",
+      "vitrine_file": "components/display/ProgressBar.jsx",
+      "crm_locations": ["index.html:1457", "index.html:1800", "index.html:1835"],
+      "crm_usage": "<ProgressBar value={} color={} /> 3 instancias",
+      "category": "aligned",
+      "severity": "P3",
+      "recommendation": "none"
+    },
+    {
+      "name": "forms/Slider",
+      "vitrine_file": "components/forms/Slider.jsx",
+      "crm_locations": ["index.html:1860", "index.html:1890", "index.html:1232"],
+      "crm_usage": "<Slider> 2x + 1 raw <input type='range'> linha 1232",
+      "category": "minor",
+      "drift_notes": "Linha 1232 usa raw range input em vez de <Slider>. Inconsistente.",
+      "severity": "P2",
+      "recommendation": "patch-crm"
+    },
+    {
+      "name": "base/Button",
+      "vitrine_file": "components/base/Button.jsx",
+      "crm_locations": [],
+      "crm_usage": "CRM usa <button> raw com inline styles. Comentario linha 237 confirma '.btn removidas, substituidas por aa-btn (canonical)'. Mas grep nao acha 'aa-btn' no index.html. CSS class esta declarada em colors_and_type.css.",
+      "category": "major",
+      "drift_notes": "Vitrine tem variant primary|secondary|outline|ghost|destructive|accent + size sm|md|lg + iconLeft|Right + loading. CRM nao usa nada disso, escreve inline buttons sem padronizacao. Loading state inexistente.",
+      "severity": "P0",
+      "recommendation": "patch-crm"
+    },
+    {
+      "name": "surfaces/Card",
+      "vitrine_file": "components/surfaces/Card.jsx",
+      "crm_locations": ["index.html:880", "index.html:958", "index.html:1001", "index.html:1045", "index.html:1098", "index.html:1364", "index.html:1385", "index.html:1400", "index.html:1406", "index.html:1448", "index.html:1789", "index.html:1815", "index.html:1848", "index.html:1882", "index.html:1964", "index.html:2048", "index.html:2079", "index.html:2101", "index.html:2193", "index.html:2380", "index.html:2531", "index.html:2539", "index.html:2544", "index.html:2554", "index.html:2580", "index.html:2591", "index.html:2600", "index.html:2642", "index.html:2690"],
+      "crm_usage": "30+ <div className='card'> raw. Zero uso de <Card>.",
+      "category": "major",
+      "drift_notes": "Vitrine tem <Card> com onClick + tabIndex + role=button + Enter/Space handler (a11y completo). CRM usa div raw. Cards interativos (linha 1789, 2600) nao tem keyboard support.",
+      "severity": "P0",
+      "recommendation": "patch-crm"
+    },
+    {
+      "name": "base/Input",
+      "vitrine_file": "components/base/Input.jsx",
+      "crm_locations": ["index.html:709", "index.html:717", "index.html:1366", "index.html:2197", "index.html:2309", "index.html:2428", "index.html:2557", "index.html:2707", "index.html:2711", "index.html:3119"],
+      "crm_usage": "10+ <input className='field-input'> raw. Zero uso de <Input>.",
+      "category": "major",
+      "drift_notes": "Vitrine tem <Input> com iconLeft/Right, invalid state, focus ring auto, controlled/uncontrolled fallback. CRM usa raw input com CSS class 'field-input'.",
+      "severity": "P0",
+      "recommendation": "patch-crm"
+    },
+    {
+      "name": "navigation/Sidebar",
+      "vitrine_file": "components/navigation/Sidebar.jsx",
+      "crm_locations": ["index.html:759"],
+      "crm_usage": "<aside className='sidebar collapsed?'> raw com 100+ linhas de CSS proprio (.sidebar-toggle, .nav-item, .nav-section-label, etc).",
+      "category": "major",
+      "drift_notes": "Vitrine tem <Sidebar> com mobile drawer + hamburger + isMobile detection + aria-current + focus-visible CSS. CRM tem sidebar HTML/CSS proprio. NAO ha mobile detection no CRM. Sidebar mobile experience inexistente.",
+      "severity": "P0",
+      "recommendation": "patch-crm"
+    },
+    {
+      "name": "navigation/UserMenu",
+      "vitrine_file": "components/navigation/UserMenu.jsx",
+      "crm_locations": [],
+      "crm_usage": "user-panel inline rebuilt na sessao anterior (linhas 808-832 JSX, 158-189 CSS). 2-row pattern (avatar+nome+theme + Configuracoes+Sair).",
+      "category": "major",
+      "drift_notes": "Vitrine UserMenu tem dropdown menu pattern. CRM rebuilt com 2-row pattern dwg-insight inspired. Divergencia consciente (Patrick aprovou). Vitrine deveria ser atualizada pra refletir novo pattern.",
+      "severity": "P1",
+      "recommendation": "patch-vitrine"
+    },
+    {
+      "name": "navigation/Tabs",
+      "vitrine_file": "components/navigation/Tabs.jsx",
+      "crm_locations": [],
+      "crm_usage": "verificar — provavel inline ou ausente",
+      "category": "missing_in_crm",
+      "severity": "P2",
+      "recommendation": "flag"
+    },
+    {
+      "name": "display/Avatar",
+      "vitrine_file": "components/display/Avatar.jsx",
+      "crm_locations": [],
+      "crm_usage": "user-panel usa avatar inline com border + initials. Conversa pipeline (linha ~1789) tem avatares inline.",
+      "category": "missing_in_crm",
+      "drift_notes": "CRM nao consome <Avatar>, escreve inline.",
+      "severity": "P1",
+      "recommendation": "patch-crm"
+    },
+    {
+      "name": "display/Badge",
+      "vitrine_file": "components/display/Badge.jsx",
+      "crm_locations": [],
+      "crm_usage": "nav-badge inline (linha 117). Status badges pipeline tambem inline.",
+      "category": "missing_in_crm",
+      "severity": "P1",
+      "recommendation": "flag"
+    },
+    {
+      "name": "display/StatusBadge",
+      "vitrine_file": "components/display/StatusBadge.jsx",
+      "crm_locations": [],
+      "crm_usage": "verificar uso inline",
+      "category": "missing_in_crm",
+      "severity": "P2",
+      "recommendation": "flag"
+    },
+    {
+      "name": "base/Switch",
+      "vitrine_file": "components/base/Switch.jsx",
+      "crm_locations": [],
+      "category": "missing_in_crm",
+      "severity": "P2",
+      "recommendation": "flag"
+    },
+    {
+      "name": "base/Select",
+      "vitrine_file": "components/base/Select.jsx",
+      "crm_locations": [],
+      "category": "missing_in_crm",
+      "severity": "P2",
+      "recommendation": "flag"
+    },
+    {
+      "name": "all_others",
+      "note": "44 componentes restantes nao foram detectados em uso no CRM. Inclui: forms (Combobox, DateField, FileUpload, FormField, NumberField, Stepper), display (Accordion, Alert, Popover, Separator, Spinner, Tag, Toast, Tooltip), data (AppTable, ListItem, Table), dashboard (Chart, KpiGrid, MetricCard, StatCard), layout (AppLayout, NavHeader, PageHeader, PageShell, Section), navigation (NavLink), surfaces (Surface), brand (Logo), base (Radio, Textarea, ToggleGroup), screens (todas auth + Dashboard/Empty/Profile/Romaneios/Settings).",
+      "category": "missing_in_crm",
+      "drift_notes": "Esses sao showcase-only. CRM nao usa porque template tem suas proprias screens (dashboard, pipeline, prompt-lab, etc). Screens vitrine sao demos isolados.",
+      "severity": "P3",
+      "recommendation": "none"
+    },
+    {
+      "name": "missing_in_vitrine_1",
+      "label": "CRM PipelineKanban (drag&drop cards de oportunidade)",
+      "crm_locations": ["index.html:1789-1810"],
+      "category": "missing_in_vitrine",
+      "drift_notes": "CRM tem pipeline/kanban inline sem componente vitrine equivalente.",
+      "severity": "P2",
+      "recommendation": "flag"
+    },
+    {
+      "name": "missing_in_vitrine_2",
+      "label": "CRM ConversaPanel (chat com cliente, agente IA)",
+      "crm_locations": ["index.html:2197-2320"],
+      "category": "missing_in_vitrine",
+      "severity": "P2",
+      "recommendation": "flag"
+    },
+    {
+      "name": "missing_in_vitrine_3",
+      "label": "CRM PromptEditor (lab de prompts com diff)",
+      "crm_locations": ["index.html:2424-2480"],
+      "category": "missing_in_vitrine",
+      "severity": "P3",
+      "recommendation": "flag"
+    },
+    {
+      "name": "missing_in_vitrine_4",
+      "label": "CRM TokenEditor (Wave 8 advanced editor)",
+      "crm_locations": ["TokenEditorPreview.jsx (showcase only)"],
+      "category": "aligned",
+      "drift_notes": "Existe na vitrine como showcase mas eh feature CRM-only. Aligned.",
+      "severity": "P3",
+      "recommendation": "none"
+    }
+  ],
+  "top_5_drifts": [
+    {
+      "rank": 1,
+      "component": "base/Button",
+      "severity": "P0",
+      "impact": "Todos buttons CRM sem padronizacao de variant/size/loading. Refactor caro mas alta alavancagem.",
+      "decision_needed": "patch-crm (refatorar todos buttons inline) vs flag (manter como esta, library evolui em paralelo)"
+    },
+    {
+      "rank": 2,
+      "component": "surfaces/Card",
+      "severity": "P0",
+      "impact": "30+ <div className=card> raw. Cards interativos sem keyboard support (a11y fail).",
+      "decision_needed": "patch-crm so nos interativos (~5 lugares) ou full migration?"
+    },
+    {
+      "rank": 3,
+      "component": "base/Input",
+      "severity": "P0",
+      "impact": "10+ inputs raw sem iconLeft/Right slots, sem invalid state padronizado.",
+      "decision_needed": "patch-crm em formularios principais (login, busca, settings)?"
+    },
+    {
+      "rank": 4,
+      "component": "navigation/Sidebar",
+      "severity": "P0",
+      "impact": "CRM sidebar custom sem mobile/hamburger. Vitrine tem implementacao completa.",
+      "decision_needed": "patch-crm (substituir sidebar custom por <Sidebar>) ou patch-vitrine (alinhar a implementacao CRM mais robusta visualmente)?"
+    },
+    {
+      "rank": 5,
+      "component": "navigation/UserMenu",
+      "severity": "P1",
+      "impact": "Vitrine ainda tem dropdown legacy. CRM tem 2-row pattern aprovado.",
+      "decision_needed": "patch-vitrine (UserMenu vitrine reflete novo pattern) — recommendation clara"
+    }
+  ],
+  "next_actions": [
+    "Patrick decide top 5 drifts: patch-vitrine | patch-crm | flag por entry",
+    "patch-vitrine eh barato (5-10min cada), patch-crm caro (30-60min), flag eh zero",
+    "Default sugerido: patch-vitrine UserMenu (alinhar dwg-insight pattern). Os 4 P0 (Button/Card/Input/Sidebar) flag — drift consciente: vitrine = library showcase, CRM = template inline real-world. Refactor caro sem ganho proporcional."
+  ]
+}
