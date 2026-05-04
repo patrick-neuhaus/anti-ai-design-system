@@ -148,14 +148,19 @@ a{color:inherit;text-decoration:none}
 .user-panel-clickable{flex:1;display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;padding:0;background:none;border:none;color:inherit;text-align:left}
 .user-panel-clickable:hover .user-name{color:hsl(var(--sidebar-foreground))}
 .avatar{width:34px;height:34px;border-radius:50%;background:hsl(var(--accent)/.3);color:hsl(var(--sidebar-foreground));display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:12px;border:1px solid hsl(var(--accent)/.5);flex-shrink:0}
+/* Avatar menor em collapsed pra caber no rail 68px sem estourar */
+.collapsed .avatar{width:28px;height:28px;font-size:10px}
 .user-info{flex:1;min-width:0;overflow:hidden}
 .user-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-actions{display:flex;gap:2px;flex-shrink:0}
 .user-action-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:hsl(var(--sidebar-foreground)/.7);transition:background 120ms,color 120ms;cursor:pointer}
 .user-action-btn:hover{background:hsl(var(--sidebar-background)/.4);color:hsl(var(--sidebar-foreground))}
 .user-info,.user-actions{opacity:1;max-width:200px;transform:translateX(0);transition:opacity 180ms ease,max-width 220ms ease,transform 180ms ease,visibility 0s 0s;visibility:visible;overflow:hidden}
-.collapsed .user-info,.collapsed .user-actions{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms}
-.collapsed .user-panel{justify-content:center;padding:10px}
+/* Collapsed: user-info esconde (so name), MAS user-actions ficam visiveis em column.
+   Patrick: 'devia ficar vertical quando colapsa nao? perdia config e logout antes'. */
+.collapsed .user-info{opacity:0;max-width:0;transform:translateX(-8px);visibility:hidden;transition:opacity 160ms ease,max-width 200ms ease,transform 160ms ease,visibility 0s 200ms}
+.collapsed .user-panel{flex-direction:column;justify-content:center;align-items:center;padding:10px 6px;gap:8px;border-radius:12px}
+.collapsed .user-actions{flex-direction:column;gap:4px;max-width:none;opacity:1;visibility:visible;transform:none}
 /* W1.6 followup / F-INT-019: avatar centralizado no estado colapsado (clickable era flex-start por padrao) */
 .collapsed .user-panel-clickable{justify-content:center;flex:0 0 auto}
 
@@ -629,7 +634,17 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCo
       <div className="sidebar-brand">
         <div className="sidebar-logo-wrap">
           {collapsed
-            ? <img src="../../assets/placeholder-mark.svg" alt="Artemis" className="sidebar-logo-icon" />
+            ? (
+              /* Inline SVG pra herdar color via currentColor (img nao herda).
+                 Mostra placeholder dashed border + letra "M" usando sidebar-foreground. */
+              <svg className="sidebar-logo-icon" viewBox="0 0 32 32" width="30" height="30" role="img" aria-label="Mark"
+                style={{ color: "hsl(var(--sidebar-foreground))" }}>
+                <rect x="0.5" y="0.5" width="31" height="31" rx="6" fill="none"
+                  stroke="currentColor" strokeOpacity="0.4" strokeDasharray="3 2"/>
+                <text x="16" y="22" fontFamily="var(--font-mono, ui-sans-serif)" fontSize="16"
+                  fontWeight="700" textAnchor="middle" fill="currentColor">M</text>
+              </svg>
+            )
             : <img src="../../assets/placeholder-logo.svg" alt="Artemis" className="sidebar-logo-full" />
           }
           {!collapsed && <span className="sidebar-logo-tag">{tpl.label}</span>}
@@ -685,24 +700,20 @@ function AppSidebar({ templateKey, activePage, onNav, onLogout, collapsed, setCo
       <div className="user-panel">
         <button className="user-panel-clickable" onClick={() => onNav("profile")} title="Meu perfil">
           <div className="avatar">{initials}</div>
-          {!collapsed && (
-            <div className="user-info">
-              <div className="user-name">{tpl.user.name}</div>
-            </div>
-          )}
+          <div className="user-info">
+            <div className="user-name">{tpl.user.name}</div>
+          </div>
         </button>
-        {!collapsed && (
-          <>
-            <div className="user-actions">
-              <div className="user-action-btn" title="Configurações" onClick={() => onNav("settings")}>
-                <I.Settings size={14} />
-              </div>
-              <div className="user-action-btn" title="Sair" onClick={onLogout}>
-                <I.LogOut size={14} />
-              </div>
-            </div>
-          </>
-        )}
+        {/* Actions sempre renderizadas — em collapsed CSS empilha vertical pra
+            nao perder config + logout (Patrick: 'devia ficar vertical quando colapsa') */}
+        <div className="user-actions">
+          <div className="user-action-btn" title="Configurações" onClick={() => onNav("settings")}>
+            <I.Settings size={14} />
+          </div>
+          <div className="user-action-btn" title="Sair" onClick={onLogout}>
+            <I.LogOut size={14} />
+          </div>
+        </div>
       </div>
     </aside>
   );
