@@ -17,6 +17,32 @@
       background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--primary)));
       z-index: 300; transition: width 80ms linear; pointer-events: none;
     }
+
+    .auth-frame {
+      position: relative;
+      width: 100%;
+      min-height: 560px;
+      height: min(680px, calc(100vh - 220px));
+      overflow: hidden;
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg, 12px);
+      background: hsl(var(--background));
+    }
+    .auth-variant {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      overflow: auto;
+      transition: opacity 150ms ease;
+    }
+    .auth-variant.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    @media (max-width: 760px) {
+      .auth-frame { min-height: 640px; height: min(720px, calc(100vh - 180px)); }
+    }
   
     /* Wave 9.4 — CTA responsive */
     .nav-cta-mini .nav-cta-text { display: inline; }

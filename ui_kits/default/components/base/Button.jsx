@@ -76,7 +76,7 @@ const BTN_VARIANTS = {
   /* accent — terracotta CTA. Use for primary call-to-action outside primary teal context. */
   accent: {
     background: "hsl(var(--accent))",
-    color: "#fff",
+    color: "hsl(var(--accent-foreground))",
     borderColor: "hsl(var(--accent))",
   },
 };

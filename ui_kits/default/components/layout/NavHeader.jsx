@@ -64,9 +64,6 @@ const NavHeader = ({ currentCategory = null, mode = "category" }) => {
     };
   }, []);
 
-  // href for "Ver exemplos" CTA — always goes to showcase index
-  const ctaHref = isHome ? "#templates" : "./index.html";
-
   // Nav links — home uses anchor hash, categories use relative paths
   const navLinks = isHome
     ? [
@@ -128,10 +125,6 @@ const NavHeader = ({ currentCategory = null, mode = "category" }) => {
           <a key={label} className="nav-link" href={href}>{label}</a>
         ))}
       </div>
-      <a className="nav-cta-mini" href={ctaHref}>
-        <span className="nav-cta-text">Ver exemplos</span>
-        <span className="nav-cta-icon">&#8594;</span>
-      </a>
     </nav>
   );
 };
